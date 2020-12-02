@@ -15,7 +15,8 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class CompanyPrimaryKey implements Serializable {
-  /**
+  
+	/**
    *
    */private static final long serialVersionUID = 1L;
 

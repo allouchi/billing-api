@@ -22,23 +22,20 @@ public class UserSpiAdapter implements UserSpiService {
 
   @Override
   public void addUser(User user) {
-	  
     UserEntity userEntity = mapper.fromDomainToEntity(user);
     serviceJpaRepository.save(userEntity);
   }
 
   @Override
   public void removeUser(User user) {
-	  UserEntity userEntity = mapper.fromDomainToEntity(user);
-	  serviceJpaRepository.delete(userEntity);
-
+    UserEntity userEntity = mapper.fromDomainToEntity(user);
+    serviceJpaRepository.delete(userEntity);
   }
 
   @Override
   public void updateUser(User user) {
-	  UserEntity userEntity = mapper.fromDomainToEntity(user);
-	  serviceJpaRepository.save(userEntity);
-
+    UserEntity userEntity = mapper.fromDomainToEntity(user);
+    serviceJpaRepository.save(userEntity);
   }
 
   @Override
@@ -49,20 +46,17 @@ public class UserSpiAdapter implements UserSpiService {
 
   @Override
   public User findUserById(long id) {
-	  Optional<UserEntity> usersEntity = serviceJpaRepository.findById(id);
-	  if(usersEntity.isPresent()) {
-		  return mapper.fromEntityToDomain(usersEntity.get());
-	  }
-	  return null;
-	   
+    Optional<UserEntity> usersEntity = serviceJpaRepository.findById(id);
+    if (!usersEntity.isPresent()) {
+      throw new UserNotFoundException("User not found");
+    } else {
+      return mapper.fromEntityToDomain(usersEntity.get());
+    }
   }
 
   @Override
   public User findUserByMailAndPassword(String mail, String password) {
-    Optional<UserEntity> entity = serviceJpaRepository.findByMailAndPassword(
-      mail,
-      password
-    );
+    Optional<UserEntity> entity = serviceJpaRepository.findByMailAndPassword(mail, password );
 
     if (!entity.isPresent()) {
       throw new UserNotFoundException("User not found");

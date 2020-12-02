@@ -50,7 +50,6 @@ public class ConsultantSpiAdapter implements ConsultantSpiService {
         listEntities.add(consultantMapper.fromEntityToDomain(entity));
       }
     }
-
     return listEntities;
   }
 

@@ -41,7 +41,7 @@ public class CompanyEntity implements Serializable {
   @Column(name = "status")
   String status;
 
-  @Column(name = "siret", nullable = false)
+  @Column(name = "siret", nullable = false, unique = true)
   String siret;
 
   @Column(name = "rcsname")

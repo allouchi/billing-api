@@ -50,7 +50,6 @@ public class UserApiAdapter implements UserApiService {
     } catch (UserNotFoundException e) {
       e.printStackTrace();
     }
-
     return user;
   }
 

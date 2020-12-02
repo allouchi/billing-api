@@ -7,6 +7,8 @@ import com.aliateck.fact.infrastructure.models.FactureEntity;
 import com.aliateck.fact.infrastructure.repository.facture.FactureJpaRepository;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -37,8 +39,14 @@ public void updateFacture(Facture facture){
 	factureJpaRepository.save(factureMapper.fromDomainToEntity(facture));
 }
 
-@Override public Facture findById(long id){
-return null;}
+@Override 
+public Facture findById(long id){
+	Optional<FactureEntity> entity = factureJpaRepository.findById(id);
+	if(entity.isPresent()) {
+		return factureMapper.fromEntityToDomain(entity.get());
+	}
+	return null;
+}
 
   @Override
   public Facture findByNumeroFacture(String numeroFacture) {
