@@ -60,7 +60,6 @@ public class ConsultantSpiAdapter implements ConsultantSpiService {
      if(entity.isPresent()) {
     	 return consultantMapper.fromEntityToDomain(entity.get()); 
      }
-     return null;
-    
+     return null;    
   }
 }

@@ -22,37 +22,43 @@ public class UserSpiAdapter implements UserSpiService {
 
   @Override
   public void addUser(User user) {
+	  
     UserEntity userEntity = mapper.fromDomainToEntity(user);
-
     serviceJpaRepository.save(userEntity);
   }
 
   @Override
   public void removeUser(User user) {
-    // TODO Auto-generated method stub
+	  UserEntity userEntity = mapper.fromDomainToEntity(user);
+	  serviceJpaRepository.delete(userEntity);
 
   }
 
   @Override
   public void updateUser(User user) {
-    // TODO Auto-generated method stub
+	  UserEntity userEntity = mapper.fromDomainToEntity(user);
+	  serviceJpaRepository.save(userEntity);
 
   }
 
   @Override
-  public List<User> findAllUsers() throws UserNotFoundException {
+  public List<User> findAllUsers() {
     List<UserEntity> usersEntity = serviceJpaRepository.findAll();
     return mapper.fromEntityToDomainList(usersEntity);
   }
 
   @Override
-  public User findUserById(long id) throws UserNotFoundException {
-    return null;
+  public User findUserById(long id) {
+	  Optional<UserEntity> usersEntity = serviceJpaRepository.findById(id);
+	  if(usersEntity.isPresent()) {
+		  return mapper.fromEntityToDomain(usersEntity.get());
+	  }
+	  return null;
+	   
   }
 
   @Override
-  public User findUserByMailAndPassword(String mail, String password)
-    throws UserNotFoundException {
+  public User findUserByMailAndPassword(String mail, String password) {
     Optional<UserEntity> entity = serviceJpaRepository.findByMailAndPassword(
       mail,
       password

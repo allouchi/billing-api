@@ -11,11 +11,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PrestationMapper {
+	
+	
   private final FactureMapper factureMapper;
-
-  // private final ClientMapper clientMapper;
-
-  //private final ConsultantMapper consultantMapper;
+  
 
   public PrestationEntity fromDomainToEntity(Prestation domain) {
     return PrestationEntity
@@ -23,9 +22,7 @@ public class PrestationMapper {
       .id(domain.getId())
       .nbJoursEffectue(domain.getNbJoursEffectue())
       .tarif(domain.getTarif())
-      .facture(factureMapper.fromDomainToEntity(domain.getFacture()))
-      //.client(clientMapper.fromDomainToEntity(domain.getClient()))
-      //.consultant(consultantMapper.fromDomainToEntity(domain.getConsultant()))
+      .facture(factureMapper.fromDomainToEntity(domain.getFacture()))      
       .build();
   }
 
@@ -36,7 +33,6 @@ public class PrestationMapper {
       .nbJoursEffectue(entity.getNbJoursEffectue())
       .tarif(entity.getTarif())
       .facture(factureMapper.fromEntityToDomain(entity.getFacture()))
-      //.consultant(consultantMapper.fromEntityToDomain(entity.getConsultant()))
       .build();
   }
 }

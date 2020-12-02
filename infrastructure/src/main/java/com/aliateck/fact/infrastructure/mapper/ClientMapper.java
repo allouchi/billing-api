@@ -1,16 +1,18 @@
 package com.aliateck.fact.infrastructure.mapper;
 
-import com.aliateck.fact.domaine.business.object.Client;
-import com.aliateck.fact.infrastructure.models.ClientEntity;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Component;
+
+import com.aliateck.fact.domaine.business.object.Client;
+import com.aliateck.fact.infrastructure.models.ClientEntity;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
 public class ClientMapper {
-  private final ConsultantMapper consultantMapper;
   private final ClientAdresseMapper adresseMapper;
 
   public ClientEntity fromDomainToEntity(Client domain) {
@@ -19,7 +21,6 @@ public class ClientMapper {
       .id(domain.getId())
       .socialReason(domain.getSocialReason())
       .adresse(adresseMapper.fromDomainToEntity(domain.getAdresse()))
-      //.consultants(consultantMapper.fromDomainToEntity(domain.getConsultants()))
       .build();
   }
 
@@ -29,7 +30,6 @@ public class ClientMapper {
       .id(entity.getId())
       .socialReason(entity.getSocialReason())
       .adresse(adresseMapper.fromEntityToDomain(entity.getAdresse()))
-      //.consultants(consultantMapper.fromEntityToDomain(entity.getConsultants()))
       .build();
   }
 

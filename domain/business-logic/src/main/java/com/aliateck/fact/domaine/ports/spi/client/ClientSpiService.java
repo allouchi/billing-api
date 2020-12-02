@@ -12,10 +12,9 @@ public interface ClientSpiService {
 
 	public void updateClient(Client client);
 
-	public List<Client> getAllClients();
+	public List<Client> findAllClients();
 
-	public Client getClientById(long id);
+	public Client findClientById(long id);
 	
-	public Client getClientBySocialReason(String socialResean);
-
+	
 }

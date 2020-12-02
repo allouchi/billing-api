@@ -7,15 +7,14 @@ import com.aliateck.fact.domaine.business.object.Client;
 
 public interface ClientApiService {
 	
-	public void ajouterClient(Client client) ;
+	public void addClient(Client client) ;
 
-	public void supprimerClient(Client client);
+	public void deleteClient(Client client);
 
-	public void mettreAJourClient(Client client);
+	public void updateClient(Client client);
 
-	public List<Client> retournerClients();
+	public List<Client> findAllClients();
 
-	public Client chercherClientParId(long id);
-	
+	public Client findById(long id);	
 
 }

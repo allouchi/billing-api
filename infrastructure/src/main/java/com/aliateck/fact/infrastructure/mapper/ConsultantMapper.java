@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class ConsultantMapper {
-  //private final ClientMapper clientMapper;
   private final PrestationMapper prestationMapper;
 
   public ConsultantEntity fromDomainToEntity(Consultant domain) {

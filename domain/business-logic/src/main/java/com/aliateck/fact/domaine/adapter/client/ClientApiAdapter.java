@@ -21,31 +21,31 @@ public class ClientApiAdapter implements ClientApiService{
 	ClientSpiService clientSpiService;
 	
 	@Override
-	public void ajouterClient(Client client) {
+	public void addClient(Client client) {
 		clientSpiService.addClient(client);
 		
 	}
 
 	@Override
-	public void supprimerClient(Client client) {
+	public void deleteClient(Client client) {
 		clientSpiService.removeClient(client);
 		
 	}
 
 	@Override
-	public void mettreAJourClient(Client client) {
+	public void updateClient(Client client) {
 		clientSpiService.updateClient(client);
 		
 	}
 
 	@Override
-	public List<Client> retournerClients() {
-		return clientSpiService.getAllClients();
+	public List<Client> findAllClients() {
+		return clientSpiService.findAllClients();
 	}
 
 	@Override
-	public Client chercherClientParId(long id) {
-		return clientSpiService.getClientById(id);
+	public Client findById(long id) {
+		return clientSpiService.findClientById(id);
 	}
 		
 

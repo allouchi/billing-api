@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ConsultantJpaRepository extends JpaRepository<ConsultantEntity, Long> {}
+public interface ConsultantJpaRepository extends JpaRepository<ConsultantEntity, Long> {
+	
+}

@@ -46,7 +46,7 @@ public class ClientSpiAdapter implements ClientSpiService{
 	}
 
 	@Override
-	public List<Client> getAllClients() {
+	public List<Client> findAllClients() {
 		
 		List<ClientEntity> clientsEntity = clientJpaRepository.findAll();		
 		return mapper.fromEntityToDomain(clientsEntity);		
@@ -54,32 +54,15 @@ public class ClientSpiAdapter implements ClientSpiService{
 	}	
 
 	@Override
-	public Client getClientBySocialReason(String socialReason) {		
-		
-		Client client = null;
-		Optional<ClientEntity> entity = clientJpaRepository.findBySocialReason(socialReason);
-		
-		if(entity.isPresent()) {
-			client = mapper.fromEntityToDomain(entity.get());
-		}
-		
-		return client;
-		
-	}
-
-	@Override
-	public Client getClientById(long id) {
+	public Client findClientById(long id) {
 		
 		Client client = null;
 		Optional<ClientEntity> entity =  clientJpaRepository.findById(id);
 		if(entity.isPresent()) {
 			client = mapper.fromEntityToDomain(entity.get());
-		}
-		
-		return client;
-		
+		}		
+		return client;		
 	}
-	
 	
 	
 }

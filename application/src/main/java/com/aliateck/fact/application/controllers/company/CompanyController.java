@@ -159,8 +159,8 @@ public class CompanyController {
     
     companyApiService.addCompany(sbatec);
     
-    clientApiService.ajouterClient(client1);
-    clientApiService.ajouterClient(client2);
+    clientApiService.addClient(client1);
+    clientApiService.addClient(client2);
     
     sbatec.setClients(clients);
     companyApiService.addCompany(sbatec);
