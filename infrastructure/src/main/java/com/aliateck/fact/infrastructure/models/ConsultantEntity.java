@@ -2,15 +2,19 @@ package com.aliateck.fact.infrastructure.models;
 
 import java.io.Serializable;
 import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,8 +33,8 @@ public class ConsultantEntity implements Serializable {
    */private static final long serialVersionUID = 1L;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "consultant_id", nullable = false)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id", nullable = false)
   private Long id;
 
   @Column(name = "firstName")
@@ -41,16 +45,15 @@ public class ConsultantEntity implements Serializable {
 
   @Column(name = "mail")
   String mail;
+  
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private PrestationEntity prestation;
 
-  @ManyToOne
-  @JoinColumn(name = "company_id", nullable = false)
-  private CompanyEntity companyConsultant;
-
-  @ManyToMany
-  @JoinTable(
-    name = "T_Prestation",
-    joinColumns = @JoinColumn(name = "consultant_id"),
-    inverseJoinColumns = @JoinColumn(name = "client_id")
-  )
+  @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+      name = "T_Consltant",
+      joinColumns = @JoinColumn(name = "consultant_id", referencedColumnName = "id"),
+      inverseJoinColumns = @JoinColumn(name = "client_id", referencedColumnName = "id")
+    )
   private List<ClientEntity> clients;
 }

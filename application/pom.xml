@@ -14,7 +14,8 @@
 	<name>Billing API :: Application Layer</name>
 	<description>Application Layer for Billing API based on Rest</description>
 
-	<dependencies>
+	<dependencies>	
+	
 
 		<dependency>
 			<groupId>com.aliateck</groupId>

@@ -22,19 +22,19 @@ public class ClientApiAdapter implements ClientApiService{
 	
 	@Override
 	public void ajouterClient(Client client) {
-		// TODO Auto-generated method stub
+		clientSpiService.addClient(client);
 		
 	}
 
 	@Override
 	public void supprimerClient(Client client) {
-		// TODO Auto-generated method stub
+		clientSpiService.removeClient(client);
 		
 	}
 
 	@Override
 	public void mettreAJourClient(Client client) {
-		// TODO Auto-generated method stub
+		clientSpiService.updateClient(client);
 		
 	}
 
@@ -45,14 +45,8 @@ public class ClientApiAdapter implements ClientApiService{
 
 	@Override
 	public Client chercherClientParId(long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return clientSpiService.getClientById(id);
 	}
-
-	@Override
-	public Client chercherClientParRaisonSociale(String socialResean) {
-		clientSpiService.getClientBySocialReason(socialResean);
-		return null;
-	}	
+		
 
 }

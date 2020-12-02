@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aliateck.fact.domaine.business.object.Facture;
-import com.aliateck.fact.domaine.ports.api.facture.BillApiService;
+import com.aliateck.fact.domaine.ports.api.facture.FactureApiService;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class BillController {
 	
-	BillApiService billApiService;
+	FactureApiService billApiService;
 	
 	@GetMapping(value = "/bill/{numero}")
 	public ResponseEntity<Facture> getFacture(@PathVariable String numero) {

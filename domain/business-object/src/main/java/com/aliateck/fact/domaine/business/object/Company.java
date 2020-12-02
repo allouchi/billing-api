@@ -23,4 +23,5 @@ public class Company {
   CompanyAdresse companyAdresse;
   List<User> users;
   List<Client> clients;
+  List<Consultant> consultant;
 }

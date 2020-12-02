@@ -40,18 +40,18 @@ public class UserSpiAdapter implements UserSpiService {
   }
 
   @Override
-  public List<User> getAllUsers() throws UserNotFoundException {
+  public List<User> findAllUsers() throws UserNotFoundException {
     List<UserEntity> usersEntity = serviceJpaRepository.findAll();
     return mapper.fromEntityToDomainList(usersEntity);
   }
 
   @Override
-  public User getUserById(long id) throws UserNotFoundException {
+  public User findUserById(long id) throws UserNotFoundException {
     return null;
   }
 
   @Override
-  public User getUserByMailAndPassword(String mail, String password)
+  public User findUserByMailAndPassword(String mail, String password)
     throws UserNotFoundException {
     Optional<UserEntity> entity = serviceJpaRepository.findByMailAndPassword(
       mail,

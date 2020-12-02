@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,19 +25,22 @@ public class FactureEntity implements Serializable {
    */private static final long serialVersionUID = 1L;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "facture_id", nullable = false)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id", nullable = false)
   Long id;
 
   @Column(name = "numeroFacture")
   String numeroFacture;
 
+  @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "dateFacturation")
   Date dateFacturation;
 
+  @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "dateEcheance")
   Date dateEcheance;
 
+  @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "dateEncaissement")
   Date dateEncaissement;
 

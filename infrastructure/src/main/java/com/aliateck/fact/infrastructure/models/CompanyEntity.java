@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -22,6 +23,7 @@ import lombok.ToString;
 @Data
 @Builder
 @ToString
+//@IdClass(CompanyPrimaryKey.class)
 @Entity(name = "T_Company")
 public class CompanyEntity implements Serializable {
   /**
@@ -55,17 +57,15 @@ public class CompanyEntity implements Serializable {
   @JoinColumn(name = "adresse_id", referencedColumnName = "id")
   private CompanyAdresseEntity companyAdresse;
 
-  @OneToMany(cascade = CascadeType.ALL)
+  @OneToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
   @JoinColumn(name = "company_id")
   private List<UserEntity> users;
 
-  @OneToMany(
-    targetEntity = ClientEntity.class,
-    mappedBy = "companyClient",
-    cascade = CascadeType.ALL
-  )
+  @OneToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+  @JoinColumn(name = "company_id")
   private List<ClientEntity> clients;
-  //
-  //  @OneToMany(mappedBy = "companyConsultant", cascade = CascadeType.ALL)
-  //  private List<ConsultantEntity> consultants;
+
+  @OneToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+  @JoinColumn(name = "company_id")
+  private List<ConsultantEntity> consultants;
 }

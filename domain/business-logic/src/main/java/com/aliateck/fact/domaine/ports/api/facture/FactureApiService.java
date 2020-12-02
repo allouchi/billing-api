@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.aliateck.fact.domaine.business.object.Facture;
 
-public interface BillApiService {
+public interface FactureApiService {
 	
 	public void ajouterFacture(Facture bill) ;
 
@@ -14,8 +14,7 @@ public interface BillApiService {
 
 	public Facture chercherFactureParId(long id);
 	
-	public Facture chercherFactureParNumero(String numero);
+	public Facture chercherFactureParNumero(String numero);	
 	
-	public List<Facture> chercherFacturesParClient(String numeroClient);
 
 }

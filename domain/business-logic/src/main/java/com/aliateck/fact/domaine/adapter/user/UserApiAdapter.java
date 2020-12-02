@@ -35,7 +35,7 @@ public class UserApiAdapter implements UserApiService {
   public List<User> getUsers() {
     List<User> users = null;
     try {
-      users = userSpiService.getAllUsers();
+      users = userSpiService.findAllUsers();
     } catch (UserNotFoundException e) {
       e.printStackTrace();
     }
@@ -46,7 +46,7 @@ public class UserApiAdapter implements UserApiService {
   public User findUserById(long id) {
     User user = null;
     try {
-      user = userSpiService.getUserById(id);
+      user = userSpiService.findUserById(id);
     } catch (UserNotFoundException e) {
       e.printStackTrace();
     }
@@ -58,7 +58,7 @@ public class UserApiAdapter implements UserApiService {
   public User findUserByMailAndPassword(String email, String password) {
     User user = null;
     try {
-      user = userSpiService.getUserByMailAndPassword(email, password);
+      user = userSpiService.findUserByMailAndPassword(email, password);
     } catch (UserNotFoundException e) {
       System.out.println(e.getMessage());
     }

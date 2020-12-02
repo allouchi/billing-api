@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class ConsultantMapper {
+  //private final ClientMapper clientMapper;
+  private final PrestationMapper prestationMapper;
 
   public ConsultantEntity fromDomainToEntity(Consultant domain) {
     return ConsultantEntity
@@ -17,7 +19,9 @@ public class ConsultantMapper {
       .id(domain.getId())
       .firstName(domain.getFirstName())
       .lastName(domain.getLastName())
+      .prestation(prestationMapper.fromDomainToEntity(domain.getPrestation()))
       .mail(domain.getMail())
+      
       .build();
   }
 
@@ -28,24 +32,31 @@ public class ConsultantMapper {
       .firstName(entity.getFirstName())
       .lastName(entity.getLastName())
       .mail(entity.getMail())
+      .prestation(prestationMapper.fromEntityToDomain(entity.getPrestation()))
       .build();
   }
 
   public List<Consultant> fromEntityToDomain(List<ConsultantEntity> entities) {
     List<Consultant> consultantList = new ArrayList<>();
 
-    for (ConsultantEntity entity : entities) {
-      consultantList.add(fromEntityToDomain(entity));
+    if (entities != null && !entities.isEmpty()) {
+      for (ConsultantEntity entity : entities) {
+        consultantList.add(fromEntityToDomain(entity));
+      }
     }
+
     return consultantList;
   }
 
   public List<ConsultantEntity> fromDomainToEntity(List<Consultant> domain) {
     List<ConsultantEntity> consultantList = new ArrayList<>();
 
-    for (Consultant dom : domain) {
-      consultantList.add(fromDomainToEntity(dom));
+    if (domain != null && !domain.isEmpty()) {
+      for (Consultant dom : domain) {
+        consultantList.add(fromDomainToEntity(dom));
+      }
     }
+
     return consultantList;
   }
 }

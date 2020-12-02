@@ -32,16 +32,16 @@ public class CompanyApiAdapter implements CompanyApiService {
 
   @Override
   public List<Company> getAllCompanys() {
-    return companySpiService.getAllCompanys();
+    return companySpiService.findAllCompanys();
   }
 
   @Override
   public Company getCompanyById(long id) {
-    return companySpiService.getCompanyById(id);
+    return companySpiService.findCompanyById(id);
   }
 
   @Override
   public Company getCompanyByReasonSocial(String reasonSocial) {
-    return companySpiService.getCompanyByReasonSocial(reasonSocial);
+    return companySpiService.findCompanyByReasonSocial(reasonSocial);
   }
 }

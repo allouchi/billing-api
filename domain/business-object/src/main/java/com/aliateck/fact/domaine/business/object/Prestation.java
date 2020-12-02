@@ -1,6 +1,5 @@
 package com.aliateck.fact.domaine.business.object;
 
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
@@ -11,14 +10,16 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Consultant {
+public class Prestation {
   Long id;
-  String firstName;
-  String lastName;
-  String mail;
 
-  Company company;
-  List<Client> clients;
-  ClientAdresse adresse;
-  Prestation prestation;
+  int nbJoursEffectue;
+
+  int tarif;
+
+  Facture facture;
+
+  Consultant consultant;
+
+  Client client;
 }

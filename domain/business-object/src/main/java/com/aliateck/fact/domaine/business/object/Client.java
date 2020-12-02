@@ -17,4 +17,5 @@ public class Client {
   Company company;
   ClientAdresse adresse;
   List<Consultant> consultants;
+  Prestation prestation;
 }

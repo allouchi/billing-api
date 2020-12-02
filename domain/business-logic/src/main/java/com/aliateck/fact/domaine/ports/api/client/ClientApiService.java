@@ -17,6 +17,5 @@ public interface ClientApiService {
 
 	public Client chercherClientParId(long id);
 	
-	public Client chercherClientParRaisonSociale(String raisonSociale);
 
 }

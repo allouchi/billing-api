@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class ClientMapper {
-  // private final CompanyMapper companyMapper;
   private final ConsultantMapper consultantMapper;
   private final ClientAdresseMapper adresseMapper;
 
@@ -20,7 +19,6 @@ public class ClientMapper {
       .id(domain.getId())
       .socialReason(domain.getSocialReason())
       .adresse(adresseMapper.fromDomainToEntity(domain.getAdresse()))
-      //.companyClient(companyMapper.fromDomainToEntity(domain.getCompany()))
       //.consultants(consultantMapper.fromDomainToEntity(domain.getConsultants()))
       .build();
   }
@@ -31,7 +29,6 @@ public class ClientMapper {
       .id(entity.getId())
       .socialReason(entity.getSocialReason())
       .adresse(adresseMapper.fromEntityToDomain(entity.getAdresse()))
-      //.company(companyMapper.fromEntityToDomain(entity.getCompanyClient()))
       //.consultants(consultantMapper.fromEntityToDomain(entity.getConsultants()))
       .build();
   }

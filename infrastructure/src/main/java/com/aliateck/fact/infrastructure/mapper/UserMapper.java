@@ -15,8 +15,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class UserMapper {
 
-  //private final CompanyMapper companyMapper;
-
   public UserEntity fromDomainToEntity(User domain) {
     return UserEntity
       .builder()

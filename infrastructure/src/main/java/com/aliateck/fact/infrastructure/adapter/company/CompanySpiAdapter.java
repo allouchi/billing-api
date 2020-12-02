@@ -33,9 +33,6 @@ public class CompanySpiAdapter implements CompanySpiService {
     Optional<CompanyEntity> objBase = companyJpaRepository.findById(company.getId());
     if (objBase.isPresent()) {
       CompanyEntity entityBase = objBase.get();
-      System.out.println("**********************************");
-      System.out.println(entityBase.getId());
-      System.out.println("**********************************");
 
       entityBase.setId(entityClient.getId());
       entityBase.setApe(entityClient.getApe());
@@ -59,13 +56,13 @@ public class CompanySpiAdapter implements CompanySpiService {
   }
 
   @Override
-  public List<Company> getAllCompanys() {
+  public List<Company> findAllCompanys() {
     List<CompanyEntity> listEnities = companyJpaRepository.findAll();
     return mapper.fromEntityToDomainList(listEnities);
   }
 
   @Override
-  public Company getCompanyById(long id) {
+  public Company findCompanyById(long id) {
     Optional<CompanyEntity> entity = companyJpaRepository.findById(id);
 
     if (entity.isPresent()) {
@@ -75,8 +72,16 @@ public class CompanySpiAdapter implements CompanySpiService {
   }
 
   @Override
-  public Company getCompanyByReasonSocial(String reasonSocial) {
-    CompanyEntity entity = companyJpaRepository.getCompanyBySocialReason(reasonSocial);
+  public Company findCompanyByReasonSocial(String reasonSocial) {
+    CompanyEntity entity = companyJpaRepository.findBySocialReasonIgnoreCase(
+      reasonSocial
+    );
+    return mapper.fromEntityToDomain(entity);
+  }
+
+  @Override
+  public Company findCompanyBySiret(String siret) {
+    CompanyEntity entity = companyJpaRepository.findBySiret(siret);
     return mapper.fromEntityToDomain(entity);
   }
 }

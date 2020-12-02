@@ -13,10 +13,10 @@ public interface UserSpiService {
 
 	public void updateUser(User user);
 
-	public List<User> getAllUsers() throws UserNotFoundException ;
+	public List<User> findAllUsers() throws UserNotFoundException ;
 
-	public User getUserById(long id) throws UserNotFoundException;
+	public User findUserById(long id) throws UserNotFoundException;
 	
-	public User getUserByMailAndPassword(String email, String password) throws UserNotFoundException;
+	public User findUserByMailAndPassword(String email, String password) throws UserNotFoundException;
 
 }

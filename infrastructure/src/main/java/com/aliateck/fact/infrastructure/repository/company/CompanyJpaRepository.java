@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CompanyJpaRepository extends JpaRepository<CompanyEntity, Long> {
-  CompanyEntity findCompanyBySocialReasonIgnoreCase(String reasonSocial);
+  CompanyEntity findBySocialReasonIgnoreCase(String reasonSocial);
+
+  CompanyEntity findBySiret(String siret);
+
   Optional<CompanyEntity> findByUsers_id(Long id);
 }

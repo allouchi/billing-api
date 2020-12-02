@@ -13,6 +13,7 @@ public class CompanyMapper {
   private final CompanyAdresseMapper adresseMapper;
   private final UserMapper userMapper;
   private final ClientMapper clientMapper;
+  private final ConsultantMapper consultantMapper;
 
   public CompanyEntity fromDomainToEntity(Company domain) {
     return CompanyEntity
@@ -26,7 +27,8 @@ public class CompanyMapper {
       .ape(domain.getApe())
       .companyAdresse(adresseMapper.fromDomainToEntity(domain.getCompanyAdresse()))
       .users(userMapper.fromDomainToEntityList(domain.getUsers()))
-      //.clients(clientMapper.fromDomainToEntityList(domain.getClients()))
+      .clients(clientMapper.fromDomainToEntityList(domain.getClients()))
+      .consultants(consultantMapper.fromDomainToEntity(domain.getConsultant()))
       .build();
   }
 
@@ -43,6 +45,7 @@ public class CompanyMapper {
       .companyAdresse(adresseMapper.fromEntityToDomain(entity.getCompanyAdresse()))
       .users(userMapper.fromEntityToDomainList(entity.getUsers()))
       .clients(clientMapper.fromEntityToDomain(entity.getClients()))
+      .consultant(consultantMapper.fromEntityToDomain(entity.getConsultants()))
       .build();
   }
 

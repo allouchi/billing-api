@@ -49,7 +49,7 @@ public class FactureMapper {
       .build();
   }
 
-  public List<Facture> fromEntityListToDomain(Collection<FactureEntity> entitys) {
+  public List<Facture> fromEntityToDomainList(Collection<FactureEntity> entitys) {
     List<Facture> factureList = new ArrayList<>();
 
     for (FactureEntity entity : entitys) {
