@@ -26,7 +26,7 @@ public class FactureMapper {
       .montantHT(domain.getMontantHT())
       .montantTTC(domain.getMontantHT())
       .nbJourRetard(domain.getNbJourRetard())
-      .status(domain.getStatusFacture())
+      .factureStatus(domain.getFactureStatus())
       .numeroFacture(domain.getNumeroFacture())
       .delaiFacturation(domain.getDelaiFacturation())
       .build();
@@ -43,7 +43,7 @@ public class FactureMapper {
       .montantHT(entity.getMontantHT())
       .montantTTC(entity.getMontantHT())
       .nbJourRetard(entity.getNbJourRetard())
-      .statusFacture(entity.getStatus())
+      .factureStatus(entity.getFactureStatus())
       .numeroFacture(entity.getNumeroFacture())
       .delaiFacturation(entity.getDelaiFacturation())
       .build();

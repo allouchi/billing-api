@@ -60,5 +60,5 @@ public class FactureEntity implements Serializable {
   float fraisRetard;
 
   @Column(name = "status")
-  String status;
+  String factureStatus;
 }

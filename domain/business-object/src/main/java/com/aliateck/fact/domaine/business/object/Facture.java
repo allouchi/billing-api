@@ -1,7 +1,6 @@
 package com.aliateck.fact.domaine.business.object;
 
 import java.util.Date;
-
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
@@ -13,26 +12,25 @@ import lombok.experimental.FieldDefaults;
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Facture {
-	
-	Long id;
-	
-	String numeroFacture;
-	
-	Date dateFacturation;
-	
-	Date dateEcheance;
-	
-    Date dateEncaissement;
-    
-    float montantHT;
-    
-    float montantTTC;
-    
-    long nbJourRetard;
-    
-    long delaiFacturation;
-    
-    float fraisRetard;
-    
-    String statusFacture;
+  Long id;
+
+  String numeroFacture;
+
+  Date dateFacturation;
+
+  Date dateEcheance;
+
+  Date dateEncaissement;
+
+  float montantHT;
+
+  float montantTTC;
+
+  long nbJourRetard;
+
+  long delaiFacturation;
+
+  float fraisRetard;
+
+  String factureStatus;
 }

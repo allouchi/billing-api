@@ -8,11 +8,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FactureJpaRepository extends JpaRepository<FactureEntity, Long> {
- 
-
   public FactureEntity getByNumeroFacture(String numeroFacture);
 
-  public List<FactureEntity> findByStatus(String status);
+  public List<FactureEntity> findByFactureStatus(boolean status);
 
   public List<FactureEntity> findByDateEcheance(Date dateEcheance);
 

@@ -29,22 +29,18 @@ public class CompanySpiAdapter implements CompanySpiService {
 
   @Override
   public void updateCompany(Company company) {
-    CompanyEntity entityClient = mapper.fromDomainToEntity(company);
+    CompanyEntity entity = mapper.fromDomainToEntity(company);
     Optional<CompanyEntity> objBase = companyJpaRepository.findById(company.getId());
     if (objBase.isPresent()) {
       CompanyEntity entityBase = objBase.get();
 
-      entityBase.setId(entityClient.getId());
-      entityBase.setApe(entityClient.getApe());
-      entityBase.setRcsName(entityClient.getRcsName());
-      entityBase.setSiret(entityClient.getSiret());
-      entityBase.setSocialReason(entityClient.getSocialReason());
-      entityBase.setStatus(entityClient.getStatus());
-      entityBase.setTvaName(entityClient.getTvaName());
-      entityBase.setCompanyAdresse(entityClient.getCompanyAdresse());
-      entityBase.setClients(entityClient.getClients());
-      entityBase.setUsers(entityClient.getUsers());
-
+      entityBase.setId(entity.getId());
+      entityBase.setApe(entity.getApe());
+      entityBase.setRcsName(entity.getRcsName());
+      entityBase.setSiret(entity.getSiret());
+      entityBase.setSocialReason(entity.getSocialReason());
+      entityBase.setStatus(entity.getStatus());
+      entityBase.setTvaName(entity.getTvaName());
       companyJpaRepository.save(entityBase);
     }
   }

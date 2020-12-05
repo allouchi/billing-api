@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -41,7 +40,7 @@ public class CompanyEntity implements Serializable {
   @Column(name = "status")
   String status;
 
-  @Column(name = "siret", nullable = false, unique = true)
+  @Column(name = "siret", nullable = false, unique = true, length = 14)
   String siret;
 
   @Column(name = "rcsname")
@@ -57,8 +56,11 @@ public class CompanyEntity implements Serializable {
   @JoinColumn(name = "adresse_id", referencedColumnName = "id")
   private CompanyAdresseEntity companyAdresse;
 
-  @OneToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-  @JoinColumn(name = "company_id")
+  @OneToMany(
+    mappedBy = "company",
+    cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }
+  )
+  //@JoinColumn(name = "company_id")
   private List<UserEntity> users;
 
   @OneToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })

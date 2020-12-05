@@ -20,7 +20,6 @@ public class ConsultantMapper {
       .lastName(domain.getLastName())
       .prestation(prestationMapper.fromDomainToEntity(domain.getPrestation()))
       .mail(domain.getMail())
-      
       .build();
   }
 

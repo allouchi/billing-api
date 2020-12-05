@@ -1,18 +1,17 @@
-package com.aliateck.fact.application;
+package com.aliateck.fact;
 
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import com.aliateck.fact.common.FactureStatus;
 import com.aliateck.fact.domaine.business.object.Client;
 import com.aliateck.fact.domaine.business.object.ClientAdresse;
 import com.aliateck.fact.domaine.business.object.Company;
@@ -20,6 +19,7 @@ import com.aliateck.fact.domaine.business.object.CompanyAdresse;
 import com.aliateck.fact.domaine.business.object.Consultant;
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.business.object.Prestation;
+import com.aliateck.fact.domaine.business.object.User;
 import com.aliateck.fact.domaine.ports.api.client.ClientApiService;
 import com.aliateck.fact.domaine.ports.api.company.CompanyApiService;
 import com.aliateck.fact.domaine.ports.api.consultant.ConsultantApiService;
@@ -27,15 +27,6 @@ import com.aliateck.fact.domaine.ports.api.user.UserApiService;
 
 
 @SpringBootApplication
-@ComponentScan(basePackages =  {		
-		"com.aliateck.fact.domaine.adapter",
-		"com.aliateck.fact.domaine.ports.spi",
-		"com.aliateck.fact.domaine.ports.api",
-		"com.aliateck.fact.infrastructure.adapter",
-		"com.aliateck.fact.infrastructure.mapper", 
-		"com.aliateck.fact.application.controllers"})
-@EntityScan("com.aliateck.fact.infrastructure.models")
-@EnableJpaRepositories("com.aliateck.fact.infrastructure.repository")
 public class FactApiApplicationLayerApplication implements CommandLineRunner{
 
 	  @Autowired
@@ -55,6 +46,29 @@ public class FactApiApplicationLayerApplication implements CommandLineRunner{
 @Override 
 public void run(String... args) throws Exception{	
 	
+	
+	 User userSbatec = User
+		      .builder()
+		      .firstName("Aliane")
+		      .lastName("Mustapha")
+		      .email("allouchi@hotmail.fr")
+		      .password("aaaa")
+		      .role("admin")
+		      .build();		    
+
+		    User userAliatec = User
+		      .builder()
+		      .firstName("Aliane")
+		      .lastName("Khalid")
+		      .email("khalid@hotmail.fr")
+		      .password("bbbb")
+		      .role("read")
+		      .build();
+		    
+		    List<User> users = new ArrayList<>();		    
+		    users.add(userSbatec);
+		    users.add(userAliatec);
+		    
 	 ClientAdresse clientAdresse = ClientAdresse
 		      .builder()
 		      .voie("Paroi nord de la Grande Arche")
@@ -72,7 +86,15 @@ public void run(String... args) throws Exception{
 		      .commune("Rueil-Malmaison")
 		      .pays("France")
 		      .build();
-
+		    
+		    CompanyAdresse aliatecAdresse = CompanyAdresse
+		    	      .builder()
+		    	      .voie("Marcel Dubois")
+		    	      .numero("8")
+		    	      .codePostal("75012")
+		    	      .commune("Paris")
+		    	      .pays("France")
+		    	      .build();
 		   		    
 		    Facture facture1 = Facture
 		    		.builder()
@@ -83,7 +105,7 @@ public void run(String... args) throws Exception{
 		    		.fraisRetard(60)
 		    		.nbJourRetard(60)
 		    		.numeroFacture("201907311001")
-		    		.statusFacture("NOK")
+		    		.factureStatus(FactureStatus.NON.getCode())
 		    		.montantHT(500)
 		    		.montantTTC(450)
 		    		.build();
@@ -97,11 +119,10 @@ public void run(String... args) throws Exception{
 		    		.fraisRetard(60)
 		    		.nbJourRetard(60)
 		    		.numeroFacture("201907311002")
-		    		.statusFacture("OK")
+		    		.factureStatus(FactureStatus.OUI.getCode())
 		    		.montantHT(500)
 		    		.montantTTC(450)
-		    		.build();
-		    
+		    		.build();		    
 		    
 		    Prestation prestation1 = Prestation    		
 		    		.builder()
@@ -115,9 +136,7 @@ public void run(String... args) throws Exception{
 		    		.nbJoursEffectue(20)
 		    		.tarif(480)
 		    		.facture(facture2)
-		    		.build();	
-		    
-		   		    
+		    		.build();		   		    
 		    
 		    List<Consultant> consultants = new ArrayList<>();
 		    
@@ -134,7 +153,7 @@ public void run(String... args) throws Exception{
 		    		.builder()
 		    		.firstName("Marc")
 		    		.lastName("Jean")
-		    		.mail("dubois@gmail.com")
+		    		.mail("marc@gmail.com")
 		    		.prestation(prestation2)
 		    		.build();  
 		    
@@ -147,8 +166,7 @@ public void run(String... args) throws Exception{
 		  	      .builder()
 		  	      .adresse(clientAdresse)
 		  	      .socialReason("FREELANCE.COM") 		  	      
-		  	      .build();		    
-		   
+		  	      .build();		   
 		    
 		    clients.add(client);  
 		   		  
@@ -161,18 +179,33 @@ public void run(String... args) throws Exception{
 		      .tvaName("FR 188 315 021 41")
 		      .ape("6201Z")
 		      .companyAdresse(sbatecAdresse)
-		      .build();	    
-		   
+		      .build();	
+		    
+		    Company aliatec = Company
+	      .builder()
+	      .siret("85292702900012")
+	      .rcsName("R.C.S. Nanterre 831 502 141")
+	      .socialReason("ALIATECK")
+	      .status("SASU au capital de 500 Euros")
+	      .tvaName("FR 188 315 021 41")
+	      .ape("6201Z")
+	      .companyAdresse(aliatecAdresse)
+	      .build();
 		    
 		    sbatec.setClients(clients);
+		   		    
+		    //userApiService.addUser(userSbatec);
+		    //
+		    
+		    
 		    sbatec.setConsultant(consultants);
 		    companyApiService.addCompany(sbatec);
-		    
-		    //clientApiService.ajouterClient(client);
-		    //consultantApiService.ajouterConsultant(consultant);
-	
-	}   
-    
+		    companyApiService.addCompany(aliatec);
+		    userApiService.addUser(userSbatec);
+		    //userSbatec.setCompany(sbatec);
+		   
+		
+	}     
 
 }
 

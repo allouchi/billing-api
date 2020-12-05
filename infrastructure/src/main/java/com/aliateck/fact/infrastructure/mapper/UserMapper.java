@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class UserMapper {
+  private final CompanyMapper companyMapper;
 
   public UserEntity fromDomainToEntity(User domain) {
     return UserEntity
@@ -23,6 +24,8 @@ public class UserMapper {
       .lastName(domain.getLastName())
       .mail(domain.getEmail())
       .password(domain.getPassword())
+      .role(domain.getRole())
+      .company(companyMapper.fromDomainToEntity(domain.getCompany()))
       .build();
   }
 
@@ -34,6 +37,8 @@ public class UserMapper {
       .lastName(entity.getLastName())
       .email(entity.getMail())
       .password(entity.getPassword())
+      .role(entity.getRole())
+      .company(companyMapper.fromEntityToDomain(entity.getCompany()))
       .build();
   }
 

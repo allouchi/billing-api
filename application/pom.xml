@@ -14,17 +14,20 @@
 	<name>Billing API :: Application Layer</name>
 	<description>Application Layer for Billing API based on Rest</description>
 
-	<dependencies>	
-	
-
+	<dependencies>
 		<dependency>
 			<groupId>com.aliateck</groupId>
-			<artifactId>billing-api-domain-business-logic</artifactId>
-		</dependency>
+			<artifactId>billing-api-domain-business-logic</artifactId>			
+		</dependency>		
 
 		<dependency>
 			<groupId>com.aliateck</groupId>
 			<artifactId>billing-api-infrastructure</artifactId>
+		</dependency>
+		
+		<dependency>
+				<groupId>com.aliateck</groupId>
+				<artifactId>billing-api-common</artifactId>
 		</dependency>
 		
 		<dependency>

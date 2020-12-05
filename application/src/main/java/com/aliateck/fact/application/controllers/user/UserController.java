@@ -1,5 +1,7 @@
 package com.aliateck.fact.application.controllers.user;
 
+import com.aliateck.fact.domaine.business.object.Company;
+import com.aliateck.fact.domaine.business.object.CompanyAdresse;
 import com.aliateck.fact.domaine.business.object.User;
 import com.aliateck.fact.domaine.ports.api.company.CompanyApiService;
 import com.aliateck.fact.domaine.ports.api.user.UserApiService;
@@ -37,5 +39,46 @@ public class UserController {
   }
 
   @PostMapping(value = "/user/{mail}/{password}")
-  public void addUser(@PathVariable String mail, @PathVariable String password) {}
+  public void addUser(@PathVariable String mail, @PathVariable String password) {
+    CompanyAdresse sbatecAdresse = CompanyAdresse
+      .builder()
+      .voie("Boulevard National")
+      .numero("111")
+      .codePostal("92500")
+      .commune("Rueil-Malmaison")
+      .pays("France")
+      .build();
+
+    Company sbatec = Company
+      .builder()
+      .siret("85292702900011")
+      .rcsName("R.C.S. Nanterre 831 502 141")
+      .socialReason("SBATEC")
+      .status("SASU au capital de 500 Euros")
+      .tvaName("FR 188 315 021 41")
+      .ape("6201Z")
+      .companyAdresse(sbatecAdresse)
+      .build();
+
+    User user1 = User
+      .builder()
+      .email(mail)
+      .firstName("Aliane")
+      .lastName("Mustapha")
+      .password(password)
+      .build();
+
+    User user2 = User
+      .builder()
+      .email(mail)
+      .firstName("ALIANNE")
+      .lastName("Khalid")
+      .password(password)
+      .build();
+
+    user1.setCompany(sbatec);
+    user2.setCompany(sbatec);
+    userApiService.addUser(user1);
+    userApiService.addUser(user2);
+  }
 }

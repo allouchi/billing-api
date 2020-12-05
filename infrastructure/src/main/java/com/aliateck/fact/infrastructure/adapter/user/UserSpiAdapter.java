@@ -8,60 +8,73 @@ import com.aliateck.fact.infrastructure.models.UserEntity;
 import com.aliateck.fact.infrastructure.repository.user.UserJpaRepository;
 import java.util.List;
 import java.util.Optional;
+import javax.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserSpiAdapter implements UserSpiService {
-  UserMapper mapper;
-  UserJpaRepository serviceJpaRepository;
+  UserMapper userMapper;
+  UserJpaRepository userJpaRepository;
 
   @Override
   public void addUser(User user) {
-    UserEntity userEntity = mapper.fromDomainToEntity(user);
-    serviceJpaRepository.save(userEntity);
+    UserEntity userEntity = userMapper.fromDomainToEntity(user);
+    userJpaRepository.save(userEntity);
   }
 
   @Override
   public void removeUser(User user) {
-    UserEntity userEntity = mapper.fromDomainToEntity(user);
-    serviceJpaRepository.delete(userEntity);
+    UserEntity userEntity = userMapper.fromDomainToEntity(user);
+    userJpaRepository.delete(userEntity);
   }
 
   @Override
   public void updateUser(User user) {
-    UserEntity userEntity = mapper.fromDomainToEntity(user);
-    serviceJpaRepository.save(userEntity);
+    UserEntity userEntity = userMapper.fromDomainToEntity(user);
+
+    Optional<UserEntity> objBase = userJpaRepository.findById(user.getId());
+
+    if (objBase.isPresent()) {
+      UserEntity entityBase = objBase.get();
+      entityBase.setId(user.getId());
+      entityBase.setFirstName(user.getFirstName());
+      entityBase.setLastName(user.getLastName());
+      entityBase.setMail(user.getEmail());
+      entityBase.setPassword(user.getPassword());
+      userJpaRepository.save(userEntity);
+    }
   }
 
   @Override
   public List<User> findAllUsers() {
-    List<UserEntity> usersEntity = serviceJpaRepository.findAll();
-    return mapper.fromEntityToDomainList(usersEntity);
+    List<UserEntity> usersEntity = userJpaRepository.findAll();
+    return userMapper.fromEntityToDomainList(usersEntity);
   }
 
   @Override
   public User findUserById(long id) {
-    Optional<UserEntity> usersEntity = serviceJpaRepository.findById(id);
+    Optional<UserEntity> usersEntity = userJpaRepository.findById(id);
     if (!usersEntity.isPresent()) {
       throw new UserNotFoundException("User not found");
     } else {
-      return mapper.fromEntityToDomain(usersEntity.get());
+      return userMapper.fromEntityToDomain(usersEntity.get());
     }
   }
 
   @Override
   public User findUserByMailAndPassword(String mail, String password) {
-    Optional<UserEntity> entity = serviceJpaRepository.findByMailAndPassword(mail, password );
+    Optional<UserEntity> entity = userJpaRepository.findByMailAndPassword(mail, password);
 
     if (!entity.isPresent()) {
       throw new UserNotFoundException("User not found");
     } else {
-      return mapper.fromEntityToDomain(entity.get());
+      return userMapper.fromEntityToDomain(entity.get());
     }
   }
 }

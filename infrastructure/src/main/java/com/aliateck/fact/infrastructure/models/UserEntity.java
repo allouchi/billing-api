@@ -1,11 +1,14 @@
 package com.aliateck.fact.infrastructure.models;
 
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,9 +37,16 @@ public class UserEntity implements Serializable {
   @Column(name = "lastname")
   String lastName;
 
-  @Column(name = "mail", unique = true, nullable = false)
+  @Column(name = "mail", unique = true, nullable = false, length = 500)
   String mail;
 
   @Column(name = "password")
   String password;
+
+  @Column(name = "role")
+  String role;
+
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "company_id")
+  CompanyEntity company;
 }

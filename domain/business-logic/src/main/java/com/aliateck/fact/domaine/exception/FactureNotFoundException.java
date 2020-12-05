@@ -1,6 +1,7 @@
 package com.aliateck.fact.domaine.exception;
 
-public class CompanyNotFound extends RuntimeException {
+public class FactureNotFoundException extends RuntimeException {
+	
 	
 	/**
 	 * 
@@ -8,9 +9,8 @@ public class CompanyNotFound extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 	
 
-	public CompanyNotFound(String message) {
+	public FactureNotFoundException(String message) {
 		super(message);		
 	}	
-
 
 }

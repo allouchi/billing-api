@@ -5,23 +5,19 @@ import java.util.Date;
 import java.util.List;
 
 public interface FactureSpiService {
-	
-	
   void addFacture(Facture facture);
-  
+
   void deleteFacture(Facture facture);
-  
+
   void updateFacture(Facture facture);
-  
+
   Facture findByNumeroFacture(String numeroFacture);
-  
+
   Facture findById(long id);
 
-  List<Facture> findByStatus(String status);
+  List<Facture> findByFactureStatus(boolean statusFacture);
 
   List<Facture> findByDateEcheance(Date dateEcheance);
 
   List<Facture> findByDateEncaissement(Date dateEncaissement);
-  
-  
 }

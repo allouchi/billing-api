@@ -2,7 +2,6 @@ package com.aliateck.fact.infrastructure.models;
 
 import java.io.Serializable;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -45,15 +43,15 @@ public class ConsultantEntity implements Serializable {
 
   @Column(name = "mail")
   String mail;
-  
+
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private PrestationEntity prestation;
 
   @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(
-      name = "T_Consltant",
-      joinColumns = @JoinColumn(name = "consultant_id", referencedColumnName = "id"),
-      inverseJoinColumns = @JoinColumn(name = "client_id", referencedColumnName = "id")
-    )
+  @JoinTable(
+    name = "T_ConsultantEntity",
+    joinColumns = @JoinColumn(name = "consultant_id", referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(name = "client_id", referencedColumnName = "id")
+  )
   private List<ClientEntity> clients;
 }

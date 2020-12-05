@@ -10,10 +10,10 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class CompanyMapper {
-  private final CompanyAdresseMapper adresseMapper;
-  private final UserMapper userMapper;
+  //private final UserMapper userMapper;
   private final ClientMapper clientMapper;
   private final ConsultantMapper consultantMapper;
+  private final CompanyAdresseMapper adresseMapper;
 
   public CompanyEntity fromDomainToEntity(Company domain) {
     return CompanyEntity
@@ -26,7 +26,7 @@ public class CompanyMapper {
       .tvaName(domain.getTvaName())
       .ape(domain.getApe())
       .companyAdresse(adresseMapper.fromDomainToEntity(domain.getCompanyAdresse()))
-      .users(userMapper.fromDomainToEntityList(domain.getUsers()))
+      //.users(userMapper.fromDomainToEntityList(domain.getUsers()))
       .clients(clientMapper.fromDomainToEntityList(domain.getClients()))
       .consultants(consultantMapper.fromDomainToEntity(domain.getConsultant()))
       .build();
@@ -43,7 +43,7 @@ public class CompanyMapper {
       .tvaName(entity.getTvaName())
       .ape(entity.getApe())
       .companyAdresse(adresseMapper.fromEntityToDomain(entity.getCompanyAdresse()))
-      .users(userMapper.fromEntityToDomainList(entity.getUsers()))
+      //.users(userMapper.fromEntityToDomainList(entity.getUsers()))
       .clients(clientMapper.fromEntityToDomain(entity.getClients()))
       .consultant(consultantMapper.fromEntityToDomain(entity.getConsultants()))
       .build();
