@@ -80,11 +80,7 @@ public class CompanyController {
       .build();
     
     Facture facture = Facture
-    		.builder()
-    		.delaiFacturation(60)
-    		.dateEcheance(new Date())
-    		.dateEncaissement(new Date())
-    		.dateFacturation(new Date())
+    		.builder()    		
     		.fraisRetard(60)
     		.nbJourRetard(60)
     		.build();
@@ -94,6 +90,7 @@ public class CompanyController {
     		.builder()
     		.nbJoursEffectue(21)
     		.tarif(500)
+    		.delaiPaiement(60)
     		.facture(facture)
     		.build();   
     

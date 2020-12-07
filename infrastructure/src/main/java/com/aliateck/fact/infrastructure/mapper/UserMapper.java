@@ -17,16 +17,28 @@ public class UserMapper {
   private final CompanyMapper companyMapper;
 
   public UserEntity fromDomainToEntity(User domain) {
-    return UserEntity
-      .builder()
-      .id(domain.getId())
-      .firstName(domain.getFirstName())
-      .lastName(domain.getLastName())
-      .mail(domain.getEmail())
-      .password(domain.getPassword())
-      .role(domain.getRole())
-      .company(companyMapper.fromDomainToEntity(domain.getCompany()))
-      .build();
+    if (domain.getRole() != null && domain.getRole().equals("admin")) {
+      return UserEntity
+        .builder()
+        .id(domain.getId())
+        .firstName(domain.getFirstName())
+        .lastName(domain.getLastName())
+        .mail(domain.getEmail())
+        .password(domain.getPassword())
+        .role(domain.getRole())
+        .build();
+    } else {
+      return UserEntity
+        .builder()
+        .id(domain.getId())
+        .firstName(domain.getFirstName())
+        .lastName(domain.getLastName())
+        .mail(domain.getEmail())
+        .password(domain.getPassword())
+        .role(domain.getRole())
+        .company(companyMapper.fromDomainToEntity(domain.getCompany()))
+        .build();
+    }
   }
 
   public User fromEntityToDomain(UserEntity entity) {

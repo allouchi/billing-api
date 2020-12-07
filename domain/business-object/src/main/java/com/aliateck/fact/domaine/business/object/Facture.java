@@ -1,6 +1,5 @@
 package com.aliateck.fact.domaine.business.object;
 
-import java.util.Date;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
@@ -16,21 +15,25 @@ public class Facture {
 
   String numeroFacture;
 
-  Date dateFacturation;
+  String dateFacturation;
 
-  Date dateEcheance;
+  String dateEcheance;
 
-  Date dateEncaissement;
+  String dateEncaissement;
 
-  float montantHT;
+  float tarifHT;
 
-  float montantTTC;
+  float tva;
+
+  float prixTotalHT;
+
+  float prixTotalTTC;
 
   long nbJourRetard;
-
-  long delaiFacturation;
 
   float fraisRetard;
 
   String factureStatus;
+
+  Prestation prestation;
 }

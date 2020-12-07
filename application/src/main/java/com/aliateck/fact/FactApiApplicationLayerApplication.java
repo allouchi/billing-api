@@ -2,16 +2,14 @@ package com.aliateck.fact;
 
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.aliateck.fact.common.FactureStatus;
+import com.aliateck.fact.common.facture.FactureStatus;
 import com.aliateck.fact.domaine.business.object.Client;
 import com.aliateck.fact.domaine.business.object.ClientAdresse;
 import com.aliateck.fact.domaine.business.object.Company;
@@ -47,14 +45,15 @@ public class FactApiApplicationLayerApplication implements CommandLineRunner{
 public void run(String... args) throws Exception{	
 	
 	
-	 User userSbatec = User
+	 User userAdmin = User
 		      .builder()
-		      .firstName("Aliane")
-		      .lastName("Mustapha")
-		      .email("allouchi@hotmail.fr")
+		      .firstName("Admin")
+		      .lastName("Admin")
+		      .email("admin@hotmail.fr")
 		      .password("aaaa")
 		      .role("admin")
-		      .build();		    
+		      .build(); 
+	
 
 		    User userAliatec = User
 		      .builder()
@@ -62,8 +61,20 @@ public void run(String... args) throws Exception{
 		      .lastName("Khalid")
 		      .email("khalid@hotmail.fr")
 		      .password("bbbb")
-		      .role("read")
+		      .role("write")
 		      .build();
+		    
+		    
+	 User userSbatec = User
+		      .builder()
+		      .firstName("Aliane")
+		      .lastName("Mustapha")
+		      .email("allouchi@hotmail.fr")
+		      .password("aaaa")
+		      .role("read")
+		      .build();		    
+
+		   
 		    
 		    List<User> users = new ArrayList<>();		    
 		    users.add(userSbatec);
@@ -97,43 +108,33 @@ public void run(String... args) throws Exception{
 		    	      .build();
 		   		    
 		    Facture facture1 = Facture
-		    		.builder()
-		    		.delaiFacturation(60)
-		    		.dateEcheance(new Date())
-		    		.dateEncaissement(new Date())
-		    		.dateFacturation(new Date())
+		    		.builder()		    		
 		    		.fraisRetard(60)
 		    		.nbJourRetard(60)
 		    		.numeroFacture("201907311001")
-		    		.factureStatus(FactureStatus.NON.getCode())
-		    		.montantHT(500)
-		    		.montantTTC(450)
+		    		.factureStatus(FactureStatus.NON.getCode())		    		
 		    		.build();
 		    
 		    Facture facture2 = Facture
 		    		.builder()
-		    		.delaiFacturation(60)
-		    		.dateEcheance(new Date())
-		    		.dateEncaissement(new Date())
-		    		.dateFacturation(new Date())
 		    		.fraisRetard(60)
 		    		.nbJourRetard(60)
 		    		.numeroFacture("201907311002")
 		    		.factureStatus(FactureStatus.OUI.getCode())
-		    		.montantHT(500)
-		    		.montantTTC(450)
 		    		.build();		    
 		    
 		    Prestation prestation1 = Prestation    		
 		    		.builder()
-		    		.nbJoursEffectue(21)
-		    		.tarif(500)
+		    		.nbJoursEffectue(23)
+		    		.tarif(439)
+		    		.delaiPaiement(30)
 		    		.facture(facture1)
 		    		.build();
 		    
 		    Prestation prestation2 = Prestation    		
 		    		.builder()
 		    		.nbJoursEffectue(20)
+		    		.delaiPaiement(60)
 		    		.tarif(480)
 		    		.facture(facture2)
 		    		.build();		   		    
@@ -194,16 +195,16 @@ public void run(String... args) throws Exception{
 		    
 		    sbatec.setClients(clients);
 		   		    
-		    //userApiService.addUser(userSbatec);
-		    //
-		    
-		    
-		    sbatec.setConsultant(consultants);
-		    companyApiService.addCompany(sbatec);
+		    userApiService.addUser(userAdmin);		   
+		    sbatec.setConsultant(consultants);		   
 		    companyApiService.addCompany(aliatec);
-		    userApiService.addUser(userSbatec);
-		    //userSbatec.setCompany(sbatec);
-		   
+		    companyApiService.addCompany(sbatec);
+		    Company company = companyApiService.getCompanyByReasonSocial("sbatec");
+		    if(company != null) {
+		    	userSbatec.setCompany(company);
+		    	 userApiService.addUser(userSbatec);
+		    }    
+		
 		
 	}     
 

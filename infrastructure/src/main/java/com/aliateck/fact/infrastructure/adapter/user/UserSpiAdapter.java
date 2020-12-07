@@ -9,13 +9,14 @@ import com.aliateck.fact.infrastructure.repository.user.UserJpaRepository;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
+import javax.transaction.Transactional.TxType;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 @Service
-@Transactional
+@Transactional(value = TxType.REQUIRED)
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserSpiAdapter implements UserSpiService {
@@ -71,6 +72,16 @@ public class UserSpiAdapter implements UserSpiService {
   public User findUserByMailAndPassword(String mail, String password) {
     Optional<UserEntity> entity = userJpaRepository.findByMailAndPassword(mail, password);
 
+    if (!entity.isPresent()) {
+      throw new UserNotFoundException("User not found");
+    } else {
+      return userMapper.fromEntityToDomain(entity.get());
+    }
+  }
+
+  @Override
+  public User findUserByRole(String role) {
+    Optional<UserEntity> entity = userJpaRepository.findByRole(role);
     if (!entity.isPresent()) {
       throw new UserNotFoundException("User not found");
     } else {

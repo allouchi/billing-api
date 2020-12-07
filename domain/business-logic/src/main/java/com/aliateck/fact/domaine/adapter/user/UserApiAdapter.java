@@ -63,4 +63,15 @@ public class UserApiAdapter implements UserApiService {
     }
     return user;
   }
+
+  @Override
+  public User findUserByRole(String role) {
+    User user = null;
+    try {
+      user = userSpiService.findUserByRole(role);
+    } catch (UserNotFoundException e) {
+      System.out.println(e.getMessage());
+    }
+    return user;
+  }
 }

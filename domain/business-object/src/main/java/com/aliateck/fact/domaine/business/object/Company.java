@@ -19,6 +19,7 @@ public class Company {
   String rcsName;
   String tvaName;
   String ape;
+  long delaiPaiement;
 
   CompanyAdresse companyAdresse;
   List<User> users;

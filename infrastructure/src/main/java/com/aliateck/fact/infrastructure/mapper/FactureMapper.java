@@ -23,12 +23,13 @@ public class FactureMapper {
       .dateEncaissement(domain.getDateEncaissement())
       .dateFacturation(domain.getDateFacturation())
       .fraisRetard(domain.getFraisRetard())
-      .montantHT(domain.getMontantHT())
-      .montantTTC(domain.getMontantHT())
       .nbJourRetard(domain.getNbJourRetard())
       .factureStatus(domain.getFactureStatus())
       .numeroFacture(domain.getNumeroFacture())
-      .delaiFacturation(domain.getDelaiFacturation())
+      .tarifHT(domain.getTarifHT())
+      .prixTotalHT(domain.getPrixTotalHT())
+      .prixTotalTTC(domain.getPrixTotalTTC())
+      .tva(domain.getTva())
       .build();
   }
 
@@ -40,12 +41,13 @@ public class FactureMapper {
       .dateEncaissement(entity.getDateEncaissement())
       .dateFacturation(entity.getDateFacturation())
       .fraisRetard(entity.getFraisRetard())
-      .montantHT(entity.getMontantHT())
-      .montantTTC(entity.getMontantHT())
+      .tarifHT(entity.getTarifHT())
+      .prixTotalHT(entity.getPrixTotalHT())
+      .prixTotalTTC(entity.getPrixTotalTTC())
+      .tva(entity.getTva())
       .nbJourRetard(entity.getNbJourRetard())
       .factureStatus(entity.getFactureStatus())
       .numeroFacture(entity.getNumeroFacture())
-      .delaiFacturation(entity.getDelaiFacturation())
       .build();
   }
 

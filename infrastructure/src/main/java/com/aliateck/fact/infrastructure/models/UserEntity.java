@@ -31,7 +31,7 @@ public class UserEntity implements Serializable {
   @Column(name = "id", nullable = false)
   Long id;
 
-  @Column(name = "firstname")
+  @Column(name = "firstname", unique = true)
   String firstName;
 
   @Column(name = "lastname")
@@ -46,7 +46,7 @@ public class UserEntity implements Serializable {
   @Column(name = "role")
   String role;
 
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne(cascade = CascadeType.MERGE)
   @JoinColumn(name = "company_id")
   CompanyEntity company;
 }

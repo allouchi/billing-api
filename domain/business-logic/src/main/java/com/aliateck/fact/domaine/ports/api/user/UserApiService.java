@@ -14,5 +14,7 @@ public interface UserApiService {
 
   public User findUserById(long id);
 
+  public User findUserByRole(String role);
+
   public User findUserByMailAndPassword(String email, String password);
 }

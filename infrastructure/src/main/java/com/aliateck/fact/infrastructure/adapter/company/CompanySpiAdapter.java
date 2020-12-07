@@ -1,6 +1,7 @@
 package com.aliateck.fact.infrastructure.adapter.company;
 
 import com.aliateck.fact.domaine.business.object.Company;
+import com.aliateck.fact.domaine.exception.CompanyNotFoundException;
 import com.aliateck.fact.domaine.ports.spi.company.CompanySpiService;
 import com.aliateck.fact.infrastructure.mapper.CompanyMapper;
 import com.aliateck.fact.infrastructure.models.CompanyEntity;
@@ -63,21 +64,30 @@ public class CompanySpiAdapter implements CompanySpiService {
 
     if (entity.isPresent()) {
       return mapper.fromEntityToDomain(entity.get());
+    } else {
+      throw new CompanyNotFoundException("Company not found with : " + id);
     }
-    return null;
   }
 
   @Override
   public Company findCompanyByReasonSocial(String reasonSocial) {
-    CompanyEntity entity = companyJpaRepository.findBySocialReasonIgnoreCase(
+    Optional<CompanyEntity> entity = companyJpaRepository.findBySocialReasonIgnoreCase(
       reasonSocial
     );
-    return mapper.fromEntityToDomain(entity);
+    if (entity.isPresent()) {
+      return mapper.fromEntityToDomain(entity.get());
+    } else {
+      throw new CompanyNotFoundException("Company not found with : " + reasonSocial);
+    }
   }
 
   @Override
   public Company findCompanyBySiret(String siret) {
-    CompanyEntity entity = companyJpaRepository.findBySiret(siret);
-    return mapper.fromEntityToDomain(entity);
+    Optional<CompanyEntity> entity = companyJpaRepository.findBySiret(siret);
+    if (entity.isPresent()) {
+      return mapper.fromEntityToDomain(entity.get());
+    } else {
+      throw new CompanyNotFoundException("Company not found with : " + siret);
+    }
   }
 }

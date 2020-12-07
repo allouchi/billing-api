@@ -15,7 +15,9 @@ public class Prestation {
 
   int nbJoursEffectue;
 
-  int tarif;
+  float tarif;
+
+  long delaiPaiement;
 
   Facture facture;
 

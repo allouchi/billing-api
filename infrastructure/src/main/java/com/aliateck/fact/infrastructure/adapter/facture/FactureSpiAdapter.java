@@ -1,19 +1,24 @@
 package com.aliateck.fact.infrastructure.adapter.facture;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
+import com.aliateck.fact.common.facture.UtilFacture;
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.exception.FactureNotFoundException;
 import com.aliateck.fact.domaine.ports.spi.facture.FactureSpiService;
 import com.aliateck.fact.infrastructure.mapper.FactureMapper;
 import com.aliateck.fact.infrastructure.models.FactureEntity;
 import com.aliateck.fact.infrastructure.repository.facture.FactureJpaRepository;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import javax.transaction.Transactional;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
@@ -24,8 +29,9 @@ public class FactureSpiAdapter implements FactureSpiService {
   FactureMapper factureMapper;
 
   @Override
-  public void addFacture(Facture facture) {
-    factureJpaRepository.save(factureMapper.fromDomainToEntity(facture));
+  public void addFacture(Facture facture) {	  
+	  Facture factureCalculee = UtilFacture.calculerFacture(facture.getPrestation());
+	  factureJpaRepository.save(factureMapper.fromDomainToEntity(factureCalculee));
   }
 
   @Override
@@ -44,12 +50,13 @@ public class FactureSpiAdapter implements FactureSpiService {
       entityBase.setDateEncaissement(facture.getDateEncaissement());
       entityBase.setDateFacturation(facture.getDateFacturation());
       entityBase.setFraisRetard(facture.getFraisRetard());
-      entityBase.setMontantHT(facture.getMontantHT());
-      entityBase.setMontantTTC(facture.getMontantHT());
+      entityBase.setTarifHT(facture.getTarifHT());
+      entityBase.setPrixTotalHT(facture.getPrixTotalHT());
+      entityBase.setTva(facture.getTva());
+      entityBase.setPrixTotalTTC(facture.getPrixTotalTTC());
       entityBase.setNbJourRetard(facture.getNbJourRetard());
       entityBase.setFactureStatus(facture.getFactureStatus());
       entityBase.setNumeroFacture(facture.getNumeroFacture());
-      entityBase.setDelaiFacturation(facture.getDelaiFacturation());
       factureJpaRepository.save(entityBase);
     }
   }

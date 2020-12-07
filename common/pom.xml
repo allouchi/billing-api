@@ -9,4 +9,11 @@
   <artifactId>billing-api-common</artifactId>
   <packaging>jar</packaging>
   
+  <dependencies>
+  <dependency>
+  	 <groupId>com.aliateck</groupId>
+ 	 <artifactId>billing-api-domain-business-object
+  </artifactId></dependency>
+  </dependencies>
+  
 </project>

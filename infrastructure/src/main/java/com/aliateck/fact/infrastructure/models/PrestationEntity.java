@@ -1,7 +1,6 @@
 package com.aliateck.fact.infrastructure.models;
 
 import java.io.Serializable;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,10 +34,12 @@ public class PrestationEntity implements Serializable {
   int nbJoursEffectue;
 
   @Column(name = "tarif")
-  int tarif;
+  float tarif;
+
+  @Column(name = "delaiPaiement")
+  long delaiPaiement;
 
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "facture_id")
-  private FactureEntity facture;  
-  
+  private FactureEntity facture;
 }

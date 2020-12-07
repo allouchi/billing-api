@@ -1,14 +1,12 @@
 package com.aliateck.fact.infrastructure.models;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,33 +30,36 @@ public class FactureEntity implements Serializable {
   @Column(name = "numeroFacture")
   String numeroFacture;
 
-  @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "dateFacturation")
-  Date dateFacturation;
+  String dateFacturation;
 
-  @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "dateEcheance")
-  Date dateEcheance;
+  String dateEcheance;
 
-  @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "dateEncaissement")
-  Date dateEncaissement;
+  String dateEncaissement;
 
-  @Column(name = "montantHT")
-  float montantHT;
+  @Column(name = "tarifHT")
+  float tarifHT;
 
-  @Column(name = "montantTTC")
-  float montantTTC;
+  @Column(name = "tva")
+  float tva;
 
-  @Column(name = "nombreRetard")
+  @Column(name = "prixTotalHT", scale = 2)
+  float prixTotalHT;
+
+  @Column(name = "prixTotalTTC", scale = 2)
+  float prixTotalTTC;
+
+  @Column(name = "nbJourRetard")
   long nbJourRetard;
-
-  @Column(name = "delaiFacturation")
-  long delaiFacturation;
 
   @Column(name = "fraisRetard")
   float fraisRetard;
 
   @Column(name = "status")
   String factureStatus;
+
+  @OneToOne(mappedBy = "facture")
+  PrestationEntity prestation;
 }

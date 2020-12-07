@@ -56,11 +56,7 @@ public class CompanyEntity implements Serializable {
   @JoinColumn(name = "adresse_id", referencedColumnName = "id")
   private CompanyAdresseEntity companyAdresse;
 
-  @OneToMany(
-    mappedBy = "company",
-    cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }
-  )
-  //@JoinColumn(name = "company_id")
+  @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
   private List<UserEntity> users;
 
   @OneToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
