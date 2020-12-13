@@ -27,6 +27,9 @@ public class FactureController {
 
   @GetMapping(value = "/{siret}")
   public Facture[] chercherFacturesByCompanyBySiret(@PathVariable String siret) {
+    System.out.println(
+      "******************************************************************"
+    );
     List<Facture> factures = factureApiService.chercherFacturesByCompanyBySiret(siret);
     Facture[] tabFacture = null;
 

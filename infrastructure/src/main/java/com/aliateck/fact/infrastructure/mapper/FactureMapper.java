@@ -1,16 +1,13 @@
 package com.aliateck.fact.infrastructure.mapper;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Service;
-
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.infrastructure.models.FactureEntity;
-
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +23,7 @@ public class FactureMapper {
       .dateFacturation(domain.getDateFacturation())
       .fraisRetard(domain.getFraisRetard())
       .nbJourRetard(domain.getNbJourRetard())
+      .nbJoursEffectues(domain.getNbJoursEffectues())
       .factureStatus(domain.getFactureStatus())
       .numeroFacture(domain.getNumeroFacture())
       .prixTotalHT(domain.getPrixTotalHT())
@@ -41,6 +39,7 @@ public class FactureMapper {
       .dateEcheance(entity.getDateEcheance())
       .dateEncaissement(entity.getDateEncaissement())
       .dateFacturation(entity.getDateFacturation())
+      .nbJoursEffectues(entity.getNbJoursEffectues())
       .fraisRetard(entity.getFraisRetard())
       .prixTotalHT(entity.getPrixTotalHT())
       .prixTotalTTC(entity.getPrixTotalTTC())

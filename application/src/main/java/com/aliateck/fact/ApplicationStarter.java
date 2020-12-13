@@ -96,7 +96,7 @@ public class ApplicationStarter implements CommandLineRunner {
       .builder()
       .fraisRetard(750f)
       .nbJourRetard(5l)
-      .nbJoursEffectue(21)
+      .nbJoursEffectues(21f)
       .numeroFacture("201907311001")
       .factureStatus(FactureStatus.NON.getCode())
       .build();

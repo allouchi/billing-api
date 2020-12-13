@@ -13,7 +13,7 @@ import lombok.experimental.FieldDefaults;
 public class Facture {
   Long id;
   String numeroFacture;
-  Integer nbJoursEffectue;
+  Float nbJoursEffectues;
   String dateFacturation;
   String dateEcheance;
   String dateEncaissement;
@@ -23,5 +23,4 @@ public class Facture {
   Long nbJourRetard;
   Float fraisRetard;
   String factureStatus;
-  //Prestation prestation;
 }

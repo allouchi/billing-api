@@ -55,7 +55,7 @@ public class UtilFacture {
     float tarifHT = prestation.getTarifHT();
 
     Facture facture =  prestation.getFacture();
-    float prixTotalHT = tarifHT * facture.getNbJoursEffectue();
+    float prixTotalHT = tarifHT * facture.getNbJoursEffectues();
     float tva = prixTotalHT * 0.2f;
     facture.setPrixTotalHT(prixTotalHT);
     facture.setPrixTotalTTC(prixTotalHT + tva);

@@ -1,11 +1,13 @@
 package com.aliateck.fact.infrastructure.models;
 
 import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -40,19 +42,22 @@ public class FactureEntity implements Serializable {
   String dateEncaissement;
 
   @Column(name = "tva")
-  float tva;
+  Float tva;
 
   @Column(name = "prixTotalHT", scale = 2)
-  float prixTotalHT;
+  Float prixTotalHT;
 
   @Column(name = "prixTotalTTC", scale = 2)
-  float prixTotalTTC;
+  Float prixTotalTTC;
 
   @Column(name = "nbJourRetard")
-  long nbJourRetard;
+  Long nbJourRetard;
 
   @Column(name = "fraisRetard")
-  float fraisRetard;
+  Float fraisRetard;
+
+  @Column(name = "nbJoursEffectues")
+  Float nbJoursEffectues;
 
   @Column(name = "factureStatus")
   String factureStatus;
