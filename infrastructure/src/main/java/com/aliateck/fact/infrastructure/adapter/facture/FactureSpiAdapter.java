@@ -9,15 +9,11 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
-import com.aliateck.fact.common.facture.UtilFacture;
-import com.aliateck.fact.domaine.business.object.Company;
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.exception.FactureNotFoundException;
 import com.aliateck.fact.domaine.ports.spi.facture.FactureSpiService;
 import com.aliateck.fact.infrastructure.mapper.FactureMapper;
-import com.aliateck.fact.infrastructure.models.ClientEntity;
 import com.aliateck.fact.infrastructure.models.CompanyEntity;
-import com.aliateck.fact.infrastructure.models.ConsultantEntity;
 import com.aliateck.fact.infrastructure.models.FactureEntity;
 import com.aliateck.fact.infrastructure.models.PrestationEntity;
 import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
@@ -33,14 +29,12 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FactureSpiAdapter implements FactureSpiService {
   FactureJpaRepository factureJpaRepository;
-  CompanyJpaRepository companyJpaRepository;
-  
+  CompanyJpaRepository companyJpaRepository;  
   FactureMapper factureMapper;
 
   @Override
   public void addFacture(Facture facture) {	  
-	  Facture factureCalculee = UtilFacture.calculerFacture(facture);
-	  factureJpaRepository.save(factureMapper.fromDomainToEntity(factureCalculee));
+	  factureJpaRepository.save(factureMapper.fromDomainToEntity(facture));
   }
 
   @Override

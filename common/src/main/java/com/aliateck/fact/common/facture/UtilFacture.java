@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import com.aliateck.fact.domaine.business.object.Client;
 import com.aliateck.fact.domaine.business.object.Company;
 import com.aliateck.fact.domaine.business.object.Facture;
+import com.aliateck.fact.domaine.business.object.Prestation;
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -50,22 +51,23 @@ public class UtilFacture {
 		
   private UtilFacture() {}
 
-  public static Facture calculerFacture(Facture facture) {
-    float tarifHT = facture.getPrixTotalHT();
+  public static Facture calculerFacture(Prestation prestation) {
+    float tarifHT = prestation.getTarifHT();
 
+    Facture facture =  prestation.getFacture();
     float prixTotalHT = tarifHT * facture.getNbJoursEffectue();
     float tva = prixTotalHT * 0.2f;
     facture.setPrixTotalHT(prixTotalHT);
     facture.setPrixTotalTTC(prixTotalHT + tva);
     facture.setTva(tva);   
     facture.setDateFacturation(convertToDate(LocalDate.now()));
-    facture.setDateEcheance(calculerDateEcheance(facture));
+    facture.setDateEcheance(calculerDateEcheance(prestation));
 
     return facture;
   }
 
-  private static String calculerDateEcheance(Facture facture) {
-    int delai = facture.getPrestation().getDelaiPaiement();
+  private static String calculerDateEcheance(Prestation prestation) {
+    int delai = prestation.getDelaiPaiement();
     LocalDate dateEcheance = LocalDate.now().plusDays(delai);
     return convertToDate(dateEcheance);
   }
@@ -75,7 +77,7 @@ public class UtilFacture {
     return formaterDate.format(dateToConvert);
   }
   
-  public static boolean editerFacture(Company company, Facture facture) { 
+  public static boolean editerFacture(Company company, Prestation prestation) { 
 		
 		
 	  try {
@@ -84,7 +86,7 @@ public class UtilFacture {
 		  document.open();
 		  addMetaData(document);
 		  addCompanyInfo(company, document);
-		  addFactureContent(document, facture);
+		  addFactureContent(document, prestation);
 		  document.close();
 		 
 	} catch (Exception e) {
@@ -97,8 +99,7 @@ public class UtilFacture {
   
 
   private static void addMetaData(Document document) {
-      document.addTitle("Facture");
-      document.addKeywords("Java, PDF, iText");
+      document.addTitle("Facturation");
       document.addAuthor("SBATEC");
       document.addCreator("SBATEC");
   }
@@ -126,9 +127,10 @@ public class UtilFacture {
      
   }
   
-  private static void addFactureContent(Document document,  Facture facture) throws DocumentException {
+  private static void addFactureContent(Document document,  Prestation prestation) throws DocumentException {
       
-  	Client client = facture.getPrestation().getClient();  	
+	Facture facture =   prestation.getFacture();
+  	Client client = prestation.getClient();  	
   	Paragraph factureInfo = new Paragraph();
   	factureInfo.setAlignment(Element.ALIGN_LEFT);
   	factureInfo.add(new Paragraph("Facture", factureTitleFont));

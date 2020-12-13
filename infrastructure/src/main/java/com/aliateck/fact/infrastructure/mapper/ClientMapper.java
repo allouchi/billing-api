@@ -13,6 +13,7 @@ public class ClientMapper implements Mapper<Client, ClientEntity> {
 
   @Override
   public ClientEntity fromDomainToEntity(Client domain) {
+    System.out.println();
     return ClientEntity
       .builder()
       .id(domain.getId())
@@ -30,28 +31,4 @@ public class ClientMapper implements Mapper<Client, ClientEntity> {
       .adresse(adresseMapper.fromEntityToDomain(entity.getAdresse()))
       .build();
   }
-  /*
-  @Override
-  public List<Client> fromEntityToDomain(List<ClientEntity> entities) {
-    List<Client> clientList = new ArrayList<>();
-
-    if (entities != null && !entities.isEmpty()) {
-      for (ClientEntity entity : entities) {
-        clientList.add(fromEntityToDomain(entity));
-      }
-    }
-    return clientList;
-  }
-
-  public List<ClientEntity> fromDomainToEntityList(List<Client> domain) {
-    List<ClientEntity> clientList = new ArrayList<>();
-
-    if (domain != null && !domain.isEmpty()) {
-      for (Client entity : domain) {
-        clientList.add(fromDomainToEntity(entity));
-      }
-    }
-
-    return clientList;
-  } */
 }

@@ -1,10 +1,12 @@
 package com.aliateck.fact.infrastructure.mapper;
 
+import org.springframework.stereotype.Component;
+
 import com.aliateck.fact.domaine.business.object.Company;
 import com.aliateck.fact.infrastructure.mapper.common.Mapper;
 import com.aliateck.fact.infrastructure.models.CompanyEntity;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
@@ -27,8 +29,8 @@ public class CompanyMapper implements Mapper<Company, CompanyEntity> {
       .ape(domain.getApe())
       .companyAdresse(adresseMapper.fromDomainToEntity(domain.getCompanyAdresse()))
       .clients(clientMapper.fromDomainToEntity(domain.getClients()))
-      .consultants(consultantMapper.fromDomainToEntity(domain.getConsultant()))
-      .prestations(prestationMapper.fromDomainToEntity(domain.getPrestation()))
+      .consultants(consultantMapper.fromDomainToEntity(domain.getConsultants()))
+      .prestations(prestationMapper.fromDomainToEntity(domain.getPrestations()))
       .build();
   }
 
@@ -45,7 +47,8 @@ public class CompanyMapper implements Mapper<Company, CompanyEntity> {
       .ape(entity.getApe())
       .companyAdresse(adresseMapper.fromEntityToDomain(entity.getCompanyAdresse()))
       .clients(clientMapper.fromEntityToDomain(entity.getClients()))
-      .consultant(consultantMapper.fromEntityToDomain(entity.getConsultants()))
+      .consultants(consultantMapper.fromEntityToDomain(entity.getConsultants()))
+      .prestations(prestationMapper.fromEntityToDomain(entity.getPrestations()))
       .build();
   }
 }

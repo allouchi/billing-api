@@ -23,5 +23,5 @@ public class Facture {
   Long nbJourRetard;
   Float fraisRetard;
   String factureStatus;
-  Prestation prestation;
+  //Prestation prestation;
 }

@@ -23,6 +23,6 @@ public class Company extends Domain {
   Long delaiPaiement;
   Adresse companyAdresse;
   List<Client> clients;
-  List<Consultant> consultant;
-  List<Prestation> prestation;
+  List<Consultant> consultants;
+  List<Prestation> prestations;
 }

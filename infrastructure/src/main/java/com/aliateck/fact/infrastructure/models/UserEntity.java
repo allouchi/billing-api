@@ -12,10 +12,12 @@ import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity(name = "T_User")
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 @Builder
 @ToString
@@ -30,7 +32,7 @@ public class UserEntity implements Serializable {
   @Column(name = "id", nullable = false)
   Long id;
 
-  @Column(name = "firstname", unique = true)
+  @Column(name = "firstname")
   String firstName;
 
   @Column(name = "lastname")

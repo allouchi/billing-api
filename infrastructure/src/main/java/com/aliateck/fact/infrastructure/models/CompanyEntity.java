@@ -14,11 +14,13 @@ import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 @Entity(name = "T_Company")
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
@@ -53,18 +55,18 @@ public class CompanyEntity extends CommonEntity {
   String ape;
 
   @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "adresse", referencedColumnName = "id")
+  @JoinColumn(name = "company")
   private AdresseEntity companyAdresse;
 
-  @OneToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+  @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "company")
   private List<ClientEntity> clients;
 
-  @OneToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+  @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "company")
   private List<ConsultantEntity> consultants;
 
-  @OneToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-  @JoinColumn(name = "prestation")
+  @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "company")
   private List<PrestationEntity> prestations;
 }

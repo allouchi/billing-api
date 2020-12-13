@@ -51,11 +51,6 @@ public class ConsultantSpiAdapter implements ConsultantSpiService {
       entityBase.setFirstName(consultant.getFirstName());
       entityBase.setLastName(consultant.getLastName());
       entityBase.setMail(consultant.getMail());
-      //      entityBase.setPrestation(
-      //        prestationMapper.fromDomainToEntity(consultant.getPrestation())
-      //      );
-      //      entityBase.setClients(clientMapper.fromDomainToEntityList(consultant.getClients()));
-
       consultantJpaRepository.save(entityBase);
     }
   }

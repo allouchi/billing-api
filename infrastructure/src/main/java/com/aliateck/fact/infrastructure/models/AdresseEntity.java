@@ -6,19 +6,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.experimental.FieldDefaults;
 
 @Entity(name = "T_Adresse")
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 @Builder
 @ToString
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+//@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AdresseEntity implements Serializable {
   /**
    *

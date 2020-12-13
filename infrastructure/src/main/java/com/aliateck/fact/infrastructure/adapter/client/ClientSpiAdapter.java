@@ -41,7 +41,7 @@ public class ClientSpiAdapter implements ClientSpiService {
       ClientEntity entityBase = objBase.get();
       entityBase.setId(entity.getId());
       entityBase.setSocialReason(entity.getSocialReason());
-      entityBase.setAdresse(entity.getAdresse());
+      //entityBase.setAdresse(entity.getAdresse());
       clientJpaRepository.save(entityBase);
     }
   }

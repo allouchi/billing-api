@@ -16,8 +16,8 @@ public class CompanyApiAdapter implements CompanyApiService {
   CompanySpiService companySpiService;
 
   @Override
-  public void addCompany(Company company) {
-    companySpiService.addCompany(company);
+  public Company addCompany(Company company) {
+    return companySpiService.addCompany(company);
   }
 
   @Override
@@ -26,8 +26,8 @@ public class CompanyApiAdapter implements CompanyApiService {
   }
 
   @Override
-  public void updateCompany(Company company) {
-    companySpiService.updateCompany(company);
+  public Company updateCompany(Company company) {
+    return companySpiService.updateCompany(company);
   }
 
   @Override

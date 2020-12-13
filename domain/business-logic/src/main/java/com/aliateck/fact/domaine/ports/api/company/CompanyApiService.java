@@ -4,11 +4,11 @@ import com.aliateck.fact.domaine.business.object.Company;
 import java.util.List;
 
 public interface CompanyApiService {
-  public void addCompany(Company company);
+  public Company addCompany(Company company);
 
   public void removeCompany(Company company);
 
-  public void updateCompany(Company company);
+  public Company updateCompany(Company company);
 
   public List<Company> getAllCompanys();
 

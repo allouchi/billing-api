@@ -1,19 +1,21 @@
 package com.aliateck.fact.infrastructure.mapper;
 
-import com.aliateck.fact.domaine.business.object.Facture;
-import com.aliateck.fact.infrastructure.models.FactureEntity;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
+import com.aliateck.fact.domaine.business.object.Facture;
+import com.aliateck.fact.infrastructure.models.FactureEntity;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FactureMapper {
-  PrestationMapper prestationMapper;
 
   public FactureEntity fromDomainToEntity(Facture domain) {
     return FactureEntity
@@ -29,7 +31,6 @@ public class FactureMapper {
       .prixTotalHT(domain.getPrixTotalHT())
       .prixTotalTTC(domain.getPrixTotalTTC())
       .tva(domain.getTva())
-      .prestation(prestationMapper.fromDomainToEntity(domain.getPrestation()))
       .build();
   }
 
@@ -47,7 +48,6 @@ public class FactureMapper {
       .nbJourRetard(entity.getNbJourRetard())
       .factureStatus(entity.getFactureStatus())
       .numeroFacture(entity.getNumeroFacture())
-      .prestation(prestationMapper.fromEntityToDomain(entity.getPrestation()))
       .build();
   }
 

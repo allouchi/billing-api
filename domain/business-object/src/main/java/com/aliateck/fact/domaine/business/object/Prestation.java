@@ -15,6 +15,7 @@ public class Prestation {
   String numeroCommande;
   Consultant consultant;
   Client client;
+  Facture facture;
   Integer tarifHT;
   Integer delaiPaiement;
 }
