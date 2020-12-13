@@ -1,6 +1,6 @@
 package com.aliateck.fact.infrastructure.models;
 
-import java.io.Serializable;
+import com.aliateck.fact.infrastructure.models.common.CommonEntity;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,19 +12,19 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
-@NoArgsConstructor
+@Entity(name = "T_Company")
 @AllArgsConstructor
 @Data
-@Builder
+@SuperBuilder
+@EqualsAndHashCode(callSuper = false)
 @ToString
-//@IdClass(CompanyPrimaryKey.class)
-@Entity(name = "T_Company")
-public class CompanyEntity implements Serializable {
+//@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class CompanyEntity extends CommonEntity {
   /**
    *
    */private static final long serialVersionUID = 1L;
@@ -53,17 +53,18 @@ public class CompanyEntity implements Serializable {
   String ape;
 
   @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "adresse_id", referencedColumnName = "id")
-  private CompanyAdresseEntity companyAdresse;
-
-  @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
-  private List<UserEntity> users;
+  @JoinColumn(name = "adresse", referencedColumnName = "id")
+  private AdresseEntity companyAdresse;
 
   @OneToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-  @JoinColumn(name = "company_id")
+  @JoinColumn(name = "company")
   private List<ClientEntity> clients;
 
   @OneToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-  @JoinColumn(name = "company_id")
+  @JoinColumn(name = "company")
   private List<ConsultantEntity> consultants;
+
+  @OneToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+  @JoinColumn(name = "prestation")
+  private List<PrestationEntity> prestations;
 }

@@ -3,6 +3,7 @@ package com.aliateck.fact.domaine.adapter.facture;
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.ports.api.facture.FactureApiService;
 import com.aliateck.fact.domaine.ports.spi.facture.FactureSpiService;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -37,5 +38,10 @@ public class FactureApiAdapter implements FactureApiService {
   @Override
   public Facture chercherFactureParNumero(String numeroFacture) {
     return factureSpiService.findByNumeroFacture(numeroFacture);
+  }
+
+  @Override
+  public List<Facture> chercherFacturesByCompanyBySiret(String siret) {
+    return factureSpiService.findBySiret(siret);
   }
 }

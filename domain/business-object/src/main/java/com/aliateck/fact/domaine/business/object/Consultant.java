@@ -1,6 +1,5 @@
 package com.aliateck.fact.domaine.business.object;
 
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
@@ -16,9 +15,4 @@ public class Consultant {
   String firstName;
   String lastName;
   String mail;
-
-  Company company;
-  List<Client> clients;
-  ClientAdresse adresse;
-  Prestation prestation;
 }

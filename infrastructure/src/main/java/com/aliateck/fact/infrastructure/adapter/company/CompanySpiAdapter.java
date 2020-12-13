@@ -55,7 +55,7 @@ public class CompanySpiAdapter implements CompanySpiService {
   @Override
   public List<Company> findAllCompanys() {
     List<CompanyEntity> listEnities = companyJpaRepository.findAll();
-    return mapper.fromEntityToDomainList(listEnities);
+    return mapper.fromEntityToDomain(listEnities);
   }
 
   @Override
@@ -70,7 +70,7 @@ public class CompanySpiAdapter implements CompanySpiService {
   }
 
   @Override
-  public Company findCompanyByReasonSocial(String reasonSocial) {
+  public Company findCompanyByReasonSocialIgnoreCase(String reasonSocial) {
     Optional<CompanyEntity> entity = companyJpaRepository.findBySocialReasonIgnoreCase(
       reasonSocial
     );

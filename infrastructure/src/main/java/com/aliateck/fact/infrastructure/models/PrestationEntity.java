@@ -13,13 +13,12 @@ import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "T_Prestation")
+//@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PrestationEntity implements Serializable {
   /**
    *
@@ -30,16 +29,24 @@ public class PrestationEntity implements Serializable {
   @Column(name = "id", nullable = false)
   Long id;
 
-  @Column(name = "nbJoursEffectue")
-  int nbJoursEffectue;
-
-  @Column(name = "tarif")
-  float tarif;
-
-  @Column(name = "delaiPaiement")
-  long delaiPaiement;
+  @Column(name = "numeroCommande")
+  String numeroCommande;
 
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  @JoinColumn(name = "facture_id")
+  @JoinColumn(name = "client")
+  private ClientEntity client;
+
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JoinColumn(name = "consultant")
+  private ConsultantEntity consultant;
+
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JoinColumn(name = "facture")
   private FactureEntity facture;
+
+  @Column(name = "delaiPaiement")
+  Integer delaiPaiement;
+
+  @Column(name = "tarifHT")
+  Integer tarifHT;
 }

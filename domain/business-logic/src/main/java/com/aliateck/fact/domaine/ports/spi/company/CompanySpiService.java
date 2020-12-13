@@ -14,7 +14,7 @@ public interface CompanySpiService {
 
   public Company findCompanyById(long id);
 
-  public Company findCompanyByReasonSocial(String reasonSocial);
+  public Company findCompanyByReasonSocialIgnoreCase(String reasonSocial);
 
   public Company findCompanyBySiret(String siret);
 }

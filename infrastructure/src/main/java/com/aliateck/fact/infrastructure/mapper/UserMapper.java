@@ -1,15 +1,18 @@
 package com.aliateck.fact.infrastructure.mapper;
 
-import com.aliateck.fact.domaine.business.object.User;
-import com.aliateck.fact.infrastructure.models.UserEntity;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Component;
+
+import com.aliateck.fact.domaine.business.object.User;
+import com.aliateck.fact.infrastructure.models.UserEntity;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -17,17 +20,6 @@ public class UserMapper {
   private final CompanyMapper companyMapper;
 
   public UserEntity fromDomainToEntity(User domain) {
-    if (domain.getRole() != null && domain.getRole().equals("admin")) {
-      return UserEntity
-        .builder()
-        .id(domain.getId())
-        .firstName(domain.getFirstName())
-        .lastName(domain.getLastName())
-        .mail(domain.getEmail())
-        .password(domain.getPassword())
-        .role(domain.getRole())
-        .build();
-    } else {
       return UserEntity
         .builder()
         .id(domain.getId())
@@ -38,7 +30,6 @@ public class UserMapper {
         .role(domain.getRole())
         .company(companyMapper.fromDomainToEntity(domain.getCompany()))
         .build();
-    }
   }
 
   public User fromEntityToDomain(UserEntity entity) {

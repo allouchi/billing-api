@@ -1,17 +1,18 @@
 package com.aliateck.fact.domaine.business.object;
 
+import com.aliateck.fact.domaine.business.object.common.Domain;
 import java.util.List;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
 @Data
-@Builder
+@SuperBuilder
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Company {
+public class Company extends Domain {
   Long id;
   String socialReason;
   String status;
@@ -19,10 +20,9 @@ public class Company {
   String rcsName;
   String tvaName;
   String ape;
-  long delaiPaiement;
-
-  CompanyAdresse companyAdresse;
-  List<User> users;
+  Long delaiPaiement;
+  Adresse companyAdresse;
   List<Client> clients;
   List<Consultant> consultant;
+  List<Prestation> prestation;
 }

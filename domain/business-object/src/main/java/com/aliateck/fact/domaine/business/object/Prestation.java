@@ -12,16 +12,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Prestation {
   Long id;
-
-  int nbJoursEffectue;
-
-  float tarif;
-
-  long delaiPaiement;
-
-  Facture facture;
-
+  String numeroCommande;
   Consultant consultant;
-
   Client client;
+  Integer tarifHT;
+  Integer delaiPaiement;
 }

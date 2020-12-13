@@ -8,19 +8,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@NoArgsConstructor
+@Entity(name = "T_User")
 @AllArgsConstructor
 @Data
 @Builder
 @ToString
-@Entity(name = "T_User")
+//@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserEntity implements Serializable {
   /**
    *
@@ -46,7 +45,7 @@ public class UserEntity implements Serializable {
   @Column(name = "role")
   String role;
 
-  @ManyToOne(cascade = CascadeType.MERGE)
-  @JoinColumn(name = "company_id")
-  CompanyEntity company;
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "company")
+  private CompanyEntity company;
 }

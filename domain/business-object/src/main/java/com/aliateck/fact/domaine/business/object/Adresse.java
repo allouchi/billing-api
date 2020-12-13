@@ -10,15 +10,12 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ClientAdresse {
+public class Adresse {
   Long id;
-
+  String complementAdresse;
   String numero;
-
   String voie;
-
   String codePostal;
   String commune;
-
   String pays;
 }

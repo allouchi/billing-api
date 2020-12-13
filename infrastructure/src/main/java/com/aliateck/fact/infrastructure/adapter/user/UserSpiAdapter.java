@@ -10,15 +10,13 @@ import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import javax.transaction.Transactional.TxType;
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 @Service
 @Transactional(value = TxType.REQUIRED)
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+//@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserSpiAdapter implements UserSpiService {
   UserMapper userMapper;
   UserJpaRepository userJpaRepository;

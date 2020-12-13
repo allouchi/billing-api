@@ -2,9 +2,8 @@ package com.aliateck.fact.infrastructure.mapper;
 
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.infrastructure.models.FactureEntity;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FactureMapper {
+  PrestationMapper prestationMapper;
 
   public FactureEntity fromDomainToEntity(Facture domain) {
     return FactureEntity
@@ -26,10 +26,10 @@ public class FactureMapper {
       .nbJourRetard(domain.getNbJourRetard())
       .factureStatus(domain.getFactureStatus())
       .numeroFacture(domain.getNumeroFacture())
-      .tarifHT(domain.getTarifHT())
       .prixTotalHT(domain.getPrixTotalHT())
       .prixTotalTTC(domain.getPrixTotalTTC())
       .tva(domain.getTva())
+      .prestation(prestationMapper.fromDomainToEntity(domain.getPrestation()))
       .build();
   }
 
@@ -41,23 +41,21 @@ public class FactureMapper {
       .dateEncaissement(entity.getDateEncaissement())
       .dateFacturation(entity.getDateFacturation())
       .fraisRetard(entity.getFraisRetard())
-      .tarifHT(entity.getTarifHT())
       .prixTotalHT(entity.getPrixTotalHT())
       .prixTotalTTC(entity.getPrixTotalTTC())
       .tva(entity.getTva())
       .nbJourRetard(entity.getNbJourRetard())
       .factureStatus(entity.getFactureStatus())
       .numeroFacture(entity.getNumeroFacture())
+      .prestation(prestationMapper.fromEntityToDomain(entity.getPrestation()))
       .build();
   }
 
-  public List<Facture> fromEntityToDomainList(Collection<FactureEntity> entitys) {
-    List<Facture> factureList = new ArrayList<>();
+  public List<Facture> fromEntityToDomain(List<FactureEntity> entities) {
+    return entities.stream().map(this::fromEntityToDomain).collect(Collectors.toList());
+  }
 
-    for (FactureEntity entity : entitys) {
-      factureList.add(fromEntityToDomain(entity));
-    }
-
-    return factureList;
+  public List<FactureEntity> fromDomainToEntity(List<Facture> domains) {
+    return domains.stream().map(this::fromDomainToEntity).collect(Collectors.toList());
   }
 }

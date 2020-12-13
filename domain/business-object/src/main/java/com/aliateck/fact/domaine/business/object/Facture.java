@@ -12,28 +12,16 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Facture {
   Long id;
-
   String numeroFacture;
-
+  Integer nbJoursEffectue;
   String dateFacturation;
-
   String dateEcheance;
-
   String dateEncaissement;
-
-  float tarifHT;
-
-  float tva;
-
-  float prixTotalHT;
-
-  float prixTotalTTC;
-
-  long nbJourRetard;
-
-  float fraisRetard;
-
+  Float tva;
+  Float prixTotalHT;
+  Float prixTotalTTC;
+  Long nbJourRetard;
+  Float fraisRetard;
   String factureStatus;
-
   Prestation prestation;
 }

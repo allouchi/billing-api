@@ -1,23 +1,20 @@
 package com.aliateck.fact.domaine.ports.api.company;
 
+import com.aliateck.fact.domaine.business.object.Company;
 import java.util.List;
 
-import com.aliateck.fact.domaine.business.object.Company;
-
 public interface CompanyApiService {
+  public void addCompany(Company company);
 
+  public void removeCompany(Company company);
 
-    public void addCompany(Company company);
+  public void updateCompany(Company company);
 
-    public void removeCompany(Company company);
+  public List<Company> getAllCompanys();
 
-    public void updateCompany(Company company);
+  public Company getCompanyById(long id);
 
-    public List<Company> getAllCompanys();
+  public Company getCompanyByReasonSocialIgnoreCase(String reasonSocial);
 
-    public Company getCompanyById(long id);
-    
-    public Company getCompanyByReasonSocial(String reasonSocial);
-
-
+  public Company getCompanyBySiret(String siret);
 }

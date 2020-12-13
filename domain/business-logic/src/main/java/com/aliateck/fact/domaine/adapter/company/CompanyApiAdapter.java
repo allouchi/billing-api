@@ -41,7 +41,12 @@ public class CompanyApiAdapter implements CompanyApiService {
   }
 
   @Override
-  public Company getCompanyByReasonSocial(String reasonSocial) {
-    return companySpiService.findCompanyByReasonSocial(reasonSocial);
+  public Company getCompanyByReasonSocialIgnoreCase(String reasonSocial) {
+    return companySpiService.findCompanyByReasonSocialIgnoreCase(reasonSocial);
+  }
+
+  @Override
+  public Company getCompanyBySiret(String siret) {
+    return companySpiService.findCompanyBySiret(siret);
   }
 }

@@ -1,17 +1,18 @@
 package com.aliateck.fact.infrastructure.mapper;
 
-import com.aliateck.fact.domaine.business.object.CompanyAdresse;
-import com.aliateck.fact.infrastructure.models.CompanyAdresseEntity;
+import com.aliateck.fact.domaine.business.object.Adresse;
+import com.aliateck.fact.infrastructure.models.AdresseEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class CompanyAdresseMapper {
+public class AdresseMapper {
 
-  public CompanyAdresseEntity fromDomainToEntity(CompanyAdresse domain) {
-    return CompanyAdresseEntity
+  public AdresseEntity fromDomainToEntity(Adresse domain) {
+    return AdresseEntity
       .builder()
+      .complementAdresse(domain.getComplementAdresse())
       .numero(domain.getNumero())
       .voie(domain.getVoie())
       .codePostal(domain.getCodePostal())
@@ -20,9 +21,10 @@ public class CompanyAdresseMapper {
       .build();
   }
 
-  public CompanyAdresse fromEntityToDomain(CompanyAdresseEntity entity) {
-    return CompanyAdresse
+  public Adresse fromEntityToDomain(AdresseEntity entity) {
+    return Adresse
       .builder()
+      .complementAdresse(entity.getComplementAdresse())
       .numero(entity.getNumero())
       .voie(entity.getVoie())
       .codePostal(entity.getCodePostal())

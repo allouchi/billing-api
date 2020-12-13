@@ -1,22 +1,24 @@
 package com.aliateck.fact.infrastructure.models;
 
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
+@Entity(name = "T_Facture")
 @AllArgsConstructor
 @Data
 @Builder
-@Entity(name = "T_Facture")
+//@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FactureEntity implements Serializable {
   /**
    *
@@ -27,7 +29,11 @@ public class FactureEntity implements Serializable {
   @Column(name = "id", nullable = false)
   Long id;
 
-  @Column(name = "numeroFacture")
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JoinColumn(name = "prestation")
+  private PrestationEntity prestation;
+
+  @Column(name = "numeroFacture", nullable = false, unique = true)
   String numeroFacture;
 
   @Column(name = "dateFacturation")
@@ -38,9 +44,6 @@ public class FactureEntity implements Serializable {
 
   @Column(name = "dateEncaissement")
   String dateEncaissement;
-
-  @Column(name = "tarifHT")
-  float tarifHT;
 
   @Column(name = "tva")
   float tva;
@@ -57,9 +60,6 @@ public class FactureEntity implements Serializable {
   @Column(name = "fraisRetard")
   float fraisRetard;
 
-  @Column(name = "status")
+  @Column(name = "factureStatus")
   String factureStatus;
-
-  @OneToOne(mappedBy = "facture")
-  PrestationEntity prestation;
 }

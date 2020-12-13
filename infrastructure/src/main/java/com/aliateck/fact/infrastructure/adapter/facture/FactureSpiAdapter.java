@@ -1,5 +1,6 @@
 package com.aliateck.fact.infrastructure.adapter.facture;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -9,11 +10,17 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.aliateck.fact.common.facture.UtilFacture;
+import com.aliateck.fact.domaine.business.object.Company;
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.exception.FactureNotFoundException;
 import com.aliateck.fact.domaine.ports.spi.facture.FactureSpiService;
 import com.aliateck.fact.infrastructure.mapper.FactureMapper;
+import com.aliateck.fact.infrastructure.models.ClientEntity;
+import com.aliateck.fact.infrastructure.models.CompanyEntity;
+import com.aliateck.fact.infrastructure.models.ConsultantEntity;
 import com.aliateck.fact.infrastructure.models.FactureEntity;
+import com.aliateck.fact.infrastructure.models.PrestationEntity;
+import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
 import com.aliateck.fact.infrastructure.repository.facture.FactureJpaRepository;
 
 import lombok.AccessLevel;
@@ -26,11 +33,13 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FactureSpiAdapter implements FactureSpiService {
   FactureJpaRepository factureJpaRepository;
+  CompanyJpaRepository companyJpaRepository;
+  
   FactureMapper factureMapper;
 
   @Override
   public void addFacture(Facture facture) {	  
-	  Facture factureCalculee = UtilFacture.calculerFacture(facture.getPrestation());
+	  Facture factureCalculee = UtilFacture.calculerFacture(facture);
 	  factureJpaRepository.save(factureMapper.fromDomainToEntity(factureCalculee));
   }
 
@@ -50,7 +59,6 @@ public class FactureSpiAdapter implements FactureSpiService {
       entityBase.setDateEncaissement(facture.getDateEncaissement());
       entityBase.setDateFacturation(facture.getDateFacturation());
       entityBase.setFraisRetard(facture.getFraisRetard());
-      entityBase.setTarifHT(facture.getTarifHT());
       entityBase.setPrixTotalHT(facture.getPrixTotalHT());
       entityBase.setTva(facture.getTva());
       entityBase.setPrixTotalTTC(facture.getPrixTotalTTC());
@@ -90,7 +98,7 @@ public class FactureSpiAdapter implements FactureSpiService {
         "Facture not found avec status : " + statusFacture
       );
     }
-    return factureMapper.fromEntityToDomainList(entitys);
+    return factureMapper.fromEntityToDomain(entitys);
   }
 
   @Override
@@ -102,7 +110,7 @@ public class FactureSpiAdapter implements FactureSpiService {
         "Facture not found avec date echÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©ance : " + dateEcheance
       );
     }
-    return factureMapper.fromEntityToDomainList(entities);
+    return factureMapper.fromEntityToDomain(entities);
   }
 
   @Override
@@ -115,6 +123,35 @@ public class FactureSpiAdapter implements FactureSpiService {
         "Facture not found avec date encaissement : " + dateEncaissement
       );
     }
-    return factureMapper.fromEntityToDomainList(entitys);
+    return factureMapper.fromEntityToDomain(entitys);
   }
+
+@Override 
+public List<Facture> findAll(){
+	List<FactureEntity> entities =  factureJpaRepository.findAll();
+	
+	if (entities.isEmpty()) {
+	      throw new FactureNotFoundException(
+	        "Factures not found"
+	      );
+	    }
+	    return factureMapper.fromEntityToDomain(entities);
+	}
+
+
+@Override public List<Facture> findBySiret(String siret){
+	
+	Optional<CompanyEntity> company = companyJpaRepository.findBySiret(siret);
+	List<FactureEntity> listFacture = new ArrayList<>();
+	if(company.isPresent()) {
+		CompanyEntity entity = company.get();
+		List<PrestationEntity> prestas = entity.getPrestations();
+		for(PrestationEntity presta : prestas ) {
+			listFacture.add(presta.getFacture());
+		}		
+	}	
+	return factureMapper.fromEntityToDomain(listFacture);
+	
+	}
+ 
 }

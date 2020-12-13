@@ -1,20 +1,20 @@
 package com.aliateck.fact.infrastructure.mapper;
 
 import com.aliateck.fact.domaine.business.object.Company;
+import com.aliateck.fact.infrastructure.mapper.common.Mapper;
 import com.aliateck.fact.infrastructure.models.CompanyEntity;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class CompanyMapper {
-  //private final UserMapper userMapper;
+public class CompanyMapper implements Mapper<Company, CompanyEntity> {
   private final ClientMapper clientMapper;
   private final ConsultantMapper consultantMapper;
-  private final CompanyAdresseMapper adresseMapper;
+  private final AdresseMapper adresseMapper;
+  private final PrestationMapper prestationMapper;
 
+  @Override
   public CompanyEntity fromDomainToEntity(Company domain) {
     return CompanyEntity
       .builder()
@@ -26,12 +26,13 @@ public class CompanyMapper {
       .tvaName(domain.getTvaName())
       .ape(domain.getApe())
       .companyAdresse(adresseMapper.fromDomainToEntity(domain.getCompanyAdresse()))
-      //.users(userMapper.fromDomainToEntityList(domain.getUsers()))
-      .clients(clientMapper.fromDomainToEntityList(domain.getClients()))
+      .clients(clientMapper.fromDomainToEntity(domain.getClients()))
       .consultants(consultantMapper.fromDomainToEntity(domain.getConsultant()))
+      .prestations(prestationMapper.fromDomainToEntity(domain.getPrestation()))
       .build();
   }
 
+  @Override
   public Company fromEntityToDomain(CompanyEntity entity) {
     return Company
       .builder()
@@ -43,19 +44,8 @@ public class CompanyMapper {
       .tvaName(entity.getTvaName())
       .ape(entity.getApe())
       .companyAdresse(adresseMapper.fromEntityToDomain(entity.getCompanyAdresse()))
-      //.users(userMapper.fromEntityToDomainList(entity.getUsers()))
       .clients(clientMapper.fromEntityToDomain(entity.getClients()))
       .consultant(consultantMapper.fromEntityToDomain(entity.getConsultants()))
       .build();
-  }
-
-  public List<Company> fromEntityToDomainList(List<CompanyEntity> entities) {
-    List<Company> companys = new ArrayList<>();
-    if (entities != null && !entities.isEmpty()) {
-      for (CompanyEntity entity : entities) {
-        companys.add(fromEntityToDomain(entity));
-      }
-    }
-    return companys;
   }
 }

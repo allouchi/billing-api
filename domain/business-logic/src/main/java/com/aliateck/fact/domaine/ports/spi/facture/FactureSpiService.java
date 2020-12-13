@@ -20,4 +20,8 @@ public interface FactureSpiService {
   List<Facture> findByDateEcheance(Date dateEcheance);
 
   List<Facture> findByDateEncaissement(Date dateEncaissement);
+
+  List<Facture> findBySiret(String siret);
+
+  List<Facture> findAll();
 }

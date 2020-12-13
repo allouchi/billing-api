@@ -1,9 +1,18 @@
 package com.aliateck.fact.application.controllers.company;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.aliateck.fact.domaine.business.object.Adresse;
 import com.aliateck.fact.domaine.business.object.Client;
-import com.aliateck.fact.domaine.business.object.ClientAdresse;
 import com.aliateck.fact.domaine.business.object.Company;
-import com.aliateck.fact.domaine.business.object.CompanyAdresse;
 import com.aliateck.fact.domaine.business.object.Consultant;
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.business.object.Prestation;
@@ -11,22 +20,10 @@ import com.aliateck.fact.domaine.business.object.User;
 import com.aliateck.fact.domaine.ports.api.client.ClientApiService;
 import com.aliateck.fact.domaine.ports.api.company.CompanyApiService;
 import com.aliateck.fact.domaine.ports.api.user.UserApiService;
-import com.aliateck.fact.domaine.ports.spi.client.ClientSpiService;
-import com.aliateck.fact.infrastructure.adapter.client.ClientSpiAdapter;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/company")
@@ -46,13 +43,13 @@ public class CompanyController {
   @GetMapping(value = "/company/{reasonSocial}")
   public ResponseEntity<Company> getClient(@PathVariable String reasonSocial) {
     System.out.println(reasonSocial);
-    Company company = companyApiService.getCompanyByReasonSocial(reasonSocial);
+    Company company = companyApiService.getCompanyByReasonSocialIgnoreCase(reasonSocial);
     return ResponseEntity.ok(company);
   }
 
   @PostMapping(value = "/company/{reasonSocial}")
   public void addCompany() {
-    ClientAdresse clientAdresse = ClientAdresse
+    Adresse clientAdresse = Adresse
       .builder()
       .voie("Paroi nord de la Grande Arche")
       .numero("1")
@@ -61,7 +58,7 @@ public class CompanyController {
       .pays("France")
       .build();
 
-    CompanyAdresse sbatecAdresse = CompanyAdresse
+    Adresse sbatecAdresse = Adresse
       .builder()
       .voie("Boulevard National")
       .numero("111")
@@ -70,7 +67,7 @@ public class CompanyController {
       .pays("France")
       .build();
 
-    CompanyAdresse aliatecAdresse = CompanyAdresse
+    Adresse aliatecAdresse = Adresse
       .builder()
       .voie("Marcel Dubois")
       .numero("111")
@@ -81,17 +78,14 @@ public class CompanyController {
     
     Facture facture = Facture
     		.builder()    		
-    		.fraisRetard(60)
-    		.nbJourRetard(60)
+    		.nbJourRetard(60L)
     		.build();
     
     
     Prestation prestation = Prestation    		
     		.builder()
-    		.nbJoursEffectue(21)
-    		.tarif(500)
+    		.tarifHT(500)
     		.delaiPaiement(60)
-    		.facture(facture)
     		.build();   
     
     
@@ -162,12 +156,7 @@ public class CompanyController {
     sbatec.setClients(clients);
     companyApiService.addCompany(sbatec);
     
-    
-    
-    
-    
-    
-    
+  
 
 //    List<User> usersSbatec = new ArrayList<>();
 //    userSbatec.setCompany(sbatec);

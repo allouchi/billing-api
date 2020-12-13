@@ -1,7 +1,7 @@
 package com.aliateck.fact.application.controllers.user;
 
+import com.aliateck.fact.domaine.business.object.Adresse;
 import com.aliateck.fact.domaine.business.object.Company;
-import com.aliateck.fact.domaine.business.object.CompanyAdresse;
 import com.aliateck.fact.domaine.business.object.User;
 import com.aliateck.fact.domaine.ports.api.company.CompanyApiService;
 import com.aliateck.fact.domaine.ports.api.user.UserApiService;
@@ -40,7 +40,7 @@ public class UserController {
 
   @PostMapping(value = "/user/{mail}/{password}")
   public void addUser(@PathVariable String mail, @PathVariable String password) {
-    CompanyAdresse sbatecAdresse = CompanyAdresse
+    Adresse sbatecAdresse = Adresse
       .builder()
       .voie("Boulevard National")
       .numero("111")
