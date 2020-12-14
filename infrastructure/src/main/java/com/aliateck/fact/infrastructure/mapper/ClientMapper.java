@@ -1,10 +1,12 @@
 package com.aliateck.fact.infrastructure.mapper;
 
+import org.springframework.stereotype.Component;
+
 import com.aliateck.fact.domaine.business.object.Client;
 import com.aliateck.fact.infrastructure.mapper.common.Mapper;
 import com.aliateck.fact.infrastructure.models.ClientEntity;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
@@ -13,7 +15,6 @@ public class ClientMapper implements Mapper<Client, ClientEntity> {
 
   @Override
   public ClientEntity fromDomainToEntity(Client domain) {
-    System.out.println();
     return ClientEntity
       .builder()
       .id(domain.getId())

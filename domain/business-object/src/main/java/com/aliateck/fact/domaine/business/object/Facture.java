@@ -22,5 +22,6 @@ public class Facture {
   Float prixTotalTTC;
   Long nbJourRetard;
   Float fraisRetard;
+  Long delaiPaiement;
   String factureStatus;
 }

@@ -17,5 +17,5 @@ public class Prestation {
   Client client;
   Facture facture;
   Integer tarifHT;
-  Integer delaiPaiement;
+  Long delaiPaiement;
 }

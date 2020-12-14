@@ -55,7 +55,7 @@ public class ApplicationStarter implements CommandLineRunner {
       .pays("France")
       .build();
 
-    Adresse clientAdresse = Adresse
+    Adresse clientAdresse1 = Adresse
       .builder()
       .voie("Paroi nord de la Grande Arche")
       .numero("1")
@@ -63,6 +63,16 @@ public class ApplicationStarter implements CommandLineRunner {
       .commune("Paris la Defense")
       .pays("France")
       .build();
+    
+    Adresse clientAdresse2 = Adresse
+    	      .builder()
+    	      .voie("Paroi nord de la Grande Arche")
+    	      .numero("14")
+    	      .codePostal("95700")
+    	      .commune("Bezons")
+    	      .pays("France")
+    	      .build();
+    
 
     List<Consultant> consultants = new ArrayList<>();
     Consultant consultant = Consultant
@@ -74,34 +84,62 @@ public class ApplicationStarter implements CommandLineRunner {
     consultants.add(consultant);
 
     List<Client> clients = new ArrayList<>();
-    Client client = Client
+    Client client1 = Client
       .builder()
-      .adresse(clientAdresse)
+      .adresse(clientAdresse1)
       .socialReason("FREELANCE.COM")
       .build();
-    clients.add(client);
+    clients.add(client1);
+    
+    Client client2 = Client
+    	      .builder()
+    	      .adresse(clientAdresse2)
+    	      .socialReason("Atos")
+    	      .build();
+    	    clients.add(client2);
+    	    
 
     List<Prestation> prestations = new ArrayList<>();
-    Prestation prestation = Prestation
+    Prestation prestation1 = Prestation
       .builder()
       .tarifHT(500)
-      .delaiPaiement(30)
+      .delaiPaiement(60l)
       .numeroCommande("33962")
       .consultant(consultant)
-      .client(client)
+      .client(client1)
       .build();
-    prestations.add(prestation);
+    prestations.add(prestation1);
+    
+    Prestation prestation2 = Prestation
+    	      .builder()
+    	      .tarifHT(500)
+    	      .delaiPaiement(30l)
+    	      .numeroCommande("33968")
+    	      .consultant(consultant)
+    	      .client(client2)
+    	      .build();
+    prestations.add(prestation2);
 
-    Facture facture = Facture
+    Facture facture1 = Facture
       .builder()
       .fraisRetard(750f)
-      .nbJourRetard(5l)
-      .nbJoursEffectues(21f)
+      //.nbJourRetard(5l)
+      .nbJoursEffectues(23f)
       .numeroFacture("201907311001")
       .factureStatus(FactureStatus.NON.getCode())
       .build();
+    
+    Facture facture2 = Facture
+    	      .builder()
+    	      .fraisRetard(1000f)
+    	      //.nbJourRetard(50l)
+    	      .nbJoursEffectues(21f)
+    	      .numeroFacture("202007311002")
+    	      .factureStatus(FactureStatus.OUI.getCode())
+    	      .build();
 
-    prestation.setFacture(facture);
+    prestation1.setFacture(facture1);
+    prestation2.setFacture(facture2);
 
     Company sbatec = Company
       .builder()

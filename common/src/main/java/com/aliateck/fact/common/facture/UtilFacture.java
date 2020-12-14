@@ -2,6 +2,7 @@ package com.aliateck.fact.common.facture;
 
 import java.io.FileOutputStream;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
 import com.aliateck.fact.domaine.business.object.Client;
@@ -51,6 +52,9 @@ public class UtilFacture {
 		
   private UtilFacture() {}
 
+  /*
+   * 
+   */
   public static Facture calculerFacture(Prestation prestation) {
     float tarifHT = prestation.getTarifHT();
 
@@ -59,24 +63,58 @@ public class UtilFacture {
     float tva = prixTotalHT * 0.2f;
     facture.setPrixTotalHT(prixTotalHT);
     facture.setPrixTotalTTC(prixTotalHT + tva);
-    facture.setTva(tva);   
+    facture.setTva(tva);
+    facture.setDelaiPaiement(prestation.getDelaiPaiement());
     facture.setDateFacturation(convertToDate(LocalDate.now()));
     facture.setDateEcheance(calculerDateEcheance(prestation));
-
+    long nbJourRetard = calculerNbJourRetard(facture);
+    facture.setNbJourRetard(nbJourRetard);
+    facture.setFraisRetard(calculerFraisRetard(facture));
     return facture;
   }
+  
+  /*
+   * 
+   */
+  private static long calculerNbJourRetard(Facture facture){
+	  LocalDate dateEcheance = LocalDate.now().plusDays(facture.getDelaiPaiement());
+	  LocalDate dateJour = LocalDate.now();
+	  if(Period.between(dateEcheance, dateJour).getDays() > 0 ) {
+		  return Period.between(dateEcheance, dateJour).getDays();
+	  }
+	  return 0;
+  }
+  
+  /*
+   * 
+   */
+  private static Float calculerFraisRetard(Facture facture){
+	  if(facture.getNbJourRetard() > 0) {
+		  return 2.52f * facture.getPrixTotalHT().floatValue()  * (float) (facture.getNbJourRetard() / 365); 
+	  }
+	  return 0f;	 	  
+  }
 
+  /*
+   * 
+   */
   private static String calculerDateEcheance(Prestation prestation) {
-    int delai = prestation.getDelaiPaiement();
+    long delai = prestation.getDelaiPaiement();
     LocalDate dateEcheance = LocalDate.now().plusDays(delai);
     return convertToDate(dateEcheance);
   }
 
+  /*
+   * 
+   */
   public static String convertToDate(LocalDate dateToConvert) {
     final DateTimeFormatter formaterDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     return formaterDate.format(dateToConvert);
   }
   
+  /*
+   * 
+   */
   public static boolean editerFacture(Company company, Prestation prestation) { 
 		
 		
@@ -91,10 +129,8 @@ public class UtilFacture {
 		 
 	} catch (Exception e) {
 	    e.printStackTrace();
-	}   
-
-	  return true;
-	  
+	}
+	  return true;	  
   } 
   
 

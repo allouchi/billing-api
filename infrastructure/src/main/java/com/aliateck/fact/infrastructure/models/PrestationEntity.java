@@ -34,6 +34,12 @@ public class PrestationEntity implements Serializable {
   @Column(name = "numeroCommande")
   String numeroCommande;
 
+  @Column(name = "delaiPaiement")
+  Long delaiPaiement;
+
+  @Column(name = "tarifHT")
+  Integer tarifHT;
+
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "client")
   private ClientEntity client;
@@ -45,10 +51,4 @@ public class PrestationEntity implements Serializable {
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "facture")
   private FactureEntity facture;
-
-  @Column(name = "delaiPaiement")
-  Integer delaiPaiement;
-
-  @Column(name = "tarifHT")
-  Integer tarifHT;
 }

@@ -1,13 +1,11 @@
 package com.aliateck.fact.infrastructure.models;
 
 import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -52,6 +50,9 @@ public class FactureEntity implements Serializable {
 
   @Column(name = "nbJourRetard")
   Long nbJourRetard;
+
+  @Column(name = "delaiPaiement")
+  Long delaiPaiement;
 
   @Column(name = "fraisRetard")
   Float fraisRetard;
