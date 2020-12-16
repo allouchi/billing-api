@@ -17,11 +17,14 @@ public class Facture {
   String dateFacturation;
   String dateEcheance;
   String dateEncaissement;
-  Float tva;
+  Float montantTVA;
   Float prixTotalHT;
   Float prixTotalTTC;
   Long nbJourRetard;
   Float fraisRetard;
   Long delaiPaiement;
   String factureStatus;
+  String moisFacture;
+  
+  
 }

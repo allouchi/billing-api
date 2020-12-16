@@ -28,8 +28,9 @@ public class FactureMapper {
       .factureStatus(domain.getFactureStatus())
       .numeroFacture(domain.getNumeroFacture())
       .prixTotalHT(domain.getPrixTotalHT())
-      .prixTotalTTC(domain.getPrixTotalTTC())
-      .tva(domain.getTva())
+      .prixTotalTTC(domain.getPrixTotalTTC())      
+      .montantTVA(domain.getMontantTVA())
+      .moisFacture(domain.getMoisFacture())
       .build();
   }
 
@@ -43,12 +44,13 @@ public class FactureMapper {
       .nbJoursEffectues(entity.getNbJoursEffectues())
       .fraisRetard(entity.getFraisRetard())
       .prixTotalHT(entity.getPrixTotalHT())
-      .prixTotalTTC(entity.getPrixTotalTTC())
-      .tva(entity.getTva())
+      .prixTotalTTC(entity.getPrixTotalTTC())      
+      .montantTVA(entity.getMontantTVA())
       .nbJourRetard(entity.getNbJourRetard())
       .delaiPaiement(entity.getDelaiPaiement())
       .factureStatus(entity.getFactureStatus())
       .numeroFacture(entity.getNumeroFacture())
+      .moisFacture(entity.getMoisFacture())
       .build();
   }
 

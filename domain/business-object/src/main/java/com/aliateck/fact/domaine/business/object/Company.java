@@ -18,7 +18,7 @@ public class Company extends Domain {
   String status;
   String siret;
   String rcsName;
-  String tvaName;
+  String numeroTVA;
   String ape;
   Long delaiPaiement;
   Adresse companyAdresse;

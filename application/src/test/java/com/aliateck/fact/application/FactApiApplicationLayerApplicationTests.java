@@ -24,7 +24,7 @@ class FactApiApplicationLayerApplicationTests {
       .rcsName("R.C.S. Nanterre 831 502 141")
       .socialReason("SBATEC Consulting")
       .status("SASU au capital de 500Euros")
-      .tvaName("FR 188 315 021 41")
+      //.tvaName("FR 188 315 021 41")
       .ape("6201Z")
       .id(1L)
       .build();

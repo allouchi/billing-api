@@ -48,8 +48,8 @@ public class CompanyEntity extends CommonEntity {
   @Column(name = "rcsname")
   String rcsName;
 
-  @Column(name = "tvaname")
-  String tvaName;
+  @Column(name = "numeroTVA")
+  String numeroTVA;
 
   @Column(name = "ape")
   String ape;

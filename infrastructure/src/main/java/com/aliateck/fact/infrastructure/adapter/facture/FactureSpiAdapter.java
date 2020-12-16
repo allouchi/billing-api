@@ -33,8 +33,9 @@ public class FactureSpiAdapter implements FactureSpiService {
   FactureMapper factureMapper;
 
   @Override
-  public void addFacture(Facture facture) {	  
-	  factureJpaRepository.save(factureMapper.fromDomainToEntity(facture));
+  public Facture addFacture(Facture facture) {	  
+	   FactureEntity entity = factureJpaRepository.save(factureMapper.fromDomainToEntity(facture));
+	   return factureMapper.fromEntityToDomain(entity);
   }
 
   @Override
@@ -43,7 +44,7 @@ public class FactureSpiAdapter implements FactureSpiService {
   }
 
   @Override
-  public void updateFacture(Facture facture) {
+  public Facture updateFacture(Facture facture) {
     Optional<FactureEntity> objBase = factureJpaRepository.findById(facture.getId());
 
     if (objBase.isPresent()) {
@@ -54,13 +55,15 @@ public class FactureSpiAdapter implements FactureSpiService {
       entityBase.setDateFacturation(facture.getDateFacturation());
       entityBase.setFraisRetard(facture.getFraisRetard());
       entityBase.setPrixTotalHT(facture.getPrixTotalHT());
-      entityBase.setTva(facture.getTva());
+      entityBase.setMontantTVA(facture.getMontantTVA());
       entityBase.setPrixTotalTTC(facture.getPrixTotalTTC());
       entityBase.setNbJourRetard(facture.getNbJourRetard());
       entityBase.setFactureStatus(facture.getFactureStatus());
       entityBase.setNumeroFacture(facture.getNumeroFacture());
-      factureJpaRepository.save(entityBase);
+      FactureEntity entity =  factureJpaRepository.save(entityBase);
+      return factureMapper.fromEntityToDomain(entity);
     }
+    return null;
   }
 
   @Override

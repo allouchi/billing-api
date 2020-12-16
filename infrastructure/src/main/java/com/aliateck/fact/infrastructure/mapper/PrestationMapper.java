@@ -1,8 +1,8 @@
 package com.aliateck.fact.infrastructure.mapper;
 
-import com.aliateck.fact.common.facture.UtilFacture;
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.business.object.Prestation;
+import com.aliateck.fact.domaine.common.edition.CalculerFacture;
 import com.aliateck.fact.infrastructure.models.PrestationEntity;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,7 +21,7 @@ public class PrestationMapper {
   FactureMapper factureMapper;
 
   public PrestationEntity fromDomainToEntity(Prestation domain) {
-    Facture facture = UtilFacture.calculerFacture(domain);
+    Facture facture = CalculerFacture.calculerFacture(domain);
     domain.setFacture(facture);
     return PrestationEntity
       .builder()

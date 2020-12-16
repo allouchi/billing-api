@@ -1,6 +1,7 @@
 package com.aliateck.fact.domaine.adapter.facture;
 
 import com.aliateck.fact.domaine.business.object.Facture;
+import com.aliateck.fact.domaine.common.edition.CalculerFacture;
 import com.aliateck.fact.domaine.ports.api.facture.FactureApiService;
 import com.aliateck.fact.domaine.ports.spi.facture.FactureSpiService;
 import java.util.List;
@@ -16,8 +17,15 @@ public class FactureApiAdapter implements FactureApiService {
   FactureSpiService factureSpiService;
 
   @Override
-  public void ajouterFacture(Facture facture) {
-    factureSpiService.addFacture(facture);
+  public Facture ajouterFacture(Facture facture) {
+    Facture fact = null;
+    Facture base = factureSpiService.addFacture(facture);
+    if (base != null) {
+      fact = factureSpiService.findById(base.getId());
+      fact.setNumeroFacture(CalculerFacture.calulerNumeroFacture(base.getId()));
+      factureSpiService.updateFacture(fact);
+    }
+    return fact;
   }
 
   @Override
@@ -26,8 +34,8 @@ public class FactureApiAdapter implements FactureApiService {
   }
 
   @Override
-  public void mettreAJourFacture(Facture facture) {
-    factureSpiService.updateFacture(facture);
+  public Facture mettreAJourFacture(Facture facture) {
+    return factureSpiService.updateFacture(facture);
   }
 
   @Override

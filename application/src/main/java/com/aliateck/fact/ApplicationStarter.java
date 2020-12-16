@@ -1,6 +1,6 @@
 package com.aliateck.fact;
 
-import com.aliateck.fact.common.facture.FactureStatus;
+import com.aliateck.fact.common.facture.util.FactureStatus;
 import com.aliateck.fact.domaine.business.object.Adresse;
 import com.aliateck.fact.domaine.business.object.Client;
 import com.aliateck.fact.domaine.business.object.Company;
@@ -55,23 +55,14 @@ public class ApplicationStarter implements CommandLineRunner {
       .pays("France")
       .build();
 
-    Adresse clientAdresse1 = Adresse
+    Adresse clientAdresse = Adresse
       .builder()
       .voie("Paroi nord de la Grande Arche")
       .numero("1")
       .codePostal("92044")
       .commune("Paris la Defense")
       .pays("France")
-      .build();
-    
-    Adresse clientAdresse2 = Adresse
-    	      .builder()
-    	      .voie("Paroi nord de la Grande Arche")
-    	      .numero("14")
-    	      .codePostal("95700")
-    	      .commune("Bezons")
-    	      .pays("France")
-    	      .build();
+      .build();  
     
 
     List<Consultant> consultants = new ArrayList<>();
@@ -84,70 +75,44 @@ public class ApplicationStarter implements CommandLineRunner {
     consultants.add(consultant);
 
     List<Client> clients = new ArrayList<>();
-    Client client1 = Client
+    Client client = Client
       .builder()
-      .adresse(clientAdresse1)
+      .adresse(clientAdresse)
       .socialReason("FREELANCE.COM")
       .build();
-    clients.add(client1);
-    
-    Client client2 = Client
-    	      .builder()
-    	      .adresse(clientAdresse2)
-    	      .socialReason("Atos")
-    	      .build();
-    	    clients.add(client2);
+    clients.add(client);    
     	    
 
     List<Prestation> prestations = new ArrayList<>();
-    Prestation prestation1 = Prestation
+    Prestation prestation = Prestation
       .builder()
       .tarifHT(500)
       .delaiPaiement(60l)
       .numeroCommande("33962")
       .consultant(consultant)
-      .client(client1)
+      .client(client)
       .build();
-    prestations.add(prestation1);
-    
-    Prestation prestation2 = Prestation
-    	      .builder()
-    	      .tarifHT(500)
-    	      .delaiPaiement(30l)
-    	      .numeroCommande("33968")
-    	      .consultant(consultant)
-    	      .client(client2)
-    	      .build();
-    prestations.add(prestation2);
+    prestations.add(prestation);  
+   
 
-    Facture facture1 = Facture
+    Facture facture = Facture
       .builder()
-      .fraisRetard(750f)
-      //.nbJourRetard(5l)
-      .nbJoursEffectues(23f)
-      .numeroFacture("201907311001")
+      .fraisRetard(750f)      
+      .nbJoursEffectues(23f)      
       .factureStatus(FactureStatus.NON.getCode())
-      .build();
-    
-    Facture facture2 = Facture
-    	      .builder()
-    	      .fraisRetard(1000f)
-    	      //.nbJourRetard(50l)
-    	      .nbJoursEffectues(21f)
-    	      .numeroFacture("202007311002")
-    	      .factureStatus(FactureStatus.OUI.getCode())
-    	      .build();
+      .numeroFacture("20201216-1001")
+      .build();   
 
-    prestation1.setFacture(facture1);
-    prestation2.setFacture(facture2);
+    prestation.setFacture(facture);
+    
 
     Company sbatec = Company
       .builder()
       .siret("85292702900011")
       .rcsName("R.C.S. Nanterre 831 502 141")
       .socialReason("SBATEC Consulting")
-      .status("SASU au capital de 500Euros")
-      .tvaName("FR 188 315 021 41")
+      .status("SASU au capital de 500€")
+      .numeroTVA("FR 188 315 021 41")
       .ape("6201Z")
       .companyAdresse(sbatecAdresse)
       .clients(clients)

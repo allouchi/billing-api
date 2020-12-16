@@ -1,8 +1,8 @@
 package com.aliateck.fact.infrastructure.adapter.prestation;
 
-import com.aliateck.fact.common.facture.UtilFacture;
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.business.object.Prestation;
+import com.aliateck.fact.domaine.common.edition.CalculerFacture;
 import com.aliateck.fact.domaine.ports.spi.prestation.PrestationSpiService;
 import com.aliateck.fact.infrastructure.mapper.PrestationMapper;
 import com.aliateck.fact.infrastructure.models.PrestationEntity;
@@ -25,7 +25,7 @@ public class PrestationSpiAdapter implements PrestationSpiService {
 
   @Override
   public Prestation addPrestation(Prestation prestation) {
-    Facture facture = UtilFacture.calculerFacture(prestation);
+    Facture facture = CalculerFacture.calculerFacture(prestation);
     prestation.setFacture(facture);
     PrestationEntity entity = prestationMapper.fromDomainToEntity(prestation);
     PrestationEntity entityRet = prestationJpaRepository.save(entity);
