@@ -44,7 +44,7 @@ public class EditionFactureImpl implements EditionFactureService {
     	String numeroRcs = company.getRcsName();
     	String numeroSiret = company.getSiret();
     	String numeroApe = company.getApe();
-    	String numeroTva = company.getNumeroTVA();    	
+    	String numeroTva = company.getNumeroTva();    	
     	String siretFormat = numeroSiret.substring(0, 3) + " " + numeroSiret.substring(3,6) + " " + numeroSiret.substring(6, 9) + " " + numeroSiret.substring(9, 14);
     	
     	// infos factures
@@ -62,7 +62,7 @@ public class EditionFactureImpl implements EditionFactureService {
     	float tarifHT = prestation.getTarifHT();    	    	
     	
     	// infos client
-    	Adresse adresseClient = prestation.getClient().getAdresse();    	
+    	Adresse adresseClient = prestation.getClient().getAdresseClient();    	
     	String adresseCompleteClient = adresseClient.getNumero() + " " + adresseClient.getVoie() + "\n"    			
     			+ adresseClient.getCodePostal() + " " + adresseClient.getCommune() + "\n"
     			+ adresseClient.getPays();    	

@@ -21,6 +21,9 @@ public class PrestationMapper {
   FactureMapper factureMapper;
 
   public PrestationEntity fromDomainToEntity(Prestation domain) {
+	  if(domain == null) {
+		  return null;
+	  }
     Facture facture = CalculerFacture.calculerFacture(domain);
     domain.setFacture(facture);
     return PrestationEntity
@@ -36,6 +39,9 @@ public class PrestationMapper {
   }
 
   public Prestation fromEntityToDomain(PrestationEntity entity) {
+	  if(entity == null) {
+		  return null;
+	  }
     return Prestation
       .builder()
       .id(entity.getId())

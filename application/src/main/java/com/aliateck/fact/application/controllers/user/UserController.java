@@ -55,7 +55,7 @@ public class UserController {
       .rcsName("R.C.S. Nanterre 831 502 141")
       .socialReason("SBATEC")
       .status("SASU au capital de 500 Euros")
-      .numeroTVA("FR 188 315 021 41")
+      .numeroTva("FR 188 315 021 41")
       .ape("6201Z")
       .companyAdresse(sbatecAdresse)
       .build();

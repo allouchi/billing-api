@@ -3,12 +3,18 @@ package com.aliateck.fact.domaine.business.object;
 import com.aliateck.fact.domaine.business.object.common.Domain;
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
+@AllArgsConstructor
 @SuperBuilder
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -18,7 +24,7 @@ public class Company extends Domain {
   String status;
   String siret;
   String rcsName;
-  String numeroTVA;
+  String numeroTva;
   String ape;
   Long delaiPaiement;
   Adresse companyAdresse;

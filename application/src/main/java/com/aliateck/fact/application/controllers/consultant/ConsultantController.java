@@ -1,8 +1,7 @@
-package com.aliateck.fact.application.controllers.client;
+package com.aliateck.fact.application.controllers.consultant;
 
-import com.aliateck.fact.domaine.business.object.Client;
 import com.aliateck.fact.domaine.business.object.Company;
-import com.aliateck.fact.domaine.ports.api.client.ClientApiService;
+import com.aliateck.fact.domaine.business.object.Consultant;
 import com.aliateck.fact.domaine.ports.api.company.CompanyApiService;
 import java.util.List;
 import lombok.AccessLevel;
@@ -16,17 +15,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/client")
+@RequestMapping("/consultant")
 @RequiredArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class ClientController {
-  private ClientApiService clientApiService;
+public class ConsultantController {
   private CompanyApiService companyApiService;
 
   @GetMapping(value = "/{siret}")
-  public ResponseEntity<List<Client>> getAllClients(@PathVariable String siret) {
+  public ResponseEntity<List<Consultant>> getAllConsultants(@PathVariable String siret) {
+    System.out.println("**********************************: " + siret);
     Company company = companyApiService.getCompanyBySiret(siret);
-    return ResponseEntity.ok(company.getClients());
+    return ResponseEntity.ok(company.getConsultants());
   }
 }

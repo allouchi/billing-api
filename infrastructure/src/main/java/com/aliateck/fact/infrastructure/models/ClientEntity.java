@@ -38,5 +38,5 @@ public class ClientEntity extends CommonEntity {
 
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "adresse")
-  private AdresseEntity adresse;
+  private AdresseEntity adresseClient;
 }

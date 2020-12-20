@@ -62,14 +62,13 @@ public class ApplicationStarter implements CommandLineRunner {
       .codePostal("92044")
       .commune("Paris la Defense")
       .pays("France")
-      .build();  
-    
+      .build();
 
     List<Consultant> consultants = new ArrayList<>();
     Consultant consultant = Consultant
       .builder()
-      .firstName("Jean")
-      .lastName("Dubois")
+      .firstName("Dobois")
+      .lastName("Jean")
       .mail("dubois@gmail.com")
       .build();
     consultants.add(consultant);
@@ -77,11 +76,10 @@ public class ApplicationStarter implements CommandLineRunner {
     List<Client> clients = new ArrayList<>();
     Client client = Client
       .builder()
-      .adresse(clientAdresse)
-      .socialReason("FREELANCE.COM")
+      .adresseClient(clientAdresse)
+      .socialReason("Atos")
       .build();
-    clients.add(client);    
-    	    
+    clients.add(client);
 
     List<Prestation> prestations = new ArrayList<>();
     Prestation prestation = Prestation
@@ -92,27 +90,25 @@ public class ApplicationStarter implements CommandLineRunner {
       .consultant(consultant)
       .client(client)
       .build();
-    prestations.add(prestation);  
-   
+    prestations.add(prestation);
 
     Facture facture = Facture
       .builder()
-      .fraisRetard(750f)      
-      .nbJoursEffectues(23f)      
+      .fraisRetard(750f)
+      .nbJoursEffectues(23f)
       .factureStatus(FactureStatus.NON.getCode())
       .numeroFacture("20201216-1001")
-      .build();   
+      .build();
 
     prestation.setFacture(facture);
-    
 
     Company sbatec = Company
       .builder()
       .siret("85292702900011")
       .rcsName("R.C.S. Nanterre 831 502 141")
       .socialReason("SBATEC Consulting")
-      .status("SASU au capital de 500€")
-      .numeroTVA("FR 188 315 021 41")
+      .status("SASU au capital de 500ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬")
+      .numeroTva("FR 188 315 021 41")
       .ape("6201Z")
       .companyAdresse(sbatecAdresse)
       .clients(clients)
@@ -121,10 +117,5 @@ public class ApplicationStarter implements CommandLineRunner {
       .build();
 
     Company company = companyApiService.addCompany(sbatec);
-    //    Company companyBase = companyApiService.getCompanyById(company.getId());
-    //    companyBase.setClients(clients);
-    //    companyBase.setConsultants(consultants);
-    //    companyBase.setPrestations(prestations);
-    //    companyApiService.updateCompany(companyBase);
   }
 }

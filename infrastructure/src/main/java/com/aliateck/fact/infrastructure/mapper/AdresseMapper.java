@@ -10,11 +10,14 @@ import org.springframework.stereotype.Component;
 public class AdresseMapper {
 
   public AdresseEntity fromDomainToEntity(Adresse domain) {
+	  if(domain == null) {
+		  return null;
+	  }
     return AdresseEntity
-      .builder()
-      .complementAdresse(domain.getComplementAdresse())
+      .builder()      
       .numero(domain.getNumero())
       .voie(domain.getVoie())
+      .complementAdresse(domain.getComplementAdresse())
       .codePostal(domain.getCodePostal())
       .commune(domain.getCommune())
       .pays(domain.getPays())
@@ -22,11 +25,14 @@ public class AdresseMapper {
   }
 
   public Adresse fromEntityToDomain(AdresseEntity entity) {
+	  if(entity == null) {
+		  return null;
+	  }
     return Adresse
-      .builder()
-      .complementAdresse(entity.getComplementAdresse())
+      .builder()      
       .numero(entity.getNumero())
       .voie(entity.getVoie())
+      .complementAdresse(entity.getComplementAdresse())
       .codePostal(entity.getCodePostal())
       .commune(entity.getCommune())
       .pays(entity.getPays())

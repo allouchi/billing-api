@@ -12,6 +12,9 @@ import org.springframework.stereotype.Component;
 public class ConsultantMapper {
 
   public ConsultantEntity fromDomainToEntity(Consultant domain) {
+	  if(domain == null) {
+		  return null;
+	  }
     return ConsultantEntity
       .builder()
       .id(domain.getId())
@@ -22,6 +25,9 @@ public class ConsultantMapper {
   }
 
   public Consultant fromEntityToDomain(ConsultantEntity entity) {
+	  if(entity == null) {
+		  return null;
+	  }
     return Consultant
       .builder()
       .id(entity.getId())

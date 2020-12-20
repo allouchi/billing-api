@@ -1,20 +1,16 @@
 package com.aliateck.fact.domaine.ports.api.client;
 
+import com.aliateck.fact.domaine.business.object.Client;
 import java.util.List;
 
-import com.aliateck.fact.domaine.business.object.Client;
-
-
 public interface ClientApiService {
-	
-	public void addClient(Client client) ;
+  public Client addClient(Client client);
 
-	public void deleteClient(Client client);
+  public void deleteClient(Client client);
 
-	public void updateClient(Client client);
+  public Client updateClient(Client client);
 
-	public List<Client> findAllClients();
+  public List<Client> findAllClients();
 
-	public Client findById(long id);	
-
+  public Client findById(long id);
 }
