@@ -4,7 +4,9 @@ import com.aliateck.fact.domaine.business.object.Client;
 import com.aliateck.fact.domaine.ports.spi.client.ClientSpiService;
 import com.aliateck.fact.infrastructure.mapper.ClientMapper;
 import com.aliateck.fact.infrastructure.models.ClientEntity;
+import com.aliateck.fact.infrastructure.models.CompanyEntity;
 import com.aliateck.fact.infrastructure.repository.client.ClientJpaRepository;
+import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
@@ -19,13 +21,30 @@ import org.springframework.stereotype.Service;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ClientSpiAdapter implements ClientSpiService {
   ClientJpaRepository clientJpaRepository;
+  CompanyJpaRepository companyJpaRepository;
   ClientMapper clientMapper;
 
   @Override
-  public Client addClient(Client client) {
-    ClientEntity entity = clientMapper.fromDomainToEntity(client);
-    ClientEntity domain = clientJpaRepository.save(entity);
-    return clientMapper.fromEntityToDomain(domain);
+  public Client addClient(Client client, String siret) {
+    Optional<CompanyEntity> oCompany = companyJpaRepository.findBySiret(siret);
+    return oCompany
+      .map(
+        company -> {
+          List<ClientEntity> clients = company.getClients();
+          ClientEntity entity = clientMapper.fromDomainToEntity(client);
+          clients.add(entity);
+          company.setClients(clients);
+          companyJpaRepository.save(company);
+          ClientEntity savedClient = company
+            .getClients()
+            .stream()
+            .filter(c -> c.getSocialReason().equalsIgnoreCase(client.getSocialReason()))
+            .findFirst()
+            .orElseGet(null);
+          return clientMapper.fromEntityToDomain(savedClient);
+        }
+      )
+      .orElse(null);
   }
 
   @Override

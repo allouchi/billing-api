@@ -1,21 +1,16 @@
 package com.aliateck.fact.domaine.ports.spi.consultant;
 
+import com.aliateck.fact.domaine.business.object.Consultant;
 import java.util.List;
 
-import com.aliateck.fact.domaine.business.object.Consultant;
-
 public interface ConsultantSpiService {
-	
-	
-	public void addConsultant(Consultant consultant) ;
+  public Consultant addConsultant(Consultant consultant, String siret);
 
-	public void removeConsultant(Consultant consultant);
+  public void removeConsultant(Consultant consultant);
 
-	public void updateConsultant(Consultant consultant);
+  public Consultant updateConsultant(Consultant consultant);
 
-	public List<Consultant> getAllConsultants();
+  public List<Consultant> getAllConsultants();
 
-	public Consultant getConsultantById(long id);
-	
+  public Consultant getConsultantById(long id);
 }
-

@@ -16,8 +16,8 @@ public class ClientApiAdapter implements ClientApiService {
   ClientSpiService clientSpiService;
 
   @Override
-  public Client addClient(Client client) {
-    return clientSpiService.addClient(client);
+  public Client addClient(Client client, String siret) {
+    return clientSpiService.addClient(client, siret);
   }
 
   @Override

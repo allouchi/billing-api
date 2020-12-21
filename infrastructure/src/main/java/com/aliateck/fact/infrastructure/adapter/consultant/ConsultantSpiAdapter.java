@@ -5,7 +5,9 @@ import com.aliateck.fact.domaine.ports.spi.consultant.ConsultantSpiService;
 import com.aliateck.fact.infrastructure.mapper.ClientMapper;
 import com.aliateck.fact.infrastructure.mapper.ConsultantMapper;
 import com.aliateck.fact.infrastructure.mapper.PrestationMapper;
+import com.aliateck.fact.infrastructure.models.CompanyEntity;
 import com.aliateck.fact.infrastructure.models.ConsultantEntity;
+import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
 import com.aliateck.fact.infrastructure.repository.consultant.ConsultantJpaRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +27,29 @@ public class ConsultantSpiAdapter implements ConsultantSpiService {
   private ConsultantMapper consultantMapper;
   private PrestationMapper prestationMapper;
   private ClientMapper clientMapper;
+  CompanyJpaRepository companyJpaRepository;
 
   @Override
-  public void addConsultant(Consultant consultant) {
-    ConsultantEntity entity = consultantMapper.fromDomainToEntity(consultant);
-    consultantJpaRepository.save(entity);
+  public Consultant addConsultant(Consultant consultant, String siret) {
+    Optional<CompanyEntity> oCompany = companyJpaRepository.findBySiret(siret);
+    return oCompany
+      .map(
+        company -> {
+          List<ConsultantEntity> consultants = company.getConsultants();
+          ConsultantEntity entity = consultantMapper.fromDomainToEntity(consultant);
+          consultants.add(entity);
+          company.setConsultants(consultants);
+          companyJpaRepository.save(company);
+          ConsultantEntity savedConsultant = company
+            .getConsultants()
+            .stream()
+            .filter(c -> c.getMail().equalsIgnoreCase(consultant.getMail()))
+            .findFirst()
+            .orElseGet(null);
+          return consultantMapper.fromEntityToDomain(savedConsultant);
+        }
+      )
+      .orElse(null);
   }
 
   @Override
@@ -39,7 +59,7 @@ public class ConsultantSpiAdapter implements ConsultantSpiService {
   }
 
   @Override
-  public void updateConsultant(Consultant consultant) {
+  public Consultant updateConsultant(Consultant consultant) {
     ConsultantEntity entity = consultantMapper.fromDomainToEntity(consultant);
 
     Optional<ConsultantEntity> objBase = consultantJpaRepository.findById(
@@ -51,8 +71,10 @@ public class ConsultantSpiAdapter implements ConsultantSpiService {
       entityBase.setFirstName(consultant.getFirstName());
       entityBase.setLastName(consultant.getLastName());
       entityBase.setMail(consultant.getMail());
-      consultantJpaRepository.save(entityBase);
+      ConsultantEntity domain = consultantJpaRepository.save(entityBase);
+      return consultantMapper.fromEntityToDomain(domain);
     }
+    return null;
   }
 
   @Override

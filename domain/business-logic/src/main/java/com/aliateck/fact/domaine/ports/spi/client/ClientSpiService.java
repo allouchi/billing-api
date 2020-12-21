@@ -4,7 +4,7 @@ import com.aliateck.fact.domaine.business.object.Client;
 import java.util.List;
 
 public interface ClientSpiService {
-  public Client addClient(Client client);
+  public Client addClient(Client client, String siret);
 
   public void removeClient(Client client);
 

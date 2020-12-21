@@ -1,19 +1,16 @@
 package com.aliateck.fact.domaine.ports.api.consultant;
 
+import com.aliateck.fact.domaine.business.object.Consultant;
 import java.util.List;
 
-import com.aliateck.fact.domaine.business.object.Consultant;
-
 public interface ConsultantApiService {
-	
-	public void ajouterConsultant(Consultant consultant) ;
+  public Consultant addConsultant(Consultant consultant, String siret);
 
-	public void supprimerConsultant(Consultant consultant);
+  public void deleteConsultant(Consultant consultant);
 
-	public void mettreAJourConsultant(Consultant consultant);
+  public Consultant updateConsultant(Consultant consultant);
 
-	public List<Consultant> retournerConsultants();
+  public List<Consultant> findAll();
 
-	public Consultant chercherConsultantParId(long id);
+  public Consultant findById(long id);
 }
-

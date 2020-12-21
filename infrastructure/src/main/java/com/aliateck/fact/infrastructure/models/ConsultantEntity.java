@@ -35,6 +35,6 @@ public class ConsultantEntity implements Serializable {
   @Column(name = "lastName")
   String lastName;
 
-  @Column(name = "mail")
+  @Column(name = "mail", unique = true)
   String mail;
 }

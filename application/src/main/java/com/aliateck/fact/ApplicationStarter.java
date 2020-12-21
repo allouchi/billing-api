@@ -107,7 +107,7 @@ public class ApplicationStarter implements CommandLineRunner {
       .siret("85292702900011")
       .rcsName("R.C.S. Nanterre 831 502 141")
       .socialReason("SBATEC Consulting")
-      .status("SASU au capital de 500ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬")
+      .status("SASU au capital de 500ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬")
       .numeroTva("FR 188 315 021 41")
       .ape("6201Z")
       .companyAdresse(sbatecAdresse)
@@ -115,7 +115,6 @@ public class ApplicationStarter implements CommandLineRunner {
       .consultants(consultants)
       .prestations(prestations)
       .build();
-
-    Company company = companyApiService.addCompany(sbatec);
+    //Company company = companyApiService.addCompany(sbatec);
   }
 }
