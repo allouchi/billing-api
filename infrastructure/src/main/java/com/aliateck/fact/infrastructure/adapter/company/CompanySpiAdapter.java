@@ -81,7 +81,7 @@ public class CompanySpiAdapter implements CompanySpiService {
     if (entity.isPresent()) {
       return companyMapper.fromEntityToDomain(entity.get());
     } else {
-      throw new CompanyNotFoundException("Company not found with : " + id);
+      throw new CompanyNotFoundException("Company not found with id : " + id);
     }
   }
 
@@ -93,7 +93,9 @@ public class CompanySpiAdapter implements CompanySpiService {
     if (entity.isPresent()) {
       return companyMapper.fromEntityToDomain(entity.get());
     } else {
-      throw new CompanyNotFoundException("Company not found with : " + reasonSocial);
+      throw new CompanyNotFoundException(
+        "Company not found with social reason  : " + reasonSocial
+      );
     }
   }
 
@@ -103,7 +105,7 @@ public class CompanySpiAdapter implements CompanySpiService {
     if (entity.isPresent()) {
       return companyMapper.fromEntityToDomain(entity.get());
     } else {
-      throw new CompanyNotFoundException("Company not found with : " + siret);
+      throw new CompanyNotFoundException("Company not found with siret : " + siret);
     }
   }
 }

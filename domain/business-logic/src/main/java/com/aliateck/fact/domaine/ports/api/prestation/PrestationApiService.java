@@ -4,13 +4,13 @@ import com.aliateck.fact.domaine.business.object.Prestation;
 import java.util.List;
 
 public interface PrestationApiService {
-  public Prestation ajouterPrestation(Prestation prestation);
+  public Prestation addPrestation(Prestation prestation, String siret);
 
-  public void supprimerPrestation(Prestation prestation);
+  public void deletePrestation(Prestation prestation);
 
-  public Prestation mettreAJourPrestation(Prestation prestation);
+  public Prestation updatePrestation(Prestation prestation);
 
-  public List<Prestation> retournerPrestations();
+  public List<Prestation> getAllPrestations();
 
-  public Prestation chercherPrestationParId(long id);
+  public Prestation findById(long id);
 }

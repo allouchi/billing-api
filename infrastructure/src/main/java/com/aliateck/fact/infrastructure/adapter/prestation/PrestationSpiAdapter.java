@@ -1,11 +1,11 @@
 package com.aliateck.fact.infrastructure.adapter.prestation;
 
-import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.business.object.Prestation;
-import com.aliateck.fact.domaine.common.edition.CalculerFacture;
 import com.aliateck.fact.domaine.ports.spi.prestation.PrestationSpiService;
 import com.aliateck.fact.infrastructure.mapper.PrestationMapper;
+import com.aliateck.fact.infrastructure.models.CompanyEntity;
 import com.aliateck.fact.infrastructure.models.PrestationEntity;
+import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
 import com.aliateck.fact.infrastructure.repository.prestation.PrestationJpaRepository;
 import java.util.List;
 import java.util.Optional;
@@ -21,15 +21,32 @@ import org.springframework.stereotype.Service;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PrestationSpiAdapter implements PrestationSpiService {
   PrestationJpaRepository prestationJpaRepository;
+  CompanyJpaRepository companyJpaRepository;
   PrestationMapper prestationMapper;
 
   @Override
-  public Prestation addPrestation(Prestation prestation) {
-    Facture facture = CalculerFacture.calculerFacture(prestation);
-    prestation.setFacture(facture);
-    PrestationEntity entity = prestationMapper.fromDomainToEntity(prestation);
-    PrestationEntity entityRet = prestationJpaRepository.save(entity);
-    return prestationMapper.fromEntityToDomain(entityRet);
+  public Prestation addPrestation(Prestation prestation, String siret) {
+    Optional<CompanyEntity> oCompany = companyJpaRepository.findBySiret(siret);
+    return oCompany
+      .map(
+        company -> {
+          List<PrestationEntity> prestations = company.getPrestations();
+          PrestationEntity entity = prestationMapper.fromDomainToEntity(prestation);
+          prestations.add(entity);
+          company.setPrestations(prestations);
+          companyJpaRepository.save(company);
+          PrestationEntity savedPrestation = company
+            .getPrestations()
+            .stream()
+            .filter(
+              c -> c.getNumeroCommande().equalsIgnoreCase(prestation.getNumeroCommande())
+            )
+            .findFirst()
+            .orElseGet(null);
+          return prestationMapper.fromEntityToDomain(savedPrestation);
+        }
+      )
+      .orElse(null);
   }
 
   @Override

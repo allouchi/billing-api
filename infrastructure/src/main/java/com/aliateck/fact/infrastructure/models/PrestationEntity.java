@@ -40,6 +40,9 @@ public class PrestationEntity implements Serializable {
   @Column(name = "tarifHT")
   Integer tarifHT;
 
+  @Column(name = "nbJoursEffectues")
+  Float nbJoursEffectues;
+
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "client")
   private ClientEntity client;

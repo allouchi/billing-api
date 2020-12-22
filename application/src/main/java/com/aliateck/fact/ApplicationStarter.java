@@ -1,11 +1,9 @@
 package com.aliateck.fact;
 
-import com.aliateck.fact.common.facture.util.FactureStatus;
 import com.aliateck.fact.domaine.business.object.Adresse;
 import com.aliateck.fact.domaine.business.object.Client;
 import com.aliateck.fact.domaine.business.object.Company;
 import com.aliateck.fact.domaine.business.object.Consultant;
-import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.business.object.Prestation;
 import com.aliateck.fact.domaine.ports.api.client.ClientApiService;
 import com.aliateck.fact.domaine.ports.api.company.CompanyApiService;
@@ -86,35 +84,28 @@ public class ApplicationStarter implements CommandLineRunner {
       .builder()
       .tarifHT(500)
       .delaiPaiement(60l)
+      .nbJoursEffectues(23f)
       .numeroCommande("33962")
       .consultant(consultant)
       .client(client)
       .build();
     prestations.add(prestation);
 
-    Facture facture = Facture
-      .builder()
-      .fraisRetard(750f)
-      .nbJoursEffectues(23f)
-      .factureStatus(FactureStatus.NON.getCode())
-      .numeroFacture("20201216-1001")
-      .build();
-
-    prestation.setFacture(facture);
+    String siret = "85292702900011";
 
     Company sbatec = Company
       .builder()
       .siret("85292702900011")
       .rcsName("R.C.S. Nanterre 831 502 141")
       .socialReason("SBATEC Consulting")
-      .status("SASU au capital de 500ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬")
+      .status("SASU au capital de 500 Euros")
       .numeroTva("FR 188 315 021 41")
       .ape("6201Z")
       .companyAdresse(sbatecAdresse)
-      .clients(clients)
-      .consultants(consultants)
-      .prestations(prestations)
       .build();
-    //Company company = companyApiService.addCompany(sbatec);
+    //    companyApiService.addCompany(sbatec);
+    //    clientApiService.addClient(client, siret);
+    //    consultantApiService.addConsultant(consultant, siret);
+    //    prestationApiService.addPrestation(prestation, siret);
   }
 }

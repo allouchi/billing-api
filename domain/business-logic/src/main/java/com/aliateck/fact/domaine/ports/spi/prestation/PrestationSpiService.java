@@ -4,7 +4,7 @@ import com.aliateck.fact.domaine.business.object.Prestation;
 import java.util.List;
 
 public interface PrestationSpiService {
-  Prestation addPrestation(Prestation prestation);
+  Prestation addPrestation(Prestation prestation, String siret);
 
   void deletePrestation(Prestation prestation);
 

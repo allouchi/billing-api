@@ -1,22 +1,24 @@
 package com.aliateck.fact.infrastructure.adapter.consultant;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
 import com.aliateck.fact.domaine.business.object.Consultant;
 import com.aliateck.fact.domaine.ports.spi.consultant.ConsultantSpiService;
-import com.aliateck.fact.infrastructure.mapper.ClientMapper;
 import com.aliateck.fact.infrastructure.mapper.ConsultantMapper;
-import com.aliateck.fact.infrastructure.mapper.PrestationMapper;
 import com.aliateck.fact.infrastructure.models.CompanyEntity;
 import com.aliateck.fact.infrastructure.models.ConsultantEntity;
 import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
 import com.aliateck.fact.infrastructure.repository.consultant.ConsultantJpaRepository;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import javax.transaction.Transactional;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
@@ -25,8 +27,6 @@ import org.springframework.stereotype.Service;
 public class ConsultantSpiAdapter implements ConsultantSpiService {
   private ConsultantJpaRepository consultantJpaRepository;
   private ConsultantMapper consultantMapper;
-  private PrestationMapper prestationMapper;
-  private ClientMapper clientMapper;
   CompanyJpaRepository companyJpaRepository;
 
   @Override

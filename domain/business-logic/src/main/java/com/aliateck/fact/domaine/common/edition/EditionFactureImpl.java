@@ -52,14 +52,14 @@ public class EditionFactureImpl implements EditionFactureService {
     	String numeroFacture = facture.getNumeroFacture();
     	String moisPrestation = facture.getMoisFacture();
     	float montantHT= facture.getPrixTotalHT();
-    	float montantTTC = facture.getPrixTotalTTC();
-    	float nbJoursEffectues = facture.getNbJoursEffectues();
+    	float montantTTC = facture.getPrixTotalTTC();    	
     	float montantTva = facture.getMontantTVA();
     	String communeDateEdition = adresseCompany.getCommune() + ", le " + dateFacturation;
     	
     	// infos prestation
     	String numeroCommande = prestation.getNumeroCommande();
-    	float tarifHT = prestation.getTarifHT();    	    	
+    	float tarifHT = prestation.getTarifHT();  
+    	float nbJoursEffectues = prestation.getNbJoursEffectues();
     	
     	// infos client
     	Adresse adresseClient = prestation.getClient().getAdresseClient();    	

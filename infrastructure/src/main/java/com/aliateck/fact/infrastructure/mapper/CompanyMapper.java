@@ -1,12 +1,10 @@
 package com.aliateck.fact.infrastructure.mapper;
 
-import org.springframework.stereotype.Component;
-
 import com.aliateck.fact.domaine.business.object.Company;
 import com.aliateck.fact.infrastructure.mapper.common.Mapper;
 import com.aliateck.fact.infrastructure.models.CompanyEntity;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor

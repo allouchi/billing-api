@@ -57,14 +57,9 @@ public class FactureEntity implements Serializable {
   @Column(name = "fraisRetard")
   Float fraisRetard;
 
-  @Column(name = "nbJoursEffectues")
-  Float nbJoursEffectues;
-
   @Column(name = "factureStatus")
   String factureStatus;
-  
+
   @Column(name = "moisFacture")
   String moisFacture;
-  
- 
 }

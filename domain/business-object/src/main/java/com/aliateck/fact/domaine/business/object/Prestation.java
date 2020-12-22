@@ -21,5 +21,6 @@ public class Prestation {
   Client client;
   Facture facture;
   Integer tarifHT;
+  Float nbJoursEffectues;
   Long delaiPaiement;
 }
