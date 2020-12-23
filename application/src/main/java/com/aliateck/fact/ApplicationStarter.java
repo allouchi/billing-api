@@ -103,8 +103,8 @@ public class ApplicationStarter implements CommandLineRunner {
       .ape("6201Z")
       .companyAdresse(sbatecAdresse)
       .build();
-    //    companyApiService.addCompany(sbatec);
-    //    clientApiService.addClient(client, siret);
+    //companyApiService.addCompany(sbatec);
+    //clientApiService.addClient(client, siret);
     //    consultantApiService.addConsultant(consultant, siret);
     //    prestationApiService.addPrestation(prestation, siret);
   }

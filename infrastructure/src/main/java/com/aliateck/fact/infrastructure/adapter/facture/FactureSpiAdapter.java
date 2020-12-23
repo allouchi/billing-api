@@ -1,15 +1,18 @@
 package com.aliateck.fact.infrastructure.adapter.facture;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
 import com.aliateck.fact.domaine.business.object.Facture;
+import com.aliateck.fact.domaine.exception.CompanyNotFoundException;
 import com.aliateck.fact.domaine.exception.FactureNotFoundException;
 import com.aliateck.fact.domaine.ports.spi.facture.FactureSpiService;
 import com.aliateck.fact.infrastructure.mapper.FactureMapper;
@@ -123,32 +126,29 @@ public class FactureSpiAdapter implements FactureSpiService {
     return factureMapper.fromEntityToDomain(entitys);
   }
 
-@Override 
-public List<Facture> findAll(){
-	List<FactureEntity> entities =  factureJpaRepository.findAll();
+	@Override 
+	public List<Facture> findAll(){
+		List<FactureEntity> entities =  factureJpaRepository.findAll();
 	
-	if (entities.isEmpty()) {
-	      throw new FactureNotFoundException(
-	        "Factures not found"
-	      );
-	    }
-	    return factureMapper.fromEntityToDomain(entities);
-	}
+		if (entities.isEmpty()) {
+		      throw new FactureNotFoundException(
+		        "Factures not found"
+		      );
+		    }
+		    return factureMapper.fromEntityToDomain(entities);
+		}
 
 
-@Override public List<Facture> findBySiret(String siret){
-	
-	Optional<CompanyEntity> company = companyJpaRepository.findBySiret(siret);
-	List<FactureEntity> listFacture = new ArrayList<>();
-	if(company.isPresent()) {
-		CompanyEntity entity = company.get();
-		List<PrestationEntity> prestas = entity.getPrestations();
-		for(PrestationEntity presta : prestas ) {
-			listFacture.add(presta.getFacture());
-		}		
-	}	
-	return factureMapper.fromEntityToDomain(listFacture);
-	
+	@Override 
+	public List<Facture> findBySiret(String siret){
+		Optional<CompanyEntity> oEntity = companyJpaRepository.findBySiret(siret);
+		return oEntity.map(entity ->	
+							Optional.ofNullable(entity.getPrestations())
+								.map(prestations -> prestations
+										.stream()
+										.map(prestation -> factureMapper.fromEntityToDomain(prestation.getFacture()))
+										.collect(Collectors.toList()))
+								.orElse(Collections.emptyList()))
+				.orElseThrow(() -> new CompanyNotFoundException(siret));
 	}
- 
 }

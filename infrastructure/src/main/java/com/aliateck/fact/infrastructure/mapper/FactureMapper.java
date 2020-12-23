@@ -34,6 +34,9 @@ public class FactureMapper {
   }
 
   public Facture fromEntityToDomain(FactureEntity entity) {
+    if (entity == null) {
+      return null;
+    }
     return Facture
       .builder()
       .id(entity.getId())

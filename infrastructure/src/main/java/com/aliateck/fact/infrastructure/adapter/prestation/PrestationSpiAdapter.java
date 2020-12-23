@@ -27,6 +27,7 @@ public class PrestationSpiAdapter implements PrestationSpiService {
   @Override
   public Prestation addPrestation(Prestation prestation, String siret) {
     Optional<CompanyEntity> oCompany = companyJpaRepository.findBySiret(siret);
+    
     return oCompany
       .map(
         company -> {
@@ -47,6 +48,24 @@ public class PrestationSpiAdapter implements PrestationSpiService {
         }
       )
       .orElse(null);
+      
+//    if (oCompany.isPresent()) {
+//      CompanyEntity oCompanyEntity = oCompany.get();
+//      List<PrestationEntity> prestations = oCompanyEntity.getPrestations();
+//      PrestationEntity entity = prestationMapper.fromDomainToEntity(prestation);
+//      prestations.add(entity);
+//      oCompany.get().setPrestations(prestations);
+//      CompanyEntity company = companyJpaRepository.save(oCompany.get());
+//      List<PrestationEntity> savedPrestation = company.getPrestations();
+//
+//      for (PrestationEntity presta : savedPrestation) {
+//        if (presta.getNumeroCommande().equalsIgnoreCase(prestation.getNumeroCommande())) {
+//          return prestationMapper.fromEntityToDomain(presta);
+//        }
+//      }
+//    }
+
+  //  return null;
   }
 
   @Override
