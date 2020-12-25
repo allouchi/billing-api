@@ -30,7 +30,7 @@ public class CompanyController {
   @GetMapping(value = "/{siret}")
   public ResponseEntity<Company> getCompany(@PathVariable String siret) {
     log.info("Find company by siret {}", siret);
-    Company company = companyApiService.getCompanyBySiret(siret);
+    Company company = companyApiService.findBySiret(siret);
     return ResponseEntity.ok(company);
   }
   
@@ -38,7 +38,7 @@ public class CompanyController {
   @GetMapping
   public ResponseEntity<List<Company>> findAll(){
     log.info("Find all companies");
-    return ResponseEntity.ok( companyApiService.getAllCompanys());
+    return ResponseEntity.ok( companyApiService.findAll());
   }
   
 

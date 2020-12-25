@@ -23,9 +23,9 @@ public class CalculerFactureImpl implements CalculerFactureService {
    *
    */
   @Override
-  public Facture calculerFacture(Prestation prestation) {
+  public Facture calculerFacture(Prestation prestation, Facture facture) {
 	
-	Facture facture = new Facture();
+	
     float tarifHT = prestation.getTarifHT();   
     float prixTotalHT = tarifHT * facture.getQuantite();
     float tva = prixTotalHT * 0.2f;
@@ -41,7 +41,7 @@ public class CalculerFactureImpl implements CalculerFactureService {
     facture.setFraisRetard(calculerFraisRetard(facture));
     facture.setMoisFacture(determinerMoisFacture());
     facture.setNumeroFacture(calulerNumeroFacture(000));
-    facture.setFactureStatus(FactureStatus.NON.getCode());
+    facture.setFactureStatus(facture.getFactureStatus());
     return facture;
   }
 

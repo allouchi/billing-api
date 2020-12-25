@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface FactureSpiService {
-  Facture addFacture(Facture facture);
+  Facture addFacture(Facture facture, long prestationId, String numeroCommande);
 
   void deleteFacture(Facture facture);
 
@@ -21,7 +21,7 @@ public interface FactureSpiService {
 
   List<Facture> findByDateEncaissement(Date dateEncaissement);
 
-  List<Facture> findBySiret(String siret);
+  List<Facture> findAllByPrestation(String siret, long idPrestation);
 
-  List<Facture> findAll();
+  List<Facture> findAllBySiret(String siret);
 }

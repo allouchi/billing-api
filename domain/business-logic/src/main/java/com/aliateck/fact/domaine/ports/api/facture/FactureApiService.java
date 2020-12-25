@@ -4,15 +4,17 @@ import com.aliateck.fact.domaine.business.object.Facture;
 import java.util.List;
 
 public interface FactureApiService {
-  public Facture ajouterFacture(Facture facture);
+  public Facture addFacture(Facture factureRequest, long prestationId, String numeroCommande);
 
-  public void supprimerFacture(Facture facture);
+  public void deleteFacture(Facture facture);
 
-  public Facture mettreAJourFacture(Facture facture);
+  public Facture updateFacture(Facture facture);
 
-  public Facture chercherFactureParId(long id);
+  public Facture findById(long id);
 
-  public Facture chercherFactureParNumero(String numero);
+  public Facture findByNumero(String numero);
 
-  public List<Facture> chercherFacturesByCompanyBySiret(String siret);
+  public List<Facture> findAllByPrestation(String siret, long idPrestation);
+  
+  public List<Facture> findAllBySiret(String siret);
 }

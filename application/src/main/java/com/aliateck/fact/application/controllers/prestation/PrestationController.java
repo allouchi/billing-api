@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.aliateck.fact.domaine.business.object.Company;
 import com.aliateck.fact.domaine.business.object.Prestation;
-import com.aliateck.fact.domaine.common.edition.EditionFactureService;
 import com.aliateck.fact.domaine.ports.api.company.CompanyApiService;
-import com.aliateck.fact.domaine.ports.api.facture.FactureApiService;
 import com.aliateck.fact.domaine.ports.api.prestation.PrestationApiService;
 
 import lombok.AccessLevel;
@@ -29,14 +27,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PrestationController {
-  private FactureApiService factureApiService;
-  private CompanyApiService companyApiService;
-  private EditionFactureService editionFactureService;
-  private PrestationApiService prestationApiService;
+   private CompanyApiService companyApiService;
+   private PrestationApiService prestationApiService;
 
   @GetMapping(value = "/{siret}")
   public ResponseEntity<List<Prestation>> getAllPrestations(@PathVariable String siret) {
-    Company company = companyApiService.getCompanyBySiret(siret);
+    Company company = companyApiService.findBySiret(siret);
     System.out.println(company.getPrestations());
     return ResponseEntity.ok(company.getPrestations());
   }
@@ -51,13 +47,13 @@ public class PrestationController {
     return ResponseEntity.ok(presta);
   }
   
-  @PutMapping(value = "/{siret}")
-  public ResponseEntity<Prestation> editerFacture(
-    @RequestBody Prestation prestationRequest,
-    @PathVariable String siret
+  @PutMapping
+  public ResponseEntity<Prestation> updatePrestation(
+    @RequestBody Prestation prestationRequest
+    
   ) {
-    log.info("Edit new bill");
-    Prestation presta = prestationApiService.updatePrestation(prestationRequest, siret);
+    log.info("Update prestation");
+    Prestation presta = prestationApiService.updatePrestation(prestationRequest);
     return ResponseEntity.ok(presta);
   }
 }

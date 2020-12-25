@@ -18,16 +18,15 @@ public class PrestationApiAdapter implements PrestationApiService {
   @Override
   public Prestation addPrestation(Prestation prestation, String siret) {
     return prestationSpiService.addPrestation(prestation, siret);
-  }
+  } 
 
+  @Override
+  public Prestation updatePrestation(Prestation prestation) {
+    return prestationSpiService.updatePrestation(prestation);
+  }
   @Override
   public void deletePrestation(Prestation prestation) {
     prestationSpiService.deletePrestation(prestation);
-  }
-
-  @Override
-  public Prestation updatePrestation(Prestation prestation, String siret) {
-    return prestationSpiService.updatePrestation(prestation, siret);
   }
 
   @Override

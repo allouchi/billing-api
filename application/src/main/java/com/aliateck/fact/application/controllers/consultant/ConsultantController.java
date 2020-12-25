@@ -28,7 +28,7 @@ public class ConsultantController {
 
   @GetMapping(value = "/{siret}")
   public ResponseEntity<List<Consultant>> getAllConsultants(@PathVariable String siret) {
-    Company company = companyApiService.getCompanyBySiret(siret);
+    Company company = companyApiService.findBySiret(siret);
     return ResponseEntity.ok(company.getConsultants());
   }
 

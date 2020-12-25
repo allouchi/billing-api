@@ -31,13 +31,13 @@ public class PrestationEntity implements Serializable {
   @Column(name = "id", nullable = false)
   Long id;
 
-  @Column(name = "delaiPaiement", nullable= false)
+  @Column(name = "delaiPaiement", nullable = false)
   Long delaiPaiement;
 
-  @Column(name = "tarifHT", nullable= false)
-  Integer tarifHT; 
-  
-  @Column(name = "numeroCommande", nullable= false)
+  @Column(name = "tarifHT", nullable = false)
+  Integer tarifHT;
+
+  @Column(name = "numeroCommande", unique = true, nullable = false)
   String numeroCommande;
 
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

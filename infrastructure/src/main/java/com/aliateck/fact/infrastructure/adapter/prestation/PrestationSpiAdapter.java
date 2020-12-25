@@ -7,17 +7,13 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
-import com.aliateck.fact.domaine.business.object.Company;
-import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.business.object.Prestation;
 import com.aliateck.fact.domaine.common.edition.CalculerFactureService;
-import com.aliateck.fact.domaine.common.edition.EditionFactureService;
 import com.aliateck.fact.domaine.ports.spi.prestation.PrestationSpiService;
 import com.aliateck.fact.infrastructure.mapper.CompanyMapper;
 import com.aliateck.fact.infrastructure.mapper.FactureMapper;
 import com.aliateck.fact.infrastructure.mapper.PrestationMapper;
 import com.aliateck.fact.infrastructure.models.CompanyEntity;
-import com.aliateck.fact.infrastructure.models.FactureEntity;
 import com.aliateck.fact.infrastructure.models.PrestationEntity;
 import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
 import com.aliateck.fact.infrastructure.repository.facture.FactureJpaRepository;
@@ -35,7 +31,7 @@ public class PrestationSpiAdapter implements PrestationSpiService {
   PrestationJpaRepository prestationJpaRepository;
   CompanyJpaRepository companyJpaRepository;
   PrestationMapper prestationMapper;
-  EditionFactureService editionFactureService;
+  //EditionFactureService editionFactureService;
   CalculerFactureService calculerFactureService;
   FactureJpaRepository factureJpaRepository;
   FactureMapper factureMapper;
@@ -57,7 +53,7 @@ public class PrestationSpiAdapter implements PrestationSpiService {
             .getPrestations()
             .stream()
             .filter(
-              c -> c.getId().longValue()==(prestation.getId().longValue())
+              c -> c.getNumeroCommande().equals(prestation.getNumeroCommande())
             )
             .findFirst()
             .orElseGet(null);
@@ -74,36 +70,12 @@ public class PrestationSpiAdapter implements PrestationSpiService {
   }
 
   @Override
-  public Prestation updatePrestation(Prestation prestation, String siret) {
-	PrestationEntity oPresta = null;
-	Optional<CompanyEntity> oCompanyEntity = companyJpaRepository.findBySiret(siret);	
+  public Prestation updatePrestation(Prestation prestation) {
+	PrestationEntity oPresta = null;		
 	Optional<PrestationEntity> oPrestation = prestationJpaRepository.findById(prestation.getId());	
 	
-	if(oPrestation.isPresent() && oCompanyEntity.isPresent()) {
-		
-		Company oCompany = companyMapper.fromEntityToDomain(oCompanyEntity.get());
-		PrestationEntity oEntity = oPrestation.get();		
-		if(oEntity != null && oEntity.getId().longValue() == prestation.getId()) {
-			Facture facture = calculerFactureService.calculerFacture(prestation);
-			FactureEntity entity = factureMapper.fromDomainToEntity(facture);
-			oEntity.setFacture(entity);
-			oPresta = prestationJpaRepository.saveAndFlush(oEntity);
-			long idFacture = oPresta.getFacture().getId();
-			Optional<FactureEntity> oFacture = factureJpaRepository.findById(idFacture);
-			if(oFacture.isPresent()) {
-				String numeroFacture = oFacture.get().getNumeroFacture();
-				if(numeroFacture != null) {
-					String endNumero[] = numeroFacture.split("-");
-					long oldNumero = Long.parseLong(endNumero[1]);
-					long newNumero = oldNumero + idFacture;
-					oFacture.get().setNumeroFacture(String.valueOf(endNumero[0]+"-"+newNumero));
-					factureJpaRepository.save(oFacture.get());
-					Facture newFacture = factureMapper.fromEntityToDomain(oFacture.get());
-					Prestation presta = prestationMapper.fromEntityToDomain(oPresta);
-					editionFactureService.editerFacture(oCompany, presta, newFacture);
-				}
-			}			
-		}		
+	if(oPrestation.isPresent()  ) {
+		oPresta = prestationJpaRepository.saveAndFlush(oPrestation.get());				
 	}
 	return prestationMapper.fromEntityToDomain(oPresta);
   }

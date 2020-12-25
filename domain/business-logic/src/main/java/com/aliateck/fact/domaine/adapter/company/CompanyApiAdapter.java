@@ -31,22 +31,22 @@ public class CompanyApiAdapter implements CompanyApiService {
   }
 
   @Override
-  public List<Company> getAllCompanys() {
+  public List<Company> findAll() {
     return companySpiService.findAllCompanys();
   }
 
   @Override
-  public Company getCompanyById(long id) {
+  public Company findById(long id) {
     return companySpiService.findCompanyById(id);
   }
 
   @Override
-  public Company getCompanyByReasonSocialIgnoreCase(String reasonSocial) {
+  public Company findByReasonSocialIgnoreCase(String reasonSocial) {
     return companySpiService.findCompanyByReasonSocialIgnoreCase(reasonSocial);
   }
 
   @Override
-  public Company getCompanyBySiret(String siret) {
+  public Company findBySiret(String siret) {
     return companySpiService.findCompanyBySiret(siret);
   }
 }

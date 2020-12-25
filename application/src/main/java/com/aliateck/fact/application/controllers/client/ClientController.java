@@ -28,7 +28,7 @@ public class ClientController {
 
   @GetMapping(value = "/{siret}")
   public ResponseEntity<List<Client>> getAllClients(@PathVariable String siret) {
-    Company company = companyApiService.getCompanyBySiret(siret);
+    Company company = companyApiService.findBySiret(siret);
     return ResponseEntity.ok(company.getClients());
   }
 

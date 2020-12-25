@@ -1,26 +1,28 @@
 package com.aliateck.fact.infrastructure.adapter.facture;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
 import com.aliateck.fact.domaine.business.object.Facture;
-import com.aliateck.fact.domaine.exception.CompanyNotFoundException;
+import com.aliateck.fact.domaine.common.FactureStatus;
+import com.aliateck.fact.domaine.common.edition.CalculerFactureService;
 import com.aliateck.fact.domaine.exception.FactureNotFoundException;
 import com.aliateck.fact.domaine.ports.spi.facture.FactureSpiService;
+import com.aliateck.fact.infrastructure.mapper.CompanyMapper;
 import com.aliateck.fact.infrastructure.mapper.FactureMapper;
+import com.aliateck.fact.infrastructure.mapper.PrestationMapper;
 import com.aliateck.fact.infrastructure.models.CompanyEntity;
 import com.aliateck.fact.infrastructure.models.FactureEntity;
 import com.aliateck.fact.infrastructure.models.PrestationEntity;
 import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
 import com.aliateck.fact.infrastructure.repository.facture.FactureJpaRepository;
+import com.aliateck.fact.infrastructure.repository.prestation.PrestationJpaRepository;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -32,13 +34,39 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FactureSpiAdapter implements FactureSpiService {
   FactureJpaRepository factureJpaRepository;
-  CompanyJpaRepository companyJpaRepository;  
+  PrestationJpaRepository prestationJpaRepository;
+  CompanyJpaRepository companyJpaRepository; 
+  CalculerFactureService calculerFactureService;
   FactureMapper factureMapper;
+  CompanyMapper companyMapper;
+  PrestationMapper prestationMapper;
 
   @Override
-  public Facture addFacture(Facture facture) {	  
-	   FactureEntity entity = factureJpaRepository.save(factureMapper.fromDomainToEntity(facture));
-	   return factureMapper.fromEntityToDomain(entity);
+  public Facture addFacture(Facture facture, long prestationId, String numeroCommande) {	 
+	  Facture fDomain = null;	  
+	  Optional<PrestationEntity> oPrestation = prestationJpaRepository.findById(prestationId);
+	  
+	  if(oPrestation.isPresent()) {
+		  PrestationEntity pEntity = oPrestation.get();		  
+		  Facture factureCaculee = calculerFactureService.calculerFacture( prestationMapper.fromEntityToDomain(pEntity), facture);
+		  pEntity.setFacture(factureMapper.fromDomainToEntity(factureCaculee));
+		  PrestationEntity pSaved = prestationJpaRepository.saveAndFlush(pEntity);		 
+	      FactureEntity  fEntity = pSaved.getFacture();
+	      
+	      if(fEntity != null) {
+				String numeroFacture = fEntity.getNumeroFacture();
+				if(numeroFacture != null) {
+					String endNumero[] = numeroFacture.split("-");
+					long oldNumero = Long.parseLong(endNumero[1]);
+					long newNumero = oldNumero + fEntity.getId().longValue();
+					fEntity.setNumeroFacture(String.valueOf(endNumero[0]+"-"+newNumero));
+					fEntity.setFactureStatus(FactureStatus.OUI.getCode());
+					FactureEntity oEntity = factureJpaRepository.save(fEntity);
+					fDomain = factureMapper.fromEntityToDomain(oEntity);					
+				}
+			}		  	 
+	  }	  
+	  return fDomain;
   }
 
   @Override
@@ -84,7 +112,7 @@ public class FactureSpiAdapter implements FactureSpiService {
     FactureEntity entity = factureJpaRepository.getByNumeroFacture(numeroFacture);
     if (entity == null) {
       throw new FactureNotFoundException(
-        "Facture not found avec numÃƒÂ©ro : " + numeroFacture
+        "Facture not found avec numero : " + numeroFacture
       );
     }
     return factureMapper.fromEntityToDomain(entity);
@@ -127,28 +155,50 @@ public class FactureSpiAdapter implements FactureSpiService {
   }
 
 	@Override 
-	public List<Facture> findAll(){
-		List<FactureEntity> entities =  factureJpaRepository.findAll();
+	public List<Facture> findAllBySiret(String siret){
+		List<FactureEntity> listeFactures = new ArrayList<>();
+		Optional<CompanyEntity> oEntity =  companyJpaRepository.findBySiret(siret);
 	
-		if (entities.isEmpty()) {
+		if(oEntity.isPresent()) {
+			CompanyEntity entity = oEntity.get();
+			for(PrestationEntity presta : entity.getPrestations()){
+				listeFactures.add(presta.getFacture());
+			}
+		}
+		if (listeFactures.isEmpty()) {
 		      throw new FactureNotFoundException(
 		        "Factures not found"
 		      );
-		    }
-		    return factureMapper.fromEntityToDomain(entities);
+		 }
+		 return factureMapper.fromEntityToDomain(listeFactures);
 		}
 
 
 	@Override 
-	public List<Facture> findBySiret(String siret){
+	public List<Facture> findAllByPrestation(String siret, long idPrestation){
+		List<FactureEntity> listFactures = new ArrayList<>();
 		Optional<CompanyEntity> oEntity = companyJpaRepository.findBySiret(siret);
-		return oEntity.map(entity ->	
-							Optional.ofNullable(entity.getPrestations())
-								.map(prestations -> prestations
-										.stream()
-										.map(prestation -> factureMapper.fromEntityToDomain(prestation.getFacture()))
-										.collect(Collectors.toList()))
-								.orElse(Collections.emptyList()))
-				.orElseThrow(() -> new CompanyNotFoundException(siret));
+		if(oEntity.isPresent()) {
+			CompanyEntity oCompany = oEntity.get();
+			List<PrestationEntity> pEntityList = oCompany.getPrestations();
+			if(pEntityList != null && !pEntityList.isEmpty()){
+				for(PrestationEntity pEntity : pEntityList ) {
+					listFactures.add(pEntity.getFacture());
+				}
+			}			
+		}
+		if(!listFactures.isEmpty()) {
+			return factureMapper.fromEntityToDomain(listFactures);
+		}
+		return null;
+		
+//		return oEntity.map(entity ->	
+//							Optional.ofNullable(entity.getPrestations())
+//								.map(prestations -> prestations
+//										.stream()
+//										.map(prestation -> factureMapper.fromEntityToDomain(prestation.getFacture()))
+//										.collect(Collectors.toList()))
+//								.orElse(Collections.emptyList()))
+//				.orElseThrow(() -> new CompanyNotFoundException(siret));
 	}
 }

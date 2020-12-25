@@ -10,11 +10,11 @@ public interface CompanyApiService {
 
   public Company updateCompany(Company company);
 
-  public List<Company> getAllCompanys();
+  public List<Company> findAll();
 
-  public Company getCompanyById(long id);
+  public Company findById(long id);
 
-  public Company getCompanyByReasonSocialIgnoreCase(String reasonSocial);
+  public Company findByReasonSocialIgnoreCase(String reasonSocial);
 
-  public Company getCompanyBySiret(String siret);
+  public Company findBySiret(String siret);
 }

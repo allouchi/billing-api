@@ -1,7 +1,6 @@
 package com.aliateck.fact.domaine.adapter.facture;
 
 import com.aliateck.fact.domaine.business.object.Facture;
-import com.aliateck.fact.domaine.common.edition.CalculerFactureImpl;
 import com.aliateck.fact.domaine.ports.api.facture.FactureApiService;
 import com.aliateck.fact.domaine.ports.spi.facture.FactureSpiService;
 import java.util.List;
@@ -17,39 +16,37 @@ public class FactureApiAdapter implements FactureApiService {
   FactureSpiService factureSpiService;
 
   @Override
-  public Facture ajouterFacture(Facture facture) {
-    Facture fact = null;
-    Facture base = factureSpiService.addFacture(facture);
-    if (base != null) {
-      fact = factureSpiService.findById(base.getId());
-      fact.setNumeroFacture(CalculerFactureImpl.calulerNumeroFacture(base.getId()));
-      factureSpiService.updateFacture(fact);
-    }
-    return fact;
+  public Facture addFacture(Facture facture, long prestationId, String numeroCommande) {
+    return factureSpiService.addFacture(facture, prestationId, numeroCommande);
   }
 
   @Override
-  public void supprimerFacture(Facture facture) {
+  public void deleteFacture(Facture facture) {
     factureSpiService.deleteFacture(facture);
   }
 
   @Override
-  public Facture mettreAJourFacture(Facture facture) {
+  public Facture updateFacture(Facture facture) {
     return factureSpiService.updateFacture(facture);
   }
 
   @Override
-  public Facture chercherFactureParId(long id) {
+  public Facture findById(long id) {
     return factureSpiService.findById(id);
   }
 
   @Override
-  public Facture chercherFactureParNumero(String numeroFacture) {
+  public Facture findByNumero(String numeroFacture) {
     return factureSpiService.findByNumeroFacture(numeroFacture);
   }
 
   @Override
-  public List<Facture> chercherFacturesByCompanyBySiret(String siret) {
-    return factureSpiService.findBySiret(siret);
+  public List<Facture> findAllByPrestation(String siret, long idPrestation) {
+    return factureSpiService.findAllByPrestation(siret, idPrestation);
+  }
+
+  @Override
+  public List<Facture> findAllBySiret(String siret) {
+    return factureSpiService.findAllBySiret(siret);
   }
 }
