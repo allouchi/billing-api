@@ -1,4 +1,4 @@
-package com.aliateck.fact.common.facture.util;
+package com.aliateck.fact.domaine.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,19 +1,31 @@
 package com.aliateck.fact.infrastructure.adapter.prestation;
 
-import com.aliateck.fact.domaine.business.object.Prestation;
-import com.aliateck.fact.domaine.ports.spi.prestation.PrestationSpiService;
-import com.aliateck.fact.infrastructure.mapper.PrestationMapper;
-import com.aliateck.fact.infrastructure.models.CompanyEntity;
-import com.aliateck.fact.infrastructure.models.PrestationEntity;
-import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
-import com.aliateck.fact.infrastructure.repository.prestation.PrestationJpaRepository;
 import java.util.List;
 import java.util.Optional;
+
 import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
+import com.aliateck.fact.domaine.business.object.Company;
+import com.aliateck.fact.domaine.business.object.Facture;
+import com.aliateck.fact.domaine.business.object.Prestation;
+import com.aliateck.fact.domaine.common.edition.CalculerFactureService;
+import com.aliateck.fact.domaine.common.edition.EditionFactureService;
+import com.aliateck.fact.domaine.ports.spi.prestation.PrestationSpiService;
+import com.aliateck.fact.infrastructure.mapper.CompanyMapper;
+import com.aliateck.fact.infrastructure.mapper.FactureMapper;
+import com.aliateck.fact.infrastructure.mapper.PrestationMapper;
+import com.aliateck.fact.infrastructure.models.CompanyEntity;
+import com.aliateck.fact.infrastructure.models.FactureEntity;
+import com.aliateck.fact.infrastructure.models.PrestationEntity;
+import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
+import com.aliateck.fact.infrastructure.repository.facture.FactureJpaRepository;
+import com.aliateck.fact.infrastructure.repository.prestation.PrestationJpaRepository;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
@@ -23,6 +35,11 @@ public class PrestationSpiAdapter implements PrestationSpiService {
   PrestationJpaRepository prestationJpaRepository;
   CompanyJpaRepository companyJpaRepository;
   PrestationMapper prestationMapper;
+  EditionFactureService editionFactureService;
+  CalculerFactureService calculerFactureService;
+  FactureJpaRepository factureJpaRepository;
+  FactureMapper factureMapper;
+  CompanyMapper companyMapper;
 
   @Override
   public Prestation addPrestation(Prestation prestation, String siret) {
@@ -40,7 +57,7 @@ public class PrestationSpiAdapter implements PrestationSpiService {
             .getPrestations()
             .stream()
             .filter(
-              c -> c.getNumeroCommande().equalsIgnoreCase(prestation.getNumeroCommande())
+              c -> c.getId().longValue()==(prestation.getId().longValue())
             )
             .findFirst()
             .orElseGet(null);
@@ -48,24 +65,6 @@ public class PrestationSpiAdapter implements PrestationSpiService {
         }
       )
       .orElse(null);
-      
-//    if (oCompany.isPresent()) {
-//      CompanyEntity oCompanyEntity = oCompany.get();
-//      List<PrestationEntity> prestations = oCompanyEntity.getPrestations();
-//      PrestationEntity entity = prestationMapper.fromDomainToEntity(prestation);
-//      prestations.add(entity);
-//      oCompany.get().setPrestations(prestations);
-//      CompanyEntity company = companyJpaRepository.save(oCompany.get());
-//      List<PrestationEntity> savedPrestation = company.getPrestations();
-//
-//      for (PrestationEntity presta : savedPrestation) {
-//        if (presta.getNumeroCommande().equalsIgnoreCase(prestation.getNumeroCommande())) {
-//          return prestationMapper.fromEntityToDomain(presta);
-//        }
-//      }
-//    }
-
-  //  return null;
   }
 
   @Override
@@ -75,21 +74,38 @@ public class PrestationSpiAdapter implements PrestationSpiService {
   }
 
   @Override
-  public Prestation updatePrestation(Prestation prestation) {
-    Optional<PrestationEntity> objBase = prestationJpaRepository.findById(
-      prestation.getId()
-    );
-
-    if (objBase.isPresent()) {
-      PrestationEntity entityBase = objBase.get();
-      entityBase.setId(prestation.getId());
-      entityBase.setNumeroCommande(prestation.getNumeroCommande());
-      entityBase.setDelaiPaiement(prestation.getDelaiPaiement());
-      entityBase.setTarifHT(prestation.getTarifHT());
-      PrestationEntity entityRet = prestationJpaRepository.save(entityBase);
-      return prestationMapper.fromEntityToDomain(entityRet);
-    }
-    return null;
+  public Prestation updatePrestation(Prestation prestation, String siret) {
+	PrestationEntity oPresta = null;
+	Optional<CompanyEntity> oCompanyEntity = companyJpaRepository.findBySiret(siret);	
+	Optional<PrestationEntity> oPrestation = prestationJpaRepository.findById(prestation.getId());	
+	
+	if(oPrestation.isPresent() && oCompanyEntity.isPresent()) {
+		
+		Company oCompany = companyMapper.fromEntityToDomain(oCompanyEntity.get());
+		PrestationEntity oEntity = oPrestation.get();		
+		if(oEntity != null && oEntity.getId().longValue() == prestation.getId()) {
+			Facture facture = calculerFactureService.calculerFacture(prestation);
+			FactureEntity entity = factureMapper.fromDomainToEntity(facture);
+			oEntity.setFacture(entity);
+			oPresta = prestationJpaRepository.saveAndFlush(oEntity);
+			long idFacture = oPresta.getFacture().getId();
+			Optional<FactureEntity> oFacture = factureJpaRepository.findById(idFacture);
+			if(oFacture.isPresent()) {
+				String numeroFacture = oFacture.get().getNumeroFacture();
+				if(numeroFacture != null) {
+					String endNumero[] = numeroFacture.split("-");
+					long oldNumero = Long.parseLong(endNumero[1]);
+					long newNumero = oldNumero + idFacture;
+					oFacture.get().setNumeroFacture(String.valueOf(endNumero[0]+"-"+newNumero));
+					factureJpaRepository.save(oFacture.get());
+					Facture newFacture = factureMapper.fromEntityToDomain(oFacture.get());
+					Prestation presta = prestationMapper.fromEntityToDomain(oPresta);
+					editionFactureService.editerFacture(oCompany, presta, newFacture);
+				}
+			}			
+		}		
+	}
+	return prestationMapper.fromEntityToDomain(oPresta);
   }
 
   @Override

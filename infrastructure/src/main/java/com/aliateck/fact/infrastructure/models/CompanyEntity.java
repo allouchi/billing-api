@@ -36,10 +36,10 @@ public class CompanyEntity extends CommonEntity {
   @Column(name = "id", nullable = false)
   Long id;
 
-  @Column(name = "socialreason")
+  @Column(name = "socialreason", nullable = false)
   String socialReason;
 
-  @Column(name = "status")
+  @Column(name = "status", nullable = false)
   String status;
 
   @Column(name = "siret", nullable = false, unique = true, length = 14)

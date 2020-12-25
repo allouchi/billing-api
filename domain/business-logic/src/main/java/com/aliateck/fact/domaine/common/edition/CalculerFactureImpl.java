@@ -2,6 +2,8 @@ package com.aliateck.fact.domaine.common.edition;
 
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.business.object.Prestation;
+import com.aliateck.fact.domaine.common.FactureStatus;
+
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Period;
@@ -9,19 +11,25 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.Locale;
 
-public class CalculerFacture {
 
-  private CalculerFacture() {}
+import org.springframework.stereotype.Service;
 
+@Service
+public class CalculerFactureImpl implements CalculerFactureService {
+	
+	
+  
   /*
    *
    */
-  public static Facture calculerFacture(Prestation prestation) {
-    float tarifHT = prestation.getTarifHT();
-
-    Facture facture = prestation.getFacture();
-    float prixTotalHT = tarifHT * prestation.getNbJoursEffectues();
+  @Override
+  public Facture calculerFacture(Prestation prestation) {
+	
+	Facture facture = new Facture();
+    float tarifHT = prestation.getTarifHT();   
+    float prixTotalHT = tarifHT * facture.getQuantite();
     float tva = prixTotalHT * 0.2f;
+    
     facture.setPrixTotalHT(prixTotalHT);
     facture.setPrixTotalTTC(prixTotalHT + tva);
     facture.setMontantTVA(tva);
@@ -32,7 +40,8 @@ public class CalculerFacture {
     facture.setNbJourRetard(nbJourRetard);
     facture.setFraisRetard(calculerFraisRetard(facture));
     facture.setMoisFacture(determinerMoisFacture());
-    //facture.setNumeroFacture(calulerNumeroFacture(1));
+    facture.setNumeroFacture(calulerNumeroFacture(000));
+    facture.setFactureStatus(FactureStatus.NON.getCode());
     return facture;
   }
 
@@ -54,7 +63,7 @@ public class CalculerFacture {
   private static Float calculerFraisRetard(Facture facture) {
     if (facture.getNbJourRetard() > 0) {
       float div = (float) facture.getNbJourRetard() / 365;
-      return 2.52f * facture.getPrixTotalHT().floatValue() * div;
+      return 2.52f * facture.getPrixTotalHT() * div;
     }
     return 0f;
   }

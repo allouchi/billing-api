@@ -6,6 +6,6 @@ import com.aliateck.fact.domaine.business.object.Prestation;
 
 public interface EditionFactureService {
 	
-	public void editerFacture(Company company, Prestation prestation, Facture facture);
+	public Facture editerFacture(Company company, Prestation prestation, Facture facture);
 }
 

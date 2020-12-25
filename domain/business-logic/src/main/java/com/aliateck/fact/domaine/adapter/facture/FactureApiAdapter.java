@@ -1,7 +1,7 @@
 package com.aliateck.fact.domaine.adapter.facture;
 
 import com.aliateck.fact.domaine.business.object.Facture;
-import com.aliateck.fact.domaine.common.edition.CalculerFacture;
+import com.aliateck.fact.domaine.common.edition.CalculerFactureImpl;
 import com.aliateck.fact.domaine.ports.api.facture.FactureApiService;
 import com.aliateck.fact.domaine.ports.spi.facture.FactureSpiService;
 import java.util.List;
@@ -22,7 +22,7 @@ public class FactureApiAdapter implements FactureApiService {
     Facture base = factureSpiService.addFacture(facture);
     if (base != null) {
       fact = factureSpiService.findById(base.getId());
-      fact.setNumeroFacture(CalculerFacture.calulerNumeroFacture(base.getId()));
+      fact.setNumeroFacture(CalculerFactureImpl.calulerNumeroFacture(base.getId()));
       factureSpiService.updateFacture(fact);
     }
     return fact;

@@ -10,6 +10,7 @@ import com.aliateck.fact.domaine.business.object.Company;
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.business.object.Prestation;
 
+import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
@@ -20,17 +21,19 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 
 @Service
+@Slf4j
 public class EditionFactureImpl implements EditionFactureService {
 
 	private static final String INPUT_FILE="c:/temp/factureDesign.jrxml";
 	private static final String PATH_OUTPUT="c:/temp/";
 	private static final String TYPE_FILE=".pdf";
 	private static final String FACTURE_LIBELLE="FACTURE ";
+	private static final String ESPACE_BLANC=" ";
 	
   @Override
-  public void editerFacture(Company company, Prestation prestation, Facture facture) {
-    try {
-    	
+  public Facture editerFacture(Company company, Prestation prestation, Facture facture) {
+    try {    	 
+    	 
     	 JasperReport jasperDesign = JasperCompileManager.compileReport(INPUT_FILE);
          JRDataSource dataSource = new JREmptyDataSource();
          
@@ -45,7 +48,6 @@ public class EditionFactureImpl implements EditionFactureService {
     	String numeroSiret = company.getSiret();
     	String numeroApe = company.getApe();
     	String numeroTva = company.getNumeroTva();    	
-    	String siretFormat = numeroSiret.substring(0, 3) + " " + numeroSiret.substring(3,6) + " " + numeroSiret.substring(6, 9) + " " + numeroSiret.substring(9, 14);
     	
     	// infos factures
     	String dateFacturation = facture.getDateFacturation();
@@ -54,19 +56,21 @@ public class EditionFactureImpl implements EditionFactureService {
     	float montantHT= facture.getPrixTotalHT();
     	float montantTTC = facture.getPrixTotalTTC();    	
     	float montantTva = facture.getMontantTVA();
-    	String communeDateEdition = adresseCompany.getCommune() + ", le " + dateFacturation;
+    	float quantite = facture.getQuantite();
+    	String communeDateEdition = adresseCompany.getCommune() + ", le " + dateFacturation;     	
+    	String designation = facture.getDesignation();
     	
     	// infos prestation
-    	String numeroCommande = prestation.getNumeroCommande();
     	float tarifHT = prestation.getTarifHT();  
-    	float nbJoursEffectues = prestation.getNbJoursEffectues();
+    	String numeroCommande = prestation.getNumeroCommande();    	
     	
     	// infos client
     	Adresse adresseClient = prestation.getClient().getAdresseClient();    	
     	String adresseCompleteClient = adresseClient.getNumero() + " " + adresseClient.getVoie() + "\n"    			
     			+ adresseClient.getCodePostal() + " " + adresseClient.getCommune() + "\n"
     			+ adresseClient.getPays();    	
-    	String rsClient = prestation.getClient().getSocialReason();     
+    	String rsClient = prestation.getClient().getSocialReason(); 
+    	
 
       // - ParamÃ¨tres Ã  envoyer au rapport
       Map<String, Object> parameters = new HashMap<>();
@@ -74,7 +78,7 @@ public class EditionFactureImpl implements EditionFactureService {
       parameters.put("statut_company", statutCompany);
       parameters.put("adresse_company", adresseCompleteCompany);
       parameters.put("numero_rcs", numeroRcs);
-      parameters.put("numero_siret", siretFormat);
+      parameters.put("numero_siret", numeroSiret);
       parameters.put("numero_tva", numeroTva);
       parameters.put("numero_ape", numeroApe);
       parameters.put("date_facturation", dateFacturation);
@@ -82,28 +86,29 @@ public class EditionFactureImpl implements EditionFactureService {
       parameters.put("adresse_client", adresseCompleteClient);
       parameters.put("mois_facture", moisPrestation);
       parameters.put("numero_commande", numeroCommande);
-      parameters.put("quantite", nbJoursEffectues);
+      parameters.put("quantite", quantite);
       parameters.put("montantHT", montantHT);
       parameters.put("montantTTC", montantTTC);
       parameters.put("montantTva", montantTva);
       parameters.put("tarifHT", tarifHT);
       parameters.put("numero_facture", numeroFacture);
-      parameters.put("commune_company", communeDateEdition );      
+      parameters.put("commune_company", communeDateEdition );  
+      parameters.put("designation", designation);
      
-      String nameCompany[] = rsCompany.split(" ");
+      String nameCompany[] = rsCompany.split(" ");     
       String libelleFichierFacture = FACTURE_LIBELLE 
-      +  nameCompany[0] + " - " + rsClient + " de " + moisPrestation + " " 
-    		  + numeroFacture.substring(0, 4) + " - " + numeroFacture.substring(9, 13);
+      +  nameCompany[0] + " - " + rsClient + " de " + moisPrestation + ESPACE_BLANC 
+    		  + numeroFacture.split("-")[1];
       
       // - ExÃ©cution du rapport
       JasperPrint jasperPrint = JasperFillManager.fillReport(jasperDesign, parameters, dataSource);      
       // - CrÃ©ation du rapport au format PDF      
-      JasperExportManager.exportReportToPdfFile(jasperPrint, PATH_OUTPUT+libelleFichierFacture+TYPE_FILE);     
-      
+      JasperExportManager.exportReportToPdfFile(jasperPrint, PATH_OUTPUT+libelleFichierFacture+TYPE_FILE);       
      
     } catch (JRException e) {
-      e.printStackTrace();
-    }
+    	log.debug("Problème de lors de la génération du fichier pdf : "+ e.getMessage());
+    }    
+    return facture;
   }
  
 }

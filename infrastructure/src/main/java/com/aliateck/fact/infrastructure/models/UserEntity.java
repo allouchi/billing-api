@@ -32,19 +32,19 @@ public class UserEntity implements Serializable {
   @Column(name = "id", nullable = false)
   Long id;
 
-  @Column(name = "firstname")
+  @Column(name = "firstname", nullable = false)
   String firstName;
 
-  @Column(name = "lastname")
+  @Column(name = "lastname", nullable = false)
   String lastName;
 
   @Column(name = "mail", unique = true, nullable = false, length = 500)
   String mail;
 
-  @Column(name = "password")
+  @Column(name = "password", nullable = false)
   String password;
 
-  @Column(name = "role")
+  @Column(name = "role", nullable = false)
   String role;
 
   @OneToOne(cascade = CascadeType.ALL)

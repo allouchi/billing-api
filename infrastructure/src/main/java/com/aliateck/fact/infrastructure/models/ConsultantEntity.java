@@ -29,12 +29,12 @@ public class ConsultantEntity implements Serializable {
   @Column(name = "id", nullable = false)
   Long id;
 
-  @Column(name = "firstName")
+  @Column(name = "firstName", nullable = false)
   String firstName;
 
-  @Column(name = "lastName")
+  @Column(name = "lastName", nullable = false)
   String lastName;
 
-  @Column(name = "mail", unique = true)
+  @Column(name = "mail", unique = true, nullable = false)
   String mail;
 }

@@ -22,18 +22,15 @@ public class PrestationMapper {
     if (domain == null) {
       return null;
     }
-    //Facture facture = CalculerFacture.calculerFacture(domain);
-    //domain.setFacture(facture);
+    
     return PrestationEntity
       .builder()
       .id(domain.getId())
-      .numeroCommande(domain.getNumeroCommande())
       .client(clientMapper.fromDomainToEntity(domain.getClient()))
       .consultant(consultantMapper.fromDomainToEntity(domain.getConsultant()))
-      //.facture(factureMapper.fromDomainToEntity(domain.getFacture()))
       .delaiPaiement(domain.getDelaiPaiement())
       .tarifHT(domain.getTarifHT())
-      .nbJoursEffectues(domain.getNbJoursEffectues())
+      .numeroCommande(domain.getNumeroCommande())
       .build();
   }
 
@@ -43,14 +40,12 @@ public class PrestationMapper {
     }
     return Prestation
       .builder()
-      .id(entity.getId())
-      .numeroCommande(entity.getNumeroCommande())
+      .id(entity.getId())      
       .client(clientMapper.fromEntityToDomain(entity.getClient()))
       .consultant(consultantMapper.fromEntityToDomain(entity.getConsultant()))
-      //.facture(factureMapper.fromEntityToDomain(entity.getFacture()))
       .delaiPaiement(entity.getDelaiPaiement())
-      .tarifHT(entity.getTarifHT())
-      .nbJoursEffectues(entity.getNbJoursEffectues())
+      .tarifHT(entity.getTarifHT())  
+      .numeroCommande(entity.getNumeroCommande())
       .build();
   }
 

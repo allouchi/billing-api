@@ -30,26 +30,29 @@ public class FactureEntity implements Serializable {
   @Column(name = "numeroFacture", unique = true)
   String numeroFacture;
 
-  @Column(name = "dateFacturation")
+  @Column(name = "dateFacturation", nullable = false)
   String dateFacturation;
 
-  @Column(name = "dateEcheance")
+  @Column(name = "dateEcheance", nullable = false)
   String dateEcheance;
 
   @Column(name = "dateEncaissement")
   String dateEncaissement;
 
-  @Column(name = "montantTVA")
+  @Column(name = "montantTVA", nullable = false)
   Float montantTVA;
 
-  @Column(name = "prixTotalHT", scale = 2)
+  @Column(name = "prixTotalHT", scale = 2, nullable = false)
   Float prixTotalHT;
 
-  @Column(name = "prixTotalTTC", scale = 2)
+  @Column(name = "prixTotalTTC", scale = 2, nullable = false)
   Float prixTotalTTC;
 
   @Column(name = "nbJourRetard")
   Long nbJourRetard;
+  
+  @Column(name = "quantite", nullable= false)
+  Float quantite;
 
   @Column(name = "delaiPaiement")
   Long delaiPaiement;
@@ -61,5 +64,9 @@ public class FactureEntity implements Serializable {
   String factureStatus;
 
   @Column(name = "moisFacture")
-  String moisFacture;
+  String moisFacture;  
+  
+  @Column(name = "designation", nullable= false)
+  String designation;
+
 }

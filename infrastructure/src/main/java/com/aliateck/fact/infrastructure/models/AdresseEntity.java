@@ -29,21 +29,21 @@ public class AdresseEntity implements Serializable {
   @Column(name = "id", nullable = false)
   Long id;
 
-  @Column(name = "numero")
+  @Column(name = "numero", nullable = false)
   String numero;
 
   @Column(name = "complementAdresse")
   String complementAdresse;
 
-  @Column(name = "voie")
+  @Column(name = "voie", nullable = false)
   String voie;
 
-  @Column(name = "codePostal")
+  @Column(name = "codePostal", nullable = false)
   String codePostal;
 
-  @Column(name = "commune")
+  @Column(name = "commune", nullable = false)
   String commune;
 
-  @Column(name = "pays")
+  @Column(name = "pays", nullable = false)
   String pays;
 }

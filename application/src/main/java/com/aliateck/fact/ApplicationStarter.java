@@ -83,9 +83,7 @@ public class ApplicationStarter implements CommandLineRunner {
     Prestation prestation = Prestation
       .builder()
       .tarifHT(500)
-      .delaiPaiement(60l)
-      .nbJoursEffectues(23f)
-      .numeroCommande("33962")
+      .delaiPaiement(60l)      
       .consultant(consultant)
       .client(client)
       .build();
