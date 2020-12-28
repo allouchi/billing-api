@@ -7,6 +7,8 @@ public interface FactureApiService {
   public Facture addFacture(Facture factureRequest, long prestationId, String numeroCommande);
 
   public void deleteFacture(Facture facture);
+  
+  public void deleteById(long id);
 
   public Facture updateFacture(Facture facture);
 

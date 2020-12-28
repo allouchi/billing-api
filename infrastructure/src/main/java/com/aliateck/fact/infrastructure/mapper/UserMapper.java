@@ -31,6 +31,7 @@ public class UserMapper {
         .company(companyMapper.fromDomainToEntity(domain.getCompany()))
         .build();
   }
+  
 
   public User fromEntityToDomain(UserEntity entity) {
     return User

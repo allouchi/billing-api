@@ -1,6 +1,7 @@
 package com.aliateck.fact.infrastructure.models;
 
 import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,12 +11,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter 
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -36,19 +40,20 @@ public class PrestationEntity implements Serializable {
 
   @Column(name = "tarifHT", nullable = false)
   Integer tarifHT;
-
-  @Column(name = "numeroCommande", unique = true, nullable = false)
+  
+  @Column(name = "numeroCommande", nullable= false)
   String numeroCommande;
 
-  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
   @JoinColumn(name = "client")
   private ClientEntity client;
 
-  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
   @JoinColumn(name = "consultant")
   private ConsultantEntity consultant;
 
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "facture")
   private FactureEntity facture;
+  
 }

@@ -13,4 +13,6 @@ public interface PrestationApiService {
   public List<Prestation> getAllPrestations();
 
   public Prestation findById(long id);
+  
+  public void deleteById(long id);
 }

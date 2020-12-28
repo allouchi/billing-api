@@ -30,4 +30,5 @@ public class Facture {
   String moisFacture;  
   float quantite;
   String designation;
+  String numeroCommande;
 }

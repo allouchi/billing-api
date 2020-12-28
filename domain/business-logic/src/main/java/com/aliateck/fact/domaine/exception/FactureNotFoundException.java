@@ -10,7 +10,7 @@ public class FactureNotFoundException extends RuntimeException {
 	
 
 	public FactureNotFoundException(String message) {
-		super(message);		
+		super(String.format("No bills finded for id  %s", message));		
 	}	
 
 }

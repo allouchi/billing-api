@@ -9,7 +9,7 @@ public class ClientNotFoundException extends RuntimeException {
 	
 
 	public ClientNotFoundException(String message) {
-		super(message);		
+		super(String.format("No clients finded for id  %s", message));		
 	}	
 
 }

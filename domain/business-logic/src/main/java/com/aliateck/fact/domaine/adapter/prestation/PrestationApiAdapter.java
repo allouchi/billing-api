@@ -38,4 +38,9 @@ public class PrestationApiAdapter implements PrestationApiService {
   public Prestation findById(long id) {
     return prestationSpiService.findById(id);
   }
+
+@Override public void deleteById(long id){
+	prestationSpiService.deleteById(id);
+	
+}
 }

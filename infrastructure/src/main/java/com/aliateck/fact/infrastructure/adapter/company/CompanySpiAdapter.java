@@ -63,19 +63,13 @@ public class CompanySpiAdapter implements CompanySpiService {
   }
 
   @Override
-  public void removeCompany(Company company) {
-    CompanyEntity entity = companyMapper.fromDomainToEntity(company);
-    companyJpaRepository.delete(entity);
-  }
-
-  @Override
-  public List<Company> findAllCompanys() {
+  public List<Company> findAll() {
     List<CompanyEntity> listEnities = companyJpaRepository.findAll();
     return companyMapper.fromEntityToDomain(listEnities);
   }
 
   @Override
-  public Company findCompanyById(long id) {
+  public Company findById(long id) {
     Optional<CompanyEntity> entity = companyJpaRepository.findById(id);
 
     if (entity.isPresent()) {
@@ -86,7 +80,7 @@ public class CompanySpiAdapter implements CompanySpiService {
   }
 
   @Override
-  public Company findCompanyByReasonSocialIgnoreCase(String reasonSocial) {
+  public Company findByReasonSocialIgnoreCase(String reasonSocial) {
     Optional<CompanyEntity> entity = companyJpaRepository.findBySocialReasonIgnoreCase(
       reasonSocial
     );
@@ -100,12 +94,17 @@ public class CompanySpiAdapter implements CompanySpiService {
   }
 
   @Override
-  public Company findCompanyBySiret(String siret) {
+  public Company findBySiret(String siret) {
     Optional<CompanyEntity> entity = companyJpaRepository.findBySiret(siret);
     if (entity.isPresent()) {
       return companyMapper.fromEntityToDomain(entity.get());
     } else {
       throw new CompanyNotFoundException("Company not found with siret : " + siret);
     }
+  }
+
+  @Override
+  public void deleteById(long id) {
+    companyJpaRepository.deleteById(id);
   }
 }

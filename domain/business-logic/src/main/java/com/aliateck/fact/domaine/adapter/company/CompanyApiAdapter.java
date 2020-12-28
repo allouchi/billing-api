@@ -19,12 +19,7 @@ public class CompanyApiAdapter implements CompanyApiService {
   public Company addCompany(Company company) {
     return companySpiService.addCompany(company);
   }
-
-  @Override
-  public void removeCompany(Company company) {
-    companySpiService.removeCompany(company);
-  }
-
+  
   @Override
   public Company updateCompany(Company company) {
     return companySpiService.updateCompany(company);
@@ -32,21 +27,26 @@ public class CompanyApiAdapter implements CompanyApiService {
 
   @Override
   public List<Company> findAll() {
-    return companySpiService.findAllCompanys();
+    return companySpiService.findAll();
   }
 
   @Override
   public Company findById(long id) {
-    return companySpiService.findCompanyById(id);
+    return companySpiService.findById(id);
   }
 
   @Override
   public Company findByReasonSocialIgnoreCase(String reasonSocial) {
-    return companySpiService.findCompanyByReasonSocialIgnoreCase(reasonSocial);
+    return companySpiService.findByReasonSocialIgnoreCase(reasonSocial);
   }
 
   @Override
   public Company findBySiret(String siret) {
-    return companySpiService.findCompanyBySiret(siret);
+    return companySpiService.findBySiret(siret);
+  }
+
+  @Override
+  public void deleteById(long id) {
+    companySpiService.deleteById(id);
   }
 }

@@ -20,6 +20,6 @@ public class Prestation {
   Client client;
   Facture facture;
   int tarifHT;
-  long delaiPaiement;
+  long delaiPaiement;  
   String numeroCommande;
 }

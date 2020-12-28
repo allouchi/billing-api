@@ -13,14 +13,17 @@ import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 @Entity(name = "T_Client")
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@Data
+@Getter 
+@Setter
 @SuperBuilder
 //@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ClientEntity extends CommonEntity {
@@ -39,7 +42,7 @@ public class ClientEntity extends CommonEntity {
   @Column(name = "mail", unique = true, nullable = false)
   String mail;
 
-  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH })
   @JoinColumn(name = "adresse")
   private AdresseEntity adresseClient;
 }

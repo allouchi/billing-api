@@ -31,7 +31,8 @@ public class FactureMapper {
       .montantTVA(domain.getMontantTVA())
       .moisFacture(domain.getMoisFacture())
       .quantite(domain.getQuantite())
-      .designation(domain.getDesignation())      
+      .designation(domain.getDesignation())
+      .numeroCommande(domain.getNumeroCommande())
       .build();
   }
 
@@ -55,7 +56,8 @@ public class FactureMapper {
       .numeroFacture(entity.getNumeroFacture())
       .moisFacture(entity.getMoisFacture())
       .quantite(entity.getQuantite())
-      .designation(entity.getDesignation())      
+      .designation(entity.getDesignation()) 
+      .numeroCommande(entity.getNumeroCommande())
       .build();
   }
 

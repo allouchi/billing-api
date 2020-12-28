@@ -3,6 +3,7 @@ package com.aliateck.fact.application.controllers.prestation;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,9 +33,13 @@ public class PrestationController {
 
   @GetMapping(value = "/{siret}")
   public ResponseEntity<List<Prestation>> getAllPrestations(@PathVariable String siret) {
+	  log.info("get all prestations");
     Company company = companyApiService.findBySiret(siret);
-    System.out.println(company.getPrestations());
-    return ResponseEntity.ok(company.getPrestations());
+    if(company != null && !company.getPrestations().isEmpty()) {
+    	return ResponseEntity.ok(company.getPrestations());
+    }
+    return null;
+    
   }
 
   @PostMapping(value = "/{siret}")
@@ -56,4 +61,14 @@ public class PrestationController {
     Prestation presta = prestationApiService.updatePrestation(prestationRequest);
     return ResponseEntity.ok(presta);
   }
+  
+  
+  @DeleteMapping(value = "/{id}")
+  public boolean deletePrestation(
+    @PathVariable long id    
+  ) {
+    log.info("delete prestation by id :" + id);    
+    prestationApiService.deleteById(id);
+    return true;
+  } 
 }

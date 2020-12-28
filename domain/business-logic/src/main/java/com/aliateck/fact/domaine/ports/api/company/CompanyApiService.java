@@ -6,8 +6,6 @@ import java.util.List;
 public interface CompanyApiService {
   public Company addCompany(Company company);
 
-  public void removeCompany(Company company);
-
   public Company updateCompany(Company company);
 
   public List<Company> findAll();
@@ -17,4 +15,6 @@ public interface CompanyApiService {
   public Company findByReasonSocialIgnoreCase(String reasonSocial);
 
   public Company findBySiret(String siret);
+  
+  public void deleteById(long id);
 }

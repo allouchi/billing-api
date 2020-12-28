@@ -1,27 +1,33 @@
 package com.aliateck.fact.infrastructure.models;
 
-import com.aliateck.fact.infrastructure.models.common.CommonEntity;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import com.aliateck.fact.infrastructure.models.common.CommonEntity;
+
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 @Entity(name = "T_Company")
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter 
+@Setter
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
 @ToString
@@ -52,21 +58,21 @@ public class CompanyEntity extends CommonEntity {
   String numeroTva;
 
   @Column(name = "ape")
-  String ape;
+  String ape;  
 
-  @OneToOne(cascade = CascadeType.ALL)
+  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   @JoinColumn(name = "company")
   private AdresseEntity companyAdresse;
 
-  @OneToMany(cascade = CascadeType.ALL)
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JoinColumn(name = "company")
+  private List<ConsultantEntity> consultants;
+  
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   @JoinColumn(name = "company")
   private List<ClientEntity> clients;
 
-  @OneToMany(cascade = CascadeType.ALL)
-  @JoinColumn(name = "company")
-  private List<ConsultantEntity> consultants;
-
-  @OneToMany(cascade = CascadeType.ALL)
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   @JoinColumn(name = "company")
   private List<PrestationEntity> prestations;
 }

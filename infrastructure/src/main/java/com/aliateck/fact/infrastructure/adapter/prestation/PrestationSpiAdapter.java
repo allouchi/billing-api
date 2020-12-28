@@ -1,12 +1,5 @@
 package com.aliateck.fact.infrastructure.adapter.prestation;
 
-import java.util.List;
-import java.util.Optional;
-
-import javax.transaction.Transactional;
-
-import org.springframework.stereotype.Service;
-
 import com.aliateck.fact.domaine.business.object.Prestation;
 import com.aliateck.fact.domaine.common.edition.CalculerFactureService;
 import com.aliateck.fact.domaine.ports.spi.prestation.PrestationSpiService;
@@ -18,10 +11,13 @@ import com.aliateck.fact.infrastructure.models.PrestationEntity;
 import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
 import com.aliateck.fact.infrastructure.repository.facture.FactureJpaRepository;
 import com.aliateck.fact.infrastructure.repository.prestation.PrestationJpaRepository;
-
+import java.util.List;
+import java.util.Optional;
+import javax.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
@@ -40,7 +36,7 @@ public class PrestationSpiAdapter implements PrestationSpiService {
   @Override
   public Prestation addPrestation(Prestation prestation, String siret) {
     Optional<CompanyEntity> oCompany = companyJpaRepository.findBySiret(siret);
-    
+
     return oCompany
       .map(
         company -> {
@@ -53,7 +49,11 @@ public class PrestationSpiAdapter implements PrestationSpiService {
             .getPrestations()
             .stream()
             .filter(
-              c -> c.getNumeroCommande().equals(prestation.getNumeroCommande())
+              c ->
+                c
+                  .getClient()
+                  .getSocialReason()
+                  .equals(prestation.getClient().getSocialReason())
             )
             .findFirst()
             .orElseGet(null);
@@ -71,13 +71,15 @@ public class PrestationSpiAdapter implements PrestationSpiService {
 
   @Override
   public Prestation updatePrestation(Prestation prestation) {
-	PrestationEntity oPresta = null;		
-	Optional<PrestationEntity> oPrestation = prestationJpaRepository.findById(prestation.getId());	
-	
-	if(oPrestation.isPresent()  ) {
-		oPresta = prestationJpaRepository.saveAndFlush(oPrestation.get());				
-	}
-	return prestationMapper.fromEntityToDomain(oPresta);
+    PrestationEntity oPresta = null;
+    Optional<PrestationEntity> oPrestation = prestationJpaRepository.findById(
+      prestation.getId()
+    );
+
+    if (oPrestation.isPresent()) {
+      oPresta = prestationJpaRepository.saveAndFlush(oPrestation.get());
+    }
+    return prestationMapper.fromEntityToDomain(oPresta);
   }
 
   @Override
@@ -94,5 +96,10 @@ public class PrestationSpiAdapter implements PrestationSpiService {
   public List<Prestation> findAll() {
     List<PrestationEntity> entities = prestationJpaRepository.findAll();
     return prestationMapper.fromEntityToDomain(entities);
+  }
+
+  @Override
+  public void deleteById(long id) {
+    prestationJpaRepository.deleteById(id);
   }
 }

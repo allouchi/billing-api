@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,8 +29,13 @@ public class ClientController {
 
   @GetMapping(value = "/{siret}")
   public ResponseEntity<List<Client>> getAllClients(@PathVariable String siret) {
+	  log.info("get all clients");
     Company company = companyApiService.findBySiret(siret);
-    return ResponseEntity.ok(company.getClients());
+    if(company != null && !company.getClients().isEmpty() ) {
+    	 return ResponseEntity.ok(company.getClients());
+    }
+    return null;
+   
   }
 
   @PostMapping(value = "/{siret}")
@@ -40,4 +46,13 @@ public class ClientController {
     log.info("Create new client");
     return ResponseEntity.ok(clientApiService.addClient(clientRequest, siret));
   }
+  
+  @DeleteMapping(value = "/{id}")
+  public void deleteClient(
+    @PathVariable long id    
+  ) {
+    log.info("delete client by id :" + id);    
+    clientApiService.deleteById(id);
+    
+  } 
 }

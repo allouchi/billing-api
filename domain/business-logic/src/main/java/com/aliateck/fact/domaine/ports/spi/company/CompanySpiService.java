@@ -4,17 +4,17 @@ import com.aliateck.fact.domaine.business.object.Company;
 import java.util.List;
 
 public interface CompanySpiService {
-  public Company addCompany(Company company);
-
-  public void removeCompany(Company company);
+  public Company addCompany(Company company);  
 
   public Company updateCompany(Company company);
 
-  public List<Company> findAllCompanys();
+  public List<Company> findAll();
 
-  public Company findCompanyById(long id);
+  public Company findById(long id);
 
-  public Company findCompanyByReasonSocialIgnoreCase(String reasonSocial);
+  public Company findByReasonSocialIgnoreCase(String reasonSocial);
 
-  public Company findCompanyBySiret(String siret);
+  public Company findBySiret(String siret);
+  
+  public void deleteById(long siret);
 }

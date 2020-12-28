@@ -6,11 +6,11 @@ import java.util.List;
 public interface ClientSpiService {
   public Client addClient(Client client, String siret);
 
-  public void removeClient(Client client);
+  public void deleteClient(long id);
 
   public Client updateClient(Client client);
 
-  public List<Client> findAllClients();
+  public List<Client> findAll();
 
-  public Client findClientById(long id);
+  public Client findById(long id);
 }

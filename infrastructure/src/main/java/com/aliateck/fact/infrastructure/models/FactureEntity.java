@@ -9,12 +9,15 @@ import javax.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity(name = "T_Facture")
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter 
+@Setter
 @Builder
 //@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FactureEntity implements Serializable {
@@ -68,5 +71,9 @@ public class FactureEntity implements Serializable {
   
   @Column(name = "designation", nullable= false)
   String designation;
+  
+  @Column(name = "numeroCommande", nullable= false)
+  String numeroCommande;
+  
 
 }

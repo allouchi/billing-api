@@ -18,12 +18,7 @@ public class ClientApiAdapter implements ClientApiService {
   @Override
   public Client addClient(Client client, String siret) {
     return clientSpiService.addClient(client, siret);
-  }
-
-  @Override
-  public void deleteClient(Client client) {
-    clientSpiService.removeClient(client);
-  }
+  }  
 
   @Override
   public Client updateClient(Client client) {
@@ -32,11 +27,17 @@ public class ClientApiAdapter implements ClientApiService {
 
   @Override
   public List<Client> findAllClients() {
-    return clientSpiService.findAllClients();
+    return clientSpiService.findAll();
   }
 
   @Override
   public Client findById(long id) {
-    return clientSpiService.findClientById(id);
+    return clientSpiService.findById(id);
   }
+
+  @Override
+  public void deleteById(long id) {
+	  clientSpiService.deleteClient(id);
+  }
+
 }

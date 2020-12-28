@@ -3,6 +3,7 @@ package com.aliateck.fact.application.controllers.company;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,4 +49,13 @@ public class CompanyController {
 	 System.out.println(companyRequest.getCompanyAdresse());
 	 return companyApiService.addCompany(companyRequest);
   }
+  
+  @DeleteMapping(value = "/{id}")
+  public boolean deleteCompany(
+    @PathVariable long id    
+  ) {
+    log.info("delete company by id :" + id);    
+    companyApiService.deleteById(id);
+    return true;
+  } 
 }

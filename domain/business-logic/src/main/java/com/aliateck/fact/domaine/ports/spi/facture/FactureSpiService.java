@@ -8,6 +8,8 @@ public interface FactureSpiService {
   Facture addFacture(Facture facture, long prestationId, String numeroCommande);
 
   void deleteFacture(Facture facture);
+  
+  void deleteById(long id);
 
   Facture updateFacture(Facture facture);
 

@@ -16,7 +16,6 @@ public class PrestationMapper {
   ClientMapper clientMapper;
   ConsultantMapper consultantMapper;
 
-  FactureMapper factureMapper;
 
   public PrestationEntity fromDomainToEntity(Prestation domain) {
     if (domain == null) {
@@ -44,7 +43,7 @@ public class PrestationMapper {
       .client(clientMapper.fromEntityToDomain(entity.getClient()))
       .consultant(consultantMapper.fromEntityToDomain(entity.getConsultant()))
       .delaiPaiement(entity.getDelaiPaiement())
-      .tarifHT(entity.getTarifHT())  
+      .tarifHT(entity.getTarifHT()) 
       .numeroCommande(entity.getNumeroCommande())
       .build();
   }

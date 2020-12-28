@@ -50,6 +50,7 @@ public class FactureSpiAdapter implements FactureSpiService {
 		  PrestationEntity pEntity = oPrestation.get();		  
 		  Facture factureCaculee = calculerFactureService.calculerFacture( prestationMapper.fromEntityToDomain(pEntity), facture);
 		  pEntity.setFacture(factureMapper.fromDomainToEntity(factureCaculee));
+		  pEntity.setNumeroCommande(numeroCommande);
 		  PrestationEntity pSaved = prestationJpaRepository.saveAndFlush(pEntity);		 
 	      FactureEntity  fEntity = pSaved.getFacture();
 	      
@@ -59,8 +60,7 @@ public class FactureSpiAdapter implements FactureSpiService {
 					String endNumero[] = numeroFacture.split("-");
 					long oldNumero = Long.parseLong(endNumero[1]);
 					long newNumero = oldNumero + fEntity.getId().longValue();
-					fEntity.setNumeroFacture(String.valueOf(endNumero[0]+"-"+newNumero));
-					fEntity.setFactureStatus(FactureStatus.OUI.getCode());
+					fEntity.setNumeroFacture(String.valueOf(endNumero[0]+"-"+newNumero));					;
 					FactureEntity oEntity = factureJpaRepository.save(fEntity);
 					fDomain = factureMapper.fromEntityToDomain(oEntity);					
 				}
@@ -162,14 +162,11 @@ public class FactureSpiAdapter implements FactureSpiService {
 		if(oEntity.isPresent()) {
 			CompanyEntity entity = oEntity.get();
 			for(PrestationEntity presta : entity.getPrestations()){
-				listeFactures.add(presta.getFacture());
+				if(presta != null && presta.getFacture() != null) {
+					listeFactures.add(presta.getFacture());
+				}				
 			}
-		}
-		if (listeFactures.isEmpty()) {
-		      throw new FactureNotFoundException(
-		        "Factures not found"
-		      );
-		 }
+		}		
 		 return factureMapper.fromEntityToDomain(listeFactures);
 		}
 
@@ -200,5 +197,10 @@ public class FactureSpiAdapter implements FactureSpiService {
 //										.collect(Collectors.toList()))
 //								.orElse(Collections.emptyList()))
 //				.orElseThrow(() -> new CompanyNotFoundException(siret));
+	}
+
+	@Override 
+	public void deleteById(long id){
+		factureJpaRepository.deleteById(id);
 	}
 }

@@ -5,8 +5,8 @@ import java.util.List;
 
 public interface ClientApiService {
   public Client addClient(Client client, String siret);
-
-  public void deleteClient(Client client);
+  
+  public void deleteById(long id);
 
   public Client updateClient(Client client);
 

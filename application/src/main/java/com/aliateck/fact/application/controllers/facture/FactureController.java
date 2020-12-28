@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,11 +12,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aliateck.fact.config.HttpStatusProperties;
 import com.aliateck.fact.domaine.business.object.Facture;
+import com.aliateck.fact.domaine.exception.FactureNotFoundException;
 import com.aliateck.fact.domaine.ports.api.company.CompanyApiService;
 import com.aliateck.fact.domaine.ports.api.edition.EditionApiService;
 import com.aliateck.fact.domaine.ports.api.facture.FactureApiService;
 import com.aliateck.fact.domaine.ports.api.prestation.PrestationApiService;
+
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -32,18 +36,25 @@ public class FactureController {
   CompanyApiService companyApiService;
   PrestationApiService prestationApiService;
   EditionApiService editionApiService;
+  HttpStatusProperties httpStatus;	
 
   @GetMapping(value = "/{siret}")
   public List<Facture> findAllBySiret(
-    @PathVariable String siret
+    @PathVariable String siret) {
+	  
+    log.info("get all bills by siret");   
     
-  ) {
-    log.info("get all bills by siret");
-    return factureApiService.findAllBySiret(siret);
+     List<Facture> factures = factureApiService.findAllBySiret(siret);    
+    if(factures == null || factures.isEmpty()) {
+		//String message = String.format(httpStatus.getStatus(), ""); 
+		throw new FactureNotFoundException("Factures introuvables");
+	}
+    return factures;
+    
   }
   
   @PostMapping(value = "/{siret}/{prestationId}/{numeroCommande}")
-  public Map<String, Object> addFacture(
+  public Facture addFacture(
     @RequestBody Facture factureRequest,
     @PathVariable String siret,
     @PathVariable long prestationId,
@@ -55,7 +66,7 @@ public class FactureController {
     Map<String, Object> map = new HashMap<>();
     map.put("pdfByte", pdfByte);
     map.put("facture", facture);
-    return map;
+    return facture;
   }
 
   @GetMapping(value = "/{siret}/{idPrestation}")
@@ -66,6 +77,16 @@ public class FactureController {
     log.info("get all bills by prestation");
     return factureApiService.findAllByPrestation(siret, idPrestation);
   }
+  
+  
+  @DeleteMapping(value = "/{id}")
+  public boolean deleteFacture(
+    @PathVariable long id    
+  ) {
+    log.info("delete bill by id :" + id);    
+    factureApiService.deleteById(id);
+    return true;
+  } 
 
   
 }
