@@ -46,7 +46,7 @@ public class FactureController {
     
      List<Facture> factures = factureApiService.findAllBySiret(siret);    
     if(factures == null || factures.isEmpty()) {
-		//String message = String.format(httpStatus.getStatus(), ""); 
+		//String message = String.format(httpStatus.getStatus(), "");    	
 		throw new FactureNotFoundException("Factures introuvables");
 	}
     return factures;

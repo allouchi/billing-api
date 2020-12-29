@@ -29,9 +29,9 @@ public class CompanyController {
   
   
   @GetMapping(value = "/{siret}")
-  public ResponseEntity<Company> getCompany(@PathVariable String siret) {
+  public ResponseEntity<Company> findBySiret(@PathVariable String siret) {
     log.info("Find company by siret {}", siret);
-    Company company = companyApiService.findBySiret(siret);
+    Company company = companyApiService.findBySiret(siret);    
     return ResponseEntity.ok(company);
   }
   
