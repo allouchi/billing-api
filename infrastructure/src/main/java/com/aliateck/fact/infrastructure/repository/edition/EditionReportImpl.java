@@ -29,6 +29,7 @@ public class EditionReportImpl implements EditionReportService {
 	private static final String TYPE_FILE=".pdf";
 	private static final String FACTURE_LIBELLE="FACTURE ";
 	private static final String ESPACE_BLANC=" ";
+	private static final String TIRET=" - ";
 
   @Override
   public  byte[]  editerFacture(Company company, Prestation prestation, Facture facture) {	
@@ -62,10 +63,10 @@ public class EditionReportImpl implements EditionReportService {
 	    	float quantite = facture.getQuantite();
 	    	String communeDateEdition = adresseCompany.getCommune() + ", le " + dateFacturation;     	
 	    	String designation = facture.getDesignation();
-	    	String numeroCommande = facture.getNumeroCommande();  
+	    	 
 	    	// infos prestation
 	    	float tarifHT = prestation.getTarifHT();  
-	    	  	
+	    	String numeroCommande = prestation.getNumeroCommande();  	
 	    	
 	    	// infos client
 	    	Adresse adresseClient = prestation.getClient().getAdresseClient();    	
@@ -99,7 +100,7 @@ public class EditionReportImpl implements EditionReportService {
 	     
 	      String nameCompany[] = rsCompany.split(" ");     
 	      String libelleFichierFacture = FACTURE_LIBELLE 
-	      +  nameCompany[0] + " - " + rsClient + " de " + moisPrestation + ESPACE_BLANC 
+	      +  nameCompany[0] + TIRET + rsClient + " de " + moisPrestation + ESPACE_BLANC + numeroFacture.substring(0, 4) + TIRET
 	    		  + numeroFacture.split("-")[1];
 	      
 	      // - ExÃ©cution du rapport
@@ -111,7 +112,9 @@ public class EditionReportImpl implements EditionReportService {
 	     
 	    } catch (JRException e) {
 	    	log.debug("Problème lors de la génération du fichier pdf : "+ e.getMessage());
-	    }    
+	    } 
+	    
+	    log.info("********************* Fin de la génération du fichier pdf *********************");
 	    return pdfOfByte;
 	  }	 
   

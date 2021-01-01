@@ -8,7 +8,7 @@ public interface ClientApiService {
   
   public void deleteById(long id);
 
-  public Client updateClient(Client client);
+  public Client updateClient(Client client, String siret);
 
   public List<Client> findAllClients();
 

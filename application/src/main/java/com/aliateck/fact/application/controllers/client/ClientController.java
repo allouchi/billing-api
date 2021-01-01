@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,8 +35,7 @@ public class ClientController {
     if(company != null && !company.getClients().isEmpty() ) {
     	 return ResponseEntity.ok(company.getClients());
     }
-    return null;
-   
+    return null;   
   }
 
   @PostMapping(value = "/{siret}")
@@ -52,7 +52,15 @@ public class ClientController {
     @PathVariable long id    
   ) {
     log.info("delete client by id :" + id);    
-    clientApiService.deleteById(id);
-    
+    clientApiService.deleteById(id);    
+  } 
+  
+  @PutMapping(value = "/{siret}")
+  public void updateClient(
+    @PathVariable String siret,
+    @RequestBody Client clientRequest  
+  ) {
+    log.info("update client by id :" + clientRequest.getId());    
+    clientApiService.updateClient(clientRequest, siret);    
   } 
 }

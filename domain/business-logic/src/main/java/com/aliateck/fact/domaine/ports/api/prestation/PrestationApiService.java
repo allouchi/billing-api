@@ -8,7 +8,7 @@ public interface PrestationApiService {
 
   public void deletePrestation(Prestation prestation);
 
-  public Prestation updatePrestation(Prestation prestation);
+  public Prestation updatePrestation(Prestation prestation, String siret);
 
   public List<Prestation> getAllPrestations();
 

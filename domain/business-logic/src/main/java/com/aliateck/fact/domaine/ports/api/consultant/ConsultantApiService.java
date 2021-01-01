@@ -6,9 +6,9 @@ import java.util.List;
 public interface ConsultantApiService {
   public Consultant addConsultant(Consultant consultant, String siret);
 
-  public void deleteConsultant(Consultant consultant);
+  public void deleteById(Long id,  String siret);
 
-  public Consultant updateConsultant(Consultant consultant);
+  public Consultant updateConsultant(Consultant consultant, String siret);
 
   public List<Consultant> findAll();
 

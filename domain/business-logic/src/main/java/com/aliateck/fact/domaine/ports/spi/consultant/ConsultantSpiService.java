@@ -6,11 +6,11 @@ import java.util.List;
 public interface ConsultantSpiService {
   public Consultant addConsultant(Consultant consultant, String siret);
 
-  public void removeConsultant(Consultant consultant);
+  public void deleteById(Long id, String siret);
 
-  public Consultant updateConsultant(Consultant consultant);
+  public Consultant updateConsultant(Consultant consultant, String siret);
 
-  public List<Consultant> getAllConsultants();
+  public List<Consultant> findAll();
 
-  public Consultant getConsultantById(long id);
+  public Consultant findById(Long id);
 }

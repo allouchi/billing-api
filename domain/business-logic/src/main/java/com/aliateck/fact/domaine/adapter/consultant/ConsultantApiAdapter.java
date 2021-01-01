@@ -21,22 +21,22 @@ public class ConsultantApiAdapter implements ConsultantApiService {
   }
 
   @Override
-  public void deleteConsultant(Consultant consultant) {
-    consultantSpiService.removeConsultant(consultant);
+  public void deleteById(Long id, String siret) {
+    consultantSpiService.deleteById(id, siret);
   }
 
   @Override
-  public Consultant updateConsultant(Consultant consultant) {
-    return consultantSpiService.updateConsultant(consultant);
+  public Consultant updateConsultant(Consultant consultant, String siret) {
+    return consultantSpiService.updateConsultant(consultant, siret);
   }
 
   @Override
   public List<Consultant> findAll() {
-    return consultantSpiService.getAllConsultants();
+    return consultantSpiService.findAll();
   }
 
   @Override
   public Consultant findById(long id) {
-    return consultantSpiService.getConsultantById(id);
+    return consultantSpiService.findById(id);
   }
 }

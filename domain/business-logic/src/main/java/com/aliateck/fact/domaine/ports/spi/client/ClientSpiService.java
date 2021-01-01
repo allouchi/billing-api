@@ -8,7 +8,7 @@ public interface ClientSpiService {
 
   public void deleteClient(long id);
 
-  public Client updateClient(Client client);
+  public Client updateClient(Client client, String siret);
 
   public List<Client> findAll();
 

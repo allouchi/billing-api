@@ -21,8 +21,8 @@ public class PrestationApiAdapter implements PrestationApiService {
   } 
 
   @Override
-  public Prestation updatePrestation(Prestation prestation) {
-    return prestationSpiService.updatePrestation(prestation);
+  public Prestation updatePrestation(Prestation prestation, String siret) {
+    return prestationSpiService.updatePrestation(prestation, siret);
   }
   @Override
   public void deletePrestation(Prestation prestation) {

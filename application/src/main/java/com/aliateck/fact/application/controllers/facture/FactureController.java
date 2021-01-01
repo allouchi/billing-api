@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,10 +41,8 @@ public class FactureController {
 
   @GetMapping(value = "/{siret}")
   public List<Facture> findAllBySiret(
-    @PathVariable String siret) {
-	  
-    log.info("get all bills by siret");   
-    
+    @PathVariable String siret) {	  
+    log.info("get all bills by siret");     
      List<Facture> factures = factureApiService.findAllBySiret(siret);    
     if(factures == null || factures.isEmpty()) {
 		//String message = String.format(httpStatus.getStatus(), "");    	
@@ -60,13 +59,20 @@ public class FactureController {
     @PathVariable long prestationId,
     @PathVariable String numeroCommande
   ) {
-    log.info("Edit new bill");
-    Facture facture = factureApiService.addFacture(factureRequest, prestationId, numeroCommande);
-    byte[] pdfByte  = editionApiService.editerFacture(siret, prestationId, facture.getId());
-    Map<String, Object> map = new HashMap<>();
-    map.put("pdfByte", pdfByte);
-    map.put("facture", facture);
-    return facture;
+    log.info("Add new bill");
+    return factureApiService.addFacture(factureRequest, prestationId, numeroCommande);  
+  }
+  
+  @PutMapping(value = "/{siret}/{prestationId}")
+  public byte[] editerFacture(
+    @RequestBody Facture factureRequest,
+    @PathVariable String siret,
+    @PathVariable long prestationId
+    
+  ) {
+    log.info("Edit new bill");   
+    return editionApiService.editerFacture(siret, prestationId, factureRequest.getId()); 
+    
   }
 
   @GetMapping(value = "/{siret}/{idPrestation}")

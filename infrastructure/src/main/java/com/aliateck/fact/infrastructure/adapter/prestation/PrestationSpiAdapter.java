@@ -7,6 +7,7 @@ import com.aliateck.fact.infrastructure.mapper.CompanyMapper;
 import com.aliateck.fact.infrastructure.mapper.FactureMapper;
 import com.aliateck.fact.infrastructure.mapper.PrestationMapper;
 import com.aliateck.fact.infrastructure.models.CompanyEntity;
+import com.aliateck.fact.infrastructure.models.ConsultantEntity;
 import com.aliateck.fact.infrastructure.models.PrestationEntity;
 import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
 import com.aliateck.fact.infrastructure.repository.facture.FactureJpaRepository;
@@ -70,16 +71,20 @@ public class PrestationSpiAdapter implements PrestationSpiService {
   }
 
   @Override
-  public Prestation updatePrestation(Prestation prestation) {
-    PrestationEntity oPresta = null;
-    Optional<PrestationEntity> oPrestation = prestationJpaRepository.findById(
-      prestation.getId()
-    );
-
-    if (oPrestation.isPresent()) {
-      oPresta = prestationJpaRepository.saveAndFlush(oPrestation.get());
+  public Prestation updatePrestation(Prestation prestation, String siret) {
+    Optional<CompanyEntity> oCompnay = companyJpaRepository.findBySiret(siret);
+    if (oCompnay.isPresent()) {
+      CompanyEntity entity = oCompnay.get();
+      List<PrestationEntity> oPrestation = entity.getPrestations();
+      for (PrestationEntity c : oPrestation) {
+        if (c.getId().longValue() == prestation.getId().longValue()) {
+          PrestationEntity nEntity = prestationMapper.fromDomainToEntity(prestation);
+          PrestationEntity domain = prestationJpaRepository.save(nEntity);
+          return prestationMapper.fromEntityToDomain(domain);
+        }
+      }
     }
-    return prestationMapper.fromEntityToDomain(oPresta);
+    return null;
   }
 
   @Override

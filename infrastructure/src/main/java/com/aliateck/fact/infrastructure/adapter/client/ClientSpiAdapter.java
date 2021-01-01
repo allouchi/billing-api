@@ -48,20 +48,23 @@ public class ClientSpiAdapter implements ClientSpiService {
   }
 
   @Override
-  public void deleteClient(long id) {   
+  public void deleteClient(long id) {
     clientJpaRepository.deleteById(id);
   }
 
   @Override
-  public Client updateClient(Client client) {
-    ClientEntity entity = clientMapper.fromDomainToEntity(client);
-    Optional<ClientEntity> objBase = clientJpaRepository.findById(client.getId());
-    if (objBase.isPresent()) {
-      ClientEntity entityBase = objBase.get();
-      entityBase.setId(entity.getId());
-      entityBase.setSocialReason(entity.getSocialReason());     
-      ClientEntity domain = clientJpaRepository.save(entityBase);
-      return clientMapper.fromEntityToDomain(domain);
+  public Client updateClient(Client client, String siret) {
+    Optional<CompanyEntity> oCompnay = companyJpaRepository.findBySiret(siret);
+    if (oCompnay.isPresent()) {
+      CompanyEntity entity = oCompnay.get();
+      List<ClientEntity> oClient = entity.getClients();
+      for (ClientEntity c : oClient) {
+        if (c.getId().longValue() == client.getId().longValue()) {
+          ClientEntity nEntity = clientMapper.fromDomainToEntity(client);
+          ClientEntity domain = clientJpaRepository.save(nEntity);
+          return clientMapper.fromEntityToDomain(domain);
+        }
+      }
     }
     return null;
   }
@@ -81,4 +84,5 @@ public class ClientSpiAdapter implements ClientSpiService {
     }
     return client;
   }
+
 }
