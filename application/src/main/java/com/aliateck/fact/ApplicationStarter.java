@@ -46,19 +46,19 @@ public class ApplicationStarter implements CommandLineRunner {
   public void run(String... args) throws Exception {
     Adresse sbatecAdresse = Adresse
       .builder()
-      .voie("Boulevard National")
+      .rue("Boulevard National")
       .numero("111")
       .codePostal("92500")
-      .commune("Rueil-Malmaison")
+      .localite("Rueil-Malmaison")
       .pays("France")
       .build();
 
     Adresse clientAdresse = Adresse
       .builder()
-      .voie("Paroi nord de la Grande Arche")
+      .rue("Paroi nord de la Grande Arche")
       .numero("1")
       .codePostal("92044")
-      .commune("Paris la Defense")
+      .localite("Paris la Defense")
       .pays("France")
       .build();
 

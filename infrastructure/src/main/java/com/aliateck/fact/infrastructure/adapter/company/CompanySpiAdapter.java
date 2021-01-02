@@ -30,6 +30,10 @@ public class CompanySpiAdapter implements CompanySpiService {
 
   @Override
   public Company addCompany(Company company) {
+    if (company.getId() != null && company.getId().longValue() == 0) {
+      company.setId(null);
+    }
+
     CompanyEntity entity = companyMapper.fromDomainToEntity(company);
     CompanyEntity baseEntity = companyJpaRepository.save(entity);
     return companyMapper.fromEntityToDomain(baseEntity);

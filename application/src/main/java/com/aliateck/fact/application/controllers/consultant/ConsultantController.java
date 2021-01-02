@@ -56,8 +56,7 @@ public class ConsultantController {
     @PathVariable String siret
   ) {
     log.info("Update consultant by id : " + consultantRequest.getId());    
-    return ResponseEntity.ok( consultantApiService.updateConsultant(consultantRequest, siret));     
-    
+    return ResponseEntity.ok( consultantApiService.updateConsultant(consultantRequest, siret));    
   }
   
   @DeleteMapping(value = "/{siret}/{id}")

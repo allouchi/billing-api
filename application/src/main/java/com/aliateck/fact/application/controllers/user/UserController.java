@@ -42,10 +42,10 @@ public class UserController {
   public void addUser(@PathVariable String mail, @PathVariable String password) {
     Adresse sbatecAdresse = Adresse
       .builder()
-      .voie("Boulevard National")
+      .rue("Boulevard National")
       .numero("111")
       .codePostal("92500")
-      .commune("Rueil-Malmaison")
+      .localite("Rueil-Malmaison")
       .pays("France")
       .build();
 

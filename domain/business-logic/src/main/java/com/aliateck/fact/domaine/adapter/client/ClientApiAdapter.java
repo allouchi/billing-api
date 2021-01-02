@@ -26,8 +26,8 @@ public class ClientApiAdapter implements ClientApiService {
   }
 
   @Override
-  public List<Client> findAllClients() {
-    return clientSpiService.findAll();
+  public List<Client> findAllClients(String siret) {
+    return clientSpiService.findAll(siret);
   }
 
   @Override

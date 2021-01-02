@@ -26,16 +26,16 @@ import org.springframework.web.bind.annotation.RestController;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ClientController {
   private ClientApiService clientApiService;
-  private CompanyApiService companyApiService;
-
+  
   @GetMapping(value = "/{siret}")
   public ResponseEntity<List<Client>> getAllClients(@PathVariable String siret) {
 	  log.info("get all clients");
-    Company company = companyApiService.findBySiret(siret);
-    if(company != null && !company.getClients().isEmpty() ) {
-    	 return ResponseEntity.ok(company.getClients());
-    }
-    return null;   
+	  List<Client> clients = clientApiService.findAllClients(siret);
+	  if(clients != null) {
+		  log.info("nb clients : " + clients.size());
+		  return ResponseEntity.ok(clients); 
+	  }
+	  return null;	     
   }
 
   @PostMapping(value = "/{siret}")

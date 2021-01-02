@@ -17,9 +17,8 @@ import lombok.experimental.FieldDefaults;
 public class Adresse {
   Long id; 
   String numero;
-  String voie;
-  String complementAdresse;
+  String rue;
   String codePostal;
-  String commune;
+  String localite;
   String pays;
 }

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report" pageWidth="595" pageHeight="842" columnWidth="435" leftMargin="80" rightMargin="80" topMargin="30" bottomMargin="30" uuid="ebdfb22f-7910-4931-a885-ebc871ef36bc">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="144"/>
+	<property name="ireport.y" value="291"/>
 	<parameter name="rs_company" class="java.lang.String"/>
 	<parameter name="numero_siret" class="java.lang.String"/>
 	<parameter name="adresse_company" class="java.lang.String"/>
@@ -23,6 +23,7 @@
 	<parameter name="tarifHT" class="java.lang.Float"/>
 	<parameter name="commune_company" class="java.lang.String"/>
 	<parameter name="designation" class="java.lang.String"/>
+	<parameter name="delai_paiement" class="java.lang.Long"/>
 	<title>
 		<band height="769">
 			<textField>
@@ -152,11 +153,11 @@
 				<text><![CDATA[- APE :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="540" width="429" height="32" uuid="ad2b40d5-a380-4f6f-b8ae-9bd1efaef2a2"/>
+				<reportElement x="0" y="540" width="429" height="17" uuid="ad2b40d5-a380-4f6f-b8ae-9bd1efaef2a2"/>
 				<textElement>
 					<font fontName="Calibri" size="11"/>
 				</textElement>
-				<text><![CDATA[Le règlement sera réalisé à l'une de ces dates : 10, 20 et dernier jour de chaque mois, suivant l'expiration d'un délai de 60 jours suivant la réception de la facture.]]></text>
+				<text><![CDATA[Le règlement sera réalisé à l'une de ces dates : 10, 20 et dernier jour de chaque mois,]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="516" width="127" height="20" uuid="d457e477-5cb0-4d11-926a-84d6db12649b"/>
@@ -173,7 +174,7 @@
 				<text><![CDATA[Coordonnées bancaires pour les règlements par virement]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="649" width="427" height="26" uuid="05bf13d3-1600-4290-828e-6a171f81f827"/>
+				<reportElement x="1" y="644" width="427" height="26" uuid="05bf13d3-1600-4290-828e-6a171f81f827"/>
 				<textElement>
 					<font fontName="Arial" size="10"/>
 				</textElement>
@@ -237,7 +238,7 @@ BIC: PSSTFRPPSCE]]></text>
 				<textFieldExpression><![CDATA[$P{mois_facture}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="269" y="291" width="26" height="20" uuid="dcc926f0-47c1-4703-8164-2bd1088961a0"/>
+				<reportElement x="262" y="291" width="26" height="20" uuid="dcc926f0-47c1-4703-8164-2bd1088961a0"/>
 				<text><![CDATA[Jour]]></text>
 			</staticText>
 			<textField pattern="#,##0.00¤">
@@ -303,6 +304,27 @@ BIC: PSSTFRPPSCE]]></text>
 					<font fontName="Arial" size="14" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{numero_facture}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="557" width="159" height="17" uuid="343f4d8e-0b33-4a23-98bf-1c24ae54da2c"/>
+				<textElement>
+					<font fontName="Calibri" size="11"/>
+				</textElement>
+				<text><![CDATA[suivant l'expiration d'un délai de]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="172" y="557" width="218" height="17" uuid="1cdf7b82-f1d2-4d9c-82de-c651305fa072"/>
+				<textElement>
+					<font fontName="Calibri" size="11"/>
+				</textElement>
+				<text><![CDATA[ jours suivant la réception de la facture.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="160" y="556" width="14" height="16" uuid="84cce8de-92f3-4efd-b259-c6afb7296cb4"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{delai_paiement}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

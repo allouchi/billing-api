@@ -45,8 +45,8 @@ public class EditionReportImpl implements EditionReportService {
 	    	String rsCompany = company.getSocialReason();
 	    	String statutCompany = company.getStatus();
 	    	Adresse adresseCompany = company.getCompanyAdresse();
-	    	String adresseCompleteCompany = adresseCompany.getNumero() + " " + adresseCompany.getVoie() + "\n"    			
-	    			+ adresseCompany.getCodePostal() + " " + adresseCompany.getCommune() + "\n"
+	    	String adresseCompleteCompany = adresseCompany.getNumero() + " " + adresseCompany.getRue() + "\n"    			
+	    			+ adresseCompany.getCodePostal() + " " + adresseCompany.getLocalite() + "\n"
 	    			+ adresseCompany.getPays();
 	    	String numeroRcs = company.getRcsName();
 	    	String numeroSiret = company.getSiret();
@@ -61,17 +61,17 @@ public class EditionReportImpl implements EditionReportService {
 	    	float montantTTC = facture.getPrixTotalTTC();    	
 	    	float montantTva = facture.getMontantTVA();
 	    	float quantite = facture.getQuantite();
-	    	String communeDateEdition = adresseCompany.getCommune() + ", le " + dateFacturation;     	
+	    	String communeDateEdition = adresseCompany.getLocalite() + ", le " + dateFacturation;     	
 	    	String designation = facture.getDesignation();
 	    	 
 	    	// infos prestation
 	    	float tarifHT = prestation.getTarifHT();  
 	    	String numeroCommande = prestation.getNumeroCommande();  	
-	    	
+	    	long delaiPaiement  = prestation.getDelaiPaiement();
 	    	// infos client
 	    	Adresse adresseClient = prestation.getClient().getAdresseClient();    	
-	    	String adresseCompleteClient = adresseClient.getNumero() + " " + adresseClient.getVoie() + "\n"    			
-	    			+ adresseClient.getCodePostal() + " " + adresseClient.getCommune() + "\n"
+	    	String adresseCompleteClient = adresseClient.getNumero() + " " + adresseClient.getRue() + "\n"    			
+	    			+ adresseClient.getCodePostal() + " " + adresseClient.getLocalite() + "\n"
 	    			+ adresseClient.getPays();    	
 	    	String rsClient = prestation.getClient().getSocialReason();    	
 
@@ -97,6 +97,7 @@ public class EditionReportImpl implements EditionReportService {
 	      parameters.put("numero_facture", numeroFacture);
 	      parameters.put("commune_company", communeDateEdition );  
 	      parameters.put("designation", designation);
+	      parameters.put("delai_paiement", delaiPaiement);
 	     
 	      String nameCompany[] = rsCompany.split(" ");     
 	      String libelleFichierFacture = FACTURE_LIBELLE 
@@ -109,12 +110,12 @@ public class EditionReportImpl implements EditionReportService {
 	      JasperExportManager.exportReportToPdfFile(jasperPrint, PATH_OUTPUT+libelleFichierFacture+TYPE_FILE); 
 	      
 	       pdfOfByte = JasperExportManager.exportReportToPdf(jasperPrint);
+	       log.info("********************* Fin de la génération du fichier pdf *********************");
 	     
 	    } catch (JRException e) {
-	    	log.debug("Problème lors de la génération du fichier pdf : "+ e.getMessage());
-	    } 
-	    
-	    log.info("********************* Fin de la génération du fichier pdf *********************");
+	    	log.info("Problème lors de la génération du fichier pdf : "+ e.getMessage());
+	    } 	    
+	   
 	    return pdfOfByte;
 	  }	 
   

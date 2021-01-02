@@ -3,6 +3,7 @@ package com.aliateck.fact.infrastructure.adapter.consultant;
 import com.aliateck.fact.domaine.business.object.Consultant;
 import com.aliateck.fact.domaine.ports.spi.consultant.ConsultantSpiService;
 import com.aliateck.fact.infrastructure.mapper.ConsultantMapper;
+import com.aliateck.fact.infrastructure.models.ClientEntity;
 import com.aliateck.fact.infrastructure.models.CompanyEntity;
 import com.aliateck.fact.infrastructure.models.ConsultantEntity;
 import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
@@ -27,25 +28,28 @@ public class ConsultantSpiAdapter implements ConsultantSpiService {
 
   @Override
   public Consultant addConsultant(Consultant consultant, String siret) {
-    Optional<CompanyEntity> oCompany = companyJpaRepository.findBySiret(siret);
-    return oCompany
-      .map(
-        company -> {
-          List<ConsultantEntity> consultants = company.getConsultants();
-          ConsultantEntity entity = consultantMapper.fromDomainToEntity(consultant);
-          consultants.add(entity);
-          company.setConsultants(consultants);
-          companyJpaRepository.save(company);
-          ConsultantEntity savedConsultant = company
-            .getConsultants()
-            .stream()
-            .filter(c -> c.getMail().equalsIgnoreCase(consultant.getMail()))
-            .findFirst()
-            .orElseGet(null);
-          return consultantMapper.fromEntityToDomain(savedConsultant);
-        }
-      )
-      .orElse(null);
+	  if(consultant.getId()!= null && consultant.getId().longValue() == 0) {
+		  consultant.setId(null);  
+	  }
+	  List<ConsultantEntity> consultants = new ArrayList<>();
+      ConsultantEntity entity = consultantMapper.fromDomainToEntity(consultant);      
+	  Optional<CompanyEntity> oCompany = companyJpaRepository.findBySiret(siret);
+	  
+	    if (oCompany.isPresent()) {	
+	      CompanyEntity cEntity = oCompany.get();
+	      consultants.add(entity);	      
+	      cEntity.setConsultants(consultants);
+	      CompanyEntity cEntitySaved = companyJpaRepository.saveAndFlush(cEntity);
+	      List<ConsultantEntity> savedConsultants = cEntitySaved.getConsultants();
+	      if (savedConsultants != null && !savedConsultants.isEmpty()) {
+	        for (ConsultantEntity c : savedConsultants) {
+	          if (c.getMail().equals(consultant.getMail())) {
+	            return consultantMapper.fromEntityToDomain(c);
+	          }
+	        }
+	      }
+	    }
+	    return null;
   }
 
   @Override

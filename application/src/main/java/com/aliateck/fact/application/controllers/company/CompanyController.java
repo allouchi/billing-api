@@ -45,8 +45,7 @@ public class CompanyController {
 
   @PostMapping
   public Company addCompany(@RequestBody Company companyRequest) {
-	 log.info("Create new company");
-	 System.out.println(companyRequest.getCompanyAdresse());
+	 log.info("Create new company");	
 	 return companyApiService.addCompany(companyRequest);
   }
   

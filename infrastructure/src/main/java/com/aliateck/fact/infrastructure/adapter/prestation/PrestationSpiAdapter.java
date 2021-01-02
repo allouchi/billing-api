@@ -1,24 +1,24 @@
 package com.aliateck.fact.infrastructure.adapter.prestation;
 
-import com.aliateck.fact.domaine.business.object.Prestation;
-import com.aliateck.fact.domaine.common.edition.CalculerFactureService;
-import com.aliateck.fact.domaine.ports.spi.prestation.PrestationSpiService;
-import com.aliateck.fact.infrastructure.mapper.CompanyMapper;
-import com.aliateck.fact.infrastructure.mapper.FactureMapper;
-import com.aliateck.fact.infrastructure.mapper.PrestationMapper;
-import com.aliateck.fact.infrastructure.models.CompanyEntity;
-import com.aliateck.fact.infrastructure.models.ConsultantEntity;
-import com.aliateck.fact.infrastructure.models.PrestationEntity;
-import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
-import com.aliateck.fact.infrastructure.repository.facture.FactureJpaRepository;
-import com.aliateck.fact.infrastructure.repository.prestation.PrestationJpaRepository;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
+import com.aliateck.fact.domaine.business.object.Prestation;
+import com.aliateck.fact.domaine.ports.spi.prestation.PrestationSpiService;
+import com.aliateck.fact.infrastructure.mapper.PrestationMapper;
+import com.aliateck.fact.infrastructure.models.CompanyEntity;
+import com.aliateck.fact.infrastructure.models.PrestationEntity;
+import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
+import com.aliateck.fact.infrastructure.repository.prestation.PrestationJpaRepository;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
@@ -28,40 +28,31 @@ public class PrestationSpiAdapter implements PrestationSpiService {
   PrestationJpaRepository prestationJpaRepository;
   CompanyJpaRepository companyJpaRepository;
   PrestationMapper prestationMapper;
-  //EditionFactureService editionFactureService;
-  CalculerFactureService calculerFactureService;
-  FactureJpaRepository factureJpaRepository;
-  FactureMapper factureMapper;
-  CompanyMapper companyMapper;
 
   @Override
   public Prestation addPrestation(Prestation prestation, String siret) {
-    Optional<CompanyEntity> oCompany = companyJpaRepository.findBySiret(siret);
+    if (prestation.getId() != null && prestation.getId().longValue() == 0) {
+      prestation.setId(null);
+    }
+    List<PrestationEntity> prestations = new ArrayList<>();
+    PrestationEntity entity = prestationMapper.fromDomainToEntity(prestation);
 
-    return oCompany
-      .map(
-        company -> {
-          List<PrestationEntity> prestations = company.getPrestations();
-          PrestationEntity entity = prestationMapper.fromDomainToEntity(prestation);
-          prestations.add(entity);
-          company.setPrestations(prestations);
-          companyJpaRepository.save(company);
-          PrestationEntity savedPrestation = company
-            .getPrestations()
-            .stream()
-            .filter(
-              c ->
-                c
-                  .getClient()
-                  .getSocialReason()
-                  .equals(prestation.getClient().getSocialReason())
-            )
-            .findFirst()
-            .orElseGet(null);
-          return prestationMapper.fromEntityToDomain(savedPrestation);
+    Optional<CompanyEntity> oCompany = companyJpaRepository.findBySiret(siret);
+    if (oCompany.isPresent()) {      
+      prestations.add(entity);
+      CompanyEntity cEntity = oCompany.get();
+      cEntity.setPrestations(prestations);
+      CompanyEntity cEntitySaved = companyJpaRepository.save(cEntity);      
+      List<PrestationEntity> savedPrestations = cEntitySaved.getPrestations();
+      if (savedPrestations != null && !savedPrestations.isEmpty()) {
+        for (PrestationEntity c : savedPrestations) {
+          if (c.getNumeroCommande().equals(prestation.getNumeroCommande())) {
+            return prestationMapper.fromEntityToDomain(c);
+          }
         }
-      )
-      .orElse(null);
+      }
+    }
+    return null;
   }
 
   @Override

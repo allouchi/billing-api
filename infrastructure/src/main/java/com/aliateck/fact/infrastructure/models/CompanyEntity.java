@@ -57,19 +57,31 @@ public class CompanyEntity extends CommonEntity {
   @Column(name = "ape")
   String ape;
 
-  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @OneToOne(
+    fetch = FetchType.LAZY,
+    cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }
+  )
   @JoinColumn(name = "company")
   private AdresseEntity companyAdresse;
 
-  @OneToMany(fetch = FetchType.LAZY)
+  @OneToMany(
+    fetch = FetchType.LAZY,
+    cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }
+  )
   @JoinColumn(name = "company")
   private List<ConsultantEntity> consultants;
 
-  @OneToMany(fetch = FetchType.LAZY)
+  @OneToMany(
+    fetch = FetchType.LAZY,
+    cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }
+  )
   @JoinColumn(name = "company")
   private List<ClientEntity> clients;
 
-  @OneToMany(fetch = FetchType.LAZY)
+  @OneToMany(
+    fetch = FetchType.LAZY,
+    cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }
+  )
   @JoinColumn(name = "company")
   private List<PrestationEntity> prestations;
 }

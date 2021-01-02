@@ -16,14 +16,13 @@ public class AdresseMapper {
     return AdresseEntity
       .builder()      
       .numero(domain.getNumero())
-      .voie(domain.getVoie())
-      .complementAdresse(domain.getComplementAdresse())
+      .rue(domain.getRue())
       .codePostal(domain.getCodePostal())
-      .commune(domain.getCommune())
+      .localite(domain.getLocalite())
       .pays(domain.getPays())
       .build();
   }
-
+  
   public Adresse fromEntityToDomain(AdresseEntity entity) {
 	  if(entity == null) {
 		  return null;
@@ -31,10 +30,9 @@ public class AdresseMapper {
     return Adresse
       .builder()      
       .numero(entity.getNumero())
-      .voie(entity.getVoie())
-      .complementAdresse(entity.getComplementAdresse())
+      .rue(entity.getRue())
       .codePostal(entity.getCodePostal())
-      .commune(entity.getCommune())
+      .localite(entity.getLocalite())
       .pays(entity.getPays())
       .build();
   }

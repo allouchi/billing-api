@@ -38,11 +38,15 @@ public class FactureSpiAdapter implements FactureSpiService {
   CompanyJpaRepository companyJpaRepository; 
   CalculerFactureService calculerFactureService;
   FactureMapper factureMapper;
-  CompanyMapper companyMapper;
   PrestationMapper prestationMapper;
 
   @Override
-  public Facture addFacture(Facture facture, long prestationId, String numeroCommande) {	 
+  public Facture addFacture(Facture facture, long prestationId, String numeroCommande) {	
+	  
+	  if (facture.getId() != null && facture.getId().longValue() == 0) {
+		  facture.setId(null);
+	  }
+	  
 	  Facture fDomain = null;	  
 	  Optional<PrestationEntity> oPrestation = prestationJpaRepository.findById(prestationId);
 	  

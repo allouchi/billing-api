@@ -10,7 +10,7 @@ public interface ClientApiService {
 
   public Client updateClient(Client client, String siret);
 
-  public List<Client> findAllClients();
+  public List<Client> findAllClients(String siret);
 
   public Client findById(long id);
 }

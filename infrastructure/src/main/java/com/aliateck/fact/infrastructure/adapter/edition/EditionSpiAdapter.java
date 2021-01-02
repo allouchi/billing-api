@@ -48,13 +48,15 @@ public class EditionSpiAdapter implements EditionSpiService {
         ) {
         	
           Optional<FactureEntity> oFacture = factureJpaRepository.findById(factureId);
-          FactureEntity eFacture = oFacture.get();
-          eFacture.setFactureStatus(FactureStatus.OUI.getCode());
-          FactureEntity bFacture  = factureJpaRepository.save(eFacture);
-          Company company = companyMapper.fromEntityToDomain(oEntity.get());
-          Prestation prestation = prestationMapper.fromEntityToDomain(presta);
-          Facture facture = factureMapper.fromEntityToDomain(bFacture);
-          return editionReportService.editerFacture(company, prestation, facture);
+          if(oFacture.isPresent()) {
+        	  FactureEntity eFacture = oFacture.get();
+              eFacture.setFactureStatus(FactureStatus.OUI.getCode());
+              FactureEntity bFacture  = factureJpaRepository.save(eFacture);
+              Company company = companyMapper.fromEntityToDomain(oEntity.get());
+              Prestation prestation = prestationMapper.fromEntityToDomain(presta);
+              Facture facture = factureMapper.fromEntityToDomain(bFacture);
+              return editionReportService.editerFacture(company, prestation, facture);  
+          }         
         }
       }
     }

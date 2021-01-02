@@ -1,12 +1,16 @@
 package com.aliateck.fact.infrastructure.adapter.client;
 
+import com.aliateck.fact.domaine.business.object.Adresse;
 import com.aliateck.fact.domaine.business.object.Client;
 import com.aliateck.fact.domaine.ports.spi.client.ClientSpiService;
+import com.aliateck.fact.infrastructure.mapper.AdresseMapper;
 import com.aliateck.fact.infrastructure.mapper.ClientMapper;
+import com.aliateck.fact.infrastructure.models.AdresseEntity;
 import com.aliateck.fact.infrastructure.models.ClientEntity;
 import com.aliateck.fact.infrastructure.models.CompanyEntity;
 import com.aliateck.fact.infrastructure.repository.client.ClientJpaRepository;
 import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
@@ -23,28 +27,34 @@ public class ClientSpiAdapter implements ClientSpiService {
   ClientJpaRepository clientJpaRepository;
   CompanyJpaRepository companyJpaRepository;
   ClientMapper clientMapper;
+  AdresseMapper addresseMapper;
 
   @Override
   public Client addClient(Client client, String siret) {
+    if (client.getId() != null && client.getId().longValue() == 0) {
+      client.setId(null);
+    }
+
+    List<ClientEntity> clients = new ArrayList<>();
+    ClientEntity entity = clientMapper.fromDomainToEntity(client);
+    
     Optional<CompanyEntity> oCompany = companyJpaRepository.findBySiret(siret);
-    return oCompany
-      .map(
-        company -> {
-          List<ClientEntity> clients = company.getClients();
-          ClientEntity entity = clientMapper.fromDomainToEntity(client);
-          clients.add(entity);
-          company.setClients(clients);
-          companyJpaRepository.save(company);
-          ClientEntity savedClient = company
-            .getClients()
-            .stream()
-            .filter(c -> c.getSocialReason().equalsIgnoreCase(client.getSocialReason()))
-            .findFirst()
-            .orElseGet(null);
-          return clientMapper.fromEntityToDomain(savedClient);
+    if (oCompany.isPresent()) {
+     
+      clients.add(entity);
+      CompanyEntity cEntity = oCompany.get();
+      cEntity.setClients(clients);
+      CompanyEntity cEntitySaved = companyJpaRepository.saveAndFlush(cEntity);
+      List<ClientEntity> savedClients = cEntitySaved.getClients();
+      if (savedClients != null && !savedClients.isEmpty()) {
+        for (ClientEntity c : savedClients) {
+          if (c.getMail().equals(client.getMail())) {
+            return clientMapper.fromEntityToDomain(c);
+          }
         }
-      )
-      .orElse(null);
+      }
+    }
+    return null;
   }
 
   @Override
@@ -55,12 +65,15 @@ public class ClientSpiAdapter implements ClientSpiService {
   @Override
   public Client updateClient(Client client, String siret) {
     Optional<CompanyEntity> oCompnay = companyJpaRepository.findBySiret(siret);
+    Adresse newAdresse = client.getAdresseClient();
+    AdresseEntity newEntityAdresse = addresseMapper.fromDomainToEntity(newAdresse);
     if (oCompnay.isPresent()) {
       CompanyEntity entity = oCompnay.get();
       List<ClientEntity> oClient = entity.getClients();
-      for (ClientEntity c : oClient) {
-        if (c.getId().longValue() == client.getId().longValue()) {
+      for (ClientEntity cEntity : oClient) {
+        if (cEntity.getId().longValue() == client.getId().longValue()) {
           ClientEntity nEntity = clientMapper.fromDomainToEntity(client);
+          cEntity.setAdresseClient(newEntityAdresse);
           ClientEntity domain = clientJpaRepository.save(nEntity);
           return clientMapper.fromEntityToDomain(domain);
         }
@@ -70,9 +83,14 @@ public class ClientSpiAdapter implements ClientSpiService {
   }
 
   @Override
-  public List<Client> findAll() {
-    List<ClientEntity> clientsEntity = clientJpaRepository.findAll();
-    return clientMapper.fromEntityToDomain(clientsEntity);
+  public List<Client> findAll(String siret) {
+    Optional<CompanyEntity> oCompnay = companyJpaRepository.findBySiret(siret);
+    if (oCompnay.isPresent()) {
+      CompanyEntity entity = oCompnay.get();
+      List<ClientEntity> oClient = entity.getClients();
+      return clientMapper.fromEntityToDomain(oClient);
+    }
+    return null;
   }
 
   @Override
@@ -84,5 +102,4 @@ public class ClientSpiAdapter implements ClientSpiService {
     }
     return client;
   }
-
 }
