@@ -63,6 +63,7 @@ public class EditionReportImpl implements EditionReportService {
 	    	float quantite = facture.getQuantite();
 	    	String communeDateEdition = adresseCompany.getLocalite() + ", le " + dateFacturation;     	
 	    	String designation = facture.getDesignation();
+	    	String clientPrestation = facture.getClientPrestation();
 	    	 
 	    	// infos prestation
 	    	float tarifHT = prestation.getTarifHT();  
@@ -98,7 +99,8 @@ public class EditionReportImpl implements EditionReportService {
 	      parameters.put("commune_company", communeDateEdition );  
 	      parameters.put("designation", designation);
 	      parameters.put("delai_paiement", delaiPaiement);
-	     
+	      parameters.put("client_prestation", clientPrestation);
+	      
 	      String nameCompany[] = rsCompany.split(" ");     
 	      String libelleFichierFacture = FACTURE_LIBELLE 
 	      +  nameCompany[0] + TIRET + rsClient + " de " + moisPrestation + ESPACE_BLANC + numeroFacture.substring(0, 4) + TIRET

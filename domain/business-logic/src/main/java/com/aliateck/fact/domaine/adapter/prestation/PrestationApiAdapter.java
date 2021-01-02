@@ -30,8 +30,8 @@ public class PrestationApiAdapter implements PrestationApiService {
   }
 
   @Override
-  public List<Prestation> getAllPrestations() {
-    return prestationSpiService.findAll();
+  public List<Prestation> findAll(String siret) {
+    return prestationSpiService.findAll(siret);
   }
 
   @Override

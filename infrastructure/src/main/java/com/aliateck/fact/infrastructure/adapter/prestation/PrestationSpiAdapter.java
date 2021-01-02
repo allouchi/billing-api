@@ -1,13 +1,5 @@
 package com.aliateck.fact.infrastructure.adapter.prestation;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import javax.transaction.Transactional;
-
-import org.springframework.stereotype.Service;
-
 import com.aliateck.fact.domaine.business.object.Prestation;
 import com.aliateck.fact.domaine.ports.spi.prestation.PrestationSpiService;
 import com.aliateck.fact.infrastructure.mapper.PrestationMapper;
@@ -15,10 +7,15 @@ import com.aliateck.fact.infrastructure.models.CompanyEntity;
 import com.aliateck.fact.infrastructure.models.PrestationEntity;
 import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
 import com.aliateck.fact.infrastructure.repository.prestation.PrestationJpaRepository;
-
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import javax.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
@@ -38,11 +35,11 @@ public class PrestationSpiAdapter implements PrestationSpiService {
     PrestationEntity entity = prestationMapper.fromDomainToEntity(prestation);
 
     Optional<CompanyEntity> oCompany = companyJpaRepository.findBySiret(siret);
-    if (oCompany.isPresent()) {      
+    if (oCompany.isPresent()) {
       prestations.add(entity);
       CompanyEntity cEntity = oCompany.get();
       cEntity.setPrestations(prestations);
-      CompanyEntity cEntitySaved = companyJpaRepository.save(cEntity);      
+      CompanyEntity cEntitySaved = companyJpaRepository.save(cEntity);
       List<PrestationEntity> savedPrestations = cEntitySaved.getPrestations();
       if (savedPrestations != null && !savedPrestations.isEmpty()) {
         for (PrestationEntity c : savedPrestations) {
@@ -89,9 +86,13 @@ public class PrestationSpiAdapter implements PrestationSpiService {
   }
 
   @Override
-  public List<Prestation> findAll() {
-    List<PrestationEntity> entities = prestationJpaRepository.findAll();
-    return prestationMapper.fromEntityToDomain(entities);
+  public List<Prestation> findAll(String siret) {
+    Optional<CompanyEntity> oCompnay = companyJpaRepository.findBySiret(siret);
+    if (oCompnay.isPresent()) {
+      CompanyEntity entity = oCompnay.get();
+      return prestationMapper.fromEntityToDomain(entity.getPrestations());
+    }
+    return Collections.emptyList();
   }
 
   @Override

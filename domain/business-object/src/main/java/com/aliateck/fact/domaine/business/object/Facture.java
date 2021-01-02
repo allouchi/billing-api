@@ -31,4 +31,5 @@ public class Facture {
   float quantite;
   String designation;
   String numeroCommande;
+  String clientPrestation;
 }

@@ -1,8 +1,6 @@
 package com.aliateck.fact.application.controllers.facture;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,11 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aliateck.fact.config.HttpStatusProperties;
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.exception.FactureNotFoundException;
-import com.aliateck.fact.domaine.ports.api.company.CompanyApiService;
 import com.aliateck.fact.domaine.ports.api.edition.EditionApiService;
 import com.aliateck.fact.domaine.ports.api.facture.FactureApiService;
-import com.aliateck.fact.domaine.ports.api.prestation.PrestationApiService;
-
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -34,10 +29,8 @@ import lombok.extern.slf4j.Slf4j;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FactureController {
   FactureApiService factureApiService;
-  CompanyApiService companyApiService;
-  PrestationApiService prestationApiService;
   EditionApiService editionApiService;
-  HttpStatusProperties httpStatus;	
+  //HttpStatusProperties httpStatus;	
 
   @GetMapping(value = "/{siret}")
   public List<Facture> findAllBySiret(
@@ -52,15 +45,14 @@ public class FactureController {
     
   }
   
-  @PostMapping(value = "/{siret}/{prestationId}/{numeroCommande}")
+  @PostMapping(value = "/{siret}/{prestationId}")
   public Facture addFacture(
     @RequestBody Facture factureRequest,
     @PathVariable String siret,
-    @PathVariable long prestationId,
-    @PathVariable String numeroCommande
+    @PathVariable long prestationId    
   ) {
-    log.info("Add new bill");
-    return factureApiService.addFacture(factureRequest, prestationId, numeroCommande);  
+    log.info("Add new bill : " + factureRequest);
+    return factureApiService.addFacture(siret, factureRequest, prestationId);  
   }
   
   @PutMapping(value = "/{siret}/{prestationId}")
@@ -85,13 +77,15 @@ public class FactureController {
   }
   
   
-  @DeleteMapping(value = "/{id}")
-  public boolean deleteFacture(
-    @PathVariable long id    
+  @DeleteMapping(value = "{/siret}/{idPrestation}/{idFacture}")
+  public void deleteFacture(    
+    @PathVariable String siret,
+    @PathVariable long idPrestation,
+    @PathVariable long idFacture
   ) {
-    log.info("delete bill by id :" + id);    
-    factureApiService.deleteById(id);
-    return true;
+    log.info("delete bill by id :" + idFacture);    
+    factureApiService.deleteById(siret, idPrestation, idFacture);
+   
   } 
 
   

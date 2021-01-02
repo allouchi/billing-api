@@ -75,5 +75,8 @@ public class FactureEntity implements Serializable {
   @Column(name = "numeroCommande", nullable= false)
   String numeroCommande;
   
+  @Column(name = "clientPrestation", nullable= false)
+  String clientPrestation;
+  
 
 }

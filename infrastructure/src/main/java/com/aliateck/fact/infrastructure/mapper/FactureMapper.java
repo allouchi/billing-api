@@ -33,6 +33,7 @@ public class FactureMapper {
       .quantite(domain.getQuantite())
       .designation(domain.getDesignation())
       .numeroCommande(domain.getNumeroCommande())
+      .clientPrestation(domain.getClientPrestation())
       .build();
   }
 
@@ -58,6 +59,7 @@ public class FactureMapper {
       .quantite(entity.getQuantite())
       .designation(entity.getDesignation()) 
       .numeroCommande(entity.getNumeroCommande())
+      .clientPrestation(entity.getClientPrestation())
       .build();
   }
 

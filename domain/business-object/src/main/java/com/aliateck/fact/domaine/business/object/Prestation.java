@@ -1,5 +1,7 @@
 package com.aliateck.fact.domaine.business.object;
 
+import java.util.List;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +20,7 @@ public class Prestation {
   Long id;
   Consultant consultant;
   Client client;
-  Facture facture;
+  List<Facture> factures;
   int tarifHT;
   long delaiPaiement;  
   String numeroCommande;

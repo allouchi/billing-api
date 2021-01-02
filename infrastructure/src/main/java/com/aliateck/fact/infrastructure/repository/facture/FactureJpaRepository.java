@@ -17,4 +17,6 @@ public interface FactureJpaRepository extends JpaRepository<FactureEntity, Long>
   public List<FactureEntity> findByDateEncaissement(Date dateEncaissement);
 
   public List<FactureEntity> findByDateFacturation(Date dateFacturation);
+  
+  
 }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class PrestationMapper {
   ClientMapper clientMapper;
   ConsultantMapper consultantMapper;
+  FactureMapper factureMapper;
 
 
   public PrestationEntity fromDomainToEntity(Prestation domain) {
@@ -27,6 +28,7 @@ public class PrestationMapper {
       .id(domain.getId())
       .client(clientMapper.fromDomainToEntity(domain.getClient()))
       .consultant(consultantMapper.fromDomainToEntity(domain.getConsultant()))
+      .factures(factureMapper.fromDomainToEntity(domain.getFactures()))
       .delaiPaiement(domain.getDelaiPaiement())
       .tarifHT(domain.getTarifHT())
       .numeroCommande(domain.getNumeroCommande())
@@ -42,6 +44,7 @@ public class PrestationMapper {
       .id(entity.getId())      
       .client(clientMapper.fromEntityToDomain(entity.getClient()))
       .consultant(consultantMapper.fromEntityToDomain(entity.getConsultant()))
+      .factures(factureMapper.fromEntityToDomain(entity.getFactures()))
       .delaiPaiement(entity.getDelaiPaiement())
       .tarifHT(entity.getTarifHT()) 
       .numeroCommande(entity.getNumeroCommande())

@@ -1,6 +1,7 @@
 package com.aliateck.fact.infrastructure.adapter.facture;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -10,17 +11,15 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.aliateck.fact.domaine.business.object.Facture;
-import com.aliateck.fact.domaine.common.FactureStatus;
+import com.aliateck.fact.domaine.business.object.Prestation;
 import com.aliateck.fact.domaine.common.edition.CalculerFactureService;
 import com.aliateck.fact.domaine.exception.FactureNotFoundException;
 import com.aliateck.fact.domaine.ports.spi.facture.FactureSpiService;
-import com.aliateck.fact.infrastructure.mapper.CompanyMapper;
+import com.aliateck.fact.infrastructure.adapter.commun.CommonSpiEntityService;
 import com.aliateck.fact.infrastructure.mapper.FactureMapper;
 import com.aliateck.fact.infrastructure.mapper.PrestationMapper;
-import com.aliateck.fact.infrastructure.models.CompanyEntity;
 import com.aliateck.fact.infrastructure.models.FactureEntity;
 import com.aliateck.fact.infrastructure.models.PrestationEntity;
-import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
 import com.aliateck.fact.infrastructure.repository.facture.FactureJpaRepository;
 import com.aliateck.fact.infrastructure.repository.prestation.PrestationJpaRepository;
 
@@ -35,69 +34,70 @@ import lombok.experimental.FieldDefaults;
 public class FactureSpiAdapter implements FactureSpiService {
   FactureJpaRepository factureJpaRepository;
   PrestationJpaRepository prestationJpaRepository;
-  CompanyJpaRepository companyJpaRepository; 
   CalculerFactureService calculerFactureService;
   FactureMapper factureMapper;
   PrestationMapper prestationMapper;
+  CommonSpiEntityService commonSpiEntityService;
 
   @Override
-  public Facture addFacture(Facture facture, long prestationId, String numeroCommande) {	
-	  
-	  if (facture.getId() != null && facture.getId().longValue() == 0) {
-		  facture.setId(null);
+  public Facture addFacture(String siret, Facture factureParam, long prestationId) {	
+	  Facture fDomain = null;
+	  if (factureParam.getId() != null && factureParam.getId().longValue() == 0) {
+		  factureParam.setId(null);
 	  }
-	  
-	  Facture fDomain = null;	  
-	  Optional<PrestationEntity> oPrestation = prestationJpaRepository.findById(prestationId);
-	  
-	  if(oPrestation.isPresent()) {
-		  PrestationEntity pEntity = oPrestation.get();		  
-		  Facture factureCaculee = calculerFactureService.calculerFacture( prestationMapper.fromEntityToDomain(pEntity), facture);
-		  pEntity.setFacture(factureMapper.fromDomainToEntity(factureCaculee));
-		  pEntity.setNumeroCommande(numeroCommande);
-		  PrestationEntity pSaved = prestationJpaRepository.saveAndFlush(pEntity);		 
-	      FactureEntity  fEntity = pSaved.getFacture();
-	      
-	      if(fEntity != null) {
-				String numeroFacture = fEntity.getNumeroFacture();
-				if(numeroFacture != null) {
-					String endNumero[] = numeroFacture.split("-");
-					long oldNumero = Long.parseLong(endNumero[1]);
-					long newNumero = oldNumero + fEntity.getId().longValue();
-					fEntity.setNumeroFacture(String.valueOf(endNumero[0]+"-"+newNumero));					;
-					FactureEntity oEntity = factureJpaRepository.save(fEntity);
-					fDomain = factureMapper.fromEntityToDomain(oEntity);					
-				}
-			}		  	 
-	  }	  
+	  PrestationEntity prestaEntity =  commonSpiEntityService.findPrestationById(siret, prestationId);
+	  FactureEntity factEntity =  commonSpiEntityService.findFactureById(siret, prestationId, factureParam.getId());
+	 
+	  if(factEntity != null && prestaEntity != null) {
+		  List<FactureEntity> listFactures = new ArrayList<>();
+		  Prestation prestation  = prestationMapper.fromEntityToDomain(prestaEntity); 
+		  Facture facture  = factureMapper.fromEntityToDomain(factEntity);
+		  Facture factureCaculee = calculerFactureService.calculerFacture(prestation, facture);
+		  listFactures.add(factureMapper.fromDomainToEntity(factureCaculee));
+		  prestaEntity.setFactures(listFactures);
+		  PrestationEntity pSaved = prestationJpaRepository.saveAndFlush(prestaEntity);
+		  List<FactureEntity>  fEntities = pSaved.getFactures();
+		  for(FactureEntity entity  : fEntities ) {
+			  if(entity.getNumeroCommande().equalsIgnoreCase(factureParam.getNumeroCommande())) {
+				  String numeroFacture = entity.getNumeroFacture();
+					if(numeroFacture != null) {
+						String endNumero[] = numeroFacture.split("-");
+						long oldNumero = Long.parseLong(endNumero[1]);
+						long newNumero = oldNumero + entity.getId().longValue();
+						entity.setNumeroFacture(String.valueOf(endNumero[0]+"-"+newNumero));					;
+						FactureEntity oEntity = factureJpaRepository.save(entity); 
+						fDomain = factureMapper.fromEntityToDomain(oEntity);						
+					}
+			  }
+		  }	  
+	  }
 	  return fDomain;
   }
+  
+  @Override 
+  public List<Facture> findAllByPrestation(String siret, long idPrestation){		
+		List<FactureEntity> entities = commonSpiEntityService.findFacturesByPrestation(siret, idPrestation);
+		if(entities != null && !entities.isEmpty()) {
+			 return factureMapper.fromEntityToDomain(entities);
+		}
+		return Collections.emptyList();		
+	}
+
+  @Override 
+	public void deleteById(String siret, long prestationId, long factureId){		
+	  FactureEntity factureEntity =  commonSpiEntityService.findFactureById(siret, prestationId, factureId);
+	  factureJpaRepository.delete(factureEntity);
+	}
 
   @Override
-  public void deleteFacture(Facture facture) {
+  public void deleteFacture(String siret, Facture facture, long prestationId) {
     factureJpaRepository.delete(factureMapper.fromDomainToEntity(facture));
   }
 
   @Override
-  public Facture updateFacture(Facture facture) {
-    Optional<FactureEntity> objBase = factureJpaRepository.findById(facture.getId());
-
-    if (objBase.isPresent()) {
-      FactureEntity entityBase = objBase.get();
-      entityBase.setId(facture.getId());
-      entityBase.setDateEcheance(facture.getDateEcheance());
-      entityBase.setDateEncaissement(facture.getDateEncaissement());
-      entityBase.setDateFacturation(facture.getDateFacturation());
-      entityBase.setFraisRetard(facture.getFraisRetard());
-      entityBase.setPrixTotalHT(facture.getPrixTotalHT());
-      entityBase.setMontantTVA(facture.getMontantTVA());
-      entityBase.setPrixTotalTTC(facture.getPrixTotalTTC());
-      entityBase.setNbJourRetard(facture.getNbJourRetard());
-      entityBase.setFactureStatus(facture.getFactureStatus());
-      entityBase.setNumeroFacture(facture.getNumeroFacture());
-      FactureEntity entity =  factureJpaRepository.save(entityBase);
-      return factureMapper.fromEntityToDomain(entity);
-    }
+  public Facture updateFacture(String siret, Facture facture, long prestationId) {
+   
+    
     return null;
   }
 
@@ -139,7 +139,7 @@ public class FactureSpiAdapter implements FactureSpiService {
 
     if (entities == null || entities.isEmpty()) {
       throw new FactureNotFoundException(
-        "Facture not found avec date echÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©ance : " + dateEcheance
+        "Facture not found avec date echeance : " + dateEcheance
       );
     }
     return factureMapper.fromEntityToDomain(entities);
@@ -147,9 +147,7 @@ public class FactureSpiAdapter implements FactureSpiService {
 
   @Override
   public List<Facture> findByDateEncaissement(Date dateEncaissement) {
-    List<FactureEntity> entitys = factureJpaRepository.findByDateEncaissement(
-      dateEncaissement
-    );
+    List<FactureEntity> entitys = factureJpaRepository.findByDateEncaissement(dateEncaissement);
     if (entitys == null || entitys.isEmpty()) {
       throw new FactureNotFoundException(
         "Facture not found avec date encaissement : " + dateEncaissement
@@ -158,53 +156,10 @@ public class FactureSpiAdapter implements FactureSpiService {
     return factureMapper.fromEntityToDomain(entitys);
   }
 
-	@Override 
-	public List<Facture> findAllBySiret(String siret){
-		List<FactureEntity> listeFactures = new ArrayList<>();
-		Optional<CompanyEntity> oEntity =  companyJpaRepository.findBySiret(siret);
+  @Override 
+  public List<Facture> findAllBySiret(String siret){
+	List<FactureEntity> entities  = commonSpiEntityService.findAllFacturesBySiret(siret);
+	 return factureMapper.fromEntityToDomain(entities);
+  }	
 	
-		if(oEntity.isPresent()) {
-			CompanyEntity entity = oEntity.get();
-			for(PrestationEntity presta : entity.getPrestations()){
-				if(presta != null && presta.getFacture() != null) {
-					listeFactures.add(presta.getFacture());
-				}				
-			}
-		}		
-		 return factureMapper.fromEntityToDomain(listeFactures);
-		}
-
-
-	@Override 
-	public List<Facture> findAllByPrestation(String siret, long idPrestation){
-		List<FactureEntity> listFactures = new ArrayList<>();
-		Optional<CompanyEntity> oEntity = companyJpaRepository.findBySiret(siret);
-		if(oEntity.isPresent()) {
-			CompanyEntity oCompany = oEntity.get();
-			List<PrestationEntity> pEntityList = oCompany.getPrestations();
-			if(pEntityList != null && !pEntityList.isEmpty()){
-				for(PrestationEntity pEntity : pEntityList ) {
-					listFactures.add(pEntity.getFacture());
-				}
-			}			
-		}
-		if(!listFactures.isEmpty()) {
-			return factureMapper.fromEntityToDomain(listFactures);
-		}
-		return null;
-		
-//		return oEntity.map(entity ->	
-//							Optional.ofNullable(entity.getPrestations())
-//								.map(prestations -> prestations
-//										.stream()
-//										.map(prestation -> factureMapper.fromEntityToDomain(prestation.getFacture()))
-//										.collect(Collectors.toList()))
-//								.orElse(Collections.emptyList()))
-//				.orElseThrow(() -> new CompanyNotFoundException(siret));
-	}
-
-	@Override 
-	public void deleteById(long id){
-		factureJpaRepository.deleteById(id);
-	}
 }

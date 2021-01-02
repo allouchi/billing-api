@@ -10,7 +10,7 @@ public interface PrestationApiService {
 
   public Prestation updatePrestation(Prestation prestation, String siret);
 
-  public List<Prestation> getAllPrestations();
+  public List<Prestation> findAll(String siret);
 
   public Prestation findById(long id);
   

@@ -11,6 +11,7 @@ import com.aliateck.fact.infrastructure.models.CompanyEntity;
 import com.aliateck.fact.infrastructure.repository.client.ClientJpaRepository;
 import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
@@ -90,7 +91,7 @@ public class ClientSpiAdapter implements ClientSpiService {
       List<ClientEntity> oClient = entity.getClients();
       return clientMapper.fromEntityToDomain(oClient);
     }
-    return null;
+    return Collections.emptyList();          
   }
 
   @Override

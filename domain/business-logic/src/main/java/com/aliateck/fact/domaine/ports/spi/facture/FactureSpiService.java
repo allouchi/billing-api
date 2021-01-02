@@ -5,13 +5,13 @@ import java.util.Date;
 import java.util.List;
 
 public interface FactureSpiService {
-  Facture addFacture(Facture facture, long prestationId, String numeroCommande);
+  Facture addFacture(String siret, Facture facture, long prestationId);
 
-  void deleteFacture(Facture facture);
+  void deleteFacture(String siret, Facture facture, long prestationId);
   
-  void deleteById(long id);
+  void deleteById(String siret, long idPrestation, long idFacture);
 
-  Facture updateFacture(Facture facture);
+  Facture updateFacture(String siret, Facture facture, long prestationId);
 
   Facture findByNumeroFacture(String numeroFacture);
 

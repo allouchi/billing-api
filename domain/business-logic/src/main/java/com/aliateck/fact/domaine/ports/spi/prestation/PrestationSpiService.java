@@ -13,7 +13,7 @@ public interface PrestationSpiService {
 
   public Prestation findById(long id);
 
-  public List<Prestation> findAll();
+  public List<Prestation> findAll(String siret);
   
   public void deleteById(long id);
 }
