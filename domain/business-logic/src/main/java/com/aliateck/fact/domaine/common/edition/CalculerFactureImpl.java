@@ -1,9 +1,5 @@
 package com.aliateck.fact.domaine.common.edition;
 
-import com.aliateck.fact.domaine.business.object.Facture;
-import com.aliateck.fact.domaine.business.object.Prestation;
-import com.aliateck.fact.domaine.common.FactureStatus;
-
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Period;
@@ -11,8 +7,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.Locale;
 
-
 import org.springframework.stereotype.Service;
+
+import com.aliateck.fact.domaine.business.object.Facture;
+import com.aliateck.fact.domaine.business.object.Prestation;
+import com.aliateck.fact.domaine.common.FactureStatus;
 
 @Service
 public class CalculerFactureImpl implements CalculerFactureService {
@@ -23,27 +22,34 @@ public class CalculerFactureImpl implements CalculerFactureService {
    *
    */
   @Override
-  public Facture calculerFacture(Prestation prestation, Facture facture) {
-	
+  public Facture calculerFacture(Prestation prestation, Facture facture) {	
 	
     float tarifHT = prestation.getTarifHT();   
     float prixTotalHT = tarifHT * facture.getQuantite();
-    float tva = prixTotalHT * 0.2f;
-    
+    float tva = prixTotalHT * 0.2f;    
     facture.setPrixTotalHT(prixTotalHT);
     facture.setPrixTotalTTC(prixTotalHT + tva);
-    facture.setMontantTVA(tva);
-    facture.setDelaiPaiement(prestation.getDelaiPaiement());
-    facture.setDateFacturation(convertToDate(LocalDate.now()));
-    facture.setDateEcheance(calculerDateEcheance(prestation));
-    long nbJourRetard = calculerNbJourRetard(facture);
-    facture.setNbJourRetard(nbJourRetard);
-    facture.setFraisRetard(calculerFraisRetard(facture));
-    facture.setMoisFacture(determinerMoisFacture());
-    facture.setNumeroFacture(calulerNumeroFacture(000));
-    facture.setFactureStatus(facture.getFactureStatus());
+    facture.setMontantTVA(tva);   
+    facture.setNumeroFacture(calulerNumeroFacture(000));    
     return facture;
   }
+  
+  /*
+  *
+  */
+ @Override
+ public Facture editerFacture(Prestation prestation, Facture facture) {	
+   
+   facture.setDelaiPaiement(prestation.getDelaiPaiement());
+   facture.setDateFacturation(convertToDate(LocalDate.now()));
+   facture.setDateEcheance(calculerDateEcheance(prestation));
+   long nbJourRetard = calculerNbJourRetard(facture);
+   facture.setNbJourRetard(nbJourRetard);
+   facture.setFraisRetard(calculerFraisRetard(facture));
+   facture.setMoisFacture(determinerMoisFacture());  
+   facture.setFactureStatus(FactureStatus.OUI.getCode());
+   return facture;
+ }
 
   /*
    *

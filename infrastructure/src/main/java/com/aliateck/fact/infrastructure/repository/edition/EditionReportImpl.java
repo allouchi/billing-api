@@ -32,7 +32,7 @@ public class EditionReportImpl implements EditionReportService {
 	private static final String TIRET=" - ";
 
   @Override
-  public  byte[]  editerFacture(Company company, Prestation prestation, Facture facture) {	
+  public  byte[]  genererPdfFacture(Company company, Prestation prestation, Facture facture) {	
 	  
 	   byte [] pdfOfByte= null;
 	 

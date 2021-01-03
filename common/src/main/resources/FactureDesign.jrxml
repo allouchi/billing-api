@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report" pageWidth="595" pageHeight="842" columnWidth="435" leftMargin="80" rightMargin="80" topMargin="30" bottomMargin="30" uuid="ebdfb22f-7910-4931-a885-ebc871ef36bc">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="291"/>
+	<property name="ireport.y" value="195"/>
 	<parameter name="rs_company" class="java.lang.String"/>
 	<parameter name="numero_siret" class="java.lang.String"/>
 	<parameter name="adresse_company" class="java.lang.String"/>
@@ -24,6 +24,7 @@
 	<parameter name="commune_company" class="java.lang.String"/>
 	<parameter name="designation" class="java.lang.String"/>
 	<parameter name="delai_paiement" class="java.lang.Long"/>
+	<parameter name="client_prestation" class="java.lang.String"/>
 	<title>
 		<band height="769">
 			<textField>
@@ -104,7 +105,7 @@
 				<textFieldExpression><![CDATA[$P{adresse_client}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="114" y="366" width="120" height="20" uuid="dfc53e48-d2ee-437c-9d30-c3abbc7cbe29"/>
+				<reportElement x="110" y="355" width="120" height="20" uuid="dfc53e48-d2ee-437c-9d30-c3abbc7cbe29"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="Arial" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -291,11 +292,11 @@ BIC: PSSTFRPPSCE]]></text>
 				<text><![CDATA[TVA à Taux de TVA applicable 20,0 %]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="365" width="123" height="20" uuid="c15ad00f-0f00-4714-ae95-1b1afdf894b7"/>
+				<reportElement x="1" y="353" width="123" height="20" uuid="c15ad00f-0f00-4714-ae95-1b1afdf894b7"/>
 				<text><![CDATA[Numéro de commande : ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="1" y="321" width="261" height="20" uuid="98066893-06ae-4c4b-a044-dd880ba97856"/>
+				<reportElement x="1" y="313" width="218" height="20" uuid="98066893-06ae-4c4b-a044-dd880ba97856"/>
 				<textFieldExpression><![CDATA[$P{designation}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -325,6 +326,13 @@ BIC: PSSTFRPPSCE]]></text>
 					<font fontName="Calibri" size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{delai_paiement}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="328" width="100" height="22" uuid="bd392b31-ac4d-4783-bb8e-c14749bed97d"/>
+				<textElement>
+					<font size="12" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{client_prestation}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

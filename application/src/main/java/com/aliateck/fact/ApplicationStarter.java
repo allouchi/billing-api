@@ -93,12 +93,13 @@ public class ApplicationStarter implements CommandLineRunner {
 
     Company sbatec = Company
       .builder()
-      .siret("85292702900011")
-      .rcsName("R.C.S. Nanterre 831 502 141")
       .socialReason("SBATEC Consulting")
       .status("SASU au capital de 500 Euros")
-      .numeroTva("FR 188 315 021 41")
+      .siret("85292702900011")
       .ape("6201Z")
+      .rcsName("R.C.S. Nanterre 831 502 141")      
+      .numeroTva("FR 188 315 021 41")
+      
       .companyAdresse(sbatecAdresse)
       .build();
     //companyApiService.addCompany(sbatec);

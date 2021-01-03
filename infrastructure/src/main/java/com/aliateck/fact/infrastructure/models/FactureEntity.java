@@ -77,6 +77,5 @@ public class FactureEntity implements Serializable {
   
   @Column(name = "clientPrestation", nullable= false)
   String clientPrestation;
-  
-
+ 
 }

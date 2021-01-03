@@ -5,4 +5,5 @@ import com.aliateck.fact.domaine.business.object.Prestation;
 
 public interface CalculerFactureService {
   public Facture calculerFacture(Prestation prestation, Facture facture);
+  public Facture editerFacture(Prestation prestation, Facture facture);
 }

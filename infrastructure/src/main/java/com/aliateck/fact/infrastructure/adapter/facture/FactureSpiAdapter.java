@@ -40,34 +40,40 @@ public class FactureSpiAdapter implements FactureSpiService {
   CommonSpiEntityService commonSpiEntityService;
 
   @Override
-  public Facture addFacture(String siret, Facture factureParam, long prestationId) {	
+  public Facture addFacture(String siret, Facture facture, long prestationId) {	
 	  Facture fDomain = null;
-	  if (factureParam.getId() != null && factureParam.getId().longValue() == 0) {
-		  factureParam.setId(null);
+	  if (facture.getId() != null && facture.getId().longValue() == 0) {
+		  facture.setId(null);
 	  }
-	  PrestationEntity prestaEntity =  commonSpiEntityService.findPrestationById(siret, prestationId);
-	  FactureEntity factEntity =  commonSpiEntityService.findFactureById(siret, prestationId, factureParam.getId());
-	 
-	  if(factEntity != null && prestaEntity != null) {
+	  PrestationEntity prestaEntity =  commonSpiEntityService.findPrestationById(siret, prestationId);	  
+	  List<FactureEntity> listeFactures = new ArrayList<>();
+	  if(prestaEntity != null) {
 		  List<FactureEntity> listFactures = new ArrayList<>();
 		  Prestation prestation  = prestationMapper.fromEntityToDomain(prestaEntity); 
-		  Facture facture  = factureMapper.fromEntityToDomain(factEntity);
 		  Facture factureCaculee = calculerFactureService.calculerFacture(prestation, facture);
-		  listFactures.add(factureMapper.fromDomainToEntity(factureCaculee));
+		  listFactures.add(factureMapper.fromDomainToEntity(factureCaculee));		  
 		  prestaEntity.setFactures(listFactures);
-		  PrestationEntity pSaved = prestationJpaRepository.saveAndFlush(prestaEntity);
+		  PrestationEntity pSaved = prestationJpaRepository.save(prestaEntity);		  
 		  List<FactureEntity>  fEntities = pSaved.getFactures();
 		  for(FactureEntity entity  : fEntities ) {
-			  if(entity.getNumeroCommande().equalsIgnoreCase(factureParam.getNumeroCommande())) {
+			  if(entity.getNumeroCommande().equalsIgnoreCase(facture.getNumeroCommande())) {
 				  String numeroFacture = entity.getNumeroFacture();
 					if(numeroFacture != null) {
 						String endNumero[] = numeroFacture.split("-");
 						long oldNumero = Long.parseLong(endNumero[1]);
 						long newNumero = oldNumero + entity.getId().longValue();
-						entity.setNumeroFacture(String.valueOf(endNumero[0]+"-"+newNumero));					;
-						FactureEntity oEntity = factureJpaRepository.save(entity); 
-						fDomain = factureMapper.fromEntityToDomain(oEntity);						
-					}
+						entity.setNumeroFacture(String.valueOf(endNumero[0]+"-"+newNumero));	
+						listeFactures.add(entity);
+						pSaved.setFactures(listFactures);
+						PrestationEntity oEntity = prestationJpaRepository.save(pSaved); 
+						if(oEntity != null) {
+							for(FactureEntity fact : oEntity.getFactures()) {
+								 if(fact.getNumeroCommande().equalsIgnoreCase(facture.getNumeroCommande())) {
+									 fDomain = factureMapper.fromEntityToDomain(fact);	
+								 }
+							}
+						}										
+				 }
 			  }
 		  }	  
 	  }

@@ -6,6 +6,6 @@ import com.aliateck.fact.domaine.business.object.Prestation;
 
 public interface EditionReportService {
 	
-	public  byte[]  editerFacture(Company company, Prestation prestation, Facture facture);
+	public  byte[]  genererPdfFacture(Company company, Prestation prestation, Facture facture);
 }
 
