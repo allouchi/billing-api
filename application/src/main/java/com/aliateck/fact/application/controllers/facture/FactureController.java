@@ -52,7 +52,7 @@ public class FactureController {
   }
 
   @PutMapping(value = "/{siret}/{prestationId}")
-  public Map<String, Object> editerFacture(
+  public Facture editerFacture(
     @RequestBody Facture factureRequest,
     @PathVariable String siret,
     @PathVariable long prestationId
@@ -70,13 +70,13 @@ public class FactureController {
     return factureApiService.findAllByPrestation(siret, idPrestation);
   }
 
-  @DeleteMapping(value = "{/siret}/{idPrestation}/{idFacture}")
+  @DeleteMapping(value = "{/siret}/{prestationId}/{factureId}")
   public void deleteFacture(
     @PathVariable String siret,
-    @PathVariable long idPrestation,
-    @PathVariable long idFacture
+    @PathVariable long prestationId,
+    @PathVariable long factureId
   ) {
-    log.info("delete bill by id :" + idFacture);
-    factureApiService.deleteById(siret, idPrestation, idFacture);
+    log.info("delete bill by id :" + factureId);
+    factureApiService.deleteById(siret, prestationId, factureId);
   }
 }

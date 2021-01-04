@@ -1,14 +1,15 @@
 package com.aliateck.fact.infrastructure.models;
 
 import java.io.Serializable;
+import java.sql.Blob;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,7 +17,7 @@ import lombok.Setter;
 @Entity(name = "T_Facture")
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter 
+@Getter
 @Setter
 @Builder
 //@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -53,8 +54,8 @@ public class FactureEntity implements Serializable {
 
   @Column(name = "nbJourRetard")
   Long nbJourRetard;
-  
-  @Column(name = "quantite", nullable= false)
+
+  @Column(name = "quantite", nullable = false)
   Float quantite;
 
   @Column(name = "delaiPaiement")
@@ -67,15 +68,21 @@ public class FactureEntity implements Serializable {
   String factureStatus;
 
   @Column(name = "moisFacture")
-  String moisFacture;  
+  String moisFacture;
+
+  @Column(name = "filePath")
+  String filePath;
   
-  @Column(name = "designation", nullable= false)
+  @Lob
+  @Column(name = "fileContent", columnDefinition = "LONGBLOB")
+  byte[] fileContent;
+
+  @Column(name = "designation", nullable = false)
   String designation;
-  
-  @Column(name = "numeroCommande", nullable= false)
+
+  @Column(name = "numeroCommande", nullable = false)
   String numeroCommande;
-  
-  @Column(name = "clientPrestation", nullable= false)
+
+  @Column(name = "clientPrestation", nullable = false)
   String clientPrestation;
- 
 }

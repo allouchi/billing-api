@@ -1,5 +1,7 @@
-package com.aliateck.fact.domaine.common.edition;
+package com.aliateck.util;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Period;
@@ -7,54 +9,19 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.Locale;
 
-import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.business.object.Prestation;
-import com.aliateck.fact.domaine.common.FactureStatus;
 
-@Service
-public class CalculerFactureImpl implements CalculerFactureService {
-	
-	
-  
-  /*
-   *
-   */
-  @Override
-  public Facture calculerFacture(Prestation prestation, Facture facture) {	
-	
-    float tarifHT = prestation.getTarifHT();   
-    float prixTotalHT = tarifHT * facture.getQuantite();
-    float tva = prixTotalHT * 0.2f;    
-    facture.setPrixTotalHT(prixTotalHT);
-    facture.setPrixTotalTTC(prixTotalHT + tva);
-    facture.setMontantTVA(tva);   
-    facture.setNumeroFacture(calulerNumeroFacture(000));    
-    return facture;
-  }
-  
-  /*
-  *
-  */
- @Override
- public Facture editerFacture(Prestation prestation, Facture facture) {	
-   
-   facture.setDelaiPaiement(prestation.getDelaiPaiement());
-   facture.setDateFacturation(convertToDate(LocalDate.now()));
-   facture.setDateEcheance(calculerDateEcheance(prestation));
-   long nbJourRetard = calculerNbJourRetard(facture);
-   facture.setNbJourRetard(nbJourRetard);
-   facture.setFraisRetard(calculerFraisRetard(facture));
-   facture.setMoisFacture(determinerMoisFacture());  
-   facture.setFactureStatus(FactureStatus.OUI.getCode());
-   return facture;
- }
+public class UtilsFacture {
+
+  private UtilsFacture() {}
 
   /*
    *
    */
-  private static long calculerNbJourRetard(Facture facture) {
+  public static long calculerNbJourRetard(Facture facture) {
     LocalDate dateEcheance = LocalDate.now().plusDays(facture.getDelaiPaiement());
     LocalDate dateJour = LocalDate.now();
     if (Period.between(dateEcheance, dateJour).getDays() > 0) {
@@ -66,7 +33,7 @@ public class CalculerFactureImpl implements CalculerFactureService {
   /*
    *
    */
-  private static Float calculerFraisRetard(Facture facture) {
+  public static Float calculerFraisRetard(Facture facture) {
     if (facture.getNbJourRetard() > 0) {
       float div = (float) facture.getNbJourRetard() / 365;
       return 2.52f * facture.getPrixTotalHT() * div;
@@ -77,7 +44,7 @@ public class CalculerFactureImpl implements CalculerFactureService {
   /*
    *
    */
-  private static String calculerDateEcheance(Prestation prestation) {
+  public static String calculerDateEcheance(Prestation prestation) {
     long delai = prestation.getDelaiPaiement();
     LocalDate dateEcheance = LocalDate.now().plusDays(delai);
     return convertToDate(dateEcheance);
@@ -111,4 +78,9 @@ public class CalculerFactureImpl implements CalculerFactureService {
     LocalDate dateJour = LocalDate.now();
     return formaterDate.format(dateJour) + "-100" + id;
   }
+  
+  public static File loadJasperFile() throws FileNotFoundException {
+		    return ResourceUtils.getFile(
+		      "classpath:data/factureDesign.jrxml");
+	}
 }

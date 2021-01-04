@@ -34,6 +34,8 @@ public class FactureMapper {
       .designation(domain.getDesignation())
       .numeroCommande(domain.getNumeroCommande())
       .clientPrestation(domain.getClientPrestation())
+      .filePath(domain.getFilePath())
+      .fileContent(domain.getFileContent())
       .build();
   }
 
@@ -60,6 +62,8 @@ public class FactureMapper {
       .designation(entity.getDesignation()) 
       .numeroCommande(entity.getNumeroCommande())
       .clientPrestation(entity.getClientPrestation())
+      .filePath(entity.getFilePath())
+      .fileContent(entity.getFileContent())
       .build();
   }
 

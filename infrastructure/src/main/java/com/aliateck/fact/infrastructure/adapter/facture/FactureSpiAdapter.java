@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.business.object.Prestation;
-import com.aliateck.fact.domaine.common.edition.CalculerFactureService;
+import com.aliateck.fact.domaine.common.edition.BuildFactureService;
 import com.aliateck.fact.domaine.exception.FactureNotFoundException;
 import com.aliateck.fact.domaine.ports.spi.facture.FactureSpiService;
 import com.aliateck.fact.infrastructure.adapter.commun.CommonSpiEntityService;
@@ -34,7 +34,7 @@ import lombok.experimental.FieldDefaults;
 public class FactureSpiAdapter implements FactureSpiService {
   FactureJpaRepository factureJpaRepository;
   PrestationJpaRepository prestationJpaRepository;
-  CalculerFactureService calculerFactureService;
+  BuildFactureService calculerFactureService;
   FactureMapper factureMapper;
   PrestationMapper prestationMapper;
   CommonSpiEntityService commonSpiEntityService;

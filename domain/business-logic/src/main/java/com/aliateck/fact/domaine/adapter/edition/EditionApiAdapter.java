@@ -1,13 +1,14 @@
 package com.aliateck.fact.domaine.adapter.edition;
 
+import org.springframework.stereotype.Service;
+
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.ports.api.edition.EditionApiService;
 import com.aliateck.fact.domaine.ports.spi.edition.EditionSpiService;
-import java.util.Map;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -21,11 +22,7 @@ public class EditionApiAdapter implements EditionApiService {
   }
 
   @Override
-  public Map<String, Object> editerFacture(
-    String siret,
-    long idPrestation,
-    Facture facture
-  ) {
+  public Facture editerFacture(String siret, long idPrestation, Facture facture) {
     return editionSpiService.editerFacture(siret, idPrestation, facture);
   }
 }

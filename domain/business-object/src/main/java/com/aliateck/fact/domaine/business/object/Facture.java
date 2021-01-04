@@ -1,5 +1,7 @@
 package com.aliateck.fact.domaine.business.object;
 
+import java.sql.Blob;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,4 +34,6 @@ public class Facture {
   String designation;
   String numeroCommande;
   String clientPrestation;
+  String filePath; 
+  byte[] fileContent; 
 }

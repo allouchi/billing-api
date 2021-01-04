@@ -15,7 +15,10 @@
 
     <dependencies>   
  
-    
+        <dependency><artifactId>billing-api-common</artifactId>
+        	<groupId>com.aliateck</groupId>
+        	<version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>com.aliateck</groupId>
             <artifactId>billing-api-domain-business-object</artifactId>
