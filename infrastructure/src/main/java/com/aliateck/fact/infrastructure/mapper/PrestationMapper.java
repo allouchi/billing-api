@@ -21,7 +21,7 @@ public class PrestationMapper {
     if (domain == null) {
       return null;
     }
-    if (domain.getFactures() == null) {
+    if (domain.getFacture() == null) {
       return PrestationEntity
         .builder()
         .id(domain.getId())
@@ -38,7 +38,7 @@ public class PrestationMapper {
       .id(domain.getId())
       .client(clientMapper.fromDomainToEntity(domain.getClient()))
       .consultant(consultantMapper.fromDomainToEntity(domain.getConsultant()))
-      .factures(factureMapper.fromDomainToEntity(domain.getFactures()))
+      .facture(factureMapper.fromDomainToEntity(domain.getFacture()))
       .delaiPaiement(domain.getDelaiPaiement())
       .tarifHT(domain.getTarifHT())
       .numeroCommande(domain.getNumeroCommande())
@@ -50,7 +50,7 @@ public class PrestationMapper {
       return null;
     }
 
-    if (entity.getFactures() == null) {
+    if (entity.getFacture() == null) {
       return Prestation
         .builder()
         .id(entity.getId())
@@ -66,7 +66,7 @@ public class PrestationMapper {
       .id(entity.getId())
       .client(clientMapper.fromEntityToDomain(entity.getClient()))
       .consultant(consultantMapper.fromEntityToDomain(entity.getConsultant()))
-      .factures(factureMapper.fromEntityToDomain(entity.getFactures()))
+      .facture(factureMapper.fromEntityToDomain(entity.getFacture()))
       .delaiPaiement(entity.getDelaiPaiement())
       .tarifHT(entity.getTarifHT())
       .numeroCommande(entity.getNumeroCommande())

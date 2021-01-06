@@ -1,15 +1,19 @@
 package com.aliateck.fact.infrastructure.models;
 
 import java.io.Serializable;
-import java.sql.Blob;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import com.aliateck.fact.domaine.business.object.Prestation;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +24,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
+@EqualsAndHashCode
 //@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FactureEntity implements Serializable {
   /**
@@ -72,10 +77,10 @@ public class FactureEntity implements Serializable {
 
   @Column(name = "filePath")
   String filePath;
-  
-  @Lob
-  @Column(name = "fileContent", columnDefinition = "LONGBLOB")
-  byte[] fileContent;
+
+  //  @Lob
+  //  @Column(name = "fileContent", columnDefinition = "LONGBLOB")
+  //  byte[] fileContent;
 
   @Column(name = "designation", nullable = false)
   String designation;
@@ -85,4 +90,6 @@ public class FactureEntity implements Serializable {
 
   @Column(name = "clientPrestation", nullable = false)
   String clientPrestation;
+  
+ 
 }

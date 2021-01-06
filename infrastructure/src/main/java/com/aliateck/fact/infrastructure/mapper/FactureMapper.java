@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 public class FactureMapper {
 
   public FactureEntity fromDomainToEntity(Facture domain) {
+	  if(domain != null) {
+		  
+	  }
     return FactureEntity
       .builder()
       .id(domain.getId())
@@ -35,7 +38,7 @@ public class FactureMapper {
       .numeroCommande(domain.getNumeroCommande())
       .clientPrestation(domain.getClientPrestation())
       .filePath(domain.getFilePath())
-      .fileContent(domain.getFileContent())
+      //.fileContent(domain.getFileContent())
       .build();
   }
 
@@ -63,7 +66,7 @@ public class FactureMapper {
       .numeroCommande(entity.getNumeroCommande())
       .clientPrestation(entity.getClientPrestation())
       .filePath(entity.getFilePath())
-      .fileContent(entity.getFileContent())
+      //.fileContent(entity.getFileContent())
       .build();
   }
 

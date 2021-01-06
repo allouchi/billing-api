@@ -1,19 +1,22 @@
 package com.aliateck.fact.infrastructure.adapter.commun;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
 import com.aliateck.fact.infrastructure.models.CompanyEntity;
 import com.aliateck.fact.infrastructure.models.FactureEntity;
 import com.aliateck.fact.infrastructure.models.PrestationEntity;
 import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-import javax.transaction.Transactional;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
@@ -39,7 +42,7 @@ public class CommonSpiEntity implements CommonSpiEntityService {
       CompanyEntity cEntity = oCompany.get();
       for (PrestationEntity prestations : cEntity.getPrestations()) {
         if (prestations.getId().longValue() == prestationId) {
-          return prestations.getFactures();
+          return prestations.getFacture();
         }
       }
     }
@@ -52,7 +55,7 @@ public class CommonSpiEntity implements CommonSpiEntityService {
     if (prestations != null && !prestations.isEmpty()) {
       for (PrestationEntity entity : prestations) {
         if (entity.getId().longValue() == prestationId) {
-          return entity;
+          return entity;         
         }
       }
     }
@@ -67,7 +70,7 @@ public class CommonSpiEntity implements CommonSpiEntityService {
       CompanyEntity cEntity = oCompany.get();
       for (PrestationEntity prestations : cEntity.getPrestations()) {
         if (prestations.getId().longValue() == prestationId) {
-          for (FactureEntity facture : prestations.getFactures()) {
+          for (FactureEntity facture : prestations.getFacture()) {
             if (facture.getId().longValue() == factureId) {
               return facture;
             }
@@ -85,7 +88,7 @@ public class CommonSpiEntity implements CommonSpiEntityService {
     if (oCompany.isPresent()) {
       CompanyEntity cEntity = oCompany.get();
       for (PrestationEntity prestations : cEntity.getPrestations()) {
-        for (FactureEntity factures : prestations.getFactures()) {
+        for (FactureEntity factures : prestations.getFacture()) {
           listeFacture.add(factures);
         }
       }

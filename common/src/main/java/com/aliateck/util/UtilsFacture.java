@@ -73,11 +73,23 @@ public class UtilsFacture {
   /*
    *
    */
-  public static String calulerNumeroFacture(long id) {
+  public static String calculerNumeroFacture(long id) {
     final DateTimeFormatter formaterDate = DateTimeFormatter.ofPattern("yyyyMMdd");
     LocalDate dateJour = LocalDate.now();
     return formaterDate.format(dateJour) + "-100" + id;
   }
+  
+  /*
+  *
+  */
+ public static String updateNumeroFacture(String numeroFacture, long id) {
+	 
+	 String endNumero[] = numeroFacture.split("-");
+		long oldNumero = Long.parseLong(endNumero[1]);
+		long newNumero = oldNumero + id;
+		return String.valueOf(endNumero[0]+"-"+newNumero);	
+ }
+  
   
   public static File loadJasperFile() throws FileNotFoundException {
 		    return ResourceUtils.getFile(

@@ -1,5 +1,7 @@
 package com.aliateck.fact.domaine.adapter.edition;
 
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 
 import com.aliateck.fact.domaine.business.object.Facture;
@@ -22,7 +24,7 @@ public class EditionApiAdapter implements EditionApiService {
   }
 
   @Override
-  public Facture editerFacture(String siret, long idPrestation, Facture facture) {
+  public Map<String, Object> editerFacture(String siret, long idPrestation, Facture facture) {
     return editionSpiService.editerFacture(siret, idPrestation, facture);
   }
 }

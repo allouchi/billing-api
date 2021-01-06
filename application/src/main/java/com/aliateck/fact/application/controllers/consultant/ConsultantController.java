@@ -59,12 +59,12 @@ public class ConsultantController {
     return ResponseEntity.ok( consultantApiService.updateConsultant(consultantRequest, siret));    
   }
   
-  @DeleteMapping(value = "/{siret}/{id}")
+  @DeleteMapping(value = "/{siret}/{consultantId}")
   public void deleteConsultant(
-    @PathVariable Long id,
+    @PathVariable Long consultantId,
     @PathVariable String siret  
   ) {
-    log.info("delete consultant by id :" + id);    
-    consultantApiService.deleteById(id, siret);    
+    log.info("delete consultant by id :" + consultantId);    
+    consultantApiService.deleteById(consultantId, siret);    
   } 
 }

@@ -1,21 +1,23 @@
 package com.aliateck.fact.domaine.business.object;
 
-import java.sql.Blob;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
-@Data
+//@Data
+@Getter
+@Setter
 @Builder
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+//@JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class Facture {
   Long id;
   String numeroFacture;
@@ -29,11 +31,11 @@ public class Facture {
   float fraisRetard;
   long delaiPaiement;
   String factureStatus;
-  String moisFacture;  
+  String moisFacture;
   float quantite;
   String designation;
   String numeroCommande;
   String clientPrestation;
-  String filePath; 
-  byte[] fileContent; 
+  String filePath;
+  //byte[] fileContent;
 }

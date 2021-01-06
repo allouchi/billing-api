@@ -5,17 +5,17 @@ import java.util.Date;
 import java.util.List;
 
 public interface FactureSpiService {
-  Facture addFacture(String siret, Facture facture, long prestationId);
+  Facture addFacture(String siret, Facture facture, Long prestationId);
 
-  void deleteFacture(String siret, Facture facture, long prestationId);
+  void deleteFacture(String siret, Facture facture, Long prestationId);
   
-  void deleteById(String siret, long idPrestation, long idFacture);
+  void deleteFactureById(String siret, Long idPrestation, Long idFacture);
 
-  Facture updateFacture(String siret, Facture facture, long prestationId);
+  Facture updateFacture(String siret, Facture facture, Long prestationId);
 
   Facture findByNumeroFacture(String numeroFacture);
 
-  Facture findById(long id);
+  Facture findById(Long id);
 
   List<Facture> findByFactureStatus(boolean statusFacture);
 
@@ -23,7 +23,7 @@ public interface FactureSpiService {
 
   List<Facture> findByDateEncaissement(Date dateEncaissement);
 
-  List<Facture> findAllByPrestation(String siret, long idPrestation);
+  List<Facture> findAllByPrestation(String siret, Long idPrestation);
 
   List<Facture> findAllBySiret(String siret);
 }

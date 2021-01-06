@@ -31,15 +31,14 @@ public class ConsultantSpiAdapter implements ConsultantSpiService {
 	  if(consultant.getId()!= null && consultant.getId().longValue() == 0) {
 		  consultant.setId(null);  
 	  }
-	  List<ConsultantEntity> consultants = new ArrayList<>();
-      ConsultantEntity entity = consultantMapper.fromDomainToEntity(consultant);      
+	  
+      ConsultantEntity consultEntity = consultantMapper.fromDomainToEntity(consultant);      
 	  Optional<CompanyEntity> oCompany = companyJpaRepository.findBySiret(siret);
 	  
 	    if (oCompany.isPresent()) {	
-	      CompanyEntity cEntity = oCompany.get();
-	      consultants.add(entity);	      
-	      cEntity.setConsultants(consultants);
-	      CompanyEntity cEntitySaved = companyJpaRepository.saveAndFlush(cEntity);
+	      CompanyEntity companyEntity = oCompany.get();	            
+	      companyEntity.getConsultants().add(consultEntity);
+	      CompanyEntity cEntitySaved = companyJpaRepository.saveAndFlush(companyEntity);
 	      List<ConsultantEntity> savedConsultants = cEntitySaved.getConsultants();
 	      if (savedConsultants != null && !savedConsultants.isEmpty()) {
 	        for (ConsultantEntity c : savedConsultants) {

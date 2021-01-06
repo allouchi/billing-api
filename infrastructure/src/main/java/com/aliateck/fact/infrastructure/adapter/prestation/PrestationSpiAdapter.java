@@ -1,5 +1,13 @@
 package com.aliateck.fact.infrastructure.adapter.prestation;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
 import com.aliateck.fact.domaine.business.object.Prestation;
 import com.aliateck.fact.domaine.ports.spi.prestation.PrestationSpiService;
 import com.aliateck.fact.infrastructure.mapper.PrestationMapper;
@@ -7,21 +15,17 @@ import com.aliateck.fact.infrastructure.models.CompanyEntity;
 import com.aliateck.fact.infrastructure.models.PrestationEntity;
 import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
 import com.aliateck.fact.infrastructure.repository.prestation.PrestationJpaRepository;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import javax.transaction.Transactional;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PrestationSpiAdapter implements PrestationSpiService {
+  
   PrestationJpaRepository prestationJpaRepository;
   CompanyJpaRepository companyJpaRepository;
   PrestationMapper prestationMapper;
@@ -30,15 +34,14 @@ public class PrestationSpiAdapter implements PrestationSpiService {
   public Prestation addPrestation(Prestation prestation, String siret) {
     if (prestation.getId() != null && prestation.getId().longValue() == 0) {
       prestation.setId(null);
-    }
-    List<PrestationEntity> prestations = new ArrayList<>();
-    PrestationEntity entity = prestationMapper.fromDomainToEntity(prestation);
-
+    }    
+    
+    PrestationEntity pEntity = prestationMapper.fromDomainToEntity(prestation);
     Optional<CompanyEntity> oCompany = companyJpaRepository.findBySiret(siret);
-    if (oCompany.isPresent()) {
-      prestations.add(entity);
+    
+    if (oCompany.isPresent()) {      
       CompanyEntity cEntity = oCompany.get();
-      cEntity.setPrestations(prestations);
+      cEntity.getPrestations().add(pEntity);
       CompanyEntity cEntitySaved = companyJpaRepository.save(cEntity);
       List<PrestationEntity> savedPrestations = cEntitySaved.getPrestations();
       if (savedPrestations != null && !savedPrestations.isEmpty()) {
@@ -51,6 +54,7 @@ public class PrestationSpiAdapter implements PrestationSpiService {
     }
     return null;
   }
+  
 
   @Override
   public void deletePrestation(Prestation prestation) {

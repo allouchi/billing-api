@@ -16,6 +16,7 @@ import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,6 +27,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "T_Prestation")
+@EqualsAndHashCode
 //@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PrestationEntity implements Serializable {
   /**
@@ -54,8 +56,8 @@ public class PrestationEntity implements Serializable {
   @JoinColumn(name = "consultant")
   private ConsultantEntity consultant;
 
-  @OneToMany(fetch = FetchType.LAZY,  cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH} )
+  @OneToMany(fetch = FetchType.LAZY,  cascade = CascadeType.ALL ) 
   @JoinColumn(name = "facture")
-  private List<FactureEntity> factures;
+  private List<FactureEntity> facture;
   
 }

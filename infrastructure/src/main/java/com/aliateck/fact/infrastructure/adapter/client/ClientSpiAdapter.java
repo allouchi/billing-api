@@ -25,82 +25,80 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ClientSpiAdapter implements ClientSpiService {
-  ClientJpaRepository clientJpaRepository;
-  CompanyJpaRepository companyJpaRepository;
-  ClientMapper clientMapper;
-  AdresseMapper addresseMapper;
+	ClientJpaRepository clientJpaRepository;
+	CompanyJpaRepository companyJpaRepository;
+	ClientMapper clientMapper;
+	AdresseMapper addresseMapper;
 
-  @Override
-  public Client addClient(Client client, String siret) {
-    if (client.getId() != null && client.getId().longValue() == 0) {
-      client.setId(null);
-    }
+	@Override
+	public Client addClient(Client client, String siret) {
+		if (client.getId() != null && client.getId().longValue() == 0) {
+			client.setId(null);
+		}
 
-    List<ClientEntity> clients = new ArrayList<>();
-    ClientEntity entity = clientMapper.fromDomainToEntity(client);
-    
-    Optional<CompanyEntity> oCompany = companyJpaRepository.findBySiret(siret);
-    if (oCompany.isPresent()) {
-     
-      clients.add(entity);
-      CompanyEntity cEntity = oCompany.get();
-      cEntity.setClients(clients);
-      CompanyEntity cEntitySaved = companyJpaRepository.saveAndFlush(cEntity);
-      List<ClientEntity> savedClients = cEntitySaved.getClients();
-      if (savedClients != null && !savedClients.isEmpty()) {
-        for (ClientEntity c : savedClients) {
-          if (c.getMail().equals(client.getMail())) {
-            return clientMapper.fromEntityToDomain(c);
-          }
-        }
-      }
-    }
-    return null;
-  }
+		ClientEntity clientEntity = clientMapper.fromDomainToEntity(client);
 
-  @Override
-  public void deleteClient(long id) {
-    clientJpaRepository.deleteById(id);
-  }
+		Optional<CompanyEntity> oCompany = companyJpaRepository.findBySiret(siret);
+		if (oCompany.isPresent()) {
 
-  @Override
-  public Client updateClient(Client client, String siret) {
-    Optional<CompanyEntity> oCompnay = companyJpaRepository.findBySiret(siret);
-    Adresse newAdresse = client.getAdresseClient();
-    AdresseEntity newEntityAdresse = addresseMapper.fromDomainToEntity(newAdresse);
-    if (oCompnay.isPresent()) {
-      CompanyEntity entity = oCompnay.get();
-      List<ClientEntity> oClient = entity.getClients();
-      for (ClientEntity cEntity : oClient) {
-        if (cEntity.getId().longValue() == client.getId().longValue()) {
-          ClientEntity nEntity = clientMapper.fromDomainToEntity(client);
-          cEntity.setAdresseClient(newEntityAdresse);
-          ClientEntity domain = clientJpaRepository.save(nEntity);
-          return clientMapper.fromEntityToDomain(domain);
-        }
-      }
-    }
-    return null;
-  }
+			CompanyEntity companyEntity = oCompany.get();
+			companyEntity.getClients().add(clientEntity);
+			CompanyEntity cEntitySaved = companyJpaRepository.save(companyEntity);
+			List<ClientEntity> savedClients = cEntitySaved.getClients();
+			if (savedClients != null && !savedClients.isEmpty()) {
+				for (ClientEntity c : savedClients) {
+					if (c.getMail().equals(client.getMail())) {
+						return clientMapper.fromEntityToDomain(c);
+					}
+				}
+			}
+		}
+		return null;
+	}
 
-  @Override
-  public List<Client> findAll(String siret) {
-    Optional<CompanyEntity> oCompnay = companyJpaRepository.findBySiret(siret);
-    if (oCompnay.isPresent()) {
-      CompanyEntity entity = oCompnay.get();
-      List<ClientEntity> oClient = entity.getClients();
-      return clientMapper.fromEntityToDomain(oClient);
-    }
-    return Collections.emptyList();          
-  }
+	@Override
+	public void deleteClient(long id) {
+		clientJpaRepository.deleteById(id);
+	}
 
-  @Override
-  public Client findById(long id) {
-    Client client = null;
-    Optional<ClientEntity> entity = clientJpaRepository.findById(id);
-    if (entity.isPresent()) {
-      client = clientMapper.fromEntityToDomain(entity.get());
-    }
-    return client;
-  }
+	@Override
+	public Client updateClient(Client client, String siret) {
+		Optional<CompanyEntity> oCompnay = companyJpaRepository.findBySiret(siret);
+		Adresse newAdresse = client.getAdresseClient();
+		AdresseEntity newEntityAdresse = addresseMapper.fromDomainToEntity(newAdresse);
+		if (oCompnay.isPresent()) {
+			CompanyEntity entity = oCompnay.get();
+			List<ClientEntity> oClient = entity.getClients();
+			for (ClientEntity cEntity : oClient) {
+				if (cEntity.getId().longValue() == client.getId().longValue()) {
+					ClientEntity nEntity = clientMapper.fromDomainToEntity(client);
+					cEntity.setAdresseClient(newEntityAdresse);
+					ClientEntity domain = clientJpaRepository.save(nEntity);
+					return clientMapper.fromEntityToDomain(domain);
+				}
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public List<Client> findAll(String siret) {
+		Optional<CompanyEntity> oCompnay = companyJpaRepository.findBySiret(siret);
+		if (oCompnay.isPresent()) {
+			CompanyEntity entity = oCompnay.get();
+			List<ClientEntity> oClient = entity.getClients();
+			return clientMapper.fromEntityToDomain(oClient);
+		}
+		return Collections.emptyList();
+	}
+
+	@Override
+	public Client findById(long id) {
+		Client client = null;
+		Optional<ClientEntity> entity = clientJpaRepository.findById(id);
+		if (entity.isPresent()) {
+			client = clientMapper.fromEntityToDomain(entity.get());
+		}
+		return client;
+	}
 }

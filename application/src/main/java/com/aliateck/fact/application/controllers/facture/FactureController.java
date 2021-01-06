@@ -4,8 +4,11 @@ import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.exception.FactureNotFoundException;
 import com.aliateck.fact.domaine.ports.api.edition.EditionApiService;
 import com.aliateck.fact.domaine.ports.api.facture.FactureApiService;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Map;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -41,18 +44,22 @@ public class FactureController {
     return factures;
   }
 
-  @PostMapping(value = "/{siret}/{prestationId}")
+  @PostMapping(
+    value = "/{siret}/{prestationId}",
+    consumes = "application/json",
+    produces = "application/json"
+  )
   public Facture addFacture(
     @RequestBody Facture factureRequest,
     @PathVariable String siret,
     @PathVariable long prestationId
   ) {
-    log.info("Add new bill : " + factureRequest);
+    log.info("Add new bill");
     return factureApiService.addFacture(siret, factureRequest, prestationId);
   }
 
   @PutMapping(value = "/{siret}/{prestationId}")
-  public Facture editerFacture(
+  public Map<String, Object> editerFacture(
     @RequestBody Facture factureRequest,
     @PathVariable String siret,
     @PathVariable long prestationId
@@ -64,13 +71,13 @@ public class FactureController {
   @GetMapping(value = "/{siret}/{idPrestation}")
   public List<Facture> findAllByPrestation(
     @PathVariable String siret,
-    @PathVariable long idPrestation
+    @PathVariable long PrestationId
   ) {
     log.info("get all bills by prestation");
-    return factureApiService.findAllByPrestation(siret, idPrestation);
+    return factureApiService.findAllByPrestation(siret, PrestationId);
   }
 
-  @DeleteMapping(value = "{/siret}/{prestationId}/{factureId}")
+  @DeleteMapping(value = "/{siret}/{prestationId}/{factureId}")
   public void deleteFacture(
     @PathVariable String siret,
     @PathVariable long prestationId,

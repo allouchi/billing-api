@@ -16,27 +16,27 @@ public class FactureApiAdapter implements FactureApiService {
   FactureSpiService factureSpiService;
 
   @Override
-  public Facture addFacture(String siret, Facture facture, long prestationId) {
+  public Facture addFacture(String siret, Facture facture, Long prestationId) {
     return factureSpiService.addFacture(siret, facture, prestationId);
   }
 
   @Override
-  public void deleteFacture(String siret,Facture facture, long prestationId) {
+  public void deleteFacture(String siret,Facture facture, Long prestationId) {
     factureSpiService.deleteFacture(siret, facture, prestationId);
   }
   
   @Override
-  public void deleteById(String siret, long idPrestation, long idFacture) {
-	  factureSpiService.deleteById(siret, idPrestation, idFacture );
+  public void deleteById(String siret, Long idPrestation, Long idFacture) {
+	  factureSpiService.deleteFactureById(siret, idPrestation, idFacture );
   }
 
   @Override
-  public Facture updateFacture(String siret, Facture facture, long prestationId) {
+  public Facture updateFacture(String siret, Facture facture, Long prestationId) {
     return factureSpiService.updateFacture(siret, facture, prestationId);
   }
 
   @Override
-  public Facture findById(long id) {
+  public Facture findById(Long id) {
     return factureSpiService.findById(id);
   }
 
@@ -46,7 +46,7 @@ public class FactureApiAdapter implements FactureApiService {
   }
 
   @Override
-  public List<Facture> findAllByPrestation(String siret, long idPrestation) {
+  public List<Facture> findAllByPrestation(String siret, Long idPrestation) {
     return factureSpiService.findAllByPrestation(siret, idPrestation);
   }
 

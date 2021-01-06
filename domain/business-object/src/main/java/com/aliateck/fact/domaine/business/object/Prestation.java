@@ -20,7 +20,7 @@ public class Prestation {
   Long id;
   Consultant consultant;
   Client client;
-  List<Facture> factures;
+  List<Facture> facture;
   int tarifHT;
   long delaiPaiement;  
   String numeroCommande;
