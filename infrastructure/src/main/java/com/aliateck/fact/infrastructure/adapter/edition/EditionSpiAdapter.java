@@ -73,7 +73,6 @@ public class EditionSpiAdapter implements EditionSpiService {
 	public Map<String, Object> editerFacture(String siret, long prestationId, Facture facture) {
 
 		byte[] pdfBinary = null;
-
 		Map<String, Object> map = new HashMap<>();
 		List<FactureEntity> listeFacture = new ArrayList<>();
 
@@ -89,8 +88,7 @@ public class EditionSpiAdapter implements EditionSpiService {
 				FactureEntity entity = factureMapper.fromDomainToEntity(factureEditee);
 				Map<String, Object> paramJasper = editionReportService.buildParamJasper(company, prestation,
 						factureEditee);
-				pdfBinary = editionReportService.buildPdfFacture(paramJasper, factureEditee.getFilePath());
-				// entity.setFileContent(fileBinary);
+				pdfBinary = editionReportService.buildPdfFacture(paramJasper, factureEditee.getFilePath());				
 				listeFacture.add(entity);
 				prestationEntity.setFacture(listeFacture);
 				prestationJpaRepository.save(prestationEntity);

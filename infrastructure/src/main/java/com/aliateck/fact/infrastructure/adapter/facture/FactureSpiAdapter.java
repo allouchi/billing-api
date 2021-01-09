@@ -2,13 +2,16 @@ package com.aliateck.fact.infrastructure.adapter.facture;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.transaction.Transactional.TxType;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.springframework.data.mapping.AccessOptions.SetOptions.Propagation;
 import org.springframework.stereotype.Service;
 
@@ -45,15 +48,17 @@ public class FactureSpiAdapter implements FactureSpiService {
 	EntitySpiService entitySpiService;
 
 	@Override
-	public Facture addFacture(String siret, Facture facture, Long prestationId) {
-		Facture fDomain = null;
+	public Map<String, Object> addFacture(String siret, Facture facture, Long prestationId) {
+		Facture dFacture = null;
+		Map<String, Object> map = new HashMap<>();
+
 		if (facture.getId() != null && facture.getId().longValue() == 0) {
 			facture.setId(null);
 		}
-				
+
 		PrestationEntity prestaEntity = entitySpiService.findPrestationById(siret, prestationId);
 		List<FactureEntity> listeFacture = entitySpiService.findFacturesByPrestation(siret, prestationId);
-		
+
 		if (prestaEntity != null) {
 			Prestation prestation = prestationMapper.fromEntityToDomain(prestaEntity);
 			Facture factureCaculee = calculerFactureService.calculerFacture(prestation, facture);
@@ -61,19 +66,21 @@ public class FactureSpiAdapter implements FactureSpiService {
 			String numeroFacture = UtilsFacture.updateNumeroFacture(factureMapper.fromEntityToDomain(listeFacture));
 			factEntity.setNumeroFacture(numeroFacture);
 			FactureEntity factureSeved = factureJpaRepository.save(factEntity);
-			prestaEntity.getFacture().add(factureSeved);			
+			prestaEntity.getFacture().add(factureSeved);
 			PrestationEntity pSaved = prestationJpaRepository.save(prestaEntity);
 
 			List<FactureEntity> fEntities = pSaved.getFacture();
 			if (fEntities != null && !fEntities.isEmpty()) {
-				for(FactureEntity entity : fEntities) {
-					if(entity.getNumeroFacture() !=null && entity.getNumeroFacture().equals(numeroFacture)) {
-						fDomain = factureMapper.fromEntityToDomain(factEntity);	
+				for (FactureEntity entity : fEntities) {
+					if (entity.getNumeroFacture() != null && entity.getNumeroFacture().equals(numeroFacture)) {
+						dFacture = factureMapper.fromEntityToDomain(factEntity);
 					}
-				}				
-			}			
+				}
+			}
 		}
-		return fDomain;
+		map.put("facture", dFacture);
+		return map;
+
 	}
 
 	@Override
@@ -88,11 +95,11 @@ public class FactureSpiAdapter implements FactureSpiService {
 	@Override
 	public void deleteFactureById(String siret, Long prestationId, Long factureId) {
 		FactureEntity factureEntity = entitySpiService.findFactureById(siret, prestationId, factureId);
-		if(factureEntity != null && factureEntity.getId() != null) {
+		if (factureEntity != null && factureEntity.getId() != null) {
 			factureJpaRepository.deleteById(factureId);
-			factureJpaRepository.flush();			
+			factureJpaRepository.flush();
 		}
-		
+
 	}
 
 	@Override
@@ -159,5 +166,4 @@ public class FactureSpiAdapter implements FactureSpiService {
 		return factureMapper.fromEntityToDomain(entities);
 	}
 
-	
 }

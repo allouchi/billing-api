@@ -4,6 +4,8 @@ import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.ports.api.facture.FactureApiService;
 import com.aliateck.fact.domaine.ports.spi.facture.FactureSpiService;
 import java.util.List;
+import java.util.Map;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -16,7 +18,7 @@ public class FactureApiAdapter implements FactureApiService {
   FactureSpiService factureSpiService;
 
   @Override
-  public Facture addFacture(String siret, Facture facture, Long prestationId) {
+  public Map<String, Object> addFacture(String siret, Facture facture, Long prestationId) {
     return factureSpiService.addFacture(siret, facture, prestationId);
   }
 

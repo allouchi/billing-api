@@ -49,7 +49,7 @@ public class FactureController {
     consumes = "application/json",
     produces = "application/json"
   )
-  public Facture addFacture(
+  public Map<String, Object> addFacture(
     @RequestBody Facture factureRequest,
     @PathVariable String siret,
     @PathVariable long prestationId
