@@ -4,7 +4,7 @@ import com.aliateck.fact.infrastructure.models.FactureEntity;
 import com.aliateck.fact.infrastructure.models.PrestationEntity;
 import java.util.List;
 
-public interface CommonSpiEntityService {
+public interface EntitySpiService {
   List<FactureEntity> findFacturesByPrestation(String siret, long idPrestation);
   List<FactureEntity> findAllFacturesBySiret(String siret);
   PrestationEntity findPrestationById(String siret, long prestationId);

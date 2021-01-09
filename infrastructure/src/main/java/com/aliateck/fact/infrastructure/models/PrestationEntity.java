@@ -56,7 +56,7 @@ public class PrestationEntity implements Serializable {
   @JoinColumn(name = "consultant")
   private ConsultantEntity consultant;
 
-  @OneToMany(fetch = FetchType.LAZY,  cascade = CascadeType.ALL ) 
+  @OneToMany(fetch = FetchType.LAZY ) 
   @JoinColumn(name = "facture")
   private List<FactureEntity> facture;
   

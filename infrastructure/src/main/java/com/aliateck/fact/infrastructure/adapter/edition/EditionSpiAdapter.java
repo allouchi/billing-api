@@ -15,7 +15,7 @@ import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.business.object.Prestation;
 import com.aliateck.fact.domaine.common.edition.BuildFactureService;
 import com.aliateck.fact.domaine.ports.spi.edition.EditionSpiService;
-import com.aliateck.fact.infrastructure.adapter.commun.CommonSpiEntityService;
+import com.aliateck.fact.infrastructure.adapter.commun.EntitySpiService;
 import com.aliateck.fact.infrastructure.mapper.CompanyMapper;
 import com.aliateck.fact.infrastructure.mapper.FactureMapper;
 import com.aliateck.fact.infrastructure.mapper.PrestationMapper;
@@ -39,7 +39,7 @@ import lombok.experimental.FieldDefaults;
 public class EditionSpiAdapter implements EditionSpiService {
 	EditionReportService editionReportService;
 	CompanyJpaRepository companyJpaRepository;
-	CommonSpiEntityService commonSpiEntityService;
+	EntitySpiService commonSpiEntityService;
 	PrestationJpaRepository prestationJpaRepository;
 	BuildFactureService buildFactureService;
 	CompanyMapper companyMapper;
@@ -60,7 +60,7 @@ public class EditionSpiAdapter implements EditionSpiService {
 			prestationEntity.setFacture(listeFacture);
 			PrestationEntity pEbtity = prestationJpaRepository.saveAndFlush(prestationEntity);
 			for (FactureEntity factEntity : pEbtity.getFacture()) {
-				if (factEntity.getNumeroFacture().equalsIgnoreCase(facture.getNumeroCommande())) {
+				if (factEntity.getNumeroFacture().equalsIgnoreCase(facture.getNumeroFacture())) {
 					return factureMapper.fromEntityToDomain(factEntity);
 				}
 			}

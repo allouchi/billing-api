@@ -28,8 +28,7 @@ public class BuildFactureImpl implements BuildFactureService {
     float tva = prixTotalHT * 0.2f;
     facture.setPrixTotalHT(prixTotalHT);
     facture.setPrixTotalTTC(prixTotalHT + tva);
-    facture.setMontantTVA(tva);
-    facture.setNumeroFacture(UtilsFacture.calculerNumeroFacture(000));
+    facture.setMontantTVA(tva);    
     return facture;
   }
 

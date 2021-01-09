@@ -1,5 +1,13 @@
 package com.aliateck.fact.infrastructure.adapter.client;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
 import com.aliateck.fact.domaine.business.object.Adresse;
 import com.aliateck.fact.domaine.business.object.Client;
 import com.aliateck.fact.domaine.ports.spi.client.ClientSpiService;
@@ -10,15 +18,10 @@ import com.aliateck.fact.infrastructure.models.ClientEntity;
 import com.aliateck.fact.infrastructure.models.CompanyEntity;
 import com.aliateck.fact.infrastructure.repository.client.ClientJpaRepository;
 import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import javax.transaction.Transactional;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.stereotype.Service;
 
 @Service
 @Transactional

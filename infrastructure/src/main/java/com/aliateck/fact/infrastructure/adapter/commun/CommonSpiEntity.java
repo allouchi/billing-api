@@ -22,7 +22,7 @@ import lombok.experimental.FieldDefaults;
 @Transactional
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class CommonSpiEntity implements CommonSpiEntityService {
+public class CommonSpiEntity implements EntitySpiService {
   CompanyJpaRepository companyJpaRepository;
 
   @Override
