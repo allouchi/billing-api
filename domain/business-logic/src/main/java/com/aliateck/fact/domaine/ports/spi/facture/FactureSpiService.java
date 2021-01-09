@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface FactureSpiService {
-	Map<String, Object> addFacture(String siret, Facture facture, Long prestationId);
+	Facture addFacture(String siret, Facture facture, Long prestationId);
 
 	void deleteFacture(String siret, Facture facture, Long prestationId);
 

@@ -1,13 +1,17 @@
 package com.aliateck.fact.infrastructure.adapter.edition;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.jfree.util.Log;
 import org.springframework.stereotype.Service;
 
 import com.aliateck.fact.domaine.business.object.Company;
@@ -48,16 +52,14 @@ public class EditionSpiAdapter implements EditionSpiService {
 
 	@Override
 	public Facture buildFacture(String siret, long prestationId, Facture facture) {
-		List<FactureEntity> listeFacture = new ArrayList<>();
+		
 		PrestationEntity prestationEntity = commonSpiEntityService.findPrestationById(siret, prestationId);
 		Prestation prestation = prestationMapper.fromEntityToDomain(prestationEntity);
 
 		if (prestation != null && facture != null) {
 			Facture factureCalculee = buildFactureService.calculerFacture(prestation, facture);
-
 			FactureEntity entity = factureMapper.fromDomainToEntity(factureCalculee);
-			listeFacture.add(entity);
-			prestationEntity.setFacture(listeFacture);
+			prestationEntity.getFacture().add(entity);
 			PrestationEntity pEbtity = prestationJpaRepository.saveAndFlush(prestationEntity);
 			for (FactureEntity factEntity : pEbtity.getFacture()) {
 				if (factEntity.getNumeroFacture().equalsIgnoreCase(facture.getNumeroFacture())) {
@@ -65,16 +67,11 @@ public class EditionSpiAdapter implements EditionSpiService {
 				}
 			}
 		}
-
 		return null;
 	}
 
 	@Override
-	public Map<String, Object> editerFacture(String siret, long prestationId, Facture facture) {
-
-		byte[] pdfBinary = null;
-		Map<String, Object> map = new HashMap<>();
-		List<FactureEntity> listeFacture = new ArrayList<>();
+	public Facture editerFacture(String siret, long prestationId, Facture facture) {
 
 		Optional<CompanyEntity> cEntity = companyJpaRepository.findBySiret(siret);
 		if (cEntity.isPresent()) {
@@ -88,16 +85,35 @@ public class EditionSpiAdapter implements EditionSpiService {
 				FactureEntity entity = factureMapper.fromDomainToEntity(factureEditee);
 				Map<String, Object> paramJasper = editionReportService.buildParamJasper(company, prestation,
 						factureEditee);
-				pdfBinary = editionReportService.buildPdfFacture(paramJasper, factureEditee.getFilePath());				
-				listeFacture.add(entity);
-				prestationEntity.setFacture(listeFacture);
-				prestationJpaRepository.save(prestationEntity);
+				String fileName = (String) paramJasper.get("fileName");
+				String pathFile = buildFactureService.buildPathFile(siret);
+				editionReportService.buildPdfFacture(paramJasper, pathFile);
+				entity.setFilePath(pathFile + "\\" + fileName);
+				//entity.setFilePath("test.pdf");
+				prestationEntity.getFacture().add(entity);
+				PrestationEntity pEntity = prestationJpaRepository.save(prestationEntity);
 
-				Facture factureFinal = factureMapper.fromEntityToDomain(entity);
-				map.put("facture", factureFinal);
-				map.put("pdf", pdfBinary);
+				for (FactureEntity fact : pEntity.getFacture()) {
+					if (fact.getId().longValue() == facture.getId().longValue()) {
+						return factureMapper.fromEntityToDomain(fact);
+					}
+
+				}
+
 			}
 		}
-		return map;
+		return null;
+	}
+
+	@Override
+	public byte[] downloadPdf(String path) {
+
+		try {
+			Path pathFile = Paths.get(path);
+			return Files.readAllBytes(pathFile);
+		} catch (IOException e) {
+			Log.debug("Pdf not found : " + e.getMessage());
+		}
+		return new byte[0];
 	}
 }

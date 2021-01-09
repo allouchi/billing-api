@@ -2,17 +2,11 @@ package com.aliateck.fact.infrastructure.adapter.facture;
 
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
-import javax.transaction.Transactional.TxType;
 
-import org.apache.commons.collections.map.HashedMap;
-import org.springframework.data.mapping.AccessOptions.SetOptions.Propagation;
 import org.springframework.stereotype.Service;
 
 import com.aliateck.fact.domaine.business.object.Facture;
@@ -48,10 +42,9 @@ public class FactureSpiAdapter implements FactureSpiService {
 	EntitySpiService entitySpiService;
 
 	@Override
-	public Map<String, Object> addFacture(String siret, Facture facture, Long prestationId) {
+	public Facture addFacture(String siret, Facture facture, Long prestationId) {
 		Facture dFacture = null;
-		Map<String, Object> map = new HashMap<>();
-
+		
 		if (facture.getId() != null && facture.getId().longValue() == 0) {
 			facture.setId(null);
 		}
@@ -77,9 +70,8 @@ public class FactureSpiAdapter implements FactureSpiService {
 					}
 				}
 			}
-		}
-		map.put("facture", dFacture);
-		return map;
+		}		
+		return dFacture;
 
 	}
 

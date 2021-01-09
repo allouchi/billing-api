@@ -18,65 +18,57 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class BuildFactureImpl implements BuildFactureService {
 
-  /*
-   *
-   */
-  @Override
-  public Facture calculerFacture(Prestation prestation, Facture facture) {
-    float tarifHT = prestation.getTarifHT();
-    float prixTotalHT = tarifHT * facture.getQuantite();
-    float tva = prixTotalHT * 0.2f;
-    facture.setPrixTotalHT(prixTotalHT);
-    facture.setPrixTotalTTC(prixTotalHT + tva);
-    facture.setMontantTVA(tva);    
-    return facture;
-  }
+	/*
+	 *
+	 */
+	@Override
+	public Facture calculerFacture(Prestation prestation, Facture facture) {
+		float tarifHT = prestation.getTarifHT();
+		float prixTotalHT = tarifHT * facture.getQuantite();
+		float tva = prixTotalHT * 0.2f;
+		facture.setPrixTotalHT(prixTotalHT);
+		facture.setPrixTotalTTC(prixTotalHT + tva);
+		facture.setMontantTVA(tva);
+		return facture;
+	}
 
-  /*
-   *
-   */
-  @Override
-  public Facture buildFacture(String siret, Prestation prestation, Facture facture) {
-    if (prestation != null && facture != null) {
-      facture.setDelaiPaiement(prestation.getDelaiPaiement());
-      facture.setDateFacturation(UtilsFacture.convertToDate(LocalDate.now()));
-      facture.setDateEcheance(UtilsFacture.calculerDateEcheance(prestation));
-      long nbJourRetard = UtilsFacture.calculerNbJourRetard(facture);
-      facture.setNbJourRetard(nbJourRetard);
-      facture.setFraisRetard(UtilsFacture.calculerFraisRetard(facture));
-      facture.setMoisFacture(UtilsFacture.determinerMoisFacture());
-      facture.setFilePath(buildPathFile(siret));
-      facture.setFactureStatus(FactureStatus.NON.getCode());
-      if (facture.getDateEncaissement() != null && !facture.getDateEncaissement().isEmpty()) {
-        facture.setFactureStatus(FactureStatus.OUI.getCode());        
-        facture.setFraisRetard(0);
-        facture.setNbJourRetard(0);
-      }
-      return facture;
-    }
-    return null;
-  }
+	/*
+	 *
+	 */
+	@Override
+	public Facture buildFacture(String siret, Prestation prestation, Facture facture) {
+		if (prestation != null && facture != null) {
+			facture.setDelaiPaiement(prestation.getDelaiPaiement());
+			facture.setDateFacturation(UtilsFacture.convertToDate(LocalDate.now()));
+			facture.setDateEcheance(UtilsFacture.calculerDateEcheance(prestation));
+			long nbJourRetard = UtilsFacture.calculerNbJourRetard(facture);
+			facture.setNbJourRetard(nbJourRetard);
+			facture.setFraisRetard(UtilsFacture.calculerFraisRetard(facture));
+			facture.setMoisFacture(UtilsFacture.determinerMoisFacture());			
+			facture.setFactureStatus(FactureStatus.NON.getCode());
+			if (facture.getDateEncaissement() != null && !facture.getDateEncaissement().isEmpty()) {
+				facture.setFactureStatus(FactureStatus.OUI.getCode());
+				facture.setFraisRetard(0);
+				facture.setNbJourRetard(0);
+			}
+			return facture;
+		}
+		return null;
+	}
 
-  @Override
-  public String buildPathFile(String siret) {
-    String filePath = null;
-    try {
-      final DateTimeFormatter formaterDate = DateTimeFormatter.ofPattern("yyyy");
-      LocalDate dateJour = LocalDate.now();
-      String annee = formaterDate.format(dateJour);
-      String directory =
-        "c:/temp/" +
-        siret +
-        "/" +
-        annee +
-        "/" +
-        UtilsFacture.determinerMoisFacture() +
-        "/";
-      Path path = Paths.get(directory);
-      filePath = Files.createDirectories(path).toString();
-    } catch (IOException e) {
-      Log.debug("Probleme lors de la creation du repertoire :" + e.getMessage());
-    }
-    return filePath;
-  }
+	@Override
+	public String buildPathFile(String siret) {
+		String filePath = null;
+		try {
+			final DateTimeFormatter formaterDate = DateTimeFormatter.ofPattern("yyyy");
+			LocalDate dateJour = LocalDate.now();
+			String annee = formaterDate.format(dateJour);
+			String directory = "c:/temp/" + siret + "/" + annee + "/" + UtilsFacture.determinerMoisFacture() + "/";
+			Path path = Paths.get(directory);
+			filePath = Files.createDirectories(path).toString();
+		} catch (IOException e) {
+			Log.debug("Probleme lors de la creation du repertoire :" + e.getMessage());
+		}
+		return filePath;
+	}
 }

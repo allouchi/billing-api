@@ -1,7 +1,5 @@
 package com.aliateck.fact.domaine.adapter.edition;
 
-import java.util.Map;
-
 import org.springframework.stereotype.Service;
 
 import com.aliateck.fact.domaine.business.object.Facture;
@@ -16,15 +14,20 @@ import lombok.experimental.FieldDefaults;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class EditionApiAdapter implements EditionApiService {
-  EditionSpiService editionSpiService;
+	EditionSpiService editionSpiService;
 
-  @Override
-  public Facture buildFacture(String siret, long idPrestation, Facture facture) {
-    return editionSpiService.buildFacture(siret, idPrestation, facture);
-  }
+	@Override
+	public Facture buildFacture(String siret, long idPrestation, Facture facture) {
+		return editionSpiService.buildFacture(siret, idPrestation, facture);
+	}
 
-  @Override
-  public Map<String, Object> editerFacture(String siret, long idPrestation, Facture facture) {
-    return editionSpiService.editerFacture(siret, idPrestation, facture);
-  }
+	@Override
+	public Facture editerFacture(String siret, long idPrestation, Facture facture) {
+		return editionSpiService.editerFacture(siret, idPrestation, facture);
+	}
+
+	@Override
+	public byte[] downloadPdf(String path) {
+		return editionSpiService.downloadPdf(path);
+	}
 }

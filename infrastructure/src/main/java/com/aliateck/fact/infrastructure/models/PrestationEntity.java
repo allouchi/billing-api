@@ -21,7 +21,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter 
+@Getter
 @Setter
 @Builder
 @AllArgsConstructor
@@ -30,34 +30,35 @@ import lombok.Setter;
 @EqualsAndHashCode
 //@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PrestationEntity implements Serializable {
-  /**
-   *
-   */private static final long serialVersionUID = 1L;
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", nullable = false)
-  Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", nullable = false)
+	Long id;
 
-  @Column(name = "delaiPaiement", nullable = false)
-  Long delaiPaiement;
+	@Column(name = "delaiPaiement", nullable = false)
+	Long delaiPaiement;
 
-  @Column(name = "tarifHT", nullable = false)
-  Integer tarifHT;
-  
-  @Column(name = "numeroCommande", nullable= false)
-  String numeroCommande;
+	@Column(name = "tarifHT", nullable = false)
+	Integer tarifHT;
 
-  @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-  @JoinColumn(name = "client")
-  private ClientEntity client;
+	@Column(name = "numeroCommande", nullable = false)
+	String numeroCommande;
 
-  @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-  @JoinColumn(name = "consultant")
-  private ConsultantEntity consultant;
+	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinColumn(name = "client")
+	private ClientEntity client;
 
-  @OneToMany(fetch = FetchType.LAZY ) 
-  @JoinColumn(name = "facture")
-  private List<FactureEntity> facture;
-  
+	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinColumn(name = "consultant")
+	private ConsultantEntity consultant;
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "facture")
+	private List<FactureEntity> facture;
+
 }

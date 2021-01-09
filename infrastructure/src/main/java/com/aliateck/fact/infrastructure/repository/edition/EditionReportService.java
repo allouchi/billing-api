@@ -7,7 +7,7 @@ import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.business.object.Prestation;
 
 public interface EditionReportService {
-  public byte[] buildPdfFacture(
+  public void buildPdfFacture(
     Map<String, Object> paramJasper,
     String path      
   );
