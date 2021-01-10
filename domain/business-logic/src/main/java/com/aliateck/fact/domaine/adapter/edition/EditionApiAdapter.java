@@ -14,20 +14,17 @@ import lombok.experimental.FieldDefaults;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class EditionApiAdapter implements EditionApiService {
-	EditionSpiService editionSpiService;
+	EditionSpiService editionSpiService;	
 
 	@Override
-	public Facture buildFacture(String siret, long idPrestation, Facture facture) {
-		return editionSpiService.buildFacture(siret, idPrestation, facture);
+	public Facture editerFacture(String siret, Long idPrestation, Facture facture, String pathRoot) {
+		return editionSpiService.editerFacture(siret, idPrestation, facture, pathRoot);
 	}
 
 	@Override
-	public Facture editerFacture(String siret, long idPrestation, Facture facture) {
-		return editionSpiService.editerFacture(siret, idPrestation, facture);
+	public byte[] downloadPdf(String siret, Long prestationId, Long factureId, String rootDirectory) {
+		return editionSpiService.downloadPdf(siret, prestationId, factureId, rootDirectory);
 	}
 
-	@Override
-	public byte[] downloadPdf(String path) {
-		return editionSpiService.downloadPdf(path);
-	}
+	
 }

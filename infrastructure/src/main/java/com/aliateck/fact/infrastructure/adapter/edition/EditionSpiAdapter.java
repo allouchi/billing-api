@@ -4,14 +4,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import org.jfree.util.Log;
 import org.springframework.stereotype.Service;
 
 import com.aliateck.fact.domaine.business.object.Company;
@@ -30,10 +27,10 @@ import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
 import com.aliateck.fact.infrastructure.repository.edition.EditionReportService;
 import com.aliateck.fact.infrastructure.repository.prestation.PrestationJpaRepository;
 
-import groovy.util.logging.Slf4j;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional
@@ -49,29 +46,9 @@ public class EditionSpiAdapter implements EditionSpiService {
 	CompanyMapper companyMapper;
 	PrestationMapper prestationMapper;
 	FactureMapper factureMapper;
-
+ 
 	@Override
-	public Facture buildFacture(String siret, long prestationId, Facture facture) {
-		
-		PrestationEntity prestationEntity = commonSpiEntityService.findPrestationById(siret, prestationId);
-		Prestation prestation = prestationMapper.fromEntityToDomain(prestationEntity);
-
-		if (prestation != null && facture != null) {
-			Facture factureCalculee = buildFactureService.calculerFacture(prestation, facture);
-			FactureEntity entity = factureMapper.fromDomainToEntity(factureCalculee);
-			prestationEntity.getFacture().add(entity);
-			PrestationEntity pEbtity = prestationJpaRepository.saveAndFlush(prestationEntity);
-			for (FactureEntity factEntity : pEbtity.getFacture()) {
-				if (factEntity.getNumeroFacture().equalsIgnoreCase(facture.getNumeroFacture())) {
-					return factureMapper.fromEntityToDomain(factEntity);
-				}
-			}
-		}
-		return null;
-	}
-
-	@Override
-	public Facture editerFacture(String siret, long prestationId, Facture facture) {
+	public Facture editerFacture(String siret, Long prestationId, Facture facture, String pathRoot) {
 
 		Optional<CompanyEntity> cEntity = companyJpaRepository.findBySiret(siret);
 		if (cEntity.isPresent()) {
@@ -87,9 +64,10 @@ public class EditionSpiAdapter implements EditionSpiService {
 						factureEditee);
 				String fileName = (String) paramJasper.get("fileName");
 				String pathFile = buildFactureService.buildPathFile(siret);
-				editionReportService.buildPdfFacture(paramJasper, pathFile);
+				String directoryPdf = pathRoot + "\\" + pathFile;
+				editionReportService.buildPdfFacture(paramJasper, directoryPdf);
 				entity.setFilePath(pathFile + "\\" + fileName);
-				//entity.setFilePath("test.pdf");
+
 				prestationEntity.getFacture().add(entity);
 				PrestationEntity pEntity = prestationJpaRepository.save(prestationEntity);
 
@@ -97,22 +75,26 @@ public class EditionSpiAdapter implements EditionSpiService {
 					if (fact.getId().longValue() == facture.getId().longValue()) {
 						return factureMapper.fromEntityToDomain(fact);
 					}
-
 				}
-
 			}
 		}
 		return null;
 	}
 
 	@Override
-	public byte[] downloadPdf(String path) {
+	public byte[] downloadPdf(String siret, Long prestationId, Long factureId, String rootDirectory) {
 
-		try {
-			Path pathFile = Paths.get(path);
-			return Files.readAllBytes(pathFile);
-		} catch (IOException e) {
-			Log.debug("Pdf not found : " + e.getMessage());
+		FactureEntity facture = commonSpiEntityService.findFactureById(siret, prestationId, factureId);
+		if (facture != null) {
+			String path = facture.getFilePath();
+			String pathComplet = rootDirectory + "\\" + path;
+
+			try {
+				Path pathFile = Paths.get(pathComplet);
+				return Files.readAllBytes(pathFile);
+			} catch (IOException e) {
+				log.debug("Pdf not found : " + e.getMessage());
+			}
 		}
 		return new byte[0];
 	}

@@ -110,7 +110,7 @@ public class EditionReportImpl implements EditionReportService {
 			// - Execution du rapport
 			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperDesign, paramJasper, dataSource);
 			// - Creation du rapport au format PDF
-			JasperExportManager.exportReportToPdfFile(jasperPrint, path + "/" + outputFileName);
+			JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\" + outputFileName);
 			// JasperExportManager.exportReportToPdf(jasperPrint);
 
 			log.info("********************* Fin génération du fichier pdf *********************");

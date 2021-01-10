@@ -4,7 +4,6 @@ import com.aliateck.fact.domaine.business.object.Facture;
 
 public interface EditionApiService {
 	
-  public Facture editerFacture(String siret, long idPrestation, Facture facture);
-  public Facture buildFacture(String siret, long idPrestation, Facture facture);
-  public byte[] downloadPdf(String path);
+  public Facture editerFacture(String siret, Long idPrestation, Facture facture, String pathRoot);
+  public byte[] downloadPdf(String siret, Long idPrestation, Long factureId, String rootDirectory);
 }

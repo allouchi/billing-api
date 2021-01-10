@@ -54,10 +54,12 @@ public class FactureSpiAdapter implements FactureSpiService {
 
 		if (prestaEntity != null) {
 			Prestation prestation = prestationMapper.fromEntityToDomain(prestaEntity);
-			Facture factureCaculee = calculerFactureService.calculerFacture(prestation, facture);
+			Facture factureCaculee = calculerFactureService.buildFacture(siret, prestation, facture);
 			FactureEntity factEntity = factureMapper.fromDomainToEntity(factureCaculee);
 			String numeroFacture = UtilsFacture.updateNumeroFacture(factureMapper.fromEntityToDomain(listeFacture));
 			factEntity.setNumeroFacture(numeroFacture);
+			
+			
 			FactureEntity factureSeved = factureJpaRepository.save(factEntity);
 			prestaEntity.getFacture().add(factureSeved);
 			PrestationEntity pSaved = prestationJpaRepository.save(prestaEntity);
@@ -72,7 +74,6 @@ public class FactureSpiAdapter implements FactureSpiService {
 			}
 		}		
 		return dFacture;
-
 	}
 
 	@Override
