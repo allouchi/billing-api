@@ -3,22 +3,28 @@ package com.aliateck.fact.infrastructure.adapter.facture;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import com.aliateck.fact.domaine.business.object.Company;
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.business.object.Prestation;
 import com.aliateck.fact.domaine.common.edition.BuildFactureService;
 import com.aliateck.fact.domaine.exception.FactureNotFoundException;
 import com.aliateck.fact.domaine.ports.spi.facture.FactureSpiService;
 import com.aliateck.fact.infrastructure.adapter.commun.EntitySpiService;
+import com.aliateck.fact.infrastructure.mapper.CompanyMapper;
 import com.aliateck.fact.infrastructure.mapper.FactureMapper;
 import com.aliateck.fact.infrastructure.mapper.PrestationMapper;
+import com.aliateck.fact.infrastructure.models.CompanyEntity;
 import com.aliateck.fact.infrastructure.models.FactureEntity;
 import com.aliateck.fact.infrastructure.models.PrestationEntity;
+import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
+import com.aliateck.fact.infrastructure.repository.edition.EditionReportService;
 import com.aliateck.fact.infrastructure.repository.facture.FactureJpaRepository;
 import com.aliateck.fact.infrastructure.repository.prestation.PrestationJpaRepository;
 import com.aliateck.util.UtilsFacture;
@@ -40,39 +46,48 @@ public class FactureSpiAdapter implements FactureSpiService {
 	FactureMapper factureMapper;
 	PrestationMapper prestationMapper;
 	EntitySpiService entitySpiService;
+	BuildFactureService buildFactureService;
+	EditionReportService editionReportService;
+	CompanyJpaRepository companyJpaRepository;
+	CompanyMapper companyMapper;
 
 	@Override
-	public Facture addFacture(String siret, Facture facture, Long prestationId) {
+	public Facture addFacture(String siret, Facture facture, Long prestationId, String pathRoot) {
 		Facture dFacture = null;
-		
+
 		if (facture.getId() != null && facture.getId().longValue() == 0) {
 			facture.setId(null);
 		}
 
+		Optional<CompanyEntity> cEntity = companyJpaRepository.findBySiret(siret);
 		PrestationEntity prestaEntity = entitySpiService.findPrestationById(siret, prestationId);
 		List<FactureEntity> listeFacture = entitySpiService.findFacturesByPrestation(siret, prestationId);
 
-		if (prestaEntity != null) {
+		if (cEntity.isPresent()) {
+			CompanyEntity oEntity = cEntity.get();
+			Company company = companyMapper.fromEntityToDomain(oEntity);
 			Prestation prestation = prestationMapper.fromEntityToDomain(prestaEntity);
-			Facture factureCaculee = calculerFactureService.buildFacture(siret, prestation, facture);
-			FactureEntity factEntity = factureMapper.fromDomainToEntity(factureCaculee);
+			Facture factureEditee = calculerFactureService.buildFacture(siret, prestation, facture);
 			String numeroFacture = UtilsFacture.updateNumeroFacture(factureMapper.fromEntityToDomain(listeFacture));
-			factEntity.setNumeroFacture(numeroFacture);
-			
-			
-			FactureEntity factureSeved = factureJpaRepository.save(factEntity);
-			prestaEntity.getFacture().add(factureSeved);
-			PrestationEntity pSaved = prestationJpaRepository.save(prestaEntity);
+			factureEditee.setNumeroFacture(numeroFacture);
+			Map<String, Object> paramJasper = editionReportService.buildParamJasper(company, prestation, factureEditee);
+			FactureEntity factEntity = factureMapper.fromDomainToEntity(factureEditee);
+			String fileName = (String) paramJasper.get("fileName");
+			String pathFile = buildFactureService.buildPathFile(siret, pathRoot);			
+			editionReportService.buildPdfFacture(paramJasper, pathFile);
+			String pathToSave = UtilsFacture.buildPath(pathFile, pathRoot);
+			factEntity.setFilePath(pathToSave + "\\" + fileName);
 
-			List<FactureEntity> fEntities = pSaved.getFacture();
-			if (fEntities != null && !fEntities.isEmpty()) {
-				for (FactureEntity entity : fEntities) {
-					if (entity.getNumeroFacture() != null && entity.getNumeroFacture().equals(numeroFacture)) {
-						dFacture = factureMapper.fromEntityToDomain(factEntity);
-					}
+			prestaEntity.getFacture().add(factEntity);
+			PrestationEntity pEntity = prestationJpaRepository.save(prestaEntity);
+
+			for (FactureEntity fact : pEntity.getFacture()) {
+				if (fact != null && fact.getNumeroFacture() != null
+						&& fact.getNumeroFacture().equals(facture.getNumeroFacture())) {
+					return factureMapper.fromEntityToDomain(fact);
 				}
 			}
-		}		
+		}
 		return dFacture;
 	}
 

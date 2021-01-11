@@ -45,7 +45,7 @@ public class CompanyEntity extends CommonEntity {
   @Column(name = "status", nullable = false)
   String status;
 
-  @Column(name = "siret", nullable = false, unique = true, length = 14)
+  @Column(name = "siret", nullable = false, unique = true)
   String siret;
 
   @Column(name = "rcsname")
@@ -66,22 +66,23 @@ public class CompanyEntity extends CommonEntity {
 
   @OneToMany(
     fetch = FetchType.LAZY,
-    cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }
+    cascade = CascadeType.ALL
   )
   @JoinColumn(name = "company")
   private List<ConsultantEntity> consultants;
 
   @OneToMany(
     fetch = FetchType.LAZY,
-    cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }
+    cascade = CascadeType.ALL
   )
   @JoinColumn(name = "company")
   private List<ClientEntity> clients;
 
   @OneToMany(
     fetch = FetchType.LAZY,
-    cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }
+    cascade = CascadeType.ALL
   )
   @JoinColumn(name = "company")
   private List<PrestationEntity> prestations;
+  
 }

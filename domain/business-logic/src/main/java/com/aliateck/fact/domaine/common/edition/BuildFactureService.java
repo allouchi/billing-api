@@ -7,5 +7,5 @@ public interface BuildFactureService {
   
   public Facture buildFacture(String siret, Prestation prestation, Facture facture);
 
-  public String buildPathFile(String siret);
+  public String buildPathFile(String siret, String pathRoot);
 }

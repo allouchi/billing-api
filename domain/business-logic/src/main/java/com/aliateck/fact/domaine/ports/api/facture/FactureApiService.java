@@ -5,7 +5,7 @@ import java.util.List;
 import com.aliateck.fact.domaine.business.object.Facture;
 
 public interface FactureApiService {
-	public Facture addFacture(String siret, Facture factureRequest, Long prestationId);
+	public Facture addFacture(String siret, Facture factureRequest, Long prestationId, String pathRoot);
 
 	public void deleteFacture(String siret, Facture facture, Long prestationId);
 

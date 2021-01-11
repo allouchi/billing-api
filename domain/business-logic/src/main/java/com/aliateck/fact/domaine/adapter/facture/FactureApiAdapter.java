@@ -19,8 +19,8 @@ public class FactureApiAdapter implements FactureApiService {
   FactureSpiService factureSpiService;
 
   @Override
-  public Facture addFacture(String siret, Facture facture, Long prestationId) {
-    return factureSpiService.addFacture(siret, facture, prestationId);
+  public Facture addFacture(String siret, Facture facture, Long prestationId, String pathRoot) {
+    return factureSpiService.addFacture(siret, facture, prestationId, pathRoot);
   }
 
   @Override

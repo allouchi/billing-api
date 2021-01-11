@@ -51,13 +51,13 @@ public class BuildFactureImpl implements BuildFactureService {
 	}
 
 	@Override
-	public String buildPathFile(String siret) {
+	public String buildPathFile(String siret, String pathRoot) {
 		String filePath = null;
 		try {
 			final DateTimeFormatter formaterDate = DateTimeFormatter.ofPattern("yyyy");
 			LocalDate dateJour = LocalDate.now();
 			String annee = formaterDate.format(dateJour);
-			String directory = siret + SLASH + annee + SLASH + UtilsFacture.determinerMoisFacture() + SLASH;
+			String directory = pathRoot + SLASH + siret + SLASH + annee + SLASH + UtilsFacture.determinerMoisFacture() + SLASH;
 			Path path = Paths.get(directory);
 			filePath = Files.createDirectories(path).toString();
 		} catch (IOException e) {

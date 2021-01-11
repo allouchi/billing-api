@@ -8,14 +8,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aliateck.fact.config.ResourcesProperties;
 import com.aliateck.fact.domaine.business.object.Facture;
-import com.aliateck.fact.domaine.ports.api.edition.EditionApiService;
 import com.aliateck.fact.domaine.ports.api.facture.FactureApiService;
 
 import lombok.AccessLevel;
@@ -30,7 +28,6 @@ import lombok.extern.slf4j.Slf4j;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FactureController {
 	FactureApiService factureApiService;
-	EditionApiService editionApiService;
 	ResourcesProperties resources;
 
 	@GetMapping(value = "/{siret}")
@@ -60,27 +57,16 @@ public class FactureController {
 		log.info("delete bill by id :" + factureId);
 		factureApiService.deleteById(siret, prestationId, factureId);
 	}
-	
+
 	@PostMapping(value = "/{siret}/{prestationId}", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<Facture> addFacture(@RequestBody Facture factureRequest, @PathVariable String siret,
 			@PathVariable long prestationId) {
 		log.info("Add new bill");
-		Facture reponse = factureApiService.addFacture(siret, factureRequest, prestationId);
+		Facture reponse = factureApiService.addFacture(siret, factureRequest, prestationId, resources.getPathFile());
 		if (reponse != null) {
 			return ResponseEntity.ok(reponse);
 		}
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}
-	
-	@PutMapping(value = "/{siret}/{prestationId}")
-	public ResponseEntity<Facture> editerFacture(@RequestBody Facture factureRequest, @PathVariable String siret,
-			@PathVariable long prestationId) {
-		log.info("Edit new bill : " + prestationId);
-		Facture reponse = editionApiService.editerFacture(siret, prestationId, factureRequest, resources.getPathFile());
-		if (reponse != null) {
-			return ResponseEntity.ok(reponse);
-		}
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}
+	}	
 
 }

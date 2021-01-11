@@ -68,6 +68,7 @@ public class UtilsFacture {
 	 */
 	public static String determinerMoisFacture() {
 		Month mois = LocalDate.now().getMonth();
+		mois = mois.minus(1);
 		String formatMois = mois.getDisplayName(TextStyle.FULL, Locale.FRENCH);
 		formatMois = formatMois.substring(0, 1).toUpperCase() + formatMois.substring(1, formatMois.length());
 		return formatMois;
@@ -104,5 +105,14 @@ public class UtilsFacture {
 
 	public static File loadJasperFile() throws FileNotFoundException {
 		return ResourceUtils.getFile("classpath:data/factureDesign.jrxml");
+	}
+	
+	public static String buildPath(String pathComplet, String rootPath)  {
+		String path = null;
+		if(pathComplet != null && rootPath != null) {
+			int lg = rootPath.length();
+			path = pathComplet.substring(lg, pathComplet.length());
+		}
+		return path;
 	}
 }

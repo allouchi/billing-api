@@ -1,6 +1,5 @@
 package com.aliateck.fact.infrastructure.models;
 
-import com.aliateck.fact.infrastructure.models.common.CommonEntity;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,8 +9,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+
+import com.aliateck.fact.infrastructure.models.common.CommonEntity;
+
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

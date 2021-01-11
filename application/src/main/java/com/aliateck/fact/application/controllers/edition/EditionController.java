@@ -31,7 +31,7 @@ public class EditionController {
 	public ResponseEntity<byte[]> downloadPdf(@PathVariable String siret, @PathVariable Long prestationId,
 			@PathVariable Long factureId) {
 		log.info("get pdf by path name file");
-		byte[] contents = editionApiService.downloadPdf(siret, prestationId, factureId, resources.getPathFile());
+		byte[] contents = editionApiService.downloadPdf(siret, prestationId, factureId, resources.getPathFile());		
 		if (contents != null && contents.length > 0) {
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.parseMediaType("application/pdf"));
