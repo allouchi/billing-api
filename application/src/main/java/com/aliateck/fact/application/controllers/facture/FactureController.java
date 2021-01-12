@@ -3,6 +3,7 @@ package com.aliateck.fact.application.controllers.facture;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,7 +41,7 @@ public class FactureController {
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
-	@GetMapping(value = "/{siret}/{idPrestation}")
+	@GetMapping(value = "/{siret}/{idPrestation}", produces = {MediaType.APPLICATION_XML_VALUE, MediaType. APPLICATION_JSON_VALUE})
 	public ResponseEntity<List<Facture>> findAllByPrestation(@PathVariable String siret,
 			@PathVariable long prestationId) {
 		log.info("get all bills by prestation");

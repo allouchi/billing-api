@@ -1,6 +1,8 @@
 package com.aliateck.fact.domaine.ports.spi.edition;
 
+import com.aliateck.fact.domaine.business.object.DataPDF;
+
 public interface EditionSpiService {
 	
-	public byte[] downloadPdf(String siret, Long prestationId, Long factureId, String rootDirectory);
+	public DataPDF downloadPdf(String siret, Long prestationId, Long factureId, String rootDirectory);
 }
