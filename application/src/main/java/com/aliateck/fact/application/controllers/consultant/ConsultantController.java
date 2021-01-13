@@ -65,6 +65,6 @@ public class ConsultantController {
 	@DeleteMapping(value = "/{siret}/{consultantId}")
 	public void deleteConsultant(@PathVariable Long consultantId, @PathVariable String siret) {
 		log.info("delete consultant by id :" + consultantId);
-		consultantApiService.deleteById(consultantId, siret);
+		consultantApiService.deleteConsultant(consultantId);
 	}
 }

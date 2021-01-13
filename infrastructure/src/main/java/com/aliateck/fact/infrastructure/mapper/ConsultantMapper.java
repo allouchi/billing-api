@@ -20,6 +20,7 @@ public class ConsultantMapper {
       .id(domain.getId())
       .firstName(domain.getFirstName())
       .lastName(domain.getLastName())
+      .fonction(domain.getFonction())
       .mail(domain.getMail())
       .build();
   }
@@ -33,6 +34,7 @@ public class ConsultantMapper {
       .id(entity.getId())
       .firstName(entity.getFirstName())
       .lastName(entity.getLastName())
+      .fonction(entity.getFonction())
       .mail(entity.getMail())
       .build();
   }

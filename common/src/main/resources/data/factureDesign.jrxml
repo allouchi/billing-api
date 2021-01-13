@@ -25,6 +25,9 @@
 	<parameter name="designation" class="java.lang.String"/>
 	<parameter name="delai_paiement" class="java.lang.Long"/>
 	<parameter name="client_prestation" class="java.lang.String"/>
+	<parameter name="fonction_consultant" class="java.lang.String"/>
+	<parameter name="designation_ligne1" class="java.lang.String"/>
+	<parameter name="designation_ligne2" class="java.lang.String"/>
 	<title>
 		<band height="769">
 			<textField>
@@ -305,14 +308,6 @@ BIC: CRLYFRPP]]></text>
 				<textFieldExpression><![CDATA[$P{delai_paiement}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="1" y="321" width="159" height="20" uuid="d11e5a71-5a09-487d-81f3-e695f9fb0ab3"/>
-				<text><![CDATA[Assistance Technique Business]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="1" y="334" width="123" height="20" uuid="f2a34a11-3fea-41dc-9eb2-c5edb27b115a"/>
-				<text><![CDATA[Intelligence]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="0" y="635" width="280" height="20" uuid="1c61bd3d-9f5d-4355-b2a3-3bb99e6b8411"/>
 				<textElement>
 					<font fontName="Calibri" size="11" isBold="true" isItalic="true" pdfFontName="Helvetica-BoldOblique"/>
@@ -340,8 +335,22 @@ BIC: CRLYFRPP]]></text>
 				</graphicElement>
 			</line>
 			<textField>
-				<reportElement x="0" y="292" width="205" height="29" uuid="f3be6ec8-e00b-48fc-b768-bfc96d441341"/>
-				<textFieldExpression><![CDATA[$P{designation}]]></textFieldExpression>
+				<reportElement x="0" y="292" width="205" height="20" uuid="f3be6ec8-e00b-48fc-b768-bfc96d441341"/>
+				<textElement>
+					<font size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{designation_ligne1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="307" width="205" height="20" uuid="889698f6-53da-44f6-8959-ad3b614c382b"/>
+				<textElement>
+					<font size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{designation_ligne2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="323" width="205" height="20" uuid="47477628-5b0c-4fb3-8f48-dc427209c24d"/>
+				<textFieldExpression><![CDATA[$P{fonction_consultant}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Base64;
 
 import javax.transaction.Transactional;
 
@@ -27,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class EditionSpiAdapter implements EditionSpiService {
 
-	 private static String SLASH ="\\";
+	 private static final String SLASH ="\\";
 	 
 	EntitySpiService commonSpiEntityService;
 	@Override
@@ -43,13 +42,14 @@ public class EditionSpiAdapter implements EditionSpiService {
 			String pathComplet = rootDirectory + SLASH + path;
 			
 			try {
+				
 				Path pathFile = Paths.get(pathComplet);
 				byte [] pdfBinary =  Files.readAllBytes(pathFile);	
 				String fileName  = pathFile.getFileName().toString();
-				return DataPDF.builder().fileContent(pdfBinary).fileName(fileName).build();							
+				return DataPDF.builder().fileContent(pdfBinary).fileName(fileName).filePath(pathFile).build();							
 				
 			} catch (IOException e) {
-				log.debug("Pdf not found : " + e.getMessage());
+				log.debug("Pdf file not found : " + e.getMessage());
 			}
 		}
 		return null;

@@ -104,8 +104,7 @@ public class FactureSpiAdapter implements FactureSpiService {
 	public void deleteFactureById(String siret, Long prestationId, Long factureId) {
 		FactureEntity factureEntity = entitySpiService.findFactureById(siret, prestationId, factureId);
 		if (factureEntity != null && factureEntity.getId() != null) {
-			factureJpaRepository.deleteById(factureId);
-			factureJpaRepository.flush();
+			factureJpaRepository.delete(factureEntity);			
 		}
 
 	}

@@ -21,8 +21,8 @@ public class ConsultantApiAdapter implements ConsultantApiService {
   }
 
   @Override
-  public void deleteById(Long id, String siret) {
-    consultantSpiService.deleteById(id, siret);
+  public void deleteConsultant(Long id) {
+    consultantSpiService.deleteConsultant(id);
   }
 
   @Override

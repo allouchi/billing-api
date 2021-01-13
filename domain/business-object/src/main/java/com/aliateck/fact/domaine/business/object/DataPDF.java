@@ -1,5 +1,7 @@
 package com.aliateck.fact.domaine.business.object;
 
+import java.nio.file.Path;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +24,7 @@ import lombok.experimental.FieldDefaults;
 public class DataPDF {
 	
 	String fileName;
+	Path filePath;
 	byte[] fileContent;
 
 }

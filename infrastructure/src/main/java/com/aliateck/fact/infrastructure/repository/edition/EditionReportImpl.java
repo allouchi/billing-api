@@ -30,6 +30,7 @@ public class EditionReportImpl implements EditionReportService {
 	private static final String FACTURE_LIBELLE = "FACTURE ";
 	private static final String ESPACE_BLANC = " ";
 	private static final String TIRET = " - ";
+	private static final String RETURN ="\n";
 
 	@Override
 	public Map<String, Object> buildParamJasper(Company company, Prestation prestation, Facture facture) {
@@ -61,16 +62,20 @@ public class EditionReportImpl implements EditionReportService {
 		float tarifHT = prestation.getTarifHT();
 		String numeroCommande = prestation.getNumeroCommande();
 		long delaiPaiement = prestation.getDelaiPaiement();
+		String consultantFonction = prestation.getConsultant().getFonction();
+		String consultantIdentite = prestation.getConsultant().getFirstName() + ESPACE_BLANC +  prestation.getConsultant().getLastName().toUpperCase();
+		String designationLigne1 = designation + ESPACE_BLANC + clientPrestation.toUpperCase() + ESPACE_BLANC + "du mois de ";
+		String designationLigne2 = moisPrestation + ESPACE_BLANC + "de "+ consultantIdentite;
 		// infos client
 		Adresse adresseClient = prestation.getClient().getAdresseClient();
-		String adresseCompleteClient = adresseClient.getNumero() + " " + adresseClient.getRue() + "\n"
-				+ adresseClient.getCodePostal() + " " + adresseClient.getLocalite() + "\n" + adresseClient.getPays();
+		String adresseCompleteClient = adresseClient.getNumero() + ESPACE_BLANC + adresseClient.getRue() + RETURN
+				+ adresseClient.getCodePostal() + ESPACE_BLANC + adresseClient.getLocalite() + RETURN + adresseClient.getPays();
 		String rsClient = prestation.getClient().getSocialReason();
-		String nameCompany[] = rsCompany.split(" ");
+		String nameCompany[] = rsCompany.split(ESPACE_BLANC);
 		String fileName = FACTURE_LIBELLE + nameCompany[0] + TIRET + rsClient + " de " + moisPrestation + ESPACE_BLANC
 				+ numeroFacture.substring(0, 4) + TIRET + numeroFacture.split("-")[1]+TYPE_FILE;
-
-		// - Parametre envoyes au rapport
+        
+		// - Parametres envoyes au rapport
 		Map<String, Object> parameters = new HashMap<>();
 		parameters.put("rs_company", rsCompany);
 		parameters.put("statut_company", statutCompany);
@@ -94,6 +99,9 @@ public class EditionReportImpl implements EditionReportService {
 		parameters.put("designation", designation);
 		parameters.put("delai_paiement", delaiPaiement);
 		parameters.put("client_prestation", clientPrestation);
+		parameters.put("designation_ligne1", designationLigne1);
+		parameters.put("designation_ligne2", designationLigne2);
+		parameters.put("fonction_consultant", consultantFonction);
 		parameters.put("fileName", fileName);
 		return parameters;
 	}

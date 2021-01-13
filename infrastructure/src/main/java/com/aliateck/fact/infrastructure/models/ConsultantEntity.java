@@ -38,6 +38,9 @@ public class ConsultantEntity implements Serializable {
 
   @Column(name = "lastName", nullable = false)
   String lastName;
+  
+  @Column(name = "fonction", nullable = false)
+  String fonction;
 
   @Column(name = "mail", unique = true, nullable = false)
   String mail;

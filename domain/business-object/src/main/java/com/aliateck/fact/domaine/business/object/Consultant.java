@@ -18,5 +18,6 @@ public class Consultant {
   Long id;
   String firstName;
   String lastName;
+  String fonction;
   String mail;
 }

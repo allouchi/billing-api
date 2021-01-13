@@ -6,7 +6,7 @@ import java.util.List;
 public interface ConsultantSpiService {
   public Consultant addConsultant(Consultant consultant, String siret);
 
-  public void deleteById(Long id, String siret);
+  public void deleteConsultant(Long id);
 
   public Consultant updateConsultant(Consultant consultant, String siret);
 

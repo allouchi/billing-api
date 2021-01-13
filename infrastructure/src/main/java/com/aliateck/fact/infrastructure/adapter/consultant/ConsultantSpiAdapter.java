@@ -55,20 +55,11 @@ public class ConsultantSpiAdapter implements ConsultantSpiService {
   }
 
   @Override
-  public void deleteById(Long id, String siret) {
-    if (id == null || siret == null) {
-      throw new IllegalArgumentException("id or siret are null");
+  public void deleteConsultant(Long id) {
+    if (id == null) {
+      throw new IllegalArgumentException("Id is null");
     }
-    Optional<CompanyEntity> oCompnay = companyJpaRepository.findBySiret(siret);
-    if (oCompnay.isPresent()) {
-      CompanyEntity entity = oCompnay.get();
-      List<ConsultantEntity> oConsultant = entity.getConsultants();
-      for (ConsultantEntity c : oConsultant) {
-        if (c.getId().longValue() == id.longValue()) {
-          consultantJpaRepository.deleteById(id);
-        }
-      }
-    }
+    consultantJpaRepository.deleteById(id);
   }
 
   @Override

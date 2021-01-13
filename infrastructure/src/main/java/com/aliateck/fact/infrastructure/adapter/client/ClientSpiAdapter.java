@@ -37,8 +37,8 @@ public class ClientSpiAdapter implements ClientSpiService {
 	public Client addClient(Client client, String siret) {
 		if (client.getId() != null && client.getId().longValue() == 0) {
 			client.setId(null);
-		}		
-		
+		}
+
 		ClientEntity clientEntity = clientMapper.fromDomainToEntity(client);
 		Optional<CompanyEntity> oCompany = companyJpaRepository.findBySiret(siret);
 		if (oCompany.isPresent()) {
