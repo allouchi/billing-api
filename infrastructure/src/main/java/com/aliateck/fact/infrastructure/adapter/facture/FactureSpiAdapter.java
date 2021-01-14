@@ -73,7 +73,7 @@ public class FactureSpiAdapter implements FactureSpiService {
 			Map<String, Object> paramJasper = editionReportService.buildParamJasper(company, prestation, factureEditee);
 			FactureEntity factEntity = factureMapper.fromDomainToEntity(factureEditee);
 			String fileName = (String) paramJasper.get("fileName");
-			String pathFile = buildFactureService.buildPathFile(siret, pathRoot);			
+			String pathFile = buildFactureService.buildPathFile(siret, pathRoot);
 			editionReportService.buildPdfFacture(paramJasper, pathFile);
 			String pathToSave = UtilsFacture.buildPath(pathFile, pathRoot);
 			factEntity.setFilePath(pathToSave + "\\" + fileName);
@@ -104,7 +104,7 @@ public class FactureSpiAdapter implements FactureSpiService {
 	public void deleteFactureById(String siret, Long prestationId, Long factureId) {
 		FactureEntity factureEntity = entitySpiService.findFactureById(siret, prestationId, factureId);
 		if (factureEntity != null && factureEntity.getId() != null) {
-			factureJpaRepository.delete(factureEntity);			
+			factureJpaRepository.delete(factureEntity);
 		}
 
 	}
@@ -117,6 +117,18 @@ public class FactureSpiAdapter implements FactureSpiService {
 	@Override
 	public Facture updateFacture(String siret, Facture facture, Long prestationId) {
 
+		List<FactureEntity> listeFacture = entitySpiService.findFacturesByPrestation(siret, prestationId);
+		if (listeFacture != null && !listeFacture.isEmpty()) {
+			for (FactureEntity entity : listeFacture) {
+				if (entity.getId().longValue() == facture.getId().longValue()) {
+                  Facture fact = UtilsFacture.updateFacture(facture);
+                  FactureEntity fEntity = factureMapper.fromDomainToEntity(fact);
+                  FactureEntity bEntity = factureJpaRepository.save(fEntity);
+                  convertToDate(bEntity.getDateEncaissement());
+                  return factureMapper.fromEntityToDomain(bEntity);
+				}
+			}
+		}
 		return null;
 	}
 

@@ -54,8 +54,7 @@ public class EditionController {
 				.headers(header)				
 				.contentType(mediaType) 				
 				.contentLength(reponse.getFileContent().length)
-				.body(resource);
-		
+				.body(resource);	
 
 	}
 

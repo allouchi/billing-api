@@ -18,6 +18,7 @@ import org.springframework.util.ResourceUtils;
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.business.object.Prestation;
 
+
 public class UtilsFacture {
 
 	private UtilsFacture() {
@@ -26,6 +27,18 @@ public class UtilsFacture {
 	/*
 	 *
 	 */
+	
+	public static Facture updateFacture(Facture facture) {
+		
+		if(facture.getDateEncaissement() != null && !facture.getDateEncaissement().isEmpty()) {
+			facture.setFactureStatus(FactureStatus.OUI.getCode());
+			facture.setFraisRetard(0);
+			facture.setNbJourRetard(0);	
+			facture.setDateEncaissement(convertToDateFromStringDate(facture.getDateEncaissement()));
+		}
+		return facture;
+		
+	}
 	public static long calculerNbJourRetard(Facture facture) {
 		LocalDate dateEcheance = LocalDate.now().plusDays(facture.getDelaiPaiement());
 		LocalDate dateJour = LocalDate.now();
@@ -52,15 +65,31 @@ public class UtilsFacture {
 	public static String calculerDateEcheance(Prestation prestation) {
 		long delai = prestation.getDelaiPaiement();
 		LocalDate dateEcheance = LocalDate.now().plusDays(delai);
-		return convertToDate(dateEcheance);
+		return convertToDateFromLocalDate(dateEcheance);
 	}
 
 	/*
 	 *
 	 */
-	public static String convertToDate(LocalDate dateToConvert) {
+	public static String convertToDateFromLocalDate(LocalDate dateToConvert) {
 		final DateTimeFormatter formaterDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		return formaterDate.format(dateToConvert);
+	}
+	
+	/*
+	 *
+	 */
+	public static String convertToDateFromStringDate(String dateToConvert) {		
+		String tab [] = dateToConvert.split("-");
+		return tab[2]+"/"+tab[1]+"/"+tab[0];		
+	}
+	
+	/*
+	 *
+	 */
+	public static String convertToDate(String dateToConvert) {		
+		String tab [] = dateToConvert.split("/");
+		return 	tab[2]+"-"+tab[1]+"-"+tab[0];
 	}
 
 	/*

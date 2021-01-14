@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,7 +44,7 @@ public class FactureController {
 
 	@GetMapping(value = "/{siret}/{idPrestation}", produces = {MediaType.APPLICATION_XML_VALUE, MediaType. APPLICATION_JSON_VALUE})
 	public ResponseEntity<List<Facture>> findAllByPrestation(@PathVariable String siret,
-			@PathVariable long prestationId) {
+			@PathVariable Long prestationId) {
 		log.info("get all bills by prestation");
 		List<Facture> reponse = factureApiService.findAllByPrestation(siret, prestationId);
 		if (reponse != null && !reponse.isEmpty()) {
@@ -54,7 +55,7 @@ public class FactureController {
 
 	@DeleteMapping(value = "/{siret}/{prestationId}/{factureId}")
 	public void deleteFacture(@PathVariable String siret, @PathVariable long prestationId,
-			@PathVariable long factureId) {
+			@PathVariable Long factureId) {
 		log.info("delete bill by id :" + factureId);
 		factureApiService.deleteById(siret, prestationId, factureId);
 	}
@@ -64,6 +65,18 @@ public class FactureController {
 			@PathVariable long prestationId) {
 		log.info("Add new bill");
 		Facture reponse = factureApiService.addFacture(siret, factureRequest, prestationId, resources.getPathFile());
+		if (reponse != null) {
+			return ResponseEntity.ok(reponse);
+		}
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	@PutMapping(value = "/{siret}/{prestationId}", consumes = "application/json", produces = "application/json")
+	public ResponseEntity<Facture> updateFacture(@RequestBody Facture factureRequest, @PathVariable String siret,
+			@PathVariable Long prestationId
+			) {
+		log.info("Update facture");
+		Facture reponse = factureApiService.updateFacture(siret, factureRequest, prestationId);
 		if (reponse != null) {
 			return ResponseEntity.ok(reponse);
 		}

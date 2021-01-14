@@ -2,7 +2,7 @@ package com.aliateck.fact.domaine.common.edition;
 
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.business.object.Prestation;
-import com.aliateck.fact.domaine.common.FactureStatus;
+import com.aliateck.util.FactureStatus;
 import com.aliateck.util.UtilsFacture;
 import groovy.util.logging.Slf4j;
 import java.io.IOException;
@@ -33,7 +33,7 @@ public class BuildFactureImpl implements BuildFactureService {
 			facture.setPrixTotalTTC(prixTotalHT + tva);
 			facture.setMontantTVA(tva);
 			facture.setDelaiPaiement(prestation.getDelaiPaiement());
-			facture.setDateFacturation(UtilsFacture.convertToDate(LocalDate.now()));
+			facture.setDateFacturation(UtilsFacture.convertToDateFromLocalDate(LocalDate.now()));
 			facture.setDateEcheance(UtilsFacture.calculerDateEcheance(prestation));
 			long nbJourRetard = UtilsFacture.calculerNbJourRetard(facture);
 			facture.setNbJourRetard(nbJourRetard);
