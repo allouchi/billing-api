@@ -7,6 +7,7 @@ import java.time.Month;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -18,7 +19,6 @@ import org.springframework.util.ResourceUtils;
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.business.object.Prestation;
 
-
 public class UtilsFacture {
 
 	private UtilsFacture() {
@@ -27,23 +27,29 @@ public class UtilsFacture {
 	/*
 	 *
 	 */
-	
+
 	public static Facture updateFacture(Facture facture) {
-		
-		if(facture.getDateEncaissement() != null && !facture.getDateEncaissement().isEmpty()) {
+
+		if (facture.getDateEncaissement() != null && !facture.getDateEncaissement().isEmpty()) {
 			facture.setFactureStatus(FactureStatus.OUI.getCode());
 			facture.setFraisRetard(0);
-			facture.setNbJourRetard(0);	
-			facture.setDateEncaissement(convertToDateFromStringDate(facture.getDateEncaissement()));
+			facture.setNbJourRetard(0);
 		}
 		return facture;
-		
+
 	}
+    private static LocalDate convertStringToDate(String dateToConvert) {
+    	
+    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy"); 
+    	return LocalDate.parse(dateToConvert, formatter);    	
+    }
 	public static long calculerNbJourRetard(Facture facture) {
-		LocalDate dateEcheance = LocalDate.now().plusDays(facture.getDelaiPaiement());
-		LocalDate dateJour = LocalDate.now();
-		if (Period.between(dateEcheance, dateJour).getDays() > 0) {
-			return Period.between(dateEcheance, dateJour).getDays();
+		if (facture.getFactureStatus().equalsIgnoreCase(FactureStatus.NON.getCode())) {			
+			LocalDate dateEcheance =  convertStringToDate(facture.getDateEcheance());
+			LocalDate dateJour = LocalDate.now();			
+			if (Period.between(dateEcheance, dateJour).getDays() > 0) {
+				return ChronoUnit.DAYS.between(dateEcheance, dateJour);				
+			}
 		}
 		return 0;
 	}
@@ -51,10 +57,11 @@ public class UtilsFacture {
 	/*
 	 *
 	 */
-	public static Float calculerFraisRetard(Facture facture) {
-		if (facture.getNbJourRetard() > 0) {
+	public static Float calculerFraisRetard(Facture facture) {		
+		if (facture.getFactureStatus().equalsIgnoreCase(FactureStatus.NON.getCode())) {
 			float div = (float) facture.getNbJourRetard() / 365;
-			return 2.52f * facture.getPrixTotalHT() * div;
+			return (2.52f/100) * facture.getPrixTotalHT() * div;
+
 		}
 		return 0f;
 	}
@@ -75,21 +82,21 @@ public class UtilsFacture {
 		final DateTimeFormatter formaterDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		return formaterDate.format(dateToConvert);
 	}
-	
+
 	/*
 	 *
 	 */
-	public static String convertToDateFromStringDate(String dateToConvert) {		
-		String tab [] = dateToConvert.split("-");
-		return tab[2]+"/"+tab[1]+"/"+tab[0];		
+	public static String convertDomainToEntityDate(String dateToConvert) {
+		String tab[] = dateToConvert.split("-");
+		return tab[2] + "/" + tab[1] + "/" + tab[0];
 	}
-	
+
 	/*
 	 *
 	 */
-	public static String convertToDate(String dateToConvert) {		
-		String tab [] = dateToConvert.split("/");
-		return 	tab[2]+"-"+tab[1]+"-"+tab[0];
+	public static String convertFromEntityToDomainDate(String dateToConvert) {
+		String tab[] = dateToConvert.split("/");
+		return tab[2] + "-" + tab[1] + "-" + tab[0];
 	}
 
 	/*
@@ -110,8 +117,8 @@ public class UtilsFacture {
 
 		Set<Integer> numeros = new HashSet<>();
 		String numeroFacture = null;
-		if(listeFactures == null || listeFactures.isEmpty()) {
-			return UtilsFacture.buildNumeroFacture("1000");	
+		if (listeFactures == null || listeFactures.isEmpty()) {
+			return UtilsFacture.buildNumeroFacture("1000");
 		}
 		for (Facture facture : listeFactures) {
 			numeroFacture = facture.getNumeroFacture();
@@ -135,10 +142,10 @@ public class UtilsFacture {
 	public static File loadJasperFile() throws FileNotFoundException {
 		return ResourceUtils.getFile("classpath:data/factureDesign.jrxml");
 	}
-	
-	public static String buildPath(String pathComplet, String rootPath)  {
+
+	public static String buildPath(String pathComplet, String rootPath) {
 		String path = null;
-		if(pathComplet != null && rootPath != null) {
+		if (pathComplet != null && rootPath != null) {
 			int lg = rootPath.length();
 			path = pathComplet.substring(lg, pathComplet.length());
 		}

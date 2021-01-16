@@ -45,7 +45,8 @@ public class ClientSpiAdapter implements ClientSpiService {
 
 			CompanyEntity companyEntity = oCompany.get();
 			companyEntity.getClients().add(clientEntity);
-			CompanyEntity cEntitySaved = companyJpaRepository.saveAndFlush(companyEntity);
+			CompanyEntity cEntitySaved = companyJpaRepository.save(companyEntity);
+			
 			List<ClientEntity> savedClients = cEntitySaved.getClients();
 			if (savedClients != null && !savedClients.isEmpty()) {
 				for (ClientEntity c : savedClients) {

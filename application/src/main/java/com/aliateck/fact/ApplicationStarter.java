@@ -103,23 +103,20 @@ public class ApplicationStarter implements CommandLineRunner {
       .client(client)
       .build();
     prestations.add(prestation);
-
-    String siret = "85292702900011";
-
+    
     Company sbatec = Company
       .builder()
       .socialReason("SBATEC Consulting")
       .status("SASU au capital de 500 Euros")
       .siret("85292702900011")
-      .ape("6201Z")
+      .codeApe("6201Z")
       .rcsName("R.C.S. Nanterre 831 502 141")      
-      .numeroTva("FR 188 315 021 41")
-      
+      .numeroTva("FR18831502141")
+      .codeBic("PSSTFRPPSCE")
+      .codeIban("FR1720041010125407961J03367")      
       .companyAdresse(sbatecAdresse)
       .build();
     //companyApiService.addCompany(sbatec);
-    //clientApiService.addClient(client, siret);
-    //    consultantApiService.addConsultant(consultant, siret);
-    //    prestationApiService.addPrestation(prestation, siret);
+   
   }
 }

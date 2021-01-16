@@ -75,10 +75,6 @@ public class FactureEntity implements Serializable {
   @Column(name = "filePath")
   String filePath;
 
-  //  @Lob
-  //  @Column(name = "fileContent", columnDefinition = "LONGBLOB")
-  //  byte[] fileContent;
-
   @Column(name = "designation", nullable = false)
   String designation;
 

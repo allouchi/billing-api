@@ -30,59 +30,54 @@ import lombok.experimental.SuperBuilder;
 @ToString
 //@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CompanyEntity extends CommonEntity {
-  /**
-   *
-   */private static final long serialVersionUID = 1L;
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", nullable = false)
-  Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", nullable = false)
+	Long id;
 
-  @Column(name = "socialreason", nullable = false)
-  String socialReason;
+	@Column(name = "socialreason", nullable = false)
+	String socialReason;
 
-  @Column(name = "status", nullable = false)
-  String status;
+	@Column(name = "status", nullable = false)
+	String status;
 
-  @Column(name = "siret", nullable = false, unique = true)
-  String siret;
+	@Column(name = "siret", nullable = false, unique = true)
+	String siret;
 
-  @Column(name = "rcsname")
-  String rcsName;
+	@Column(name = "rcsname")
+	String rcsName;
 
-  @Column(name = "numeroTva")
-  String numeroTva;
+	@Column(name = "numeroTva")
+	String numeroTva;
 
-  @Column(name = "ape")
-  String ape;
+	@Column(name = "codeApe")
+	String codeApe;
 
-  @OneToOne(
-    fetch = FetchType.LAZY,
-    cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }
-  )
-  @JoinColumn(name = "company")
-  private AdresseEntity companyAdresse;
+	@Column(name = "codeIban")
+	String codeIban;
 
-  @OneToMany(
-    fetch = FetchType.LAZY,
-    cascade = CascadeType.ALL
-  )
-  @JoinColumn(name = "company")
-  private List<ConsultantEntity> consultants;
+	@Column(name = "codeBic")
+	String codeBic;
 
-  @OneToMany(
-    fetch = FetchType.LAZY,
-    cascade = CascadeType.ALL
-  )
-  @JoinColumn(name = "company")
-  private List<ClientEntity> clients;
+	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinColumn(name = "company")
+	private AdresseEntity companyAdresse;
 
-  @OneToMany(
-    fetch = FetchType.LAZY,
-    cascade = CascadeType.ALL
-  )
-  @JoinColumn(name = "company")
-  private List<PrestationEntity> prestations;
-  
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinColumn(name = "company")
+	private List<ConsultantEntity> consultants;
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinColumn(name = "company")
+	private List<ClientEntity> clients;
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinColumn(name = "company")
+	private List<PrestationEntity> prestations;
+
 }

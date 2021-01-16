@@ -47,7 +47,7 @@ public class CompanySpiAdapter implements CompanySpiService {
       CompanyEntity entityBase = objBase.get();
 
       entityBase.setId(entity.getId());
-      entityBase.setApe(entity.getApe());
+      entityBase.setCodeApe(entity.getCodeApe());
       entityBase.setRcsName(entity.getRcsName());
       entityBase.setSiret(entity.getSiret());
       entityBase.setSocialReason(entity.getSocialReason());

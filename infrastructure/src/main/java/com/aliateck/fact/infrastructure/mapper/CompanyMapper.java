@@ -16,6 +16,9 @@ public class CompanyMapper implements Mapper<Company, CompanyEntity> {
 
   @Override
   public CompanyEntity fromDomainToEntity(Company domain) {
+	  if(domain == null) {
+		  return null;
+	  }
     return CompanyEntity
       .builder()
       .id(domain.getId())
@@ -24,7 +27,9 @@ public class CompanyMapper implements Mapper<Company, CompanyEntity> {
       .socialReason(domain.getSocialReason())
       .status(domain.getStatus())
       .numeroTva(domain.getNumeroTva())
-      .ape(domain.getApe())
+      .codeApe(domain.getCodeApe())
+      .codeIban(domain.getCodeIban())
+      .codeBic(domain.getCodeBic())
       .companyAdresse(adresseMapper.fromDomainToEntity(domain.getCompanyAdresse()))
       .clients(clientMapper.fromDomainToEntity(domain.getClients()))
       .consultants(consultantMapper.fromDomainToEntity(domain.getConsultants()))
@@ -34,6 +39,9 @@ public class CompanyMapper implements Mapper<Company, CompanyEntity> {
 
   @Override
   public Company fromEntityToDomain(CompanyEntity entity) {
+	  if(entity == null) {
+		  return null;
+	  }
     return Company
       .builder()
       .id(entity.getId())
@@ -42,7 +50,9 @@ public class CompanyMapper implements Mapper<Company, CompanyEntity> {
       .socialReason(entity.getSocialReason())
       .status(entity.getStatus())
       .numeroTva(entity.getNumeroTva())
-      .ape(entity.getApe())
+      .codeApe(entity.getCodeApe())
+      .codeIban(entity.getCodeIban())
+      .codeBic(entity.getCodeBic())
       .companyAdresse(adresseMapper.fromEntityToDomain(entity.getCompanyAdresse()))
       .clients(clientMapper.fromEntityToDomain(entity.getClients()))
       .consultants(consultantMapper.fromEntityToDomain(entity.getConsultants()))

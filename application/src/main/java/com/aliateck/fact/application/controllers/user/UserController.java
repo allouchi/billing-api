@@ -56,7 +56,7 @@ public class UserController {
       .socialReason("SBATEC")
       .status("SASU au capital de 500 Euros")
       .numeroTva("FR 188 315 021 41")
-      .ape("6201Z")
+      .codeApe("6201Z")
       .companyAdresse(sbatecAdresse)
       .build();
 

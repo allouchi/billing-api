@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report" pageWidth="595" pageHeight="842" columnWidth="435" leftMargin="80" rightMargin="80" topMargin="30" bottomMargin="30" uuid="ebdfb22f-7910-4931-a885-ebc871ef36bc">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="240"/>
 	<parameter name="rs_company" class="java.lang.String"/>
 	<parameter name="numero_siret" class="java.lang.String"/>
 	<parameter name="adresse_company" class="java.lang.String"/>
@@ -28,6 +28,8 @@
 	<parameter name="fonction_consultant" class="java.lang.String"/>
 	<parameter name="designation_ligne1" class="java.lang.String"/>
 	<parameter name="designation_ligne2" class="java.lang.String"/>
+	<parameter name="code_iban" class="java.lang.String"/>
+	<parameter name="code_bic" class="java.lang.String"/>
 	<title>
 		<band height="769">
 			<textField>
@@ -176,14 +178,6 @@
 					<font fontName="Arial" size="10"/>
 				</textElement>
 				<text><![CDATA[Pénalités en cas de retard : Tout retard de paiement fera courir de plein droit des pénalités calculées au taux de trois (3) fois le taux d'intérêt légal, à compter de la date d'échéance.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="594" width="322" height="33" uuid="36f856e1-bc91-42f8-80ac-bdd8990df0cd"/>
-				<textElement>
-					<font fontName="Calibri"/>
-				</textElement>
-				<text><![CDATA[IBAN:  FR33 3000 2008 9700 0000 5896 J14
-BIC: CRLYFRPP]]></text>
 			</staticText>
 			<rectangle>
 				<reportElement mode="Opaque" x="1" y="248" width="434" height="40" backcolor="#CCCCCC" uuid="d59a84a7-46e6-4a1e-aec6-2bc340ac2cad"/>
@@ -351,6 +345,14 @@ BIC: CRLYFRPP]]></text>
 			<textField>
 				<reportElement x="0" y="323" width="205" height="20" uuid="47477628-5b0c-4fb3-8f48-dc427209c24d"/>
 				<textFieldExpression><![CDATA[$P{fonction_consultant}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="599" width="310" height="20" uuid="fe41acb2-36dc-4900-8dc9-6a5785dda46c"/>
+				<textFieldExpression><![CDATA[$P{code_iban}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="614" width="262" height="20" uuid="86697be0-7d6c-4c30-bb67-54739fb73017"/>
+				<textFieldExpression><![CDATA[$P{code_bic}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

@@ -75,7 +75,7 @@ public class FactureController {
 	public ResponseEntity<Facture> updateFacture(@RequestBody Facture factureRequest, @PathVariable String siret,
 			@PathVariable Long prestationId
 			) {
-		log.info("Update facture");
+		log.info("Update facture : "+ factureRequest.getDateEncaissement());
 		Facture reponse = factureApiService.updateFacture(siret, factureRequest, prestationId);
 		if (reponse != null) {
 			return ResponseEntity.ok(reponse);

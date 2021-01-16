@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class BuildFactureImpl implements BuildFactureService {
-	private static String SLASH = "/";
+	private static final String SLASH = "/";
 
 	/*
 	 *
@@ -34,10 +34,9 @@ public class BuildFactureImpl implements BuildFactureService {
 			facture.setMontantTVA(tva);
 			facture.setDelaiPaiement(prestation.getDelaiPaiement());
 			facture.setDateFacturation(UtilsFacture.convertToDateFromLocalDate(LocalDate.now()));
-			facture.setDateEcheance(UtilsFacture.calculerDateEcheance(prestation));
-			long nbJourRetard = UtilsFacture.calculerNbJourRetard(facture);
-			facture.setNbJourRetard(nbJourRetard);
-			facture.setFraisRetard(UtilsFacture.calculerFraisRetard(facture));
+			facture.setDateEcheance(UtilsFacture.calculerDateEcheance(prestation));			
+			facture.setNbJourRetard(0);
+			facture.setFraisRetard(0);
 			facture.setMoisFacture(UtilsFacture.determinerMoisFacture());
 			facture.setFactureStatus(FactureStatus.NON.getCode());
 			if (facture.getDateEncaissement() != null && !facture.getDateEncaissement().isEmpty()) {

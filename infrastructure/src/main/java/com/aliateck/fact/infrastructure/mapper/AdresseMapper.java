@@ -19,7 +19,7 @@ public class AdresseMapper {
       .rue(domain.getRue())
       .codePostal(domain.getCodePostal())
       .localite(domain.getLocalite())
-      .pays(domain.getPays())
+      .pays(domain.getPays().toUpperCase())
       .build();
   }
   
@@ -33,7 +33,7 @@ public class AdresseMapper {
       .rue(entity.getRue())
       .codePostal(entity.getCodePostal())
       .localite(entity.getLocalite())
-      .pays(entity.getPays())
+      .pays(entity.getPays().toUpperCase())
       .build();
   }
 }

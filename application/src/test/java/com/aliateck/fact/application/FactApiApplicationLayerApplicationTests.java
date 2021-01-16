@@ -25,11 +25,11 @@ class FactApiApplicationLayerApplicationTests {
       .socialReason("SBATEC Consulting")
       .status("SASU au capital de 500Euros")
       //.tvaName("FR 188 315 021 41")
-      .ape("6201Z")
+      //.ape("6201Z")
       .id(1L)
       .build();
 
-    companyApiService.addCompany(company);
+    //companyApiService.addCompany(company);
 
     User user = User
       .builder()

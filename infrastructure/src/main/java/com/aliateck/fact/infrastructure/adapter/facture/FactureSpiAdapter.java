@@ -2,6 +2,7 @@ package com.aliateck.fact.infrastructure.adapter.facture;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -117,14 +118,18 @@ public class FactureSpiAdapter implements FactureSpiService {
 	@Override
 	public Facture updateFacture(String siret, Facture facture, Long prestationId) {
 
+		if (facture != null && facture.getDateEncaissement() != null && !facture.getDateEncaissement().isEmpty()) {
+			String dateEncaissement = UtilsFacture.convertDomainToEntityDate(facture.getDateEncaissement());
+			facture.setDateEncaissement(dateEncaissement);
+		}
+		
 		List<FactureEntity> listeFacture = entitySpiService.findFacturesByPrestation(siret, prestationId);
 		if (listeFacture != null && !listeFacture.isEmpty()) {
 			for (FactureEntity entity : listeFacture) {
-				if (entity.getId().longValue() == facture.getId().longValue()) {
+				if (facture != null && (entity.getId().longValue() == facture.getId().longValue())) {
                   Facture fact = UtilsFacture.updateFacture(facture);
                   FactureEntity fEntity = factureMapper.fromDomainToEntity(fact);
-                  FactureEntity bEntity = factureJpaRepository.save(fEntity);
-                  convertToDate(bEntity.getDateEncaissement());
+                  FactureEntity bEntity = factureJpaRepository.save(fEntity);                 
                   return factureMapper.fromEntityToDomain(bEntity);
 				}
 			}
@@ -182,7 +187,16 @@ public class FactureSpiAdapter implements FactureSpiService {
 	@Override
 	public List<Facture> findAllBySiret(String siret) {
 		List<FactureEntity> entities = entitySpiService.findAllFacturesBySiret(siret);
-		return factureMapper.fromEntityToDomain(entities);
+		List<Facture> listeFacture = factureMapper.fromEntityToDomain(entities);
+		if (listeFacture != null && !listeFacture.isEmpty()) {
+			Iterator<Facture> it = listeFacture.iterator();
+			while (it.hasNext()) {
+				Facture facture = it.next();
+				facture.setNbJourRetard(UtilsFacture.calculerNbJourRetard(facture));
+				facture.setFraisRetard(UtilsFacture.calculerFraisRetard(facture));				
+			}
+		}
+		return listeFacture;
 	}
 
 }

@@ -27,6 +27,8 @@ import net.sf.jasperreports.engine.JasperReport;
 @Service
 public class EditionReportImpl implements EditionReportService {
 	private static final String TYPE_FILE = ".pdf";
+	private static final String IBAN = "IBAN: ";
+	private static final String BIC = "BIC: ";
 	private static final String FACTURE_LIBELLE = "FACTURE ";
 	private static final String ESPACE_BLANC = " ";
 	private static final String TIRET = " - ";
@@ -42,10 +44,41 @@ public class EditionReportImpl implements EditionReportService {
 		String adresseCompleteCompany = adresseCompany.getNumero() + " " + adresseCompany.getRue() + "\n"
 				+ adresseCompany.getCodePostal() + " " + adresseCompany.getLocalite() + "\n" + adresseCompany.getPays();
 		String numeroRcs = company.getRcsName();
-		String numeroSiret = company.getSiret();
-		String numeroApe = company.getApe();
-		String numeroTva = company.getNumeroTva();
-
+		String numeroSiret = company.getSiret().trim();
+		String numeroApe = company.getCodeApe();
+		String numeroTva = company.getNumeroTva().trim();
+		String numeroBic = BIC + company.getCodeBic();
+		String numeroIban = company.getCodeIban();
+		
+		//IBAN: FR17 2004 1010 1254 0796 1J03 367
+		//IBAN  FR33 3000 2008 9700 0000 5896 J14
+		
+		String ibanAffichage  = IBAN + numeroIban.substring(0, 4)
+				+ ESPACE_BLANC + numeroIban.substring(4, 8)
+				+ ESPACE_BLANC + numeroIban.substring(8, 12)
+				+ ESPACE_BLANC + numeroIban.substring(12, 16)
+				+ ESPACE_BLANC + numeroIban.substring(16, 20)
+				+ ESPACE_BLANC + numeroIban.substring(20, 24)
+				+ ESPACE_BLANC + numeroIban.substring(24, 27);				
+		
+		String siretAffichage = null;
+		String tvaAffichage = null;
+		if(numeroSiret != null) {
+			siretAffichage = numeroSiret.substring(0, 3) 
+					+ ESPACE_BLANC + numeroSiret.substring(3, 6)	 
+					+ ESPACE_BLANC	+ numeroSiret.substring(6, 9)
+					+ ESPACE_BLANC	+ numeroSiret.substring(9, 13);
+					
+		}
+		
+		if(numeroTva != null) {
+			tvaAffichage = numeroTva.trim().substring(0, 2) 
+					+ ESPACE_BLANC + numeroTva.trim().substring(2, 5)	 
+					+ ESPACE_BLANC	+ numeroTva.trim().substring(5, 8)
+					+ ESPACE_BLANC	+ numeroTva.trim().substring(8, 11)
+					+ ESPACE_BLANC	+ numeroTva.trim().substring(11, 13);
+		}
+			
 		// infos factures
 		String dateFacturation = facture.getDateFacturation();
 		String numeroFacture = facture.getNumeroFacture();
@@ -81,9 +114,11 @@ public class EditionReportImpl implements EditionReportService {
 		parameters.put("statut_company", statutCompany);
 		parameters.put("adresse_company", adresseCompleteCompany);
 		parameters.put("numero_rcs", numeroRcs);
-		parameters.put("numero_siret", numeroSiret);
-		parameters.put("numero_tva", numeroTva);
+		parameters.put("numero_siret", siretAffichage);
+		parameters.put("numero_tva", tvaAffichage);
 		parameters.put("numero_ape", numeroApe);
+		parameters.put("code_iban", ibanAffichage);
+		parameters.put("code_bic", numeroBic);		
 		parameters.put("date_facturation", dateFacturation);
 		parameters.put("rs_client", rsClient);
 		parameters.put("adresse_client", adresseCompleteClient);

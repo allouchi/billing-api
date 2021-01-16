@@ -20,8 +20,7 @@ import lombok.experimental.SuperBuilder;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Client extends Domain {
   Long id;
-  String socialReason;
-  String password;
+  String socialReason;  
   String mail;
   Adresse adresseClient;
 }
