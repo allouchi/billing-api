@@ -20,6 +20,8 @@ import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.business.object.Prestation;
 
 public class UtilsFacture {
+	
+	private static final String REGEX="_";
 
 	private UtilsFacture() {
 	}
@@ -28,27 +30,29 @@ public class UtilsFacture {
 	 *
 	 */
 
-	public static Facture updateFacture(Facture facture) {
+	public static Facture updateFacture(Facture oFacture, Facture factureRequest) {
 
-		if (facture.getDateEncaissement() != null && !facture.getDateEncaissement().isEmpty()) {
-			facture.setFactureStatus(FactureStatus.OUI.getCode());
-			facture.setFraisRetard(0);
-			facture.setNbJourRetard(0);
+		if (factureRequest != null && factureRequest.getDateEncaissement() != null && !factureRequest.getDateEncaissement().isEmpty()) {
+			String dateEncaissement = UtilsFacture.convertDomainToEntityDate(factureRequest.getDateEncaissement());
+			oFacture.setDateEncaissement(dateEncaissement);
+			oFacture.setFactureStatus(FactureStatus.OUI.getCode());
 		}
-		return facture;
+		return oFacture;
 
 	}
-    private static LocalDate convertStringToDate(String dateToConvert) {
-    	
-    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy"); 
-    	return LocalDate.parse(dateToConvert, formatter);    	
-    }
+
+	private static LocalDate convertStringToDate(String dateToConvert) {
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		return LocalDate.parse(dateToConvert, formatter);
+	}
+
 	public static long calculerNbJourRetard(Facture facture) {
-		if (facture.getFactureStatus().equalsIgnoreCase(FactureStatus.NON.getCode())) {			
-			LocalDate dateEcheance =  convertStringToDate(facture.getDateEcheance());
-			LocalDate dateJour = LocalDate.now();			
+		if (facture.getFactureStatus().equalsIgnoreCase(FactureStatus.NON.getCode())) {
+			LocalDate dateEcheance = convertStringToDate(facture.getDateEcheance());
+			LocalDate dateJour = LocalDate.now();
 			if (Period.between(dateEcheance, dateJour).getDays() > 0) {
-				return ChronoUnit.DAYS.between(dateEcheance, dateJour);				
+				return ChronoUnit.DAYS.between(dateEcheance, dateJour);
 			}
 		}
 		return 0;
@@ -57,10 +61,10 @@ public class UtilsFacture {
 	/*
 	 *
 	 */
-	public static Float calculerFraisRetard(Facture facture) {		
+	public static Float calculerFraisRetard(Facture facture) {
 		if (facture.getFactureStatus().equalsIgnoreCase(FactureStatus.NON.getCode())) {
 			float div = (float) facture.getNbJourRetard() / 365;
-			return (2.52f/100) * facture.getPrixTotalHT() * div;
+			return (2.52f / 100) * facture.getPrixTotalHT() * div;
 
 		}
 		return 0f;
@@ -113,18 +117,25 @@ public class UtilsFacture {
 	/*
 	*
 	*/
-	public static String updateNumeroFacture(List<Facture> listeFactures) {
+	public static String updateNumeroFacture(String rsClient, List<Facture> listeFactures) {
 
 		Set<Integer> numeros = new HashSet<>();
+		numeros.add(1000);
 		String numeroFacture = null;
 		if (listeFactures == null || listeFactures.isEmpty()) {
 			return UtilsFacture.buildNumeroFacture("1000");
 		}
 		for (Facture facture : listeFactures) {
-			numeroFacture = facture.getNumeroFacture();
-			String endNumero[] = numeroFacture.split("-");
-			Integer numero = Integer.parseInt(endNumero[1]);
-			numeros.add(numero);
+			String filePath = facture.getFilePath();
+			String replace = filePath.replaceAll("\\\\", REGEX);	
+			replace = replace.substring(1,replace.length() - 1  );
+			String [] raisonSociale = replace.split(REGEX);
+			if(rsClient != null && raisonSociale != null && rsClient.equalsIgnoreCase(raisonSociale[2])) {
+				numeroFacture = facture.getNumeroFacture();
+				String endNumero[] = numeroFacture.split("-");
+				Integer numero = Integer.parseInt(endNumero[1]);
+				numeros.add(numero);
+			}			
 		}
 		int max = Collections.max(numeros);
 		return UtilsFacture.buildNumeroFacture(String.valueOf(max + 1));
@@ -139,10 +150,16 @@ public class UtilsFacture {
 		return formaterDate.format(dateJour) + "-" + endNumero;
 	}
 
+	/*
+	 *
+	 */
 	public static File loadJasperFile() throws FileNotFoundException {
 		return ResourceUtils.getFile("classpath:data/factureDesign.jrxml");
 	}
 
+	/*
+	 *
+	 */
 	public static String buildPath(String pathComplet, String rootPath) {
 		String path = null;
 		if (pathComplet != null && rootPath != null) {

@@ -33,7 +33,7 @@ public class FactureEntity implements Serializable {
   @Column(name = "id", nullable = false)
   Long id;
 
-  @Column(name = "numeroFacture", unique = true)
+  @Column(name = "numeroFacture")
   String numeroFacture;
 
   @Column(name = "dateFacturation", nullable = false)

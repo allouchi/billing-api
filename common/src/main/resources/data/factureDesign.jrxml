@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report" pageWidth="595" pageHeight="842" columnWidth="435" leftMargin="80" rightMargin="80" topMargin="30" bottomMargin="30" uuid="ebdfb22f-7910-4931-a885-ebc871ef36bc">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="240"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="rs_company" class="java.lang.String"/>
 	<parameter name="numero_siret" class="java.lang.String"/>
 	<parameter name="adresse_company" class="java.lang.String"/>
@@ -89,7 +89,7 @@
 				<text><![CDATA[N°]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="156" y="68" width="59" height="20" uuid="3d8f7daf-0bd7-4daf-950b-ef36da1ad19c"/>
+				<reportElement x="150" y="68" width="59" height="20" uuid="3d8f7daf-0bd7-4daf-950b-ef36da1ad19c"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -145,7 +145,7 @@
 				<textFieldExpression><![CDATA[$P{commune_company}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="122" y="67" width="39" height="20" uuid="3a0d8dfa-1e7b-4a4b-be4b-2d5b5b59302d"/>
+				<reportElement x="116" y="67" width="39" height="20" uuid="3a0d8dfa-1e7b-4a4b-be4b-2d5b5b59302d"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" isBold="true"/>
 				</textElement>
@@ -343,15 +343,15 @@
 				<textFieldExpression><![CDATA[$P{designation_ligne2}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="323" width="205" height="20" uuid="47477628-5b0c-4fb3-8f48-dc427209c24d"/>
+				<reportElement x="0" y="323" width="216" height="49" uuid="47477628-5b0c-4fb3-8f48-dc427209c24d"/>
 				<textFieldExpression><![CDATA[$P{fonction_consultant}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="599" width="310" height="20" uuid="fe41acb2-36dc-4900-8dc9-6a5785dda46c"/>
+				<reportElement x="0" y="595" width="310" height="20" uuid="fe41acb2-36dc-4900-8dc9-6a5785dda46c"/>
 				<textFieldExpression><![CDATA[$P{code_iban}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="614" width="262" height="20" uuid="86697be0-7d6c-4c30-bb67-54739fb73017"/>
+				<reportElement x="0" y="609" width="262" height="20" uuid="86697be0-7d6c-4c30-bb67-54739fb73017"/>
 				<textFieldExpression><![CDATA[$P{code_bic}]]></textFieldExpression>
 			</textField>
 		</band>

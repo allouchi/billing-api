@@ -3,6 +3,7 @@ package com.aliateck.fact.application.controllers.edition;
 import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aliateck.fact.config.MediaTypeUtils;
-import com.aliateck.fact.config.ResourcesProperties;
+import com.aliateck.fact.config.StorageProperties;
 import com.aliateck.fact.domaine.business.object.DataPDF;
 import com.aliateck.fact.domaine.ports.api.edition.EditionApiService;
 
@@ -31,7 +32,8 @@ import lombok.extern.slf4j.Slf4j;
 public class EditionController {
 
 	EditionApiService editionApiService;
-	ResourcesProperties resources;
+	@Autowired
+	StorageProperties resources;
 	@Autowired
 	ServletContext servletContext;
 
@@ -41,7 +43,7 @@ public class EditionController {
 			@PathVariable Long factureId) {
 		log.info("get pdf file by pathName");
 
-		DataPDF reponse = editionApiService.downloadPdf(siret, prestationId, factureId, resources.getPathFile());
+		DataPDF reponse = editionApiService.downloadPdf(siret, prestationId, factureId, resources.getPathRoot());
 		MediaType mediaType = MediaTypeUtils.getMediaTypeForFileName(this.servletContext, reponse.getFileName());
 		ByteArrayResource resource = new ByteArrayResource(reponse.getFileContent());
 		HttpHeaders header = new HttpHeaders();

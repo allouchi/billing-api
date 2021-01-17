@@ -8,11 +8,9 @@ import com.aliateck.fact.domaine.business.object.Facture;
 public interface FactureSpiService {
 	Facture addFacture(String siret, Facture facture, Long prestationId, String pathRoot);
 
-	void deleteFacture(String siret, Facture facture, Long prestationId);
+	void deleteFacture(Long factureId);	
 
-	void deleteFactureById(String siret, Long idPrestation, Long idFacture);
-
-	Facture updateFacture(String siret, Facture facture, Long prestationId);
+	Facture updateFacture(Facture facture);
 
 	Facture findByNumeroFacture(String numeroFacture);
 
@@ -22,9 +20,7 @@ public interface FactureSpiService {
 
 	List<Facture> findByDateEcheance(Date dateEcheance);
 
-	List<Facture> findByDateEncaissement(Date dateEncaissement);
-
-	List<Facture> findAllByPrestation(String siret, Long idPrestation);
+	List<Facture> findByDateEncaissement(Date dateEncaissement);	
 
 	List<Facture> findAllBySiret(String siret);
 }

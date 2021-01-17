@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.infrastructure.models.FactureEntity;
-import com.aliateck.util.UtilsFacture;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

@@ -22,7 +22,7 @@ public class BuildFactureImpl implements BuildFactureService {
 	/*
 	 *
 	 */
-	
+
 	@Override
 	public Facture buildFacture(String siret, Prestation prestation, Facture facture) {
 		if (prestation != null && facture != null) {
@@ -34,29 +34,27 @@ public class BuildFactureImpl implements BuildFactureService {
 			facture.setMontantTVA(tva);
 			facture.setDelaiPaiement(prestation.getDelaiPaiement());
 			facture.setDateFacturation(UtilsFacture.convertToDateFromLocalDate(LocalDate.now()));
-			facture.setDateEcheance(UtilsFacture.calculerDateEcheance(prestation));			
+			facture.setDateEcheance(UtilsFacture.calculerDateEcheance(prestation));
 			facture.setNbJourRetard(0);
 			facture.setFraisRetard(0);
 			facture.setMoisFacture(UtilsFacture.determinerMoisFacture());
 			facture.setFactureStatus(FactureStatus.NON.getCode());
-			if (facture.getDateEncaissement() != null && !facture.getDateEncaissement().isEmpty()) {
-				facture.setFactureStatus(FactureStatus.OUI.getCode());
-				facture.setFraisRetard(0);
-				facture.setNbJourRetard(0);
-			}
+			facture.setFraisRetard(0);
+			facture.setNbJourRetard(0);
 			return facture;
 		}
 		return null;
 	}
 
 	@Override
-	public String buildPathFile(String siret, String pathRoot) {
+	public String buildPathFile(String siret, String pathRoot, String rsClient) {
 		String filePath = null;
 		try {
 			final DateTimeFormatter formaterDate = DateTimeFormatter.ofPattern("yyyy");
 			LocalDate dateJour = LocalDate.now();
 			String annee = formaterDate.format(dateJour);
-			String directory = pathRoot + SLASH + siret + SLASH + annee + SLASH + UtilsFacture.determinerMoisFacture() + SLASH;
+			String directory = pathRoot + SLASH + siret + SLASH + annee + SLASH + rsClient + SLASH
+					+ UtilsFacture.determinerMoisFacture() + SLASH;
 			Path path = Paths.get(directory);
 			filePath = Files.createDirectories(path).toString();
 		} catch (IOException e) {
