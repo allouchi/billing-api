@@ -17,8 +17,8 @@ public class EditionApiAdapter implements EditionApiService {
 	EditionSpiService editionSpiService;
 
 	@Override
-	public DataPDF downloadPdf(String siret, Long prestationId, Long factureId, String rootDirectory) {
-		return editionSpiService.downloadPdf(siret, prestationId, factureId, rootDirectory);
+	public DataPDF downloadPdf(String siret, Long factureId, String rootDirectory) {
+		return editionSpiService.downloadPdf(siret, factureId, rootDirectory);
 	}
 	
 }

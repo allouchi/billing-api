@@ -9,10 +9,12 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import com.aliateck.fact.infrastructure.mapper.FactureMapper;
 import com.aliateck.fact.infrastructure.models.CompanyEntity;
 import com.aliateck.fact.infrastructure.models.FactureEntity;
 import com.aliateck.fact.infrastructure.models.PrestationEntity;
 import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
+import com.aliateck.fact.infrastructure.repository.facture.FactureJpaRepository;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CommonSpiEntity implements EntitySpiService {
   CompanyJpaRepository companyJpaRepository;
+  FactureJpaRepository factureJpaRepository;
+  FactureMapper factureMapper;
 
   @Override
   public List<PrestationEntity> findAllPrestation(String siret) {
@@ -50,7 +54,7 @@ public class CommonSpiEntity implements EntitySpiService {
   }
 
   @Override
-  public PrestationEntity findPrestationById(String siret, long prestationId) {
+  public PrestationEntity findPrestationById(String siret, Long prestationId) {
     List<PrestationEntity> prestations = findAllPrestation(siret);
     if (prestations != null && !prestations.isEmpty()) {
       for (PrestationEntity entity : prestations) {
@@ -64,21 +68,12 @@ public class CommonSpiEntity implements EntitySpiService {
   }
 
   @Override
-  public FactureEntity findFactureById(String siret, long prestationId, long factureId) {
-    Optional<CompanyEntity> oCompany = companyJpaRepository.findBySiret(siret);
-    if (oCompany.isPresent()) {
-      CompanyEntity cEntity = oCompany.get();
-      for (PrestationEntity prestations : cEntity.getPrestations()) {
-        if (prestations.getId().longValue() == prestationId) {
-          for (FactureEntity facture : prestations.getFacture()) {
-            if (facture.getId().longValue() == factureId) {
-              return facture;
-            }
-          }
-        }
-      }
-    }
-    return null;
+  public FactureEntity findFactureById(Long factureId) {    
+     Optional<FactureEntity> entity = factureJpaRepository.findById(factureId);
+     if(entity.isPresent()) {
+    	 return entity.get();
+     }
+     return null;
   }
 
   @Override

@@ -3,7 +3,6 @@ package com.aliateck.fact.application.controllers.facture;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,11 +51,14 @@ public class FactureController {
 	public ResponseEntity<Facture> addFacture(@RequestBody Facture factureRequest, @PathVariable String siret,
 			@PathVariable long prestationId) {
 		log.info("Add new bill");
+		/*
 		Facture reponse = factureApiService.addFacture(siret, factureRequest, prestationId, resources.getPathRoot());
 		if (reponse != null) {
 			return ResponseEntity.ok(reponse);
 		}
+		*/
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		
 	}
 	
 	@PutMapping(consumes = "application/json", produces = "application/json")

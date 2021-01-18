@@ -41,8 +41,7 @@ public class UtilsFacture {
 
 	}
 
-	private static LocalDate convertStringToDate(String dateToConvert) {
-
+	public static LocalDate convertStringToDate(String dateToConvert) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		return LocalDate.parse(dateToConvert, formatter);
 	}
@@ -61,7 +60,7 @@ public class UtilsFacture {
 	/*
 	 *
 	 */
-	public static Float calculerFraisRetard(Facture facture) {
+	public static float calculerFraisRetard(Facture facture) {
 		if (facture.getFactureStatus().equalsIgnoreCase(FactureStatus.NON.getCode())) {
 			float div = (float) facture.getNbJourRetard() / 365;
 			return (2.52f / 100) * facture.getPrixTotalHT() * div;
@@ -168,4 +167,12 @@ public class UtilsFacture {
 		}
 		return path;
 	}
+	
+	public boolean facturesNonAcquitees(List<Facture> facture){
+		
+		return true;
+		
+	}
+	
+	
 }

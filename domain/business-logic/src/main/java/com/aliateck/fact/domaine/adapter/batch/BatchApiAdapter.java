@@ -18,9 +18,8 @@ public class BatchApiAdapter implements BatchApiService {
 	BatchSpiService batchSpiService;
 
 	@Override
-	public void calculerFraisRetard(String siret) {
-		batchSpiService.calculerFraisRetard(siret);		
-	}
-	
+	public void calculerFraisRetard() {
+		batchSpiService.calculerFraisRetard();		
+	}	
 
 }

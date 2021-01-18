@@ -49,6 +49,15 @@ public class PrestationEntity implements Serializable {
 	@Column(name = "numeroCommande", nullable = false)
 	String numeroCommande;
 
+	@Column(name = "quantite", nullable = false)
+	Float quantite;
+
+	@Column(name = "designation", nullable = false)
+	String designation;
+
+	@Column(name = "clientPrestation", nullable = false)
+	String clientPrestation;
+
 	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JoinColumn(name = "client")
 	private ClientEntity client;
@@ -57,7 +66,8 @@ public class PrestationEntity implements Serializable {
 	@JoinColumn(name = "consultant")
 	private ConsultantEntity consultant;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE })	
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH,
+			CascadeType.REMOVE })
 	@JoinColumn(name = "facture")
 	private List<FactureEntity> facture;
 

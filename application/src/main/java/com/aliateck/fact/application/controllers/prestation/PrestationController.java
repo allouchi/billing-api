@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aliateck.fact.config.StorageProperties;
+import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.business.object.Prestation;
+import com.aliateck.fact.domaine.ports.api.facture.FactureApiService;
 import com.aliateck.fact.domaine.ports.api.prestation.PrestationApiService;
 
 import lombok.AccessLevel;
@@ -28,6 +31,8 @@ import lombok.extern.slf4j.Slf4j;
 public class PrestationController {
   
   private PrestationApiService prestationApiService;
+  FactureApiService factureApiService;
+  StorageProperties resources;
 
   @GetMapping(value = "/{siret}")
   public ResponseEntity<List<Prestation>> getAllPrestations(@PathVariable String siret) {
@@ -51,8 +56,8 @@ public class PrestationController {
     @RequestBody Prestation prestationRequest,
     @PathVariable String siret
   ) {
-    log.info("Update prestation");
-    Prestation presta = prestationApiService.updatePrestation(prestationRequest, siret);
+    log.info("Update prestation");    
+    Prestation presta = factureApiService.addFacture(siret, prestationRequest, prestationRequest.getId(), resources.getPathRoot());    
     return ResponseEntity.ok(presta);
   }
 

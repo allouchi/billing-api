@@ -4,9 +4,10 @@ import java.util.Date;
 import java.util.List;
 
 import com.aliateck.fact.domaine.business.object.Facture;
+import com.aliateck.fact.domaine.business.object.Prestation;
 
 public interface FactureSpiService {
-	Facture addFacture(String siret, Facture facture, Long prestationId, String pathRoot);
+	Prestation addFacture(String siret, Prestation prestation, Long prestationId, String pathRoot);
 
 	void deleteFacture(Long factureId);	
 

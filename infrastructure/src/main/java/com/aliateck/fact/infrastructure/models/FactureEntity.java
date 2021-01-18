@@ -60,7 +60,7 @@ public class FactureEntity implements Serializable {
   @Column(name = "quantite", nullable = false)
   Float quantite;
 
-  @Column(name = "delaiPaiement")
+  @Column(name = "delaiPaiement",  nullable = false)
   Long delaiPaiement;
 
   @Column(name = "fraisRetard")
@@ -74,9 +74,6 @@ public class FactureEntity implements Serializable {
 
   @Column(name = "filePath")
   String filePath;
-
-  @Column(name = "designation", nullable = false)
-  String designation;
 
   @Column(name = "numeroCommande", nullable = false)
   String numeroCommande;

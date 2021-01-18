@@ -24,23 +24,25 @@ public class BuildFactureImpl implements BuildFactureService {
 	 */
 
 	@Override
-	public Facture buildFacture(String siret, Prestation prestation, Facture facture) {
-		if (prestation != null && facture != null) {
+	public Facture buildFacture(String siret, Prestation prestation) {
+		Facture facture = new Facture();
+		if (prestation != null) {
 			float tarifHT = prestation.getTarifHT();
-			float prixTotalHT = tarifHT * facture.getQuantite();
+			float prixTotalHT = tarifHT * prestation.getQuantite();
 			float tva = prixTotalHT * 0.2f;
 			facture.setPrixTotalHT(prixTotalHT);
 			facture.setPrixTotalTTC(prixTotalHT + tva);
 			facture.setMontantTVA(tva);
 			facture.setDelaiPaiement(prestation.getDelaiPaiement());
 			facture.setDateFacturation(UtilsFacture.convertToDateFromLocalDate(LocalDate.now()));
-			facture.setDateEcheance(UtilsFacture.calculerDateEcheance(prestation));
-			facture.setNbJourRetard(0);
-			facture.setFraisRetard(0);
+			facture.setDateEcheance(UtilsFacture.calculerDateEcheance(prestation));			
 			facture.setMoisFacture(UtilsFacture.determinerMoisFacture());
 			facture.setFactureStatus(FactureStatus.NON.getCode());
 			facture.setFraisRetard(0);
 			facture.setNbJourRetard(0);
+			facture.setNumeroCommande(prestation.getNumeroCommande());
+			facture.setQuantite(prestation.getQuantite());
+			facture.setClientPrestation(prestation.getClientPrestation());
 			return facture;
 		}
 		return null;

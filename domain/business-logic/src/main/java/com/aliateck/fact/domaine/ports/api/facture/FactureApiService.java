@@ -3,9 +3,11 @@ package com.aliateck.fact.domaine.ports.api.facture;
 import java.util.List;
 
 import com.aliateck.fact.domaine.business.object.Facture;
+import com.aliateck.fact.domaine.business.object.Prestation;
 
 public interface FactureApiService {
-	public Facture addFacture(String siret, Facture factureRequest, Long prestationId, String pathRoot);
+	
+	public Prestation addFacture(String siret, Prestation prestation, Long prestationId, String pathRoot);
 
 	public void deleteFacture(Long factureId);	
 

@@ -7,7 +7,7 @@ import java.util.List;
 public interface EntitySpiService {
   List<FactureEntity> findFacturesByPrestation(String siret, long idPrestation);
   List<FactureEntity> findAllFacturesBySiret(String siret);
-  PrestationEntity findPrestationById(String siret, long prestationId);
+  PrestationEntity findPrestationById(String siret, Long prestationId);
   List<PrestationEntity> findAllPrestation(String siret);
-  FactureEntity findFactureById(String siret, long prestationId, long factureId);
+  FactureEntity findFactureById(Long factureId);
 }

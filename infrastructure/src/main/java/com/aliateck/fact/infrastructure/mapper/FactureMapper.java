@@ -28,8 +28,8 @@ public class FactureMapper {
 				.delaiPaiement(domain.getDelaiPaiement()).factureStatus(domain.getFactureStatus())
 				.numeroFacture(domain.getNumeroFacture()).prixTotalHT(domain.getPrixTotalHT())
 				.prixTotalTTC(domain.getPrixTotalTTC()).montantTVA(domain.getMontantTVA())
-				.moisFacture(domain.getMoisFacture()).quantite(domain.getQuantite())
-				.designation(domain.getDesignation()).numeroCommande(domain.getNumeroCommande())
+				.moisFacture(domain.getMoisFacture()).quantite(domain.getQuantite())				
+				.numeroCommande(domain.getNumeroCommande())
 				.clientPrestation(domain.getClientPrestation()).filePath(domain.getFilePath()).build();
 	}
 
@@ -52,8 +52,7 @@ public class FactureMapper {
 				.factureStatus(entity.getFactureStatus())
 				.numeroFacture(entity.getNumeroFacture())
 				.moisFacture(entity.getMoisFacture())
-				.quantite(entity.getQuantite())
-				.designation(entity.getDesignation())
+				.quantite(entity.getQuantite())				
 				.numeroCommande(entity.getNumeroCommande())
 				.clientPrestation(entity.getClientPrestation())
 				.filePath(entity.getFilePath()).build();

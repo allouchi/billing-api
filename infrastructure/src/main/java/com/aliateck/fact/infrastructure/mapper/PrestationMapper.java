@@ -27,14 +27,27 @@ public class PrestationMapper {
 			return PrestationEntity.builder().id(domain.getId())
 					.client(clientMapper.fromDomainToEntity(domain.getClient()))
 					.consultant(consultantMapper.fromDomainToEntity(domain.getConsultant()))
-					.delaiPaiement(domain.getDelaiPaiement()).tarifHT(domain.getTarifHT())
-					.numeroCommande(domain.getNumeroCommande()).build();
+					.delaiPaiement(domain.getDelaiPaiement())
+					.tarifHT(domain.getTarifHT())
+					.numeroCommande(domain.getNumeroCommande())
+					.quantite(domain.getQuantite())
+					.clientPrestation(domain.getClientPrestation())
+					.designation(domain.getDesignation())
+					.build();
 		}
 
-		return PrestationEntity.builder().id(domain.getId()).client(clientMapper.fromDomainToEntity(domain.getClient()))
+		return PrestationEntity.builder()
+				.id(domain.getId())
+				.client(clientMapper.fromDomainToEntity(domain.getClient()))
 				.consultant(consultantMapper.fromDomainToEntity(domain.getConsultant()))
-				.facture(factureMapper.fromDomainToEntity(domain.getFacture())).delaiPaiement(domain.getDelaiPaiement())
-				.tarifHT(domain.getTarifHT()).numeroCommande(domain.getNumeroCommande()).build();
+				.facture(factureMapper.fromDomainToEntity(domain.getFacture()))
+				.delaiPaiement(domain.getDelaiPaiement())
+				.tarifHT(domain.getTarifHT())
+				.numeroCommande(domain.getNumeroCommande())
+				.quantite(domain.getQuantite())
+				.clientPrestation(domain.getClientPrestation())
+				.designation(domain.getDesignation())
+				.build();
 	}
 
 	public Prestation fromEntityToDomain(PrestationEntity entity) {
@@ -43,15 +56,30 @@ public class PrestationMapper {
 		}
 
 		if (entity.getFacture() == null) {
-			return Prestation.builder().id(entity.getId()).client(clientMapper.fromEntityToDomain(entity.getClient()))
+			return Prestation.builder()
+					.id(entity.getId())
+					.client(clientMapper.fromEntityToDomain(entity.getClient()))
 					.consultant(consultantMapper.fromEntityToDomain(entity.getConsultant()))
-					.delaiPaiement(entity.getDelaiPaiement()).tarifHT(entity.getTarifHT())
-					.numeroCommande(entity.getNumeroCommande()).build();
+					.delaiPaiement(entity.getDelaiPaiement())
+					.tarifHT(entity.getTarifHT())
+					.numeroCommande(entity.getNumeroCommande())
+					.quantite(entity.getQuantite())
+					.clientPrestation(entity.getClientPrestation())
+					.designation(entity.getDesignation())
+					.build();
 		}
-		return Prestation.builder().id(entity.getId()).client(clientMapper.fromEntityToDomain(entity.getClient()))
+		return Prestation.builder()
+				.id(entity.getId())
+				.client(clientMapper.fromEntityToDomain(entity.getClient()))
 				.consultant(consultantMapper.fromEntityToDomain(entity.getConsultant()))
-				.facture(factureMapper.fromEntityToDomain(entity.getFacture())).delaiPaiement(entity.getDelaiPaiement())
-				.tarifHT(entity.getTarifHT()).numeroCommande(entity.getNumeroCommande()).build();
+				.facture(factureMapper.fromEntityToDomain(entity.getFacture()))
+				.delaiPaiement(entity.getDelaiPaiement())
+				.tarifHT(entity.getTarifHT())
+				.numeroCommande(entity.getNumeroCommande())
+				.quantite(entity.getQuantite())
+				.clientPrestation(entity.getClientPrestation())
+				.designation(entity.getDesignation())
+				.build();
 	}
 
 	public List<Prestation> fromEntityToDomain(List<PrestationEntity> entities) {

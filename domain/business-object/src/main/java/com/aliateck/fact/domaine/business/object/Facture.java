@@ -33,7 +33,6 @@ public class Facture {
   String factureStatus;
   String moisFacture;
   float quantite;
-  String designation;
   String numeroCommande;
   String clientPrestation;
   String filePath;

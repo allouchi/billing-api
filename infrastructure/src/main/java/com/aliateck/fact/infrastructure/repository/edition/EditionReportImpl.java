@@ -88,13 +88,15 @@ public class EditionReportImpl implements EditionReportService {
 		float montantTva = facture.getMontantTVA();
 		float quantite = facture.getQuantite();
 		String communeDateEdition = adresseCompany.getLocalite() + ", le " + dateFacturation;
-		String designation = facture.getDesignation();
-		String clientPrestation = facture.getClientPrestation();
+		
+		
 
 		// infos prestation
 		float tarifHT = prestation.getTarifHT();
 		String numeroCommande = prestation.getNumeroCommande();
 		long delaiPaiement = prestation.getDelaiPaiement();
+		String clientPrestation = prestation.getClientPrestation();
+		String designation = prestation.getDesignation();
 		String consultantFonction = prestation.getConsultant().getFonction();
 		String consultantIdentite = prestation.getConsultant().getFirstName() + ESPACE_BLANC +  prestation.getConsultant().getLastName().toUpperCase();
 		String designationLigne1 = designation + ESPACE_BLANC + clientPrestation.toUpperCase() + ESPACE_BLANC + "du mois de ";

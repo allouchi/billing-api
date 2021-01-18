@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.aliateck.fact.domaine.business.object.Facture;
+import com.aliateck.fact.domaine.business.object.Prestation;
 import com.aliateck.fact.domaine.ports.api.facture.FactureApiService;
 import com.aliateck.fact.domaine.ports.spi.facture.FactureSpiService;
 
@@ -19,8 +20,8 @@ public class FactureApiAdapter implements FactureApiService {
   FactureSpiService factureSpiService;
 
   @Override
-  public Facture addFacture(String siret, Facture facture, Long prestationId, String pathRoot) {
-    return factureSpiService.addFacture(siret, facture, prestationId, pathRoot);
+  public Prestation addFacture(String siret, Prestation prestation, Long prestationId, String pathRoot) {
+    return factureSpiService.addFacture(siret, prestation, prestationId, pathRoot);
   }
 
   @Override

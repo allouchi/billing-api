@@ -1,10 +1,14 @@
 package com.aliateck.fact.application.controllers.edition;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -39,25 +43,31 @@ public class EditionController {
 
 	@GetMapping(value = "/{siret}/{prestationId}/{factureId}")
 	@ResponseBody
-	public ResponseEntity<ByteArrayResource> downloadPdf(@PathVariable String siret, @PathVariable Long prestationId,
-			@PathVariable Long factureId) {
+	public ResponseEntity<InputStreamResource> downloadPdf(@PathVariable String siret, @PathVariable Long prestationId,
+			@PathVariable Long factureId) throws FileNotFoundException {
 		log.info("get pdf file by pathName");
 
-		DataPDF reponse = editionApiService.downloadPdf(siret, prestationId, factureId, resources.getPathRoot());
+		DataPDF reponse = editionApiService.downloadPdf(siret, factureId, resources.getPathRoot());
 		MediaType mediaType = MediaTypeUtils.getMediaTypeForFileName(this.servletContext, reponse.getFileName());
 		ByteArrayResource resource = new ByteArrayResource(reponse.getFileContent());
-		HttpHeaders header = new HttpHeaders();
-        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename="+ reponse.getFileName());
-        //header.add("Cache-Control", "no-cache, no-store, must-revalidate");
-        //header.add("Pragma", "no-cache");
-        //header.add("Expires", "0");
-        
-		return ResponseEntity.ok()				
-				.headers(header)				
-				.contentType(mediaType) 				
-				.contentLength(reponse.getFileContent().length)
-				.body(resource);	
+		// HttpHeaders header = new HttpHeaders();
+		// header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename="+
+		// reponse.getFileName());
+		// header.add("Cache-Control", "no-cache, no-store, must-revalidate");
+		// header.add("Pragma", "no-cache");
+		// header.add("Expires", "0");
 
+		/*
+		 * return ResponseEntity.ok() .headers(header) .contentType(mediaType)
+		 * .contentLength(reponse.getFileContent().length) .body(resource);
+		 */
+
+		File file = new File(reponse.getFilePath().toString());
+		InputStreamResource resource1 = new InputStreamResource(new FileInputStream(file));
+
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + file.getName())
+				.contentType(mediaType).contentLength(file.length()) //
+				.body(resource1);
 	}
 
 }
