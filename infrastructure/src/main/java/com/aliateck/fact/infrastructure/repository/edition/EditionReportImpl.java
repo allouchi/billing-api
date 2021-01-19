@@ -31,7 +31,7 @@ public class EditionReportImpl implements EditionReportService {
 	private static final String BIC = "BIC: ";
 	private static final String FACTURE_LIBELLE = "FACTURE ";
 	private static final String ESPACE_BLANC = " ";
-	private static final String TIRET = " - ";
+	private static final String TIRET = "-";
 	private static final String RETURN ="\n";
 
 	@Override

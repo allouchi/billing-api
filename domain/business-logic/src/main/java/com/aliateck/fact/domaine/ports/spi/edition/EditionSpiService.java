@@ -4,5 +4,5 @@ import com.aliateck.fact.domaine.business.object.DataPDF;
 
 public interface EditionSpiService {
 	
-	public DataPDF downloadPdf(String siret, Long factureId, String rootDirectory);
+	public DataPDF downloadPdf(Long factureId, String rootDirectory);
 }

@@ -33,9 +33,9 @@ public class EditionSpiAdapter implements EditionSpiService {
 	FactureJpaRepository factureJpaRepository;
 
 	@Override
-	public DataPDF downloadPdf(String siret, Long factureId, String rootDirectory) {
+	public DataPDF downloadPdf(Long factureId, String rootDirectory) {
 
-		if (siret == null || factureId == null || factureId.longValue() == 0 || rootDirectory == null) {
+		if (factureId == null || factureId.longValue() == 0 || rootDirectory == null) {
 			throw new IllegalArgumentException("Les paramètres ne doivent pas être null");
 		}
 
