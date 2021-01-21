@@ -10,11 +10,11 @@ public interface CompanySpiService {
 
   public List<Company> findAll();
 
-  public Company findById(long id);
+  public Company findById(Long id);
 
   public Company findByReasonSocialIgnoreCase(String reasonSocial);
 
   public Company findBySiret(String siret);
   
-  public void deleteById(long siret);
+  public void deleteCompany(Long id);
 }

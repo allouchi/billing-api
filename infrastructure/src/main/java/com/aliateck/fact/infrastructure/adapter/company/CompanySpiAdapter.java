@@ -73,7 +73,7 @@ public class CompanySpiAdapter implements CompanySpiService {
   }
 
   @Override
-  public Company findById(long id) {
+  public Company findById(Long id) {
     Optional<CompanyEntity> entity = companyJpaRepository.findById(id);
 
     if (entity.isPresent()) {
@@ -108,7 +108,7 @@ public class CompanySpiAdapter implements CompanySpiService {
   }
 
   @Override
-  public void deleteById(long id) {
+  public void deleteCompany(Long id) {
     companyJpaRepository.deleteById(id);
   }
 }

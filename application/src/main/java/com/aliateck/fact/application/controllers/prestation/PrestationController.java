@@ -64,7 +64,7 @@ public class PrestationController {
   @DeleteMapping(value = "/{id}")
   public boolean deletePrestation(@PathVariable long id) {
     log.info("delete prestation by id :" + id);
-    prestationApiService.deleteById(id);
+    prestationApiService.deletePrestation(id);
     return true;
   }
 }

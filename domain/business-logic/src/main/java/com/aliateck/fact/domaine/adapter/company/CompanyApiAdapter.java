@@ -47,6 +47,6 @@ public class CompanyApiAdapter implements CompanyApiService {
 
   @Override
   public void deleteById(long id) {
-    companySpiService.deleteById(id);
+    companySpiService.deleteCompany(id);
   }
 }

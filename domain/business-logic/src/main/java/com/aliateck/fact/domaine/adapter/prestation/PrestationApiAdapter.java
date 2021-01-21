@@ -24,12 +24,7 @@ public class PrestationApiAdapter implements PrestationApiService {
   public Prestation updatePrestation(Prestation prestation, String siret) {
     return prestationSpiService.updatePrestation(prestation, siret);
   }
-  @Override
-  public void deletePrestation(Prestation prestation) {
-    prestationSpiService.deletePrestation(prestation);
-  }
-
-  @Override
+   @Override
   public List<Prestation> findAll(String siret) {
     return prestationSpiService.findAll(siret);
   }
@@ -39,7 +34,7 @@ public class PrestationApiAdapter implements PrestationApiService {
     return prestationSpiService.findById(id);
   }
 
-@Override public void deleteById(long id){
+@Override public void deletePrestation(long id){
 	prestationSpiService.deleteById(id);
 	
 }

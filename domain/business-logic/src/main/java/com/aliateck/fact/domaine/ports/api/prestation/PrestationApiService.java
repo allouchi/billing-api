@@ -4,9 +4,7 @@ import com.aliateck.fact.domaine.business.object.Prestation;
 import java.util.List;
 
 public interface PrestationApiService {
-  public Prestation addPrestation(Prestation prestation, String siret);
-
-  public void deletePrestation(Prestation prestation);
+  public Prestation addPrestation(Prestation prestation, String siret); 
 
   public Prestation updatePrestation(Prestation prestation, String siret);
 
@@ -14,5 +12,5 @@ public interface PrestationApiService {
 
   public Prestation findById(long id);
   
-  public void deleteById(long id);
+  public void deletePrestation(long id);
 }
