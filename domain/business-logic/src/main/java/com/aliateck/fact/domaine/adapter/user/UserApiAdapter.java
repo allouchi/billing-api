@@ -1,77 +1,61 @@
 package com.aliateck.fact.domaine.adapter.user;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.aliateck.fact.domaine.business.object.User;
-import com.aliateck.fact.domaine.exception.UserNotFoundException;
 import com.aliateck.fact.domaine.ports.api.user.UserApiService;
 import com.aliateck.fact.domaine.ports.spi.user.UserSpiService;
-import java.util.List;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserApiAdapter implements UserApiService {
-  UserSpiService userSpiService;
+	UserSpiService userSpiService;
 
-  @Override
-  public void addUser(User user) {
-    userSpiService.addUser(user);
-  }
+	@Override
+	public void addUser(User user) {
+		userSpiService.addUser(user);
+	}
 
-  @Override
-  public void deleteUser(User user) {
-    userSpiService.removeUser(user);
-  }
+	@Override
+	public void deleteUser(User user) {
+		userSpiService.removeUser(user);
+	}
 
-  @Override
-  public void updateUser(User user) {
-    userSpiService.updateUser(user);
-  }
+	@Override
+	public void updateUser(User user) {
+		userSpiService.updateUser(user);
+	}
 
-  @Override
-  public List<User> getUsers() {
-    List<User> users = null;
-    try {
-      users = userSpiService.findAllUsers();
-    } catch (UserNotFoundException e) {
-      e.printStackTrace();
-    }
-    return users;
-  }
+	@Override
+	public List<User> getUsers() {		
+		return userSpiService.findAllUsers();
+	}
 
-  @Override
-  public User findUserById(long id) {
-    User user = null;
-    try {
-      user = userSpiService.findUserById(id);
-    } catch (UserNotFoundException e) {
-      e.printStackTrace();
-    }
-    return user;
-  }
+	@Override
+	public User findUserById(Long id) {		
+		return userSpiService.findUserById(id);
+	}
 
-  @Override
-  public User findUserByMailAndPassword(String email, String password) {
-    User user = null;
-    try {
-      user = userSpiService.findUserByMailAndPassword(email, password);
-    } catch (UserNotFoundException e) {
-      System.out.println(e.getMessage());
-    }
-    return user;
-  }
+	@Override
+	public User findUserByMailAndPassword(String email, String password) {		
+		return userSpiService.findUserByMailAndPassword(email, password);
+	}
 
-  @Override
-  public User findUserByRole(String role) {
-    User user = null;
-    try {
-      user = userSpiService.findUserByRole(role);
-    } catch (UserNotFoundException e) {
-      System.out.println(e.getMessage());
-    }
-    return user;
-  }
+	@Override
+	public User findUserByRole(String role) {
+
+		return userSpiService.findUserByRole(role);
+	}
+
+	@Override
+	public User findUserByMail(String email) {
+		return userSpiService.findUserByMail(email);
+	}
 }

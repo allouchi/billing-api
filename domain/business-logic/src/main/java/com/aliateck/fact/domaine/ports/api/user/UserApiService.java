@@ -12,9 +12,11 @@ public interface UserApiService {
 
   public List<User> getUsers();
 
-  public User findUserById(long id);
+  public User findUserById(Long id);
 
   public User findUserByRole(String role);
 
   public User findUserByMailAndPassword(String email, String password);
+  
+  public User findUserByMail(String email);
 }

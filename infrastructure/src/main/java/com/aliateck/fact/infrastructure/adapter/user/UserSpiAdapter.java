@@ -1,22 +1,27 @@
 package com.aliateck.fact.infrastructure.adapter.user;
 
+import java.util.List;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
 import com.aliateck.fact.domaine.business.object.User;
 import com.aliateck.fact.domaine.exception.UserNotFoundException;
 import com.aliateck.fact.domaine.ports.spi.user.UserSpiService;
 import com.aliateck.fact.infrastructure.mapper.UserMapper;
 import com.aliateck.fact.infrastructure.models.UserEntity;
 import com.aliateck.fact.infrastructure.repository.user.UserJpaRepository;
-import java.util.List;
-import java.util.Optional;
-import javax.transaction.Transactional;
-import javax.transaction.Transactional.TxType;
+
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import lombok.experimental.FieldDefaults;
 
 @Service
-@Transactional(value = TxType.REQUIRED)
+@Transactional
 @RequiredArgsConstructor
-//@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserSpiAdapter implements UserSpiService {
   UserMapper userMapper;
   UserJpaRepository userJpaRepository;
@@ -36,18 +41,7 @@ public class UserSpiAdapter implements UserSpiService {
   @Override
   public void updateUser(User user) {
     UserEntity userEntity = userMapper.fromDomainToEntity(user);
-
-    Optional<UserEntity> objBase = userJpaRepository.findById(user.getId());
-
-    if (objBase.isPresent()) {
-      UserEntity entityBase = objBase.get();
-      entityBase.setId(user.getId());
-      entityBase.setFirstName(user.getFirstName());
-      entityBase.setLastName(user.getLastName());
-      entityBase.setMail(user.getEmail());
-      entityBase.setPassword(user.getPassword());
-      userJpaRepository.save(userEntity);
-    }
+    userJpaRepository.save(userEntity);    
   }
 
   @Override
@@ -69,6 +63,17 @@ public class UserSpiAdapter implements UserSpiService {
   @Override
   public User findUserByMailAndPassword(String mail, String password) {
     Optional<UserEntity> entity = userJpaRepository.findByMailAndPassword(mail, password);
+
+    if (!entity.isPresent()) {
+      throw new UserNotFoundException("User not found");
+    } else {
+      return userMapper.fromEntityToDomain(entity.get());
+    }
+  }
+  
+  @Override
+  public User findUserByMail(String mail) {
+    Optional<UserEntity> entity = userJpaRepository.findByMail(mail);
 
     if (!entity.isPresent()) {
       throw new UserNotFoundException("User not found");

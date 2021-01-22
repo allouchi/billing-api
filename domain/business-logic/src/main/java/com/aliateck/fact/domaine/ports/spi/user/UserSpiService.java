@@ -17,4 +17,6 @@ public interface UserSpiService {
   public User findUserByRole(String role);
 
   public User findUserByMailAndPassword(String email, String password);
+  
+  public User findUserByMail(String email);
 }
