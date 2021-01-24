@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,47 +52,10 @@ public class UserController {
     return userApiService.getUsers();
   }
 
-  @PostMapping(value = "/user/{mail}/{password}")
-  public void addUser(@PathVariable String mail, @PathVariable String password) {
-    Adresse sbatecAdresse = Adresse
-      .builder()
-      .rue("Boulevard National")
-      .numero("111")
-      .codePostal("92500")
-      .localite("Rueil-Malmaison")
-      .pays("France")
-      .build();
-
-    Company sbatec = Company
-      .builder()
-      .siret("85292702900011")
-      .rcsName("R.C.S. Nanterre 831 502 141")
-      .socialReason("SBATEC")
-      .status("SASU au capital de 500 Euros")
-      .numeroTva("FR 188 315 021 41")
-      .codeApe("6201Z")
-      .companyAdresse(sbatecAdresse)
-      .build();
-
-    User user1 = User
-      .builder()
-      .email(mail)
-      .firstName("Aliane")
-      .lastName("Mustapha")
-      .password(password)
-      .build();
-
-    User user2 = User
-      .builder()
-      .email(mail)
-      .firstName("ALIANNE")
-      .lastName("Khalid")
-      .password(password)
-      .build();
-
-    user1.setCompany(sbatec);
-    user2.setCompany(sbatec);
-    userApiService.addUser(user1);
-    userApiService.addUser(user2);
+  @PostMapping
+  public ResponseEntity<User> addUser(@RequestBody User userReq) {
+	  log.info("Add user");
+	  User user = userApiService.addUser(userReq);   
+	  return ResponseEntity.ok(user);
   }
 }

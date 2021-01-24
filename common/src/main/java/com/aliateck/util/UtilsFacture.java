@@ -168,11 +168,6 @@ public class UtilsFacture {
 		return path;
 	}
 	
-	public boolean facturesNonAcquitees(List<Facture> facture){
 		
-		return true;
-		
-	}
-	
 	
 }

@@ -7,11 +7,15 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import com.aliateck.fact.domaine.business.object.Company;
 import com.aliateck.fact.domaine.business.object.User;
 import com.aliateck.fact.domaine.exception.UserNotFoundException;
 import com.aliateck.fact.domaine.ports.spi.user.UserSpiService;
+import com.aliateck.fact.infrastructure.mapper.CompanyMapper;
 import com.aliateck.fact.infrastructure.mapper.UserMapper;
+import com.aliateck.fact.infrastructure.models.CompanyEntity;
 import com.aliateck.fact.infrastructure.models.UserEntity;
+import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
 import com.aliateck.fact.infrastructure.repository.user.UserJpaRepository;
 
 import lombok.AccessLevel;
@@ -25,11 +29,21 @@ import lombok.experimental.FieldDefaults;
 public class UserSpiAdapter implements UserSpiService {
   UserMapper userMapper;
   UserJpaRepository userJpaRepository;
+  CompanyJpaRepository companyJpaRepository;
+  CompanyMapper companyMapper;
 
   @Override
-  public void addUser(User user) {
-    UserEntity userEntity = userMapper.fromDomainToEntity(user);
-    userJpaRepository.save(userEntity);
+  public User addUser(User user) {
+	Optional<CompanyEntity> company = companyJpaRepository.findById(user.getCompany().getId());
+	if(company.isPresent()) {
+		Company oCompany = companyMapper.fromEntityToDomain(company.get());
+		user.setCompany(oCompany);
+		UserEntity userEntity = userMapper.fromDomainToEntity(user);
+	    UserEntity oUser = userJpaRepository.save(userEntity);
+	    return userMapper.fromEntityToDomain(oUser);
+	}
+	return null;	
+    
   }
 
   @Override

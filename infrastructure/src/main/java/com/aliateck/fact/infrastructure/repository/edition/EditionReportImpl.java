@@ -87,9 +87,7 @@ public class EditionReportImpl implements EditionReportService {
 		float montantTTC = facture.getPrixTotalTTC();
 		float montantTva = facture.getMontantTVA();
 		float quantite = facture.getQuantite();
-		String communeDateEdition = adresseCompany.getLocalite() + ", le " + dateFacturation;
-		
-		
+		String communeDateEdition = adresseCompany.getLocalite() + ", le " + dateFacturation;		
 
 		// infos prestation
 		float tarifHT = prestation.getTarifHT();

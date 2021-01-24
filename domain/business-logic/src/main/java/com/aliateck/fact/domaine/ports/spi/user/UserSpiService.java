@@ -4,7 +4,7 @@ import com.aliateck.fact.domaine.business.object.User;
 import java.util.List;
 
 public interface UserSpiService {
-  public void addUser(User user);
+  public User addUser(User user);
 
   public void removeUser(User user);
 

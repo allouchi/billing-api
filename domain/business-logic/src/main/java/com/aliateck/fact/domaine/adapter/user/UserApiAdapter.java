@@ -19,8 +19,8 @@ public class UserApiAdapter implements UserApiService {
 	UserSpiService userSpiService;
 
 	@Override
-	public void addUser(User user) {
-		userSpiService.addUser(user);
+	public User addUser(User user) {
+		return userSpiService.addUser(user);
 	}
 
 	@Override

@@ -64,19 +64,9 @@ public class PrestationSpiAdapter implements PrestationSpiService {
 
   @Override
   public Prestation updatePrestation(Prestation prestation, String siret) {
-    Optional<CompanyEntity> oCompnay = companyJpaRepository.findBySiret(siret);
-    if (oCompnay.isPresent()) {
-      CompanyEntity entity = oCompnay.get();
-      List<PrestationEntity> oPrestation = entity.getPrestations();
-      for (PrestationEntity c : oPrestation) {
-        if (c.getId().longValue() == prestation.getId().longValue()) {
-          PrestationEntity nEntity = prestationMapper.fromDomainToEntity(prestation);
-          PrestationEntity domain = prestationJpaRepository.save(nEntity);
-          return prestationMapper.fromEntityToDomain(domain);
-        }
-      }
-    }
-    return null;
+	  PrestationEntity entity = prestationMapper.fromDomainToEntity(prestation);
+	  PrestationEntity oEntity = prestationJpaRepository.save(entity);
+	  return prestationMapper.fromEntityToDomain(oEntity);
   }
 
   @Override
