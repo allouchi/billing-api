@@ -1,29 +1,38 @@
 package com.aliateck.fact.infrastructure.models;
 
 import java.io.Serializable;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Entity(name = "T_User")
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Builder
 @ToString
 //@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserEntity implements Serializable {
+	
   /**
    *
    */private static final long serialVersionUID = 1L;
@@ -39,14 +48,16 @@ public class UserEntity implements Serializable {
   @Column(name = "lastname", nullable = false)
   String lastName;
 
-  @Column(name = "mail", unique = true, nullable = false, length = 500)
+  @Column(name = "mail", nullable = false, length = 500)
   String mail;
 
   @Column(name = "password", nullable = false)
   String password;
 
-  @Column(name = "role", nullable = false)
-  String role;
+  @OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+  @JoinColumn(name = "userRole")
+  private UserRoleEntity userRole;
+  
 
   @OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
   @JoinColumn(name = "company")

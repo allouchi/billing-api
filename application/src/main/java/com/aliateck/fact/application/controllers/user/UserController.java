@@ -54,7 +54,7 @@ public class UserController {
 
   @PostMapping
   public ResponseEntity<User> addUser(@RequestBody User userReq) {
-	  log.info("Add user");
+	  log.info("Add user : " + userReq.getEmail() );
 	  User user = userApiService.addUser(userReq);   
 	  return ResponseEntity.ok(user);
   }

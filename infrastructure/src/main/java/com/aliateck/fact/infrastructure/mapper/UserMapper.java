@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserMapper {
   private final CompanyMapper companyMapper;
+  private final RoleUserMapper roleUserMapper;
 
   public UserEntity fromDomainToEntity(User domain) {
       return UserEntity
@@ -27,7 +28,7 @@ public class UserMapper {
         .lastName(domain.getLastName())
         .mail(domain.getEmail())
         .password(domain.getPassword())
-        .role(domain.getRole())
+        .userRole(roleUserMapper.fromDomainToEntity(domain.getUserRole()))
         .company(companyMapper.fromDomainToEntity(domain.getCompany()))
         .build();
   }
@@ -41,7 +42,7 @@ public class UserMapper {
       .lastName(entity.getLastName())
       .email(entity.getMail())
       .password(entity.getPassword())
-      .role(entity.getRole())
+      .userRole(roleUserMapper.fromEntityToDomain(entity.getUserRole()))
       .company(companyMapper.fromEntityToDomain(entity.getCompany()))
       .build();
   }
@@ -60,7 +61,6 @@ public class UserMapper {
         clientList.add(fromDomainToEntity(entity));
       }
     }
-
     return clientList;
   }
 }

@@ -24,7 +24,9 @@ import com.aliateck.fact.domaine.ports.api.facture.FactureApiService;
 import com.aliateck.fact.domaine.ports.api.prestation.PrestationApiService;
 import com.aliateck.fact.domaine.ports.api.user.UserApiService;
 
+
 @SpringBootApplication
+//@Sql({"/employees_schema.sql", "/import_employees.sql"})
 public class ApplicationStarter implements CommandLineRunner {
   @Autowired
   private CompanyApiService companyApiService;

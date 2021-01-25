@@ -13,9 +13,7 @@ public interface UserSpiService {
   public List<User> findAllUsers();
 
   public User findUserById(long id);
-
-  public User findUserByRole(String role);
-
+  
   public User findUserByMailAndPassword(String email, String password);
   
   public User findUserByMail(String email);

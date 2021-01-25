@@ -16,12 +16,12 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class User {
-  Long id;
-  String firstName;
-  String lastName;
-  String email;
-  UserRole userRole;
-  String password;
-  Company company;
+public class UserRoleRef {
+
+	Long id;
+	
+	String roleId;
+
+	String roleName;
+
 }

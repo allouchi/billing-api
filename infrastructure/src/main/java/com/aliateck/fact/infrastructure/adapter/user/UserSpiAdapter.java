@@ -95,14 +95,4 @@ public class UserSpiAdapter implements UserSpiService {
       return userMapper.fromEntityToDomain(entity.get());
     }
   }
-
-  @Override
-  public User findUserByRole(String role) {
-    Optional<UserEntity> entity = userJpaRepository.findByRole(role);
-    if (!entity.isPresent()) {
-      throw new UserNotFoundException("User not found");
-    } else {
-      return userMapper.fromEntityToDomain(entity.get());
-    }
-  }
 }

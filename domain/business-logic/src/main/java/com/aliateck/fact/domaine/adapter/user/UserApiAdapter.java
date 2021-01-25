@@ -47,13 +47,7 @@ public class UserApiAdapter implements UserApiService {
 	public User findUserByMailAndPassword(String email, String password) {		
 		return userSpiService.findUserByMailAndPassword(email, password);
 	}
-
-	@Override
-	public User findUserByRole(String role) {
-
-		return userSpiService.findUserByRole(role);
-	}
-
+	
 	@Override
 	public User findUserByMail(String email) {
 		return userSpiService.findUserByMail(email);

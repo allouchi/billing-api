@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import com.aliateck.fact.domaine.business.object.DataPDF;
 import com.aliateck.fact.domaine.ports.spi.edition.EditionSpiService;
-import com.aliateck.fact.infrastructure.adapter.commun.EntitySpiService;
 import com.aliateck.fact.infrastructure.models.FactureEntity;
 import com.aliateck.fact.infrastructure.repository.facture.FactureJpaRepository;
 

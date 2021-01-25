@@ -9,7 +9,6 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
-import com.aliateck.fact.infrastructure.mapper.FactureMapper;
 import com.aliateck.fact.infrastructure.models.CompanyEntity;
 import com.aliateck.fact.infrastructure.models.FactureEntity;
 import com.aliateck.fact.infrastructure.models.PrestationEntity;
@@ -27,7 +26,7 @@ import lombok.experimental.FieldDefaults;
 public class CommonSpiEntity implements EntitySpiService {
   CompanyJpaRepository companyJpaRepository;
   FactureJpaRepository factureJpaRepository;
-  FactureMapper factureMapper;
+
 
   @Override
   public List<PrestationEntity> findAllPrestation(String siret) {
