@@ -116,8 +116,8 @@ public class ApplicationStarter implements CommandLineRunner {
       .codeApe("6201Z")
       .rcsName("R.C.S. Nanterre 831 502 141")      
       .numeroTva("FR18831502141")
-      .codeBic("PSSTFRPPSCE")
-      .codeIban("FR1720041010125407961J03367")      
+      .numeroBic("PSSTFRPPSCE")
+      .numeroIban("FR1720041010125407961J03367")      
       .companyAdresse(sbatecAdresse)
       .build();
     //companyApiService.addCompany(sbatec);

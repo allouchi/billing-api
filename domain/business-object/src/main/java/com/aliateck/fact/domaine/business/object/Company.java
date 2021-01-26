@@ -28,8 +28,8 @@ public class Company extends Domain {
 	String rcsName;
 	String numeroTva;
 	String codeApe;
-	String codeIban;
-	String codeBic;	
+	String numeroIban;
+	String numeroBic;	
 	Adresse companyAdresse;
 	List<Client> clients;
 	List<Consultant> consultants;

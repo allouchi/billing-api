@@ -47,8 +47,8 @@ public class EditionReportImpl implements EditionReportService {
 		String numeroSiret = company.getSiret().trim();
 		String numeroApe = company.getCodeApe();
 		String numeroTva = company.getNumeroTva().trim();
-		String numeroBic = BIC + company.getCodeBic();
-		String numeroIban = company.getCodeIban();
+		String numeroBic = BIC + company.getNumeroBic();
+		String numeroIban = company.getNumeroIban();
 		
 		//IBAN: FR17 2004 1010 1254 0796 1J03 367
 		//IBAN  FR33 3000 2008 9700 0000 5896 J14

@@ -58,11 +58,11 @@ public class CompanyEntity extends CommonEntity {
 	@Column(name = "codeApe")
 	String codeApe;
 
-	@Column(name = "codeIban")
-	String codeIban;
+	@Column(name = "numeroIban")
+	String numeroIban;
 
-	@Column(name = "codeBic")
-	String codeBic;
+	@Column(name = "numeroBic")
+	String numeroBic;
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JoinColumn(name = "company")

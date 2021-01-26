@@ -26,36 +26,32 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserController {
-	
-  UserApiService userApiService;
-   
-  @GetMapping(value = "/{mail:.+}")
-  public ResponseEntity<User> findUserByEMail(
-    @PathVariable String mail   
-  ) {
-	  log.info("Get user by Email : " + mail);
-    User user = userApiService.findUserByMail(mail);
-    return ResponseEntity.ok(user);
-  }
-  
-  @GetMapping(value = "/{mail}/{password}")
-  public ResponseEntity<User> findUserByMailAndPassword(
-    @PathVariable String mail,
-    @PathVariable String password
-  ) {
-    User user = userApiService.findUserByMailAndPassword(mail, password);
-    return ResponseEntity.ok(user);
-  }
 
-  @GetMapping(value = "/allUsers")
-  public List<User> getUsers() {
-    return userApiService.getUsers();
-  }
+	UserApiService userApiService;
 
-  @PostMapping
-  public ResponseEntity<User> addUser(@RequestBody User userReq) {
-	  log.info("Add user : " + userReq.getEmail() );
-	  User user = userApiService.addUser(userReq);   
-	  return ResponseEntity.ok(user);
-  }
+	@GetMapping(value = "/{mail:.+}")
+	public ResponseEntity<User> findUserByEMail(@PathVariable String mail) {
+		log.info("Get user by Email : " + mail);
+		User user = userApiService.findUserByMail(mail);
+		return ResponseEntity.ok(user);
+	}
+
+	@GetMapping(value = "/{mail}/{password}")
+	public ResponseEntity<User> findUserByMailAndPassword(@PathVariable String mail, @PathVariable String password) {
+		User user = userApiService.findUserByMailAndPassword(mail, password);
+		return ResponseEntity.ok(user);
+	}
+
+	@GetMapping(value = "/allUsers")
+	public List<User> getUsers() {
+		return userApiService.getUsers();
+	}
+
+	@PostMapping
+	public ResponseEntity<User> addUser(@RequestBody User userReq) {
+		log.info("Add user : " + userReq.getEmail());
+		User user = userApiService.addUser(userReq);
+		return ResponseEntity.ok(user);
+		// return ResponseEntity.ok(null);
+	}
 }
