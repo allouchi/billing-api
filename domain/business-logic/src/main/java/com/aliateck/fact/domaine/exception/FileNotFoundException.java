@@ -1,4 +1,4 @@
-package com.aliateck.fact.application.exception;
+package com.aliateck.fact.domaine.exception;
 
 public class FileNotFoundException extends RuntimeException{
 	

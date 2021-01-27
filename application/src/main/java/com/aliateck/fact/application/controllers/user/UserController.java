@@ -48,10 +48,8 @@ public class UserController {
 	}
 
 	@PostMapping
-	public ResponseEntity<User> addUser(@RequestBody User userReq) {
+	public User addUser(@RequestBody User userReq) {
 		log.info("Add user : " + userReq.getEmail());
-		User user = userApiService.addUser(userReq);
-		return ResponseEntity.ok(user);
-		// return ResponseEntity.ok(null);
+		return userApiService.addUser(userReq);			
 	}
 }

@@ -32,34 +32,34 @@ import lombok.ToString;
 @ToString
 //@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserEntity implements Serializable {
-	
-  /**
-   *
-   */private static final long serialVersionUID = 1L;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", nullable = false)
-  Long id;
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
 
-  @Column(name = "firstname", nullable = false)
-  String firstName;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", nullable = false)
+	Long id;
 
-  @Column(name = "lastname", nullable = false)
-  String lastName;
+	@Column(name = "firstname", nullable = false)
+	String firstName;
 
-  @Column(name = "mail", nullable = false, length = 500)
-  String mail;
+	@Column(name = "lastname", nullable = false)
+	String lastName;
 
-  @Column(name = "password", nullable = false)
-  String password;
+	@Column(name = "mail", unique = true, nullable = false, length = 500)
+	String mail;
 
-  @OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-  @JoinColumn(name = "userRole")
-  private UserRoleEntity userRole;
-  
+	@Column(name = "password", nullable = false)
+	String password;
 
-  @OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-  @JoinColumn(name = "company")
-  private CompanyEntity company;
+	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinColumn(name = "userRole")
+	private UserRoleEntity userRole;
+
+	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinColumn(name = "company")
+	private CompanyEntity company;
 }

@@ -9,6 +9,8 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.aliateck.fact.domaine.business.object.Consultant;
+import com.aliateck.fact.domaine.exception.MethodArgumentNotValidException;
+import com.aliateck.fact.domaine.exception.UserAlreadyExistsException;
 import com.aliateck.fact.domaine.ports.spi.consultant.ConsultantSpiService;
 import com.aliateck.fact.infrastructure.mapper.ConsultantMapper;
 import com.aliateck.fact.infrastructure.models.CompanyEntity;
@@ -32,7 +34,12 @@ public class ConsultantSpiAdapter implements ConsultantSpiService {
 	@Override
 	public Consultant addConsultant(Consultant consultant, String siret) {
 		if (consultant == null || siret == null) {
-			throw new IllegalArgumentException("Paramères nulls");
+			throw new MethodArgumentNotValidException("Paramères nulls");
+		}
+		
+		Optional<ConsultantEntity>  consult = consultantJpaRepository.findByMail(consultant.getMail());
+		if(consult.isPresent()) {
+			throw new UserAlreadyExistsException(consult.get().getMail());
 		}
 
 		if (consultant.getId() != null && consultant.getId().longValue() == 0) {

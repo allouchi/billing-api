@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.aliateck.fact.domaine.business.object.Company;
 import com.aliateck.fact.domaine.business.object.User;
+import com.aliateck.fact.domaine.exception.UserAlreadyExistsException;
 import com.aliateck.fact.domaine.exception.UserNotFoundException;
 import com.aliateck.fact.domaine.ports.spi.user.UserSpiService;
 import com.aliateck.fact.infrastructure.mapper.CompanyMapper;
@@ -33,12 +34,18 @@ public class UserSpiAdapter implements UserSpiService {
   CompanyMapper companyMapper;
 
   @Override
-  public User addUser(User user) {
-	Optional<CompanyEntity> company = companyJpaRepository.findById(user.getCompany().getId());
+  public User addUser(User userRequest) {
+	Optional<UserEntity>  user = userJpaRepository.findByMail(userRequest.getEmail());
+	
+	if(user.isPresent()) {
+		throw new UserAlreadyExistsException(userRequest.getEmail());
+	}
+	
+	Optional<CompanyEntity> company = companyJpaRepository.findById(userRequest.getCompany().getId());
 	if(company.isPresent()) {
 		Company oCompany = companyMapper.fromEntityToDomain(company.get());
-		user.setCompany(oCompany);
-		UserEntity userEntity = userMapper.fromDomainToEntity(user);
+		userRequest.setCompany(oCompany);
+		UserEntity userEntity = userMapper.fromDomainToEntity(userRequest);
 	    UserEntity oUser = userJpaRepository.save(userEntity);
 	    return userMapper.fromEntityToDomain(oUser);
 	}

@@ -41,14 +41,9 @@ public class ConsultantController {
 	}
 
 	@PostMapping(value = "/{siret}")
-	public ResponseEntity<Consultant> addConsultant(@RequestBody Consultant consultantRequest,
-			@PathVariable String siret) {
+	public Consultant addConsultant(@RequestBody Consultant consultantRequest, @PathVariable String siret) {
 		log.info("Create new consultant");
-		Consultant reponse = consultantApiService.addConsultant(consultantRequest, siret);
-		if (reponse != null) {
-			return ResponseEntity.ok(reponse);
-		}
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return consultantApiService.addConsultant(consultantRequest, siret);
 	}
 
 	@PutMapping(value = "/{siret}")
