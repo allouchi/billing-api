@@ -10,7 +10,7 @@ public interface ConsultantSpiService {
 
   public Consultant updateConsultant(Consultant consultant, String siret);
 
-  public List<Consultant> findAll();
+  public List<Consultant> findAll(String siret);
 
   public Consultant findById(Long id);
 }

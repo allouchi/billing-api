@@ -1,17 +1,18 @@
 package com.aliateck.fact.domaine.business.object;
 
 import com.aliateck.fact.domaine.business.object.common.Domain;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,7 +21,7 @@ import lombok.experimental.SuperBuilder;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Client extends Domain {
   Long id;
-  String socialReason;  
+  String socialReason;
   String mail;
   Adresse adresseClient;
 }

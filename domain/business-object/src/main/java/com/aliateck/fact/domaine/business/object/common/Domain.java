@@ -1,10 +1,12 @@
 package com.aliateck.fact.domaine.business.object.common;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-@Data
+@Getter
+@Setter
 @SuperBuilder
 @AllArgsConstructor
 public class Domain {}

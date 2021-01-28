@@ -1,6 +1,5 @@
 package com.aliateck.fact.infrastructure.adapter.consultant;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,9 +8,10 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.aliateck.fact.domaine.business.object.Consultant;
-import com.aliateck.fact.domaine.exception.MethodArgumentNotValidException;
-import com.aliateck.fact.domaine.exception.UserAlreadyExistsException;
+import com.aliateck.fact.domaine.exception.ErrorCatalog;
+import com.aliateck.fact.domaine.exception.ServiceException;
 import com.aliateck.fact.domaine.ports.spi.consultant.ConsultantSpiService;
+import com.aliateck.fact.infrastructure.adapter.commun.CheckEmailAdress;
 import com.aliateck.fact.infrastructure.mapper.ConsultantMapper;
 import com.aliateck.fact.infrastructure.models.CompanyEntity;
 import com.aliateck.fact.infrastructure.models.ConsultantEntity;
@@ -21,104 +21,116 @@ import com.aliateck.fact.infrastructure.repository.consultant.ConsultantJpaRepos
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ConsultantSpiAdapter implements ConsultantSpiService {
 	private ConsultantJpaRepository consultantJpaRepository;
 	private ConsultantMapper consultantMapper;
-	CompanyJpaRepository companyJpaRepository;
+	private CompanyJpaRepository companyJpaRepository;
 
 	@Override
 	public Consultant addConsultant(Consultant consultant, String siret) {
-		if (consultant == null || siret == null) {
-			throw new MethodArgumentNotValidException("Paramères nulls");
-		}
-		
-		Optional<ConsultantEntity>  consult = consultantJpaRepository.findByMail(consultant.getMail());
-		if(consult.isPresent()) {
-			throw new UserAlreadyExistsException(consult.get().getMail());
+
+		Consultant reponse = null;
+		if (consultant == null || siret == null || siret.equals("")) {
+			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
 		}
 
-		if (consultant.getId() != null && consultant.getId().longValue() == 0) {
-			consultant.setId(null);
+		CheckEmailAdress checkEmail = CheckEmailAdress.builder().build();
+		if (checkEmail.checkEmailAdress(consultant, consultantJpaRepository)) {
+			final String format = String.format("L'adresse mail %s est déjà utilisée", consultant.getMail());
+			throw new ServiceException(ErrorCatalog.DUPLICATE_DATA, format);
+
 		}
 
 		consultant.setLastName(consultant.getLastName().toUpperCase());
 		String firstName = consultant.getFirstName().substring(0, 1).toUpperCase()
 				+ consultant.getFirstName().substring(1, consultant.getFirstName().length());
 		consultant.setFirstName(firstName);
-
 		ConsultantEntity consultEntity = consultantMapper.fromDomainToEntity(consultant);
-		Optional<CompanyEntity> oCompany = companyJpaRepository.findBySiret(siret);
 
-		if (oCompany.isPresent()) {
-			CompanyEntity companyEntity = oCompany.get();
-			companyEntity.getConsultants().add(consultEntity);
-			CompanyEntity cEntitySaved = companyJpaRepository.saveAndFlush(companyEntity);
-			List<ConsultantEntity> savedConsultants = cEntitySaved.getConsultants();
-			if (savedConsultants != null && !savedConsultants.isEmpty()) {
-				for (ConsultantEntity c : savedConsultants) {
-					if (c.getMail().equals(consultant.getMail())) {
-						return consultantMapper.fromEntityToDomain(c);
+		try {
+			Optional<CompanyEntity> oCompany = companyJpaRepository.findBySiret(siret);
+
+			if (oCompany.isPresent()) {
+				CompanyEntity companyEntity = oCompany.get();
+				companyEntity.getConsultants().add(consultEntity);
+				CompanyEntity cEntitySaved = companyJpaRepository.saveAndFlush(companyEntity);
+				List<ConsultantEntity> savedConsultants = cEntitySaved.getConsultants();
+				if (savedConsultants != null && !savedConsultants.isEmpty()) {
+					for (ConsultantEntity c : savedConsultants) {
+						if (c.getMail().equals(consultant.getMail())) {
+							reponse = consultantMapper.fromEntityToDomain(c);
+						}
 					}
 				}
 			}
+
+		} catch (ServiceException e) {
+			throw e;
+		} catch (Exception e) {
+			log.error("error while creating new consultant", e);
+			throw new ServiceException(ErrorCatalog.DB_ERROR, e);
 		}
-		return null;
+
+		if (reponse == null) {
+			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND);
+		}
+		return reponse;
+	}
+
+	@Override
+	public Consultant updateConsultant(Consultant consultant, String siret) {
+		return this.addConsultant(consultant, siret);
 	}
 
 	@Override
 	public void deleteConsultant(Long id) {
 		if (id == null) {
-			throw new IllegalArgumentException("Id is null");
+			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
 		}
-		consultantJpaRepository.deleteById(id);
+
+		try {
+			consultantJpaRepository.deleteById(id);
+		} catch (ServiceException e) {
+			throw e;
+		} catch (Exception e) {
+			log.error("error while deleting consultant with requested ID:" + "" + id, e);
+			throw new ServiceException(ErrorCatalog.DB_ERROR, e);
+		}
 	}
 
 	@Override
-	public Consultant updateConsultant(Consultant consultant, String siret) {
-		
-		if (consultant == null || siret == null) {
-			throw new IllegalArgumentException("Paramères nulls");
-		}
+	public List<Consultant> findAll(String siret) {
 
-		if (consultant.getId() != null && consultant.getId().longValue() == 0) {
-			consultant.setId(null);
-		}
-		
-		consultant.setLastName(consultant.getLastName().toUpperCase());
-		String firstName = consultant.getFirstName().substring(0, 1).toUpperCase()
-				+ consultant.getFirstName().substring(1, consultant.getFirstName().length());
-		consultant.setFirstName(firstName);
-		
-		Optional<CompanyEntity> oCompnay = companyJpaRepository.findBySiret(siret);
-		if (oCompnay.isPresent()) {
-			CompanyEntity entity = oCompnay.get();
-			List<ConsultantEntity> oConsultant = entity.getConsultants();
-			for (ConsultantEntity c : oConsultant) {
-				if (c.getId().longValue() == consultant.getId().longValue()) {
-					ConsultantEntity nEntity = consultantMapper.fromDomainToEntity(consultant);
-					ConsultantEntity domain = consultantJpaRepository.save(nEntity);
-					return consultantMapper.fromEntityToDomain(domain);
-				}
-			}
-		}
-		return null;
-	}
+		List<Consultant> reponse = null;
 
-	@Override
-	public List<Consultant> findAll() {
-		List<Consultant> listEntities = new ArrayList<>();
-		List<ConsultantEntity> entities = consultantJpaRepository.findAll();
-		if (!entities.isEmpty()) {
-			for (ConsultantEntity entity : entities) {
-				listEntities.add(consultantMapper.fromEntityToDomain(entity));
-			}
+		if (siret == null || siret.equals("")) {
+			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
 		}
-		return listEntities;
+		try {
+
+			Optional<CompanyEntity> oCompnay = companyJpaRepository.findBySiret(siret);
+			if (oCompnay.isPresent()) {
+				CompanyEntity entity = oCompnay.get();
+				List<ConsultantEntity> oConsultant = entity.getConsultants();
+				reponse = consultantMapper.fromEntityToDomain(oConsultant);
+			}
+
+		} catch (Exception e) {
+			log.error("error while retrieving data type with requested siret:" + "" + siret, e);
+			throw new ServiceException(ErrorCatalog.DB_ERROR, e);
+		}
+		if (reponse == null || reponse.isEmpty()) {
+			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND);
+		}
+		return reponse;
+
 	}
 
 	@Override

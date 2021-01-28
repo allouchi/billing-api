@@ -31,8 +31,8 @@ public class ConsultantApiAdapter implements ConsultantApiService {
   }
 
   @Override
-  public List<Consultant> findAll() {
-    return consultantSpiService.findAll();
+  public List<Consultant> findAll(String siret) {
+    return consultantSpiService.findAll(siret);
   }
 
   @Override

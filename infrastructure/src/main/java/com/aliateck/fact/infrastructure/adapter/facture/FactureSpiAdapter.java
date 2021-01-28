@@ -15,9 +15,11 @@ import com.aliateck.fact.domaine.business.object.Company;
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.business.object.Prestation;
 import com.aliateck.fact.domaine.common.edition.BuildFactureService;
-import com.aliateck.fact.domaine.exception.FactureNotFoundException;
+import com.aliateck.fact.domaine.exception.ErrorCatalog;
+import com.aliateck.fact.domaine.exception.ServiceException;
 import com.aliateck.fact.domaine.ports.spi.facture.FactureSpiService;
 import com.aliateck.fact.infrastructure.adapter.commun.EntitySpiService;
+import com.aliateck.fact.infrastructure.adapter.consultant.ConsultantSpiAdapter;
 import com.aliateck.fact.infrastructure.mapper.CompanyMapper;
 import com.aliateck.fact.infrastructure.mapper.FactureMapper;
 import com.aliateck.fact.infrastructure.mapper.PrestationMapper;
@@ -32,13 +34,18 @@ import com.aliateck.util.UtilsFacture;
 
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-@Data
+@Getter
+@Setter
+@Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FactureSpiAdapter implements FactureSpiService {
 	FactureJpaRepository factureJpaRepository;
@@ -94,20 +101,30 @@ public class FactureSpiAdapter implements FactureSpiService {
 
 	@Override
 	public Facture updateFacture(Facture factureRequest) {	
-		if(factureRequest == null || factureRequest.getId().longValue() == 0) {
-			return null;
+		if (factureRequest == null) {
+			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
 		}
+		try {
+			Optional<FactureEntity> entity  = factureJpaRepository.findById(factureRequest.getId());		
+			if (entity.isPresent()) {
+				Facture facture = factureMapper.fromEntityToDomain(entity.get());
+				Facture oFacture = UtilsFacture.updateFacture(facture, factureRequest);
+				FactureEntity fEntity = factureMapper.fromDomainToEntity(oFacture);
+				FactureEntity oEntity = factureJpaRepository.save(fEntity); 
+				return factureMapper.fromEntityToDomain(oEntity);
+			}
+	
+} catch (ServiceException e) {
+	
+	throw e;
+}
 		
-		Optional<FactureEntity> entity  = factureJpaRepository.findById(factureRequest.getId());		
-		if (entity.isPresent()) {
-			Facture facture = factureMapper.fromEntityToDomain(entity.get());
-			Facture oFacture = UtilsFacture.updateFacture(facture, factureRequest);
-			FactureEntity fEntity = factureMapper.fromDomainToEntity(oFacture);
-			FactureEntity oEntity = factureJpaRepository.save(fEntity); 
-			return factureMapper.fromEntityToDomain(oEntity);
-		} else {
-			throw new FactureNotFoundException("Facture not found");
-		}		
+		catch (Exception e) {
+			log.error("error while updating facture with requested ID:" + "" + factureRequest.getId(), e);
+			throw new ServiceException(ErrorCatalog.DB_ERROR, e);
+		}
+		return null;
+				
 		
 	}
 
@@ -116,26 +133,21 @@ public class FactureSpiAdapter implements FactureSpiService {
 		Optional<FactureEntity> entity = factureJpaRepository.findById(id);
 		if (entity.isPresent()) {
 			return factureMapper.fromEntityToDomain(entity.get());
-		} else {
-			throw new FactureNotFoundException("Facture not found");
-		}
+		} 
+		return null;
 	}
 
 	@Override
 	public Facture findByNumeroFacture(String numeroFacture) {
 		FactureEntity entity = factureJpaRepository.getByNumeroFacture(numeroFacture);
-		if (entity == null) {
-			throw new FactureNotFoundException("Facture not found avec numero : " + numeroFacture);
-		}
+		
 		return factureMapper.fromEntityToDomain(entity);
 	}
 
 	@Override
 	public List<Facture> findByFactureStatus(boolean statusFacture) {
 		List<FactureEntity> entitys = factureJpaRepository.findByFactureStatus(statusFacture);
-		if (entitys == null || entitys.isEmpty()) {
-			throw new FactureNotFoundException("Facture not found avec status : " + statusFacture);
-		}
+		
 		return factureMapper.fromEntityToDomain(entitys);
 	}
 
@@ -143,18 +155,14 @@ public class FactureSpiAdapter implements FactureSpiService {
 	public List<Facture> findByDateEcheance(Date dateEcheance) {
 		List<FactureEntity> entities = factureJpaRepository.findByDateEcheance(dateEcheance);
 
-		if (entities == null || entities.isEmpty()) {
-			throw new FactureNotFoundException("Facture not found avec date echeance : " + dateEcheance);
-		}
+		
 		return factureMapper.fromEntityToDomain(entities);
 	}
 
 	@Override
 	public List<Facture> findByDateEncaissement(Date dateEncaissement) {
 		List<FactureEntity> entitys = factureJpaRepository.findByDateEncaissement(dateEncaissement);
-		if (entitys == null || entitys.isEmpty()) {
-			throw new FactureNotFoundException("Facture not found avec date encaissement : " + dateEncaissement);
-		}
+		
 		return factureMapper.fromEntityToDomain(entitys);
 	}
 

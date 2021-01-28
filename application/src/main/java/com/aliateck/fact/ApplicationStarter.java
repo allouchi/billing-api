@@ -3,7 +3,6 @@ package com.aliateck.fact;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,34 +16,11 @@ import com.aliateck.fact.domaine.business.object.Client;
 import com.aliateck.fact.domaine.business.object.Company;
 import com.aliateck.fact.domaine.business.object.Consultant;
 import com.aliateck.fact.domaine.business.object.Prestation;
-import com.aliateck.fact.domaine.ports.api.client.ClientApiService;
-import com.aliateck.fact.domaine.ports.api.company.CompanyApiService;
-import com.aliateck.fact.domaine.ports.api.consultant.ConsultantApiService;
-import com.aliateck.fact.domaine.ports.api.facture.FactureApiService;
-import com.aliateck.fact.domaine.ports.api.prestation.PrestationApiService;
-import com.aliateck.fact.domaine.ports.api.user.UserApiService;
 
 
 @SpringBootApplication
-//@Sql({"/employees_schema.sql", "/import_employees.sql"})
 public class ApplicationStarter implements CommandLineRunner {
-  @Autowired
-  private CompanyApiService companyApiService;
-
-  @Autowired
-  private UserApiService userApiService;
-
-  @Autowired
-  private ClientApiService clientApiService;
-
-  @Autowired
-  private ConsultantApiService consultantApiService;
-
-  @Autowired
-  private FactureApiService factureApiService;
-
-  @Autowired
-  private PrestationApiService prestationApiService;
+ 
 
   public static void main(String[] args) {
     SpringApplication.run(ApplicationStarter.class, args);
