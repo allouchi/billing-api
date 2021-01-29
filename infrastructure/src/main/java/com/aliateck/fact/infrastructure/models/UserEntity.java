@@ -51,7 +51,7 @@ public class UserEntity implements Serializable {
 	@Column(name = "password", nullable = false)
 	String password;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "userRole")
 	private UserRoleEntity userRole;
 

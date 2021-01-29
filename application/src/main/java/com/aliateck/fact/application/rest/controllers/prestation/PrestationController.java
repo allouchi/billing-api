@@ -41,30 +41,31 @@ public class PrestationController {
     return ResponseEntity.ok(listPrestats);
   }
 
-  @PostMapping(value = "/{siret}")
+  @PostMapping(value = "/{siret}/{templateChoice}")
   public ResponseEntity<Prestation> addPrestation(
     @RequestBody Prestation prestation,
-    @PathVariable String siret
+    @PathVariable String siret,
+    @PathVariable boolean templateChoice
   ) {
     log.info("Create new Prestation");
-    Prestation presta = prestationApiService.addPrestation(prestation, siret);
+    Prestation presta = prestationApiService.addPrestation(prestation, templateChoice, siret);
     return ResponseEntity.ok(presta);
   }
 
-  @PutMapping(value = "/{siret}")
+  @PutMapping(value = "/{siret}/{templateChoice}")
   public ResponseEntity<Prestation> updatePrestation(
     @RequestBody Prestation prestationRequest,
-    @PathVariable String siret
+    @PathVariable String siret,
+    @PathVariable  boolean templateChoice
   ) {
     log.info("Update prestation");    
-    Prestation presta = factureApiService.addFacture(siret, prestationRequest, prestationRequest.getId(), resources.getPathRoot());    
+    Prestation presta = factureApiService.addFacture(siret, templateChoice, prestationRequest, resources.getPathRoot());    
     return ResponseEntity.ok(presta);
   }
 
   @DeleteMapping(value = "/{id}")
-  public boolean deletePrestation(@PathVariable long id) {
+  public void deletePrestation(@PathVariable long id) {
     log.info("delete prestation by id :" + id);
-    prestationApiService.deletePrestation(id);
-    return true;
+    prestationApiService.deletePrestation(id);    
   }
 }

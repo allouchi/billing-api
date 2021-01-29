@@ -38,8 +38,8 @@ public class UserRoleRefSpiAdapter implements UserRoleRefSpiService {
 			throw new ServiceException(ErrorCatalog.DB_ERROR, "Problème lors de la recherche des rôles utilisateurs");
 		}
 		
-		if (reponse == null) {			
-			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "La table des rôles est vide");
+		if (reponse == null || reponse.isEmpty()) {			
+			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucun role enregistré!");
 		}
 		return reponse;		
 	}

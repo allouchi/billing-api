@@ -5,15 +5,15 @@ import java.util.List;
 import com.aliateck.fact.domaine.business.object.Prestation;
 
 public interface PrestationSpiService {
-  public Prestation addPrestation(Prestation prestation, String siret);
+  public Prestation addPrestation(Prestation prestation, boolean templateChoice, String siret);
 
   public void deletePrestation(Prestation prestation);
 
   public Prestation updatePrestation(Prestation prestation, String siret);
 
-  public Prestation findById(long id);
+  public Prestation findById(Long id);
 
   public List<Prestation> findAll(String siret);
   
-  public void deleteById(long id);
+  public void deleteById(Long id);
 }

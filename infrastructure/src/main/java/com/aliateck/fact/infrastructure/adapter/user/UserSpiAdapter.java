@@ -11,7 +11,6 @@ import com.aliateck.fact.domaine.business.object.Company;
 import com.aliateck.fact.domaine.business.object.User;
 import com.aliateck.fact.domaine.exception.ErrorCatalog;
 import com.aliateck.fact.domaine.exception.ServiceException;
-import com.aliateck.fact.domaine.exception.UserAlreadyExistsException;
 import com.aliateck.fact.domaine.ports.spi.user.UserSpiService;
 import com.aliateck.fact.infrastructure.adapter.commun.CheckEmailAdress;
 import com.aliateck.fact.infrastructure.mapper.CompanyMapper;
@@ -23,11 +22,15 @@ import com.aliateck.fact.infrastructure.repository.user.UserJpaRepository;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
+@ToString
+@Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserSpiAdapter implements UserSpiService {
 	private UserMapper userMapper;
@@ -51,11 +54,6 @@ public class UserSpiAdapter implements UserSpiService {
 
 		try {
 
-			Optional<UserEntity> oUser = userJpaRepository.findByMail(user.getEmail());
-
-			if (oUser.isPresent()) {
-				throw new UserAlreadyExistsException(user.getEmail());
-			}
 			Optional<CompanyEntity> company = companyJpaRepository.findById(user.getCompany().getId());
 			if (company.isPresent()) {
 				Company oCompany = companyMapper.fromEntityToDomain(company.get());
@@ -65,7 +63,9 @@ public class UserSpiAdapter implements UserSpiService {
 				reponse = userMapper.fromEntityToDomain(entity);
 			}
 		} catch (Exception e) {
-			throw new ServiceException(ErrorCatalog.DB_ERROR, "Problème lors de l'ajout de l'utilisateur");
+			log.error("error while creating new user", e);
+			final String format = String.format("Un problème est survenu lors de l'ajout de l'utilisateur %s ", user.getEmail());
+			throw new ServiceException(ErrorCatalog.DB_ERROR, format);
 		}
 
 		return reponse;
@@ -91,7 +91,7 @@ public class UserSpiAdapter implements UserSpiService {
 
 	@Override
 	public User findUserById(Long id) {
-		
+
 		User reponse = null;
 		if (id == null) {
 			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
@@ -127,6 +127,7 @@ public class UserSpiAdapter implements UserSpiService {
 			}
 
 		} catch (Exception e) {
+			log.error("error while find user", e);
 			final String format = String.format("Problème lors de la recherche de l'utilisateur avec %s", mail);
 			throw new ServiceException(ErrorCatalog.DB_ERROR, format);
 		}
@@ -154,12 +155,13 @@ public class UserSpiAdapter implements UserSpiService {
 			}
 
 		} catch (Exception e) {
+			log.error("error while find user", e);
 			final String format = String.format("Problème lors de la recherche de l'utilisateur avec %s", mail);
 			throw new ServiceException(ErrorCatalog.DB_ERROR, format);
 		}
 
 		if (reponse == null) {
-			final String format = String.format("Aucun utilisateur avec %s comme adresse", mail);
+			final String format = String.format("Aucun utilisateur avec %s comme adresse mail", mail);
 			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, format);
 		}
 		return reponse;

@@ -38,6 +38,9 @@ public class UserRoleEntity implements Serializable{
 	@Column(name = "roleId", nullable = false)
 	private String roleId;
 	
+	@Column(name = "roleCode", nullable = false)
+	private String roleCode;
+	
 	@Column(name = "roleName", nullable = false)
 	private String roleName;
 

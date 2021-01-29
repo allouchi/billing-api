@@ -24,12 +24,14 @@ public class RoleUserMapper {
 				.id(domain.getId())
 				.roleName(domain.getRoleName())
 				.roleId(domain.getRoleId())
+				.roleCode(domain.getRoleCode())
 				.build();
 	}
 
 	public UserRole fromEntityToDomain(UserRoleEntity entity) {
 		return UserRole.builder().id(entity.getId()).roleName(entity.getRoleName())
 				.roleId(entity.getRoleId())
+				.roleCode(entity.getRoleCode())
 				.build();
 	}
 

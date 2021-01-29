@@ -27,7 +27,7 @@ public class UserMapper {
         .firstName(domain.getFirstName())
         .lastName(domain.getLastName())
         .mail(domain.getEmail())
-        .password(domain.getPassword())
+        .password(domain.getPassword())        
         .userRole(roleUserMapper.fromDomainToEntity(domain.getUserRole()))
         .company(companyMapper.fromDomainToEntity(domain.getCompany()))
         .build();

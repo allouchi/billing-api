@@ -9,9 +9,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
-import com.aliateck.fact.domaine.business.object.User;
 import com.aliateck.fact.domaine.business.object.UserRoleRef;
-import com.aliateck.fact.infrastructure.models.UserEntity;
 import com.aliateck.fact.infrastructure.models.UserRoleRefEntity;
 
 import lombok.RequiredArgsConstructor;
@@ -21,12 +19,13 @@ import lombok.RequiredArgsConstructor;
 public class RoleUserRefMapper {
 
 	public UserRoleRefEntity fromDomainToEntity(UserRoleRef domain) {
-		return UserRoleRefEntity.builder().id(domain.getId()).roleName(domain.getRoleName()).roleId(domain.getRoleId())
+		return UserRoleRefEntity.builder().id(domain.getId()).roleName(domain.getRoleName()).roleId(domain.getRoleId()).
+				roleName(domain.getRoleName())
 				.build();
 	}
 
 	public UserRoleRef fromEntityToDomain(UserRoleRefEntity entity) {
-		return UserRoleRef.builder().id(entity.getId()).roleName(entity.getRoleName()).roleId(entity.getRoleId())
+		return UserRoleRef.builder().id(entity.getId()).roleName(entity.getRoleName()).roleId(entity.getRoleId()).roleName(entity.getRoleName())
 				.build();
 	}
 	

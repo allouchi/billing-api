@@ -23,5 +23,7 @@ public class UserRole {
 	String roleId;
 
 	String roleName;
+	
+	String roleCode;
 
 }

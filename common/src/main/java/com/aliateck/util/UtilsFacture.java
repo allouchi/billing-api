@@ -9,9 +9,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.util.ResourceUtils;
@@ -152,8 +154,11 @@ public class UtilsFacture {
 	/*
 	 *
 	 */
-	public static File loadJasperFile() throws FileNotFoundException {
-		return ResourceUtils.getFile("classpath:data/factureDesign.jrxml");
+	public static Map<String, File> loadJasperFile() throws FileNotFoundException {
+		 Map<String, File> map = new HashMap<>();
+		 map.put("Default", ResourceUtils.getFile("classpath:data/defaultTemplate.jrxml"));
+		 map.put("Custom", ResourceUtils.getFile("classpath:data/customTemplate.jrxml"));
+		 return map;
 	}
 
 	/*

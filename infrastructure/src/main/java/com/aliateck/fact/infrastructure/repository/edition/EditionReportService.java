@@ -8,12 +8,12 @@ import com.aliateck.fact.domaine.business.object.Prestation;
 
 public interface EditionReportService {
   public void buildPdfFacture(
-    Map<String, Object> paramJasper,
+    Map<String, Object> paramJasper, boolean templateChoice,
     String path      
   );
 
   public Map<String, Object> buildParamJasper(
-    Company company,
+    Company company, boolean templateChoice,
     Prestation prestation,
     Facture facture
   );

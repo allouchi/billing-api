@@ -3,6 +3,7 @@ package com.aliateck.fact.application.rest.controllers.edition;
 import java.io.FileNotFoundException;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -36,26 +37,30 @@ public class EditionController {
 	EditionApiService editionApiService;
 	@Autowired
 	StorageProperties resources;
-	@Autowired
-	ServletContext servletContext;
+	
 
-	@GetMapping(value = "/{siret}/{prestationId}/{factureId}")
-	@ResponseBody
+	@GetMapping(value = "/{factureId}")	
 	public ResponseEntity<ByteArrayResource> downloadPdf(
-			@PathVariable Long factureId) throws FileNotFoundException {
-		log.info("get pdf file by pathName");
+			@PathVariable Long factureId, HttpServletRequest request) throws FileNotFoundException {
+		log.info("get pdf file by facture id : " + factureId);
 
 		DataPDF reponse = editionApiService.downloadPdf(factureId, resources.getPathRoot());
-		MediaType mediaType = MediaTypeUtils.getMediaTypeForFileName(this.servletContext, reponse.getFileName());
-		ByteArrayResource resource = new ByteArrayResource(reponse.getFileContent());
-		HttpHeaders header = new HttpHeaders();
-		header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + reponse.getFileName());
-		header.add("Cache-Control", "no-cache, no-store, must-revalidate");
-		header.add("Pragma", "no-cache");
-		header.add("Expires", "0");
-
-		return ResponseEntity.ok().headers(header).contentType(mediaType).contentLength(reponse.getFileContent().length)
+		MediaType mediaType = MediaTypeUtils.getMediaTypeForFileName(request.getServletContext(), reponse.getFileName());
+		ByteArrayResource resource = new ByteArrayResource(reponse.getFileContent());		
+		
+		
+/*
+		return ResponseEntity.ok().contentType(mediaType).contentLength(reponse.getFileContent().length)
 				.body(resource);
+		*/
+		 return ResponseEntity.ok()
+	                // Content-Disposition
+	                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + reponse.getFileName())
+	                // Content-Type
+	                .contentType(mediaType) //
+	                // Content-Lengh
+	                .contentLength(reponse.getFileContent().length) //
+	                .body(resource);
 
 	}
 

@@ -1,7 +1,6 @@
 package com.aliateck.fact.infrastructure.adapter.facture;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -19,7 +18,6 @@ import com.aliateck.fact.domaine.exception.ErrorCatalog;
 import com.aliateck.fact.domaine.exception.ServiceException;
 import com.aliateck.fact.domaine.ports.spi.facture.FactureSpiService;
 import com.aliateck.fact.infrastructure.adapter.commun.EntitySpiService;
-import com.aliateck.fact.infrastructure.adapter.consultant.ConsultantSpiAdapter;
 import com.aliateck.fact.infrastructure.mapper.CompanyMapper;
 import com.aliateck.fact.infrastructure.mapper.FactureMapper;
 import com.aliateck.fact.infrastructure.mapper.PrestationMapper;
@@ -33,7 +31,6 @@ import com.aliateck.fact.infrastructure.repository.prestation.PrestationJpaRepos
 import com.aliateck.util.UtilsFacture;
 
 import lombok.AccessLevel;
-import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -60,94 +57,131 @@ public class FactureSpiAdapter implements FactureSpiService {
 	CompanyMapper companyMapper;
 
 	@Override
-	public Prestation addFacture(String siret, Prestation prestation, Long prestationId, String pathRoot) {
-		
-		
-		Optional<CompanyEntity> cEntity = companyJpaRepository.findBySiret(siret);
-		PrestationEntity prestaEntity = entitySpiService.findPrestationById(siret, prestationId);
-		List<FactureEntity> listeFacture = entitySpiService.findFacturesByPrestation(siret, prestationId);
-
-		if (cEntity.isPresent()) {
-			CompanyEntity oEntity = cEntity.get();
-			Company company = companyMapper.fromEntityToDomain(oEntity);
-			Prestation oPrestation = prestationMapper.fromEntityToDomain(prestaEntity);
-			Client client = oPrestation.getClient();
-			Facture factureEditee = calculerFactureService.buildFacture(siret, prestation);
-			String numeroFacture = UtilsFacture.updateNumeroFacture(client.getSocialReason().toLowerCase(), factureMapper.fromEntityToDomain(listeFacture));
-			factureEditee.setNumeroFacture(numeroFacture);
-			Map<String, Object> paramJasper = editionReportService.buildParamJasper(company, prestation, factureEditee);
-			FactureEntity factEntity = factureMapper.fromDomainToEntity(factureEditee);
-			String fileName = (String) paramJasper.get("fileName");
-			String pathFile = buildFactureService.buildPathFile(siret, pathRoot, client.getSocialReason().toLowerCase());
-			editionReportService.buildPdfFacture(paramJasper, pathFile);
-			String pathToSave = UtilsFacture.buildPath(pathFile, pathRoot);
-			factEntity.setFilePath(pathToSave + "\\" + fileName);			
-			prestaEntity.getFacture().add(factEntity);			
-			prestaEntity.setNumeroCommande(prestation.getNumeroCommande());
-			prestaEntity.setDesignation(prestation.getDesignation());
-			prestaEntity.setClientPrestation(prestation.getClientPrestation());
-			PrestationEntity pEntity = prestationJpaRepository.save(prestaEntity);
-			return prestationMapper.fromEntityToDomain(pEntity);			
+	public Prestation addFacture(String siret, boolean templateChoice, Prestation prestation, String pathRoot) {
+		Prestation reponse = null;
+		if (prestation == null || siret == null || siret.equals("") || pathRoot == null) {
+			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
 		}
-		
-		return null;
-		
-	}	
 
-	@Override
-	public void deleteFacture(Long factureId) {
-		factureJpaRepository.deleteById(factureId);
+		try {
+
+			Optional<CompanyEntity> cEntity = companyJpaRepository.findBySiret(siret);
+			PrestationEntity prestaEntity = entitySpiService.findPrestationById(siret, prestation.getId());
+			List<FactureEntity> listeFacture = entitySpiService.findFacturesByPrestation(siret, prestation.getId());
+
+			if (cEntity.isPresent()) {
+				CompanyEntity oEntity = cEntity.get();
+				Company company = companyMapper.fromEntityToDomain(oEntity);
+				Prestation oPrestation = prestationMapper.fromEntityToDomain(prestaEntity);
+				Client client = oPrestation.getClient();
+				Facture factureEditee = calculerFactureService.buildFacture(siret, prestation);
+				String numeroFacture = UtilsFacture.updateNumeroFacture(client.getSocialReason().toLowerCase(),
+						factureMapper.fromEntityToDomain(listeFacture));
+				factureEditee.setNumeroFacture(numeroFacture);
+				Map<String, Object> paramJasper = editionReportService.buildParamJasper(company, templateChoice,
+						prestation, factureEditee);
+				FactureEntity factEntity = factureMapper.fromDomainToEntity(factureEditee);
+				String fileName = (String) paramJasper.get("fileName");
+				String pathFile = buildFactureService.buildPathFile(siret, pathRoot,
+						client.getSocialReason().toLowerCase());
+				editionReportService.buildPdfFacture(paramJasper, templateChoice, pathFile);
+				String pathToSave = UtilsFacture.buildPath(pathFile, pathRoot);
+				factEntity.setFilePath(pathToSave + "\\" + fileName);
+				prestaEntity.getFacture().add(factEntity);
+				prestaEntity.setNumeroCommande(prestation.getNumeroCommande());
+				prestaEntity.setDesignation(prestation.getDesignation());
+				prestaEntity.setClientPrestation(prestation.getClientPrestation());
+				PrestationEntity pEntity = prestationJpaRepository.save(prestaEntity);
+				reponse = prestationMapper.fromEntityToDomain(pEntity);
+			}
+
+		} catch (Exception e) {
+			log.error("error while creating new facture", e);
+			throw new ServiceException(ErrorCatalog.DB_ERROR, "Un problème est survenu lors de l'édition de la facture",
+					e);
+		}
+
+		return reponse;
+
 	}
 
 	@Override
-	public Facture updateFacture(Facture factureRequest) {	
+	public void deleteFacture(Long factureId) {
+
+		if (factureId == null) {
+			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
+		}
+		try {
+			factureJpaRepository.deleteById(factureId);
+		} catch (Exception e) {
+			log.error("error while deleting facture with requested ID:" + "" + factureId, e);
+			throw new ServiceException(ErrorCatalog.DB_ERROR, e);
+		}
+
+	}
+
+	@Override
+	public Facture updateFacture(Facture factureRequest) {
+		Facture reponse = null;
 		if (factureRequest == null) {
 			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
 		}
 		try {
-			Optional<FactureEntity> entity  = factureJpaRepository.findById(factureRequest.getId());		
+			Optional<FactureEntity> entity = factureJpaRepository.findById(factureRequest.getId());
 			if (entity.isPresent()) {
 				Facture facture = factureMapper.fromEntityToDomain(entity.get());
 				Facture oFacture = UtilsFacture.updateFacture(facture, factureRequest);
 				FactureEntity fEntity = factureMapper.fromDomainToEntity(oFacture);
-				FactureEntity oEntity = factureJpaRepository.save(fEntity); 
-				return factureMapper.fromEntityToDomain(oEntity);
+				FactureEntity oEntity = factureJpaRepository.save(fEntity);
+				reponse = factureMapper.fromEntityToDomain(oEntity);
 			}
-	
-} catch (ServiceException e) {
-	
-	throw e;
-}
-		
-		catch (Exception e) {
+
+		} catch (ServiceException e) {
+			throw e;
+		} catch (Exception e) {
 			log.error("error while updating facture with requested ID:" + "" + factureRequest.getId(), e);
-			throw new ServiceException(ErrorCatalog.DB_ERROR, e);
+			throw new ServiceException(ErrorCatalog.DB_ERROR,
+					"Un problème est survenu lors de la mise à jour de la facture", e);
 		}
-		return null;
-				
-		
+		return reponse;
+
 	}
 
 	@Override
 	public Facture findById(Long id) {
-		Optional<FactureEntity> entity = factureJpaRepository.findById(id);
-		if (entity.isPresent()) {
-			return factureMapper.fromEntityToDomain(entity.get());
-		} 
-		return null;
+		Facture reponse = null;
+		if (id == null) {
+			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
+		}
+		try {
+			Optional<FactureEntity> entity = factureJpaRepository.findById(id);
+			if (entity.isPresent()) {
+				reponse = factureMapper.fromEntityToDomain(entity.get());
+			}
+		} catch (Exception e) {
+			log.error("error while updating facture with requested ID:" + "" + id, e);
+			throw new ServiceException(ErrorCatalog.DB_ERROR,
+					"Un problème est survenu lors de la recherche de la facture", e);
+		}
+
+		if (reponse == null) {
+			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucune facture enregistrée!");
+		}
+		return reponse;
+
 	}
 
 	@Override
 	public Facture findByNumeroFacture(String numeroFacture) {
 		FactureEntity entity = factureJpaRepository.getByNumeroFacture(numeroFacture);
-		
+
 		return factureMapper.fromEntityToDomain(entity);
 	}
 
 	@Override
 	public List<Facture> findByFactureStatus(boolean statusFacture) {
 		List<FactureEntity> entitys = factureJpaRepository.findByFactureStatus(statusFacture);
-		
+
 		return factureMapper.fromEntityToDomain(entitys);
 	}
 
@@ -155,21 +189,35 @@ public class FactureSpiAdapter implements FactureSpiService {
 	public List<Facture> findByDateEcheance(Date dateEcheance) {
 		List<FactureEntity> entities = factureJpaRepository.findByDateEcheance(dateEcheance);
 
-		
 		return factureMapper.fromEntityToDomain(entities);
 	}
 
 	@Override
 	public List<Facture> findByDateEncaissement(Date dateEncaissement) {
 		List<FactureEntity> entitys = factureJpaRepository.findByDateEncaissement(dateEncaissement);
-		
+
 		return factureMapper.fromEntityToDomain(entitys);
 	}
 
 	@Override
 	public List<Facture> findAllBySiret(String siret) {
-		List<FactureEntity> entities = entitySpiService.findAllFacturesBySiret(siret);
-		return factureMapper.fromEntityToDomain(entities);		
+		List<Facture> reponse = null;
+		if (siret == null) {
+			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
+		}
+		try {
+			List<FactureEntity> entities = entitySpiService.findAllFacturesBySiret(siret);
+			reponse = factureMapper.fromEntityToDomain(entities);
+		} catch (Exception e) {
+			log.error("error while retrieving facture with requested siret :" + "" + siret, e);
+			throw new ServiceException(ErrorCatalog.DB_ERROR,
+					"Un problème est survenu lors de la recherche de la facture", e);
+		}
+		if (reponse == null || reponse.isEmpty()) {
+			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucune facture enregistrée!");
+		}
+		return reponse;
+
 	}
 
 }

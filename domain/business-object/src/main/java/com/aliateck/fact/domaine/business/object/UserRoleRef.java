@@ -23,5 +23,7 @@ public class UserRoleRef {
 	String roleId;
 
 	String roleName;
+	
+	String roleCode;
 
 }

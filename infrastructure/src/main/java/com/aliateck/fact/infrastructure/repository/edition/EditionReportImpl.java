@@ -35,7 +35,7 @@ public class EditionReportImpl implements EditionReportService {
 	private static final String RETURN ="\n";
 
 	@Override
-	public Map<String, Object> buildParamJasper(Company company, Prestation prestation, Facture facture) {
+	public Map<String, Object> buildParamJasper(Company company, boolean templateChoice, Prestation prestation, Facture facture) {
 
 		// infos company
 		String rsCompany = company.getSocialReason();
@@ -89,6 +89,8 @@ public class EditionReportImpl implements EditionReportService {
 		float quantite = facture.getQuantite();
 		String communeDateEdition = adresseCompany.getLocalite() + ", le " + dateFacturation;		
 
+		String designationLigne1 = "";
+		String designationLigne2 = "";
 		// infos prestation
 		float tarifHT = prestation.getTarifHT();
 		String numeroCommande = prestation.getNumeroCommande();
@@ -97,8 +99,12 @@ public class EditionReportImpl implements EditionReportService {
 		String designation = prestation.getDesignation();
 		String consultantFonction = prestation.getConsultant().getFonction();
 		String consultantIdentite = prestation.getConsultant().getFirstName() + ESPACE_BLANC +  prestation.getConsultant().getLastName().toUpperCase();
-		String designationLigne1 = designation + ESPACE_BLANC + clientPrestation.toUpperCase() + ESPACE_BLANC + "du mois de ";
-		String designationLigne2 = moisPrestation + ESPACE_BLANC + "de "+ consultantIdentite;
+		
+		if(!templateChoice) {
+			designationLigne1 = designation + ESPACE_BLANC + clientPrestation.toUpperCase() + ESPACE_BLANC + "du mois de ";
+			designationLigne2 = moisPrestation + ESPACE_BLANC + "de "+ consultantIdentite;
+		}
+		
 		// infos client
 		Adresse adresseClient = prestation.getClient().getAdresseClient();
 		String adresseCompleteClient = adresseClient.getNumero() + ESPACE_BLANC + adresseClient.getRue() + RETURN
@@ -134,26 +140,38 @@ public class EditionReportImpl implements EditionReportService {
 		parameters.put("designation", designation);
 		parameters.put("delai_paiement", delaiPaiement);
 		parameters.put("client_prestation", clientPrestation);
-		parameters.put("designation_ligne1", designationLigne1);
-		parameters.put("designation_ligne2", designationLigne2);
+		if(!templateChoice) {
+			parameters.put("designation_ligne1", designationLigne1);
+			parameters.put("designation_ligne2", designationLigne2);
+		}else {
+			parameters.put("designation", designation);
+		}
+		
 		parameters.put("fonction_consultant", consultantFonction);
 		parameters.put("fileName", fileName);
 		return parameters;
 	}
 
 	@Override
-	public void buildPdfFacture(Map<String, Object> paramJasper, String path) {
+	public void buildPdfFacture(Map<String, Object> paramJasper, boolean templateChoice, String path) {
 
 		try {
 
-			File file = UtilsFacture.loadJasperFile();
+			File templateFile = null;
+			Map<String, File> mapFiles = UtilsFacture.loadJasperFile();
 			String outputFileName = (String) paramJasper.get("fileName");
-			JasperReport jasperDesign = JasperCompileManager.compileReport(file.getPath());
+			if(templateChoice) {
+				templateFile = mapFiles.get("Custom");
+			}else {
+				templateFile = mapFiles.get("Default");
+			}
+			JasperReport jasperDesign = JasperCompileManager.compileReport(templateFile.getPath());
 			JRDataSource dataSource = new JREmptyDataSource();
 			// - Execution du rapport
 			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperDesign, paramJasper, dataSource);
 			// - Creation du rapport au format PDF			
 			JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\" + outputFileName);
+			//JasperExportManager.exportReportToXmlFile(path+"\\", outputFileName, false);
 			// JasperExportManager.exportReportToPdf(jasperPrint);
 
 			log.info("********************* Fin génération du fichier pdf *********************");
