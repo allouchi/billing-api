@@ -5,6 +5,8 @@ import com.aliateck.fact.domaine.business.object.Prestation;
 import com.aliateck.util.FactureStatus;
 import com.aliateck.util.UtilsFacture;
 import groovy.util.logging.Slf4j;
+
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,14 +19,13 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class BuildFactureImpl implements BuildFactureService {
-	private static final String SLASH = "/";
-
+	
 	/*
 	 *
 	 */
 
 	@Override
-	public Facture buildFacture(String siret, Prestation prestation) {
+	public Facture buildFacture(String siret, Prestation prestation, String moisFacture) {
 		Facture facture = new Facture();
 		if (prestation != null) {
 			float tarifHT = prestation.getTarifHT();
@@ -36,27 +37,27 @@ public class BuildFactureImpl implements BuildFactureService {
 			facture.setDelaiPaiement(prestation.getDelaiPaiement());
 			facture.setDateFacturation(UtilsFacture.convertToDateFromLocalDate(LocalDate.now()));
 			facture.setDateEcheance(UtilsFacture.calculerDateEcheance(prestation));			
-			facture.setMoisFacture(UtilsFacture.determinerMoisFacture());
 			facture.setFactureStatus(FactureStatus.NON.getCode());
 			facture.setFraisRetard(0);
 			facture.setNbJourRetard(0);
 			facture.setNumeroCommande(prestation.getNumeroCommande());
 			facture.setQuantite(prestation.getQuantite());
 			facture.setClientPrestation(prestation.getClientPrestation());
+			facture.setMoisFacture(moisFacture);
 			return facture;
 		}
 		return null;
 	}
 
 	@Override
-	public String buildPathFile(String siret, String pathRoot, String rsClient) {
+	public String buildPathFile(String siret, String pathRoot, String rsClient, String moisFacture) {
 		String filePath = null;
 		try {
 			final DateTimeFormatter formaterDate = DateTimeFormatter.ofPattern("yyyy");
 			LocalDate dateJour = LocalDate.now();
 			String annee = formaterDate.format(dateJour);
-			String directory = pathRoot + SLASH + siret + SLASH + annee + SLASH + rsClient + SLASH
-					+ UtilsFacture.determinerMoisFacture() + SLASH;
+			String directory = pathRoot + File.separator + siret + File.separator + annee + File.separator + rsClient + File.separator
+					+ moisFacture + File.separator;
 			Path path = Paths.get(directory);
 			filePath = Files.createDirectories(path).toString();
 		} catch (IOException e) {

@@ -32,7 +32,7 @@ public class PrestationMapper {
 					.numeroCommande(domain.getNumeroCommande())
 					.quantite(domain.getQuantite())
 					.clientPrestation(domain.getClientPrestation())
-					.designation(domain.getDesignation())
+					.designation(domain.getDesignation())					
 					.build();
 		}
 
@@ -46,7 +46,7 @@ public class PrestationMapper {
 				.numeroCommande(domain.getNumeroCommande())
 				.quantite(domain.getQuantite())
 				.clientPrestation(domain.getClientPrestation())
-				.designation(domain.getDesignation())
+				.designation(domain.getDesignation())				
 				.build();
 	}
 
@@ -65,7 +65,7 @@ public class PrestationMapper {
 					.numeroCommande(entity.getNumeroCommande())
 					.quantite(entity.getQuantite())
 					.clientPrestation(entity.getClientPrestation())
-					.designation(entity.getDesignation())
+					.designation(entity.getDesignation())					
 					.build();
 		}
 		return Prestation.builder()
@@ -78,7 +78,7 @@ public class PrestationMapper {
 				.numeroCommande(entity.getNumeroCommande())
 				.quantite(entity.getQuantite())
 				.clientPrestation(entity.getClientPrestation())
-				.designation(entity.getDesignation())
+				.designation(entity.getDesignation())				
 				.build();
 	}
 

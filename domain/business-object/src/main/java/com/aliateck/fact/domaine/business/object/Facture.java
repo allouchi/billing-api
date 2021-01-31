@@ -19,22 +19,22 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 //@JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class Facture {
-  Long id;
-  String numeroFacture;
-  String dateFacturation;
-  String dateEcheance;
-  String dateEncaissement;
-  float montantTVA;
-  float prixTotalHT;
-  float prixTotalTTC;
-  long nbJourRetard;
-  float fraisRetard;
-  long delaiPaiement;
-  String factureStatus;
-  String moisFacture;
-  float quantite;
-  String numeroCommande;
-  String clientPrestation;
-  String filePath;
-  //byte[] fileContent;
+	Long id;
+	String numeroFacture;
+	String dateFacturation;
+	String dateEcheance;
+	String dateEncaissement;
+	float montantTVA;
+	float prixTotalHT;
+	float prixTotalTTC;
+	long nbJourRetard;
+	float fraisRetard;
+	long delaiPaiement;
+	String factureStatus;
+	float quantite;
+	String numeroCommande;
+	String clientPrestation;
+	String filePath;
+	String moisFacture;
+
 }

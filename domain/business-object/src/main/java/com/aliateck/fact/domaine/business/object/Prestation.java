@@ -28,5 +28,5 @@ public class Prestation {
 	String numeroCommande;
 	Float quantite;
 	String clientPrestation;
-	String designation;
+	String designation;	
 }

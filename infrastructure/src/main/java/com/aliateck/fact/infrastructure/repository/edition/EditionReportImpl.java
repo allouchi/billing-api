@@ -81,12 +81,12 @@ public class EditionReportImpl implements EditionReportService {
 			
 		// infos factures
 		String dateFacturation = facture.getDateFacturation();
-		String numeroFacture = facture.getNumeroFacture();
-		String moisPrestation = facture.getMoisFacture();
+		String numeroFacture = facture.getNumeroFacture();		
 		float montantHT = facture.getPrixTotalHT();
 		float montantTTC = facture.getPrixTotalTTC();
 		float montantTva = facture.getMontantTVA();
 		float quantite = facture.getQuantite();
+		String moisPrestation = facture.getMoisFacture();
 		String communeDateEdition = adresseCompany.getLocalite() + ", le " + dateFacturation;		
 
 		String designationLigne1 = "";
@@ -96,12 +96,12 @@ public class EditionReportImpl implements EditionReportService {
 		String numeroCommande = prestation.getNumeroCommande();
 		long delaiPaiement = prestation.getDelaiPaiement();
 		String clientPrestation = prestation.getClientPrestation();
-		String designation = prestation.getDesignation();
+		String designation = prestation.getDesignation();		
 		String consultantFonction = prestation.getConsultant().getFonction();
 		String consultantIdentite = prestation.getConsultant().getFirstName() + ESPACE_BLANC +  prestation.getConsultant().getLastName().toUpperCase();
 		
 		if(!templateChoice) {
-			designationLigne1 = designation + ESPACE_BLANC + clientPrestation.toUpperCase() + ESPACE_BLANC + "du mois de ";
+			designationLigne1 = "Prestation" + ESPACE_BLANC + clientPrestation.toUpperCase() + ESPACE_BLANC + "du mois de ";
 			designationLigne2 = moisPrestation + ESPACE_BLANC + "de "+ consultantIdentite;
 		}
 		
@@ -111,8 +111,9 @@ public class EditionReportImpl implements EditionReportService {
 				+ adresseClient.getCodePostal() + ESPACE_BLANC + adresseClient.getLocalite() + RETURN + adresseClient.getPays();
 		String rsClient = prestation.getClient().getSocialReason();
 		String nameCompany[] = rsCompany.split(ESPACE_BLANC);
+		
 		String fileName = FACTURE_LIBELLE + nameCompany[0] + TIRET + rsClient + " de " + moisPrestation + ESPACE_BLANC
-				+ numeroFacture.substring(0, 4) + TIRET + numeroFacture.split("-")[1]+TYPE_FILE;
+				+ numeroFacture.substring(0, 4) + TIRET + numeroFacture.split("-")[1]+TYPE_FILE;		
         
 		// - Parametres envoyes au rapport
 		Map<String, Object> parameters = new HashMap<>();
@@ -170,7 +171,7 @@ public class EditionReportImpl implements EditionReportService {
 			// - Execution du rapport
 			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperDesign, paramJasper, dataSource);
 			// - Creation du rapport au format PDF			
-			JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\" + outputFileName);
+			JasperExportManager.exportReportToPdfFile(jasperPrint, path + File.separator + outputFileName);
 			//JasperExportManager.exportReportToXmlFile(path+"\\", outputFileName, false);
 			// JasperExportManager.exportReportToPdf(jasperPrint);
 

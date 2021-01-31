@@ -5,7 +5,7 @@ import com.aliateck.fact.domaine.business.object.Prestation;
 
 public interface BuildFactureService {
   
-  public Facture buildFacture(String siret, Prestation prestation);
+  public Facture buildFacture(String siret, Prestation prestation, String moisFacture);
 
-  public String buildPathFile(String siret, String pathRoot, String rsClient);
+  public String buildPathFile(String siret, String pathRoot, String rsClient, String moisFacture);
 }

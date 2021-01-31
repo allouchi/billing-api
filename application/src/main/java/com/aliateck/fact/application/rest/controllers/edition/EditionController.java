@@ -37,30 +37,18 @@ public class EditionController {
 	EditionApiService editionApiService;
 	@Autowired
 	StorageProperties resources;
-	
 
-	@GetMapping(value = "/{factureId}")	
-	public ResponseEntity<ByteArrayResource> downloadPdf(
-			@PathVariable Long factureId, HttpServletRequest request) throws FileNotFoundException {
+	@GetMapping(value = "/{factureId}")
+	public ResponseEntity<ByteArrayResource> downloadPdf(@PathVariable Long factureId, HttpServletRequest request)
+			throws FileNotFoundException {
 		log.info("get pdf file by facture id : " + factureId);
 
 		DataPDF reponse = editionApiService.downloadPdf(factureId, resources.getPathRoot());
-		MediaType mediaType = MediaTypeUtils.getMediaTypeForFileName(request.getServletContext(), reponse.getFileName());
-		ByteArrayResource resource = new ByteArrayResource(reponse.getFileContent());		
-		
-		
-/*
-		return ResponseEntity.ok().contentType(mediaType).contentLength(reponse.getFileContent().length)
-				.body(resource);
-		*/
-		 return ResponseEntity.ok()
-	                // Content-Disposition
-	                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + reponse.getFileName())
-	                // Content-Type
-	                .contentType(mediaType) //
-	                // Content-Lengh
-	                .contentLength(reponse.getFileContent().length) //
-	                .body(resource);
+		MediaType mediaType = MediaTypeUtils.getMediaTypeForFileName(request.getServletContext(),
+				reponse.getFileName());
+		ByteArrayResource resource = new ByteArrayResource(reponse.getFileContent());
+
+		return ResponseEntity.ok().contentType(mediaType).contentLength(reponse.getFileContent().length).body(resource);
 
 	}
 

@@ -22,8 +22,8 @@ import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.business.object.Prestation;
 
 public class UtilsFacture {
-	
-	private static final String REGEX="_";
+
+	private static final String REGEX = "_";
 
 	private UtilsFacture() {
 	}
@@ -34,7 +34,8 @@ public class UtilsFacture {
 
 	public static Facture updateFacture(Facture oFacture, Facture factureRequest) {
 
-		if (factureRequest != null && factureRequest.getDateEncaissement() != null && !factureRequest.getDateEncaissement().isEmpty()) {
+		if (factureRequest != null && factureRequest.getDateEncaissement() != null
+				&& !factureRequest.getDateEncaissement().isEmpty()) {
 			String dateEncaissement = UtilsFacture.convertDomainToEntityDate(factureRequest.getDateEncaissement());
 			oFacture.setDateEncaissement(dateEncaissement);
 			oFacture.setFactureStatus(FactureStatus.OUI.getCode());
@@ -128,15 +129,15 @@ public class UtilsFacture {
 		}
 		for (Facture facture : listeFactures) {
 			String filePath = facture.getFilePath();
-			String replace = filePath.replaceAll("\\\\", REGEX);	
-			replace = replace.substring(1,replace.length() - 1  );
-			String [] raisonSociale = replace.split(REGEX);
-			if(rsClient != null && raisonSociale != null && rsClient.equalsIgnoreCase(raisonSociale[2])) {
+			String replace = filePath.replaceAll("\\\\", REGEX);
+			replace = replace.substring(1, replace.length());
+			String[] raisonSociale = replace.split(REGEX);
+			if (rsClient != null && raisonSociale != null && rsClient.equalsIgnoreCase(raisonSociale[2])) {
 				numeroFacture = facture.getNumeroFacture();
 				String endNumero[] = numeroFacture.split("-");
 				Integer numero = Integer.parseInt(endNumero[1]);
 				numeros.add(numero);
-			}			
+			}
 		}
 		int max = Collections.max(numeros);
 		return UtilsFacture.buildNumeroFacture(String.valueOf(max + 1));
@@ -155,10 +156,10 @@ public class UtilsFacture {
 	 *
 	 */
 	public static Map<String, File> loadJasperFile() throws FileNotFoundException {
-		 Map<String, File> map = new HashMap<>();
-		 map.put("Default", ResourceUtils.getFile("classpath:data/defaultTemplate.jrxml"));
-		 map.put("Custom", ResourceUtils.getFile("classpath:data/customTemplate.jrxml"));
-		 return map;
+		Map<String, File> map = new HashMap<>();
+		map.put("Default", ResourceUtils.getFile("classpath:data/defaultTemplate.jrxml"));
+		map.put("Custom", ResourceUtils.getFile("classpath:data/customTemplate.jrxml"));
+		return map;
 	}
 
 	/*
@@ -171,8 +172,6 @@ public class UtilsFacture {
 			path = pathComplet.substring(lg, pathComplet.length());
 		}
 		return path;
-	}
-	
-		
-	
+	}	
+
 }

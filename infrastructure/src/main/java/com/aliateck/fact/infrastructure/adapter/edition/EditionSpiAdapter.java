@@ -1,5 +1,6 @@
 package com.aliateck.fact.infrastructure.adapter.edition;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -29,7 +30,6 @@ import lombok.extern.slf4j.Slf4j;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class EditionSpiAdapter implements EditionSpiService {
 
-	private static final String SLASH = "\\";
 
 	FactureJpaRepository factureJpaRepository;
 
@@ -47,11 +47,15 @@ public class EditionSpiAdapter implements EditionSpiService {
 			if (entity.isPresent()) {
 				FactureEntity facture = entity.get();
 				String path = facture.getFilePath();
-				String pathComplet = rootDirectory + SLASH + path;
+				String pathComplet = rootDirectory + File.separator + path;
 				Path pathFile = Paths.get(pathComplet);
 				byte[] pdfBinary = Files.readAllBytes(pathFile);
 				String fileName = pathFile.getFileName().toString();
-				reponse = DataPDF.builder().fileContent(pdfBinary).fileName(fileName).filePath(pathFile).build();				
+				reponse = DataPDF.builder()
+						.fileContent(pdfBinary)
+						.fileName(fileName)
+						.filePath(pathFile)
+						.build();				
 			}
 
 		} catch (Exception e) {

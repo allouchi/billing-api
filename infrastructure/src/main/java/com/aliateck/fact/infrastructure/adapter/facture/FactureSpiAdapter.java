@@ -1,5 +1,6 @@
 package com.aliateck.fact.infrastructure.adapter.facture;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,7 @@ import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
 import com.aliateck.fact.infrastructure.repository.edition.EditionReportService;
 import com.aliateck.fact.infrastructure.repository.facture.FactureJpaRepository;
 import com.aliateck.fact.infrastructure.repository.prestation.PrestationJpaRepository;
+import com.aliateck.util.Utils;
 import com.aliateck.util.UtilsFacture;
 
 import lombok.AccessLevel;
@@ -57,11 +59,12 @@ public class FactureSpiAdapter implements FactureSpiService {
 	CompanyMapper companyMapper;
 
 	@Override
-	public Prestation addFacture(String siret, boolean templateChoice, Prestation prestation, String pathRoot) {
+	public Prestation addFacture(String siret, boolean templateChoice, Prestation prestation, String pathRoot, Long moisFactureId) {
 		Prestation reponse = null;
 		if (prestation == null || siret == null || siret.equals("") || pathRoot == null) {
 			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
 		}
+		String moisFacture = Utils.convertMoisFacture(String.valueOf(moisFactureId));
 
 		try {
 
@@ -74,7 +77,7 @@ public class FactureSpiAdapter implements FactureSpiService {
 				Company company = companyMapper.fromEntityToDomain(oEntity);
 				Prestation oPrestation = prestationMapper.fromEntityToDomain(prestaEntity);
 				Client client = oPrestation.getClient();
-				Facture factureEditee = calculerFactureService.buildFacture(siret, prestation);
+				Facture factureEditee = calculerFactureService.buildFacture(siret, prestation, moisFacture);
 				String numeroFacture = UtilsFacture.updateNumeroFacture(client.getSocialReason().toLowerCase(),
 						factureMapper.fromEntityToDomain(listeFacture));
 				factureEditee.setNumeroFacture(numeroFacture);
@@ -83,10 +86,10 @@ public class FactureSpiAdapter implements FactureSpiService {
 				FactureEntity factEntity = factureMapper.fromDomainToEntity(factureEditee);
 				String fileName = (String) paramJasper.get("fileName");
 				String pathFile = buildFactureService.buildPathFile(siret, pathRoot,
-						client.getSocialReason().toLowerCase());
+						client.getSocialReason().toLowerCase(), moisFacture);
 				editionReportService.buildPdfFacture(paramJasper, templateChoice, pathFile);
 				String pathToSave = UtilsFacture.buildPath(pathFile, pathRoot);
-				factEntity.setFilePath(pathToSave + "\\" + fileName);
+				factEntity.setFilePath(pathToSave + File.separator + fileName);
 				prestaEntity.getFacture().add(factEntity);
 				prestaEntity.setNumeroCommande(prestation.getNumeroCommande());
 				prestaEntity.setDesignation(prestation.getDesignation());

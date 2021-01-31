@@ -16,6 +16,7 @@ import com.aliateck.fact.infrastructure.models.CompanyEntity;
 import com.aliateck.fact.infrastructure.models.PrestationEntity;
 import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
 import com.aliateck.fact.infrastructure.repository.prestation.PrestationJpaRepository;
+import com.aliateck.util.Utils;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -34,13 +35,13 @@ public class PrestationSpiAdapter implements PrestationSpiService {
 	PrestationMapper prestationMapper;
 
 	@Override
-	public Prestation addPrestation(Prestation prestation, boolean templateChoice, String siret) {
+	public Prestation addPrestation(Prestation prestation, boolean templateChoice, String siret, Long moisPrestaId) {
 		Prestation reponse = null;
 
-		if (prestation == null || siret == null || siret.equals("")) {
+		if (prestation == null || siret == null || siret.equals("") || moisPrestaId == null) {
 			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
-		}
-
+		}		
+		
 		try {
 
 			PrestationEntity pEntity = prestationMapper.fromDomainToEntity(prestation);

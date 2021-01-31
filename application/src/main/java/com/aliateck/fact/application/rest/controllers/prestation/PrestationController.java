@@ -41,25 +41,27 @@ public class PrestationController {
     return ResponseEntity.ok(listPrestats);
   }
 
-  @PostMapping(value = "/{siret}/{templateChoice}")
+  @PostMapping(value = "/{siret}/{templateChoice}/{moisPrestaId}")
   public ResponseEntity<Prestation> addPrestation(
     @RequestBody Prestation prestation,
     @PathVariable String siret,
-    @PathVariable boolean templateChoice
+    @PathVariable boolean templateChoice,
+    @PathVariable Long moisPrestaId
   ) {
     log.info("Create new Prestation");
-    Prestation presta = prestationApiService.addPrestation(prestation, templateChoice, siret);
+    Prestation presta = prestationApiService.addPrestation(prestation, templateChoice, siret, moisPrestaId);
     return ResponseEntity.ok(presta);
   }
 
-  @PutMapping(value = "/{siret}/{templateChoice}")
+  @PutMapping(value = "/{siret}/{templateChoice}/{moisPrestaId}")
   public ResponseEntity<Prestation> updatePrestation(
     @RequestBody Prestation prestationRequest,
     @PathVariable String siret,
-    @PathVariable  boolean templateChoice
+    @PathVariable  boolean templateChoice,
+    @PathVariable Long moisPrestaId
   ) {
     log.info("Update prestation");    
-    Prestation presta = factureApiService.addFacture(siret, templateChoice, prestationRequest, resources.getPathRoot());    
+    Prestation presta = factureApiService.addFacture(siret, templateChoice, prestationRequest, resources.getPathRoot(), moisPrestaId);    
     return ResponseEntity.ok(presta);
   }
 

@@ -7,7 +7,7 @@ import com.aliateck.fact.domaine.business.object.Prestation;
 
 public interface FactureApiService {
 	
-	public Prestation addFacture(String siret, boolean templateChoice,  Prestation prestation, String pathRoot);
+	public Prestation addFacture(String siret, boolean templateChoice,  Prestation prestation, String pathRoot, Long moisFactureId);
 
 	public void deleteFacture(Long factureId);	
 
