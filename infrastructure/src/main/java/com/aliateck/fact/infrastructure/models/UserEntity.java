@@ -52,10 +52,10 @@ public class UserEntity implements Serializable {
 	String password;
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "userRole")
+	@JoinColumn(name = "id")
 	private UserRoleEntity userRole;
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	@JoinColumn(name = "company")
+	@JoinColumn(name = "id")
 	private CompanyEntity company;
 }

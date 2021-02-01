@@ -25,7 +25,7 @@ public class ApplicationStarter implements CommandLineRunner {
   public static void main(String[] args) {
     SpringApplication.run(ApplicationStarter.class, args);
   }
-  
+  /*
   @Bean
   public HttpMessageConverter<Object> createXmlHttpMessageConverter()
    {
@@ -36,6 +36,7 @@ public class ApplicationStarter implements CommandLineRunner {
     xmlConverter.setUnmarshaller(xstreamMarshaller);
     return xmlConverter;
    }
+   */
 
   @Override
   public void run(String... args) throws Exception {
@@ -77,7 +78,7 @@ public class ApplicationStarter implements CommandLineRunner {
     List<Prestation> prestations = new ArrayList<>();
     Prestation prestation = Prestation
       .builder()
-      .tarifHT(500)
+      .tarifHT(500f)
       .delaiPaiement(60l)      
       .consultant(consultant)
       .client(client)

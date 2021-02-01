@@ -168,7 +168,7 @@ public class FactureSpiAdapter implements FactureSpiService {
 		}
 
 		if (reponse == null) {
-			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucune facture enregistrée!");
+			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucune facture enregistrée !");
 		}
 		return reponse;
 
@@ -217,7 +217,7 @@ public class FactureSpiAdapter implements FactureSpiService {
 					"Un problème est survenu lors de la recherche de la facture", e);
 		}
 		if (reponse == null || reponse.isEmpty()) {
-			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucune facture enregistrée!");
+			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucune facture enregistrée !");
 		}
 		return reponse;
 

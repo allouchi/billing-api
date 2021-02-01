@@ -156,7 +156,7 @@ public class ClientSpiAdapter implements ClientSpiService {
 			throw new ServiceException(ErrorCatalog.DB_ERROR,"Un problème est survenu lors de la recherche des clients", e);
 		}
 		if (reponse == null || reponse.isEmpty()) {			
-			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucun client enregistré!");
+			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucun client enregistré !");
 		}
 		return reponse;
 	}
@@ -179,7 +179,7 @@ public class ClientSpiAdapter implements ClientSpiService {
 		}
 
 		if (reponse == null) {			
-			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucun client enregistré!");
+			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucun client enregistré !");
 		}
 		return reponse;
 	}

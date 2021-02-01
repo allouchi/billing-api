@@ -162,7 +162,7 @@ public class ConsultantSpiAdapter implements ConsultantSpiService {
 			throw new ServiceException(ErrorCatalog.DB_ERROR,"Un problème est survenu lors de la recherche des consultants", e);
 		}
 		if (reponse == null || reponse.isEmpty()) {
-			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucun consultant enregistré!");
+			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucun consultant enregistré !");
 		}
 		return reponse;
 
@@ -190,7 +190,7 @@ public class ConsultantSpiAdapter implements ConsultantSpiService {
 		}
 		
 		if (reponse == null) {			
-			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucun consultant enregistré!");
+			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucun consultant enregistré !");
 		}
 		return reponse;
 	}

@@ -39,7 +39,7 @@ public class UserRoleRefSpiAdapter implements UserRoleRefSpiService {
 		}
 		
 		if (reponse == null || reponse.isEmpty()) {			
-			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucun role enregistré!");
+			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucun role enregistré !");
 		}
 		return reponse;		
 	}

@@ -44,6 +44,6 @@ public class ClientEntity extends CommonEntity {
   String mail;
 
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  @JoinColumn(name = "adresse")
+  @JoinColumn(name = "adresse_id")
   private AdresseEntity adresseClient;
 }

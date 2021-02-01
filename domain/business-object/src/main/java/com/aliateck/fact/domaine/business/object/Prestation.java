@@ -23,7 +23,7 @@ public class Prestation {
 	Consultant consultant;
 	Client client;
 	List<Facture> facture;
-	int tarifHT;
+	Float tarifHT;
 	long delaiPaiement;
 	String numeroCommande;
 	Float quantite;

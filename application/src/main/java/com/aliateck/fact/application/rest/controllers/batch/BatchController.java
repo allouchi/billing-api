@@ -27,7 +27,7 @@ public class BatchController {
 	@PostMapping
 	public void updateFraisRetard() {
 		log.info("Batch calcul des frais de retard");
-		batchApiService.calculerFraisRetard();
+		//batchApiService.calculerFraisRetard();
 	}
 
 }

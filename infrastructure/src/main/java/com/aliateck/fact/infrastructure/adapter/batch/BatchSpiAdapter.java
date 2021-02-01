@@ -31,31 +31,33 @@ public class BatchSpiAdapter implements BatchSpiService {
 
 	BatchJpaRepository batchJpaRepository;
 	FactureMapper factureMepper;
+	
+	@Override
+	public List<Facture> findAllFactures() {
+		return factureMepper.fromEntityToDomain(batchJpaRepository.findAll());
+	}
+	
+	@Override
+	public void updateFacture(Facture facture) {
+		batchJpaRepository.save(factureMepper.fromDomainToEntity(facture));
+
+	}
 
 	@Override
-	public void calculerFraisRetard() {
-		List<Facture> listeToUpdate = new ArrayList<>();
-		List<FactureEntity> entities = batchJpaRepository.findAll();
-		List<Facture> factures = factureMepper.fromEntityToDomain(entities);
-		if (!factures.isEmpty()) {
-			Iterator<Facture> it = factures.iterator();
-			while (it.hasNext()) {
-				Facture facture = it.next();
-				LocalDate dateEcheance = UtilsFacture.convertStringToDate(facture.getDateEcheance());
-				LocalDate dateJour = LocalDate.now();
-				if (dateJour.isAfter(dateEcheance)
-						&& (facture.getDateEncaissement() == null || facture.getDateEncaissement().isEmpty())) {
-					float fraisRetard = UtilsFacture.calculerFraisRetard(facture);
-					long nbJoursRetard = UtilsFacture.calculerNbJourRetard(facture);
-					facture.setFraisRetard(fraisRetard);
-					facture.setNbJourRetard(nbJoursRetard);
-					listeToUpdate.add(facture);
-				}
-			}
+	public Facture calculerFraisRetard(Facture facture) {
+		
+		LocalDate dateEcheance = UtilsFacture.convertStringToDate(facture.getDateEcheance());
+		LocalDate dateJour = LocalDate.now();
+
+		if (dateJour.isAfter(dateEcheance)
+				&& (facture.getDateEncaissement() == null || facture.getDateEncaissement().isEmpty())) {
+			float fraisRetard = UtilsFacture.calculerFraisRetard(facture);
+			long nbJoursRetard = UtilsFacture.calculerNbJourRetard(facture);
+			facture.setFraisRetard(fraisRetard);
+			facture.setNbJourRetard(nbJoursRetard);
 		}
-		entities.clear();
-		entities = factureMepper.fromDomainToEntity(listeToUpdate);
-		batchJpaRepository.saveAll(entities);
-	}
+		return facture;
+
+	}	
 
 }

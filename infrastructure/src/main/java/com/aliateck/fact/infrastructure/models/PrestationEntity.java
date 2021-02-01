@@ -45,7 +45,7 @@ public class PrestationEntity implements Serializable {
 	Long delaiPaiement;
 
 	@Column(name = "tarifHT", nullable = false)
-	Integer tarifHT;
+	Float tarifHT;
 
 	@Column(name = "numeroCommande", nullable = false)
 	String numeroCommande;
@@ -59,17 +59,18 @@ public class PrestationEntity implements Serializable {
 	@Column(name = "clientPrestation", nullable = false)
 	String clientPrestation;	
 
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinColumn(name = "id")
+	private List<FactureEntity> facture;
+	
 	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	@JoinColumn(name = "client")
+	@JoinColumn(name = "id")
 	private ClientEntity client;
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	@JoinColumn(name = "consultant")
+	@JoinColumn(name = "id")
 	private ConsultantEntity consultant;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH,
-			CascadeType.REMOVE })
-	@JoinColumn(name = "facture")
-	private List<FactureEntity> facture;
+	
 
 }

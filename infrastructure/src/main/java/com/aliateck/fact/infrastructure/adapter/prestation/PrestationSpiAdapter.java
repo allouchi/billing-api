@@ -40,7 +40,11 @@ public class PrestationSpiAdapter implements PrestationSpiService {
 
 		if (prestation == null || siret == null || siret.equals("") || moisPrestaId == null) {
 			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
-		}		
+		}	
+		
+		if(!templateChoice) {
+			prestation.setClientPrestation(prestation.getClient().getSocialReason());
+		}
 		
 		try {
 
@@ -125,7 +129,7 @@ public class PrestationSpiAdapter implements PrestationSpiService {
 		}
 
 		if (reponse == null) {
-			throw new ServiceException(ErrorCatalog.DB_ERROR, "Aucune prestation enregistrée");
+			throw new ServiceException(ErrorCatalog.DB_ERROR, "Aucune prestation enregistrée !");
 		}
 
 		return reponse;
@@ -153,7 +157,7 @@ public class PrestationSpiAdapter implements PrestationSpiService {
 		}
 
 		if (reponse == null || reponse.isEmpty()) {
-			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucune prestation enregistrée");
+			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucune prestation enregistrée !");
 		}
 		return reponse;
 	}

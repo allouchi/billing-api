@@ -71,7 +71,7 @@ public class CompanySpiAdapter implements CompanySpiService {
 		}
 
 		if (reponse == null || reponse.isEmpty()) {
-			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucune société enregistrée");
+			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucune société enregistrée !");
 		}
 		return reponse;
 	}
