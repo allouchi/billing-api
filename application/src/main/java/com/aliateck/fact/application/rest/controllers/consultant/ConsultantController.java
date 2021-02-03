@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.aliateck.fact.application.rest.controllers.common.CommonResource.Resource;
 
-import com.aliateck.fact.application.rest.controllers.common.CommonResource;
+import com.aliateck.util.CommonResource;
+import com.aliateck.util.CommonResource.Resource;
 import com.aliateck.fact.domaine.business.object.Consultant;
 import com.aliateck.fact.domaine.ports.api.consultant.ConsultantApiService;
 

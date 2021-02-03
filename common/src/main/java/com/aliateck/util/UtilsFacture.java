@@ -63,9 +63,9 @@ public class UtilsFacture {
 	/*
 	 *
 	 */
-	public static float calculerFraisRetard(Facture facture) {
+	public static float calculerFraisRetard(Facture facture, long joursRetard) {
 		if (facture.getFactureStatus().equalsIgnoreCase(FactureStatus.NON.getCode())) {
-			float div = (float) facture.getNbJourRetard() / 365;
+			float div = (float) joursRetard / 365;
 			return (2.52f / 100) * facture.getPrixTotalHT() * div;
 
 		}

@@ -1,4 +1,4 @@
-package com.aliateck.fact.application.rest.controllers.common;
+package com.aliateck.util;
 
 
 /**

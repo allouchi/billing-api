@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aliateck.fact.application.rest.controllers.common.CommonResource.Resource;
 import com.aliateck.fact.domaine.business.object.Company;
 import com.aliateck.fact.domaine.ports.api.company.CompanyApiService;
+import com.aliateck.util.CommonResource.Resource;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CompanyController {
-  private CompanyApiService companyApiService;
+  CompanyApiService companyApiService;
   
   
   @GetMapping(value = "/{siret}")

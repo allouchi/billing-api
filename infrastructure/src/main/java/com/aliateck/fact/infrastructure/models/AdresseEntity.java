@@ -39,7 +39,7 @@ public class AdresseEntity implements Serializable {
   @Column(name = "rue", nullable = false)
   String rue;
 
-  @Column(name = "codePostal", nullable = false)
+  @Column(name = "code_postal", nullable = false)
   String codePostal;
 
   @Column(name = "localite", nullable = false)

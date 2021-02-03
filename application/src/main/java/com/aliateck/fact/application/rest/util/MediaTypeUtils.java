@@ -1,4 +1,4 @@
-package com.aliateck.fact.application.rest.config;
+package com.aliateck.fact.application.rest.util;
 
 import java.net.MalformedURLException;
 import java.nio.file.Path;

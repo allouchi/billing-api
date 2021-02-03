@@ -15,6 +15,7 @@
 	<description>Application Layer for Billing API based on Rest</description>
 
 	<dependencies>
+			
 		<dependency>
 			<groupId>com.aliateck</groupId>
 			<artifactId>billing-api-domain-business-logic</artifactId>
@@ -23,11 +24,16 @@
 		<dependency>
 			<groupId>com.aliateck</groupId>
 			<artifactId>billing-api-infrastructure</artifactId>
-		</dependency>
-
+		</dependency>				
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>	
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-batch</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -50,7 +56,7 @@
 					<artifactId>junit-vintage-engine</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency>	
+		</dependency>
 	</dependencies>
 
 	<build>

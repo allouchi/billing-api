@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aliateck.fact.application.rest.config.MediaTypeUtils;
-import com.aliateck.fact.application.rest.config.StorageProperties;
+import com.aliateck.fact.application.rest.util.MediaTypeUtils;
+import com.aliateck.fact.application.rest.util.StorageProperties;
 import com.aliateck.fact.domaine.business.object.DataPDF;
 import com.aliateck.fact.domaine.ports.api.edition.EditionApiService;
 
@@ -44,50 +44,18 @@ public class EditionController {
 	StorageProperties resources;
 
 	@GetMapping(value = "/{factureId}")
-	public ResponseEntity<Resource> downloadPdf(@PathVariable Long factureId, HttpServletRequest request) {
+	public ResponseEntity<ByteArrayResource> downloadPdf(@PathVariable Long factureId, HttpServletRequest request) {
 		log.info("get pdf file by facture id : " + factureId);
 
 		DataPDF reponse = editionApiService.downloadPdf(factureId, resources.getPathRoot());
 		MediaType mediaType = MediaTypeUtils.getMediaTypeForFileName(request.getServletContext(),
 				reponse.getFileName());
-		// ByteArrayResource resource = new ByteArrayResource(reponse.getFileContent());
-		// HttpHeaders headers = new HttpHeaders();
-		// headers.add("Content-Disposition", "inline; filename=facture.pdf");
-		/*
-		 * return ResponseEntity.ok() .headers(headers)
-		 * .contentType(MediaType.APPLICATION_PDF)
-		 * .contentLength(resource.contentLength()) .body(resource);
-		 * 
-		 */
+		ByteArrayResource resource = new ByteArrayResource(reponse.getFileContent());
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Disposition", "inline; filename=facture.pdf");
 
-		String fileName = reponse.getFileName();
-
-		Resource resource = null;
-		String contentType = null;
-		if (fileName != null && !fileName.isEmpty()) {
-
-			try {
-
-				resource = new UrlResource(reponse.getFilePath().toUri());
-				contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
-
-			} catch (Exception e) {
-
-				e.printStackTrace();
-
-			}
-
-			return ResponseEntity.ok()
-
-					.contentType(MediaType.parseMediaType(contentType))
-
-					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
-
-					.body(resource);
-
-		}
-		
-		return null;
+		return ResponseEntity.ok().headers(headers).contentType(mediaType)
+				.contentLength(resource.contentLength()).body(resource);
 
 	}
 

@@ -18,12 +18,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserRole {
 
-	Long id;
-	
+	Long id;	
 	String roleId;
-
-	String roleName;
-	
+	String roleName;	
 	String roleCode;
 
 }

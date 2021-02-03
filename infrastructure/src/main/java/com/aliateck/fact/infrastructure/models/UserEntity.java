@@ -39,10 +39,10 @@ public class UserEntity implements Serializable {
 	@Column(name = "id", nullable = false)
 	Long id;
 
-	@Column(name = "firstname", nullable = false)
+	@Column(name = "first_name", nullable = false)
 	String firstName;
 
-	@Column(name = "lastname", nullable = false)
+	@Column(name = "last_name", nullable = false)
 	String lastName;
 
 	@Column(name = "mail", unique = true, nullable = false, length = 500)

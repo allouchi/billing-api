@@ -37,7 +37,7 @@ public class ClientEntity extends CommonEntity {
   @Column(name = "id", nullable = false)
   Long id;
 
-  @Column(name = "socialReason", nullable = false)
+  @Column(name = "social_reason", nullable = false)
   String socialReason;
   
   @Column(name = "mail", unique = true, nullable = false)

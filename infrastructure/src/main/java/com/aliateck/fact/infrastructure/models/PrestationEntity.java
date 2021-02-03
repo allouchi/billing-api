@@ -41,13 +41,13 @@ public class PrestationEntity implements Serializable {
 	@Column(name = "id", nullable = false)
 	Long id;
 
-	@Column(name = "delaiPaiement", nullable = false)
+	@Column(name = "delai_paiement", nullable = false)
 	Long delaiPaiement;
 
-	@Column(name = "tarifHT", nullable = false)
+	@Column(name = "tarifht", nullable = false)
 	Float tarifHT;
 
-	@Column(name = "numeroCommande", nullable = false)
+	@Column(name = "numero_commande", nullable = false)
 	String numeroCommande;
 
 	@Column(name = "quantite", nullable = false)
@@ -56,19 +56,19 @@ public class PrestationEntity implements Serializable {
 	@Column(name = "designation", nullable = false)
 	String designation;
 
-	@Column(name = "clientPrestation", nullable = false)
+	@Column(name = "client_prestation", nullable = false)
 	String clientPrestation;	
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	@JoinColumn(name = "id")
+	@JoinColumn(name = "facture_id")
 	private List<FactureEntity> facture;
 	
 	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	@JoinColumn(name = "id")
+	@JoinColumn(name = "client_id")
 	private ClientEntity client;
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	@JoinColumn(name = "id")
+	@JoinColumn(name = "consultant_id")
 	private ConsultantEntity consultant;
 
 	

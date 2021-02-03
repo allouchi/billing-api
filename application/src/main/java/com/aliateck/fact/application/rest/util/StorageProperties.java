@@ -1,4 +1,4 @@
-package com.aliateck.fact.application.rest.config;
+package com.aliateck.fact.application.rest.util;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;

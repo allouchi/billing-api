@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aliateck.fact.application.rest.controllers.common.CommonResource.Resource;
+import com.aliateck.util.CommonResource.Resource;
 import com.aliateck.fact.domaine.business.object.UserRoleRef;
 import com.aliateck.fact.domaine.ports.api.user.UserRoleRefApiService;
 

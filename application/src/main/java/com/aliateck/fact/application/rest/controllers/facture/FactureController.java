@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aliateck.fact.application.rest.config.StorageProperties;
-import com.aliateck.fact.application.rest.controllers.common.CommonResource.Resource;
+import com.aliateck.util.CommonResource.Resource;
+import com.aliateck.fact.application.rest.util.StorageProperties;
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.ports.api.facture.FactureApiService;
 

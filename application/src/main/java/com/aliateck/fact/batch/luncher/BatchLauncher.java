@@ -1,4 +1,4 @@
-package com.aliateck.launcher;
+package com.aliateck.fact.batch.luncher;
 
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
@@ -11,17 +11,28 @@ import org.springframework.batch.core.repository.JobExecutionAlreadyRunningExcep
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+
+@Component
+@Slf4j
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class BatchLauncher {
-
+	
 	@Autowired
 	private JobLauncher jobLauncher;
-
 	@Autowired
 	private Job job;
 
+	
 	public BatchStatus run() throws JobParametersInvalidException, JobExecutionAlreadyRunningException,
 			JobRestartException, JobInstanceAlreadyCompleteException {
+		log.info("Step démarré");
 		JobParameters parameters = new JobParametersBuilder().addLong("time", System.currentTimeMillis())
 				.toJobParameters();
 		JobExecution jobExecution = jobLauncher.run(job, parameters);

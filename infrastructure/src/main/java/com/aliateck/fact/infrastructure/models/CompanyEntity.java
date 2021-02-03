@@ -40,7 +40,7 @@ public class CompanyEntity extends CommonEntity {
 	@Column(name = "id", nullable = false)
 	Long id;
 
-	@Column(name = "socialreason", nullable = false)
+	@Column(name = "social_reason", nullable = false)
 	String socialReason;
 
 	@Column(name = "status", nullable = false)
@@ -52,16 +52,16 @@ public class CompanyEntity extends CommonEntity {
 	@Column(name = "rcsname")
 	String rcsName;
 
-	@Column(name = "numeroTva")
+	@Column(name = "numero_tva")
 	String numeroTva;
 
-	@Column(name = "codeApe")
+	@Column(name = "code_ape")
 	String codeApe;
 
-	@Column(name = "numeroIban")
+	@Column(name = "numero_iban")
 	String numeroIban;
 
-	@Column(name = "numeroBic")
+	@Column(name = "numero_bic")
 	String numeroBic;
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })

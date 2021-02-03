@@ -33,10 +33,10 @@ public class ConsultantEntity implements Serializable {
   @Column(name = "id", nullable = false)
   Long id;
 
-  @Column(name = "first_Name", nullable = false)
+  @Column(name = "first_name", nullable = false)
   String firstName;
 
-  @Column(name = "last_Name", nullable = false)
+  @Column(name = "last_name", nullable = false)
   String lastName;
   
   @Column(name = "fonction", nullable = false)

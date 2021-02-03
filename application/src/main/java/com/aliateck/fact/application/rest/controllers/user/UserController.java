@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aliateck.fact.application.rest.controllers.common.CommonResource.Resource;
+import com.aliateck.util.CommonResource.Resource;
 import com.aliateck.fact.domaine.business.object.User;
 import com.aliateck.fact.domaine.ports.api.user.UserApiService;
 
@@ -35,7 +35,7 @@ public class UserController {
 		return ResponseEntity.ok(user);
 	}
 
-	@GetMapping(value = "/{mail}/{password}")
+	@GetMapping(value = "/{mail:.+}/{password}")
 	public ResponseEntity<User> findUserByMailAndPassword(@PathVariable String mail, @PathVariable String password) {
 		User user = userApiService.findUserByMailAndPassword(mail, password);
 		return ResponseEntity.ok(user);

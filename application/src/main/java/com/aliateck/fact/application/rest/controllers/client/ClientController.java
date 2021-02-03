@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aliateck.fact.application.rest.controllers.common.CommonResource.Resource;
+import com.aliateck.util.CommonResource.Resource;
 import com.aliateck.fact.domaine.business.object.Client;
 import com.aliateck.fact.domaine.ports.api.client.ClientApiService;
 

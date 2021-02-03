@@ -9,13 +9,12 @@
 	</parent>
 
 	<artifactId>billing-api-common</artifactId>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>	 
 
 	<dependencies>
 		<dependency>
 			<groupId>com.aliateck</groupId>
-			<artifactId>billing-api-domain-business-object
-  		</artifactId>
+			<artifactId>billing-api-domain-business-object </artifactId>
 		</dependency>
 	</dependencies>
 

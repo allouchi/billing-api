@@ -51,8 +51,8 @@ public class BatchSpiAdapter implements BatchSpiService {
 
 		if (dateJour.isAfter(dateEcheance)
 				&& (facture.getDateEncaissement() == null || facture.getDateEncaissement().isEmpty())) {
-			float fraisRetard = UtilsFacture.calculerFraisRetard(facture);
 			long nbJoursRetard = UtilsFacture.calculerNbJourRetard(facture);
+			float fraisRetard = UtilsFacture.calculerFraisRetard(facture, nbJoursRetard);			
 			facture.setFraisRetard(fraisRetard);
 			facture.setNbJourRetard(nbJoursRetard);
 		}

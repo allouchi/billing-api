@@ -33,52 +33,52 @@ public class FactureEntity implements Serializable {
   @Column(name = "id", nullable = false)
   Long id;
 
-  @Column(name = "numeroFacture")
+  @Column(name = "numero_facture")
   String numeroFacture;
 
-  @Column(name = "dateFacturation", nullable = false)
+  @Column(name = "date_facturation", nullable = false)
   String dateFacturation;
 
-  @Column(name = "dateEcheance", nullable = false)
+  @Column(name = "date_echeance", nullable = false)
   String dateEcheance;
 
-  @Column(name = "dateEncaissement")
+  @Column(name = "date_encaissement")
   String dateEncaissement;
 
-  @Column(name = "montantTVA", nullable = false)
+  @Column(name = "montant_tva", nullable = false)
   Float montantTVA;
 
-  @Column(name = "prixTotalHT", scale = 2, nullable = false)
+  @Column(name = "prix_totalht", scale = 2, nullable = false)
   Float prixTotalHT;
 
-  @Column(name = "prixTotalTTC", scale = 2, nullable = false)
+  @Column(name = "prix_totalttc", scale = 2, nullable = false)
   Float prixTotalTTC;
 
-  @Column(name = "nbJourRetard")
+  @Column(name = "nbJour_retard")
   Long nbJourRetard;
 
   @Column(name = "quantite", nullable = false)
   Float quantite;
 
-  @Column(name = "delaiPaiement",  nullable = false)
+  @Column(name = "delai_paiement",  nullable = false)
   Long delaiPaiement;
   
-  @Column(name = "moisFacture")
+  @Column(name = "mois_facture")
 	String moisFacture;
 
-  @Column(name = "fraisRetard")
+  @Column(name = "frais_retard")
   Float fraisRetard;
 
-  @Column(name = "factureStatus")
+  @Column(name = "facture_status")
   String factureStatus; 
 
-  @Column(name = "filePath")
+  @Column(name = "file_path")
   String filePath;
 
-  @Column(name = "numeroCommande", nullable = false)
+  @Column(name = "numero_commande", nullable = false)
   String numeroCommande;
 
-  @Column(name = "clientPrestation", nullable = false)
+  @Column(name = "client_prestation", nullable = false)
   String clientPrestation;
   
  
