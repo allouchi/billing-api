@@ -2,6 +2,7 @@ package com.aliateck.fact.infrastructure.repository.edition;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -154,10 +155,9 @@ public class EditionReportImpl implements EditionReportService {
 	}
 
 	@Override
-	public void buildPdfFacture(Map<String, Object> paramJasper, boolean templateChoice, String path) {
+	public void buildPdfFacture(Map<String, Object> paramJasper, boolean templateChoice, String path) throws JRException, IOException {
 
 		try {
-
 			File templateFile = null;
 			Map<String, File> mapFiles = UtilsFacture.loadJasperFile();
 			String outputFileName = (String) paramJasper.get("fileName");
@@ -174,12 +174,14 @@ public class EditionReportImpl implements EditionReportService {
 			JasperExportManager.exportReportToPdfFile(jasperPrint, path + File.separator + outputFileName);
 			//JasperExportManager.exportReportToXmlFile(path+"\\", outputFileName, false);
 			// JasperExportManager.exportReportToPdf(jasperPrint);
-
 			log.info("********************* Fin génération du fichier pdf *********************");
+			
+		} catch (Exception e) {
+			log.info("Problème lors du chargement des fichiers templates");
+			throw e;
+		}			
 
-		} catch (FileNotFoundException | JRException e) {
-			log.info("Problème lors de la génération du fichier pdf : " + e.getMessage());
-		}
+	}		
 
-	}
+	
 }

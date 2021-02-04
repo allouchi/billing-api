@@ -59,9 +59,8 @@ public class EditionSpiAdapter implements EditionSpiService {
 			}
 
 		} catch (Exception e) {
-			log.error("error while getting pdf file : file not found", e);
-			throw new ServiceException(ErrorCatalog.PDF_ERROR, "Un problème est survenu lors du chargement du pdf",
-					e);
+			log.error("error while getting pdf file : file not found");
+			throw new ServiceException(ErrorCatalog.PDF_ERROR, "Un problème est survenu lors du chargement du pdf", e);
 		}
 
 		return reponse;

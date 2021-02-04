@@ -1,7 +1,7 @@
 package com.aliateck.util;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Period;
@@ -16,7 +16,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import org.springframework.util.ResourceUtils;
+import org.springframework.core.io.ClassPathResource;
 
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.business.object.Prestation;
@@ -26,6 +26,20 @@ public class UtilsFacture {
 	private static final String REGEX = "_";
 
 	private UtilsFacture() {
+
+	}
+
+	/*
+	 *
+	 */
+	public static Map<String, File> loadJasperFile() throws IOException {
+		Map<String, File> map = new HashMap<>();
+
+		File customFile = new ClassPathResource("data/customTemplate.jrxml").getFile();
+		File defaultFile = new ClassPathResource("data/defaultTemplate.jrxml").getFile();
+		map.put("Default", defaultFile);
+		map.put("Custom", customFile);
+		return map;
 	}
 
 	/*
@@ -155,16 +169,6 @@ public class UtilsFacture {
 	/*
 	 *
 	 */
-	public static Map<String, File> loadJasperFile() throws FileNotFoundException {
-		Map<String, File> map = new HashMap<>();
-		map.put("Default", ResourceUtils.getFile("classpath:data/defaultTemplate.jrxml"));
-		map.put("Custom", ResourceUtils.getFile("classpath:data/customTemplate.jrxml"));
-		return map;
-	}
-
-	/*
-	 *
-	 */
 	public static String buildPath(String pathComplet, String rootPath) {
 		String path = null;
 		if (pathComplet != null && rootPath != null) {
@@ -172,6 +176,6 @@ public class UtilsFacture {
 			path = pathComplet.substring(lg, pathComplet.length());
 		}
 		return path;
-	}	
+	}
 
 }

@@ -99,7 +99,7 @@ public class FactureSpiAdapter implements FactureSpiService {
 			}
 
 		} catch (Exception e) {
-			log.error("error while creating new facture", e);
+			log.error("error while creating new facture");
 			throw new ServiceException(ErrorCatalog.DB_ERROR, "Un problème est survenu lors de l'édition de la facture",
 					e);
 		}
