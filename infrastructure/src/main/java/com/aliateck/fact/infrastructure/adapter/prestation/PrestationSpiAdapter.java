@@ -46,6 +46,8 @@ public class PrestationSpiAdapter implements PrestationSpiService {
 			prestation.setClientPrestation(prestation.getClient().getSocialReason());
 		}
 		
+		prestation.setDateDebut(Utils.convertDomainToEntityDate(prestation.getDateDebut()));
+		prestation.setDateFin(Utils.convertDomainToEntityDate(prestation.getDateFin()));
 		try {
 
 			PrestationEntity pEntity = prestationMapper.fromDomainToEntity(prestation);

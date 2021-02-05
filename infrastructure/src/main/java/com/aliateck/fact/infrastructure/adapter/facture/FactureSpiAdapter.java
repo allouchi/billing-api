@@ -30,7 +30,6 @@ import com.aliateck.fact.infrastructure.repository.edition.EditionReportService;
 import com.aliateck.fact.infrastructure.repository.facture.FactureJpaRepository;
 import com.aliateck.fact.infrastructure.repository.prestation.PrestationJpaRepository;
 import com.aliateck.util.Utils;
-import com.aliateck.util.UtilsFacture;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -78,7 +77,7 @@ public class FactureSpiAdapter implements FactureSpiService {
 				Prestation oPrestation = prestationMapper.fromEntityToDomain(prestaEntity);
 				Client client = oPrestation.getClient();
 				Facture factureEditee = calculerFactureService.buildFacture(siret, prestation, moisFacture);
-				String numeroFacture = UtilsFacture.updateNumeroFacture(client.getSocialReason().toLowerCase(),
+				String numeroFacture = Utils.updateNumeroFacture(client.getSocialReason().toLowerCase(),
 						factureMapper.fromEntityToDomain(listeFacture));
 				factureEditee.setNumeroFacture(numeroFacture);
 				Map<String, Object> paramJasper = editionReportService.buildParamJasper(company, templateChoice,
@@ -88,12 +87,14 @@ public class FactureSpiAdapter implements FactureSpiService {
 				String pathFile = buildFactureService.buildPathFile(siret, pathRoot,
 						client.getSocialReason().toLowerCase(), moisFacture);
 				editionReportService.buildPdfFacture(paramJasper, templateChoice, pathFile);
-				String pathToSave = UtilsFacture.buildPath(pathFile, pathRoot);
+				String pathToSave = Utils.buildPath(pathFile, pathRoot);
 				factEntity.setFilePath(pathToSave + File.separator + fileName);
 				prestaEntity.getFacture().add(factEntity);
 				prestaEntity.setNumeroCommande(prestation.getNumeroCommande());
 				prestaEntity.setDesignation(prestation.getDesignation());
 				prestaEntity.setClientPrestation(prestation.getClientPrestation());
+				prestaEntity.setDateDebut( Utils.convertDomainToEntityDate(prestation.getDateDebut()));
+				prestaEntity.setDateFin( Utils.convertDomainToEntityDate(prestation.getDateFin()));
 				PrestationEntity pEntity = prestationJpaRepository.save(prestaEntity);
 				reponse = prestationMapper.fromEntityToDomain(pEntity);
 			}
@@ -133,7 +134,7 @@ public class FactureSpiAdapter implements FactureSpiService {
 			Optional<FactureEntity> entity = factureJpaRepository.findById(factureRequest.getId());
 			if (entity.isPresent()) {
 				Facture facture = factureMapper.fromEntityToDomain(entity.get());
-				Facture oFacture = UtilsFacture.updateFacture(facture, factureRequest);
+				Facture oFacture = Utils.updateFacture(facture, factureRequest);
 				FactureEntity fEntity = factureMapper.fromDomainToEntity(oFacture);
 				FactureEntity oEntity = factureJpaRepository.save(fEntity);
 				reponse = factureMapper.fromEntityToDomain(oEntity);

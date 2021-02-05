@@ -57,7 +57,13 @@ public class PrestationEntity implements Serializable {
 	String designation;
 
 	@Column(name = "client_prestation", nullable = false)
-	String clientPrestation;	
+	String clientPrestation;
+	
+	@Column(name = "date_debut", nullable = false)
+	String dateDebut;	
+	
+	@Column(name = "date_fin", nullable = false)
+	String dateFin;	
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JoinColumn(name = "facture_id")

@@ -1,7 +1,6 @@
 package com.aliateck.fact.infrastructure.repository.edition;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import com.aliateck.fact.domaine.business.object.Adresse;
 import com.aliateck.fact.domaine.business.object.Company;
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.business.object.Prestation;
-import com.aliateck.util.UtilsFacture;
+import com.aliateck.util.Utils;
 
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.JRDataSource;
@@ -159,7 +158,7 @@ public class EditionReportImpl implements EditionReportService {
 
 		try {
 			File templateFile = null;
-			Map<String, File> mapFiles = UtilsFacture.loadJasperFile();
+			Map<String, File> mapFiles = Utils.loadJasperFile();
 			String outputFileName = (String) paramJasper.get("fileName");
 			if(templateChoice) {
 				templateFile = mapFiles.get("Custom");

@@ -40,7 +40,7 @@ public class FactureController {
 			return ResponseEntity.ok(reponse);
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-	}	
+	}
 
 	@DeleteMapping(value = "/{factureId}")
 	public void deleteFacture(@PathVariable Long factureId) {
@@ -48,28 +48,14 @@ public class FactureController {
 		factureApiService.deleteFacture(factureId);
 	}
 
-	@PostMapping(value = "/{siret}/{prestationId}", consumes = "application/json", produces = "application/json")
-	public ResponseEntity<Facture> addFacture(@RequestBody Facture factureRequest, @PathVariable String siret,
-			@PathVariable long prestationId) {
-		log.info("Add new bill");
-		/*
-		Facture reponse = factureApiService.addFacture(siret, factureRequest, prestationId, resources.getPathRoot());
-		if (reponse != null) {
-			return ResponseEntity.ok(reponse);
-		}
-		*/
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		
-	}
-	
 	@PutMapping(consumes = "application/json", produces = "application/json")
 	public ResponseEntity<Facture> updateFacture(@RequestBody Facture factureRequest) {
-		log.info("Update facture : "+ factureRequest.getDateEncaissement());
+		log.info("Update facture : " + factureRequest.getDateEncaissement());
 		Facture reponse = factureApiService.updateFacture(factureRequest);
 		if (reponse != null) {
 			return ResponseEntity.ok(reponse);
 		}
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}	
+	}
 
 }

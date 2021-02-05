@@ -25,12 +25,15 @@ public class FactureMapper {
 		return FactureEntity.builder().id(domain.getId()).dateEcheance(domain.getDateEcheance())
 				.dateEncaissement(domain.getDateEncaissement()).dateFacturation(domain.getDateFacturation())
 				.fraisRetard(domain.getFraisRetard()).nbJourRetard(domain.getNbJourRetard())
-				.delaiPaiement(domain.getDelaiPaiement()).factureStatus(domain.getFactureStatus())
+				.delaiPaiement(domain.getDelaiPaiement())
+				.factureStatus(domain.getFactureStatus())
+				.statusDesc(domain.getStatusDesc())
 				.numeroFacture(domain.getNumeroFacture()).prixTotalHT(domain.getPrixTotalHT())
 				.prixTotalTTC(domain.getPrixTotalTTC()).montantTVA(domain.getMontantTVA())
 				.quantite(domain.getQuantite())				
 				.numeroCommande(domain.getNumeroCommande())
 				.moisFacture(domain.getMoisFacture())
+				
 				.clientPrestation(domain.getClientPrestation()).filePath(domain.getFilePath()).build();
 	}
 
@@ -51,6 +54,7 @@ public class FactureMapper {
 				.nbJourRetard(entity.getNbJourRetard())
 				.delaiPaiement(entity.getDelaiPaiement())
 				.factureStatus(entity.getFactureStatus())
+				.statusDesc(entity.getStatusDesc())
 				.numeroFacture(entity.getNumeroFacture())				
 				.quantite(entity.getQuantite())				
 				.numeroCommande(entity.getNumeroCommande())

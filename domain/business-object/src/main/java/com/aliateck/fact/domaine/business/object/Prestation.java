@@ -29,4 +29,6 @@ public class Prestation {
 	Float quantite;
 	String clientPrestation;
 	String designation;	
+	String dateDebut;
+	String dateFin;
 }

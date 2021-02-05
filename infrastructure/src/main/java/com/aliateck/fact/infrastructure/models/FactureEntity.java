@@ -71,6 +71,9 @@ public class FactureEntity implements Serializable {
 
   @Column(name = "facture_status")
   String factureStatus; 
+  
+  @Column(name = "status_desc")
+  String statusDesc; 
 
   @Column(name = "file_path")
   String filePath;

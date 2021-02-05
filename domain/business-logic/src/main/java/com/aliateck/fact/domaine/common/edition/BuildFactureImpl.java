@@ -1,11 +1,5 @@
 package com.aliateck.fact.domaine.common.edition;
 
-import com.aliateck.fact.domaine.business.object.Facture;
-import com.aliateck.fact.domaine.business.object.Prestation;
-import com.aliateck.util.FactureStatus;
-import com.aliateck.util.UtilsFacture;
-import groovy.util.logging.Slf4j;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,8 +7,16 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
 import org.jfree.util.Log;
 import org.springframework.stereotype.Service;
+
+import com.aliateck.fact.domaine.business.object.Facture;
+import com.aliateck.fact.domaine.business.object.Prestation;
+import com.aliateck.util.FactureStatus;
+import com.aliateck.util.Utils;
+
+import groovy.util.logging.Slf4j;
 
 @Service
 @Slf4j
@@ -35,9 +37,10 @@ public class BuildFactureImpl implements BuildFactureService {
 			facture.setPrixTotalTTC(prixTotalHT + tva);
 			facture.setMontantTVA(tva);
 			facture.setDelaiPaiement(prestation.getDelaiPaiement());
-			facture.setDateFacturation(UtilsFacture.convertToDateFromLocalDate(LocalDate.now()));
-			facture.setDateEcheance(UtilsFacture.calculerDateEcheance(prestation));			
+			facture.setDateFacturation(Utils.convertToDateFromLocalDate(LocalDate.now()));
+			facture.setDateEcheance(Utils.calculerDateEcheance(prestation));			
 			facture.setFactureStatus(FactureStatus.NON.getCode());
+			facture.setStatusDesc(FactureStatus.NON.getDescription());
 			facture.setFraisRetard(0);
 			facture.setNbJourRetard(0);
 			facture.setNumeroCommande(prestation.getNumeroCommande());

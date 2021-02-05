@@ -42,9 +42,7 @@ public class EditionController {
 				reponse.getFileName());
 		ByteArrayResource resource = new ByteArrayResource(reponse.getFileContent());
 		HttpHeaders headers = new HttpHeaders();
-		//headers.add("Content-Disposition","attachment;filename=facture.pdf");
-		headers.add("Content-Disposition", String.format("inline; filename=\"" + reponse.getFileName() + "\""));
-
+	    headers.add("Content-Disposition","attachment;filename=facture.pdf");
 		return ResponseEntity.ok().headers(headers).contentType(mediaType)
 				.contentLength(resource.contentLength()).body(resource);
 

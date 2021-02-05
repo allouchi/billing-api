@@ -29,8 +29,8 @@ public class FactureReader implements ItemReader<Facture> {
 
 	@BeforeStep
     public void before(StepExecution stepExecution) {
-    	List<FactureEntity> entities = factureJpaRepository.findAll();
-    	List<Facture> factures = factureMapper.fromEntityToDomain(entities);
+    	List<FactureEntity> entities = factureJpaRepository.findByDateEncaissementIsNull();
+    	List<Facture> factures = factureMapper.fromEntityToDomain(entities);    	
     	if(factures != null) {
     		facturesIterator = factures.iterator();
     	}
