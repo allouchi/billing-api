@@ -41,6 +41,10 @@ public class ConsultantSpiAdapter implements ConsultantSpiService {
 		if (consultant == null || siret == null || siret.equals("")) {
 			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
 		}
+		
+		if (consultant.getId() != null && consultant.getId() == 0) {
+			consultant.setId(null);
+		}
 
 		CheckEmailAdress checkEmail = CheckEmailAdress.builder().build();
 		if (checkEmail.checkEmailAdress(consultant, consultantJpaRepository)) {

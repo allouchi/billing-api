@@ -4,7 +4,6 @@ DROP TABLE IF EXISTS T_FACTURE;
 
 DROP TABLE IF EXISTS T_PRESTATION;
 
-
 DROP TABLE IF EXISTS T_CONSULTANT;
 
 DROP TABLE IF EXISTS T_CLIENT;
@@ -53,7 +52,7 @@ CREATE TABLE T_CLIENT (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   mail varchar(255) NOT NULL DEFAULT 0,
   social_reason varchar(255) NOT NULL DEFAULT 0,
-  adresse_id bigint(20) DEFAULT NULL DEFAULT 0,
+  adresse_id bigint(20) DEFAULT NULL REFERENCES T_ADRESSE(id),
   company_id bigint(20) DEFAULT NULL REFERENCES T_COMPANY(id),
   PRIMARY KEY (id)  
 );
@@ -72,9 +71,9 @@ CREATE TABLE T_CONSULTANT (
 CREATE TABLE T_FACTURE (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   client_prestation varchar(255) NOT NULL DEFAULT 0,
-  date_echeance varchar(255) NOT NULL DEFAULT 0,
-  date_encaissement varchar(255) DEFAULT NULL DEFAULT 0,
-  date_facturation varchar(255) NOT NULL DEFAULT 0,
+  date_echeance varchar(255) DEFAULT NULL,
+  date_encaissement varchar(255) DEFAULT NULL,
+  date_facturation varchar(255) DEFAULT NULL, 
   delai_paiement bigint(20) NOT NULL DEFAULT 0,
   facture_status varchar(255) DEFAULT NULL DEFAULT 0,
   file_path varchar(255) DEFAULT NULL DEFAULT 0,
@@ -100,6 +99,8 @@ CREATE TABLE T_PRESTATION (
   numero_commande varchar(255) NOT NULL DEFAULT 0,
   quantite float NOT NULL DEFAULT 0,
   tarifht float(11) NOT NULL DEFAULT 0,  
+  date_debut varchar(255) DEFAULT NULL,
+  date_fin varchar(255) DEFAULT NULL,
   client_id bigint(20) DEFAULT NULL DEFAULT 0 REFERENCES T_CLIENT(id),
   consultant_id bigint(20) DEFAULT NULL DEFAULT 0 REFERENCES T_CONSULTANT(id),
   facture_id bigint(20) DEFAULT NULL DEFAULT 0 REFERENCES T_FACTURE(id), 

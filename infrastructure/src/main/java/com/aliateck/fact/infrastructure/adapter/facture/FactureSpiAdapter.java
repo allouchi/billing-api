@@ -63,6 +63,11 @@ public class FactureSpiAdapter implements FactureSpiService {
 		if (prestation == null || siret == null || siret.equals("") || pathRoot == null) {
 			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
 		}
+		
+		if (prestation.getId() != null && prestation.getId() == 0) {
+			prestation.setId(null);
+		}
+		
 		String moisFacture = Utils.convertMoisFacture(String.valueOf(moisFactureId));
 
 		try {
@@ -93,8 +98,8 @@ public class FactureSpiAdapter implements FactureSpiService {
 				prestaEntity.setNumeroCommande(prestation.getNumeroCommande());
 				prestaEntity.setDesignation(prestation.getDesignation());
 				prestaEntity.setClientPrestation(prestation.getClientPrestation());
-				prestaEntity.setDateDebut( Utils.convertDomainToEntityDate(prestation.getDateDebut()));
-				prestaEntity.setDateFin( Utils.convertDomainToEntityDate(prestation.getDateFin()));
+				prestaEntity.setDateDebut( Utils.convertFromDomainToEntityDate(prestation.getDateDebut()));
+				prestaEntity.setDateFin( Utils.convertFromDomainToEntityDate(prestation.getDateFin()));
 				PrestationEntity pEntity = prestationJpaRepository.save(prestaEntity);
 				reponse = prestationMapper.fromEntityToDomain(pEntity);
 			}

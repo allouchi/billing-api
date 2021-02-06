@@ -40,16 +40,20 @@ public class PrestationSpiAdapter implements PrestationSpiService {
 
 		if (prestation == null || siret == null || siret.equals("") || moisPrestaId == null) {
 			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
-		}	
-		
-		if(!templateChoice) {
+		}
+
+		if (prestation.getId() != null && prestation.getId() == 0) {
+			prestation.setId(null);
+		}
+
+		if (!templateChoice) {
 			prestation.setClientPrestation(prestation.getClient().getSocialReason());
 		}
-		
-		prestation.setDateDebut(Utils.convertDomainToEntityDate(prestation.getDateDebut()));
-		prestation.setDateFin(Utils.convertDomainToEntityDate(prestation.getDateFin()));
+
 		try {
 
+			prestation.setDateDebut(Utils.convertFromDomainToEntityDate(prestation.getDateDebut()));
+			prestation.setDateFin(Utils.convertFromDomainToEntityDate(prestation.getDateFin()));
 			PrestationEntity pEntity = prestationMapper.fromDomainToEntity(prestation);
 			Optional<CompanyEntity> oCompany = companyJpaRepository.findBySiret(siret);
 
@@ -82,7 +86,10 @@ public class PrestationSpiAdapter implements PrestationSpiService {
 		if (prestation == null || siret == null || siret.equals("")) {
 			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
 		}
+
 		try {
+			// prestation.setDateDebut(Utils.convertDomainToEntityDate(prestation.getDateDebut()));
+			prestation.setDateFin(Utils.convertFromDomainToEntityDate(prestation.getDateFin()));
 			PrestationEntity entity = prestationMapper.fromDomainToEntity(prestation);
 			PrestationEntity oEntity = prestationJpaRepository.save(entity);
 			reponse = prestationMapper.fromEntityToDomain(oEntity);

@@ -59,10 +59,10 @@ public class PrestationEntity implements Serializable {
 	@Column(name = "client_prestation", nullable = false)
 	String clientPrestation;
 	
-	@Column(name = "date_debut", nullable = false)
+	@Column(name = "date_debut", nullable = true)
 	String dateDebut;	
 	
-	@Column(name = "date_fin", nullable = false)
+	@Column(name = "date_fin", nullable = true)
 	String dateFin;	
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })

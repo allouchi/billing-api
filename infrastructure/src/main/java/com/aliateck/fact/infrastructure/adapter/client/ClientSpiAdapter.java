@@ -43,7 +43,14 @@ public class ClientSpiAdapter implements ClientSpiService {
 		if (client == null || siret == null || siret.equals("")) {
 			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
 		}
+		if (client.getId() != null && client.getId() == 0) {
+			client.setId(null);
+		}
 		
+		if (client.getAdresseClient() != null && client.getAdresseClient().getId() == 0) {			
+			client.getAdresseClient().setId(null);
+		}
+
 		CheckEmailAdress checkEmail = CheckEmailAdress.builder().build();
 		if (checkEmail.checkEmailAdress(client, clientJpaRepository)) {
 			final String format = String.format("L'adresse mail %s est déjà utilisée", client.getMail());
@@ -58,36 +65,36 @@ public class ClientSpiAdapter implements ClientSpiService {
 				CompanyEntity companyEntity = oCompany.get();
 				companyEntity.getClients().add(clientEntity);
 				CompanyEntity cEntitySaved = companyJpaRepository.save(companyEntity);
-				
+
 				List<ClientEntity> savedClients = cEntitySaved.getClients();
 				if (savedClients != null && !savedClients.isEmpty()) {
 					for (ClientEntity c : savedClients) {
 						if (c.getMail().equals(client.getMail())) {
-							reponse =  clientMapper.fromEntityToDomain(c);
+							reponse = clientMapper.fromEntityToDomain(c);
 						}
 					}
 				}
 			}
-			
+
 		} catch (Exception e) {
 			log.error("error while updating client", e);
 			throw new ServiceException(ErrorCatalog.DB_ERROR, "Un problème est survenu lors de l'ajout du client", e);
 		}
-		
-		if (reponse == null) {			
+
+		if (reponse == null) {
 			throw new ServiceException(ErrorCatalog.DB_ERROR, "Un problème est survenu lors de l'ajout du client");
 		}
 		return reponse;
-	}	
+	}
 
 	@Override
 	public Client updateClient(Client client, String siret) {
-		
+
 		Client reponse = null;
 		if (client == null || siret == null || siret.equals("")) {
 			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
 		}
-		
+
 		Optional<ClientEntity> oldEntity = clientJpaRepository.findById(client.getId());
 		if (oldEntity.isPresent() && client.getMail() != null
 				&& !client.getMail().equalsIgnoreCase(oldEntity.get().getMail())) {
@@ -98,9 +105,9 @@ public class ClientSpiAdapter implements ClientSpiService {
 				throw new ServiceException(ErrorCatalog.DUPLICATE_DATA, format);
 			}
 		}
-		
+
 		try {
-			
+
 			Optional<CompanyEntity> oCompnay = companyJpaRepository.findBySiret(siret);
 			Adresse newAdresse = client.getAdresseClient();
 			AdresseEntity newEntityAdresse = addresseMapper.fromDomainToEntity(newAdresse);
@@ -116,24 +123,26 @@ public class ClientSpiAdapter implements ClientSpiService {
 					}
 				}
 			}
-			
+
 		} catch (Exception e) {
-			log.error("error while updating client", e);			
-			throw new ServiceException(ErrorCatalog.DB_ERROR, "Un problème est survenu lors de la mise à jour du client", e);
-		}		
-		
+			log.error("error while updating client", e);
+			throw new ServiceException(ErrorCatalog.DB_ERROR,
+					"Un problème est survenu lors de la mise à jour du client", e);
+		}
+
 		return reponse;
 	}
-	
+
 	@Override
 	public void deleteClient(Long id) {
 		try {
 			clientJpaRepository.deleteById(id);
 		} catch (Exception e) {
-			log.error("error while deleting client", e);			
-			throw new ServiceException(ErrorCatalog.DB_ERROR, "Un problème est survenu lors de la suppression client", e);
+			log.error("error while deleting client", e);
+			throw new ServiceException(ErrorCatalog.DB_ERROR, "Un problème est survenu lors de la suppression client",
+					e);
 		}
-		
+
 	}
 
 	@Override
@@ -142,9 +151,9 @@ public class ClientSpiAdapter implements ClientSpiService {
 		if (siret == null || siret.equals("")) {
 			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
 		}
-		
+
 		try {
-			
+
 			Optional<CompanyEntity> oCompnay = companyJpaRepository.findBySiret(siret);
 			if (oCompnay.isPresent()) {
 				CompanyEntity entity = oCompnay.get();
@@ -153,9 +162,10 @@ public class ClientSpiAdapter implements ClientSpiService {
 			}
 		} catch (Exception e) {
 			log.error("error while getting all clients", e);
-			throw new ServiceException(ErrorCatalog.DB_ERROR,"Un problème est survenu lors de la recherche des clients", e);
+			throw new ServiceException(ErrorCatalog.DB_ERROR,
+					"Un problème est survenu lors de la recherche des clients", e);
 		}
-		if (reponse == null || reponse.isEmpty()) {			
+		if (reponse == null || reponse.isEmpty()) {
 			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucun client enregistré !");
 		}
 		return reponse;
@@ -172,13 +182,14 @@ public class ClientSpiAdapter implements ClientSpiService {
 			Optional<ClientEntity> entity = clientJpaRepository.findById(id);
 			if (entity.isPresent()) {
 				reponse = clientMapper.fromEntityToDomain(entity.get());
-			} 
+			}
 		} catch (Exception e) {
 			log.error("error while get client", e);
-			throw new ServiceException(ErrorCatalog.DB_ERROR,"Un problème est survenu lors de la recherche du client", e);
+			throw new ServiceException(ErrorCatalog.DB_ERROR, "Un problème est survenu lors de la recherche du client",
+					e);
 		}
 
-		if (reponse == null) {			
+		if (reponse == null) {
 			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucun client enregistré !");
 		}
 		return reponse;

@@ -45,6 +45,10 @@ public class UserSpiAdapter implements UserSpiService {
 		if (user == null) {
 			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
 		}
+		
+		if (user.getId() == 0) {
+			user.setId(null);
+		}
 
 		CheckEmailAdress checkEmail = CheckEmailAdress.builder().build();
 		if (checkEmail.checkEmailAdress(user, userJpaRepository)) {

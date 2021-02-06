@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class StorageProperties {	
 	
 
-	@Value("${storage-pathRoot}")
+	@Value("${storage-pathRoot-pdf}")
 	private String pathRoot;
 
 	public String getPathRoot() {

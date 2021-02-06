@@ -33,6 +33,10 @@ public class CompanySpiAdapter implements CompanySpiService {
 			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
 		}
 
+		if (company.getId() != null && company.getId() == 0) {
+			company.setId(null);
+		}
+
 		CheckEmailAdress checkEmail = CheckEmailAdress.builder().build();
 		if (checkEmail.checkEmailAdress(company, companyJpaRepository)) {
 			final String format = String.format("Le siret %s est déjà utilisé", company.getSiret());

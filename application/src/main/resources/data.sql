@@ -46,17 +46,20 @@ VALUES (2, '6201Z','CRLYFRPP', 'FR3330002008970000005896J14', 'FR18831502141', '
 
 
 INSERT INTO t_consultant( id,	last_name,	first_name,	mail, fonction,	company_id)
-VALUES (1,	'ALIANE', 'Mustapha','allouchi@hotmail.fr' ,'Développeur Fullstack', 1);
+VALUES (1,	'ALIANE', 'Mustapha','allouchi@hotmail.fr' ,'Développeur Fullstack', 2);
 
 INSERT INTO t_consultant( id, last_name, first_name, mail, fonction, company_id)
-VALUES (2, 'ALIANE', 'Khalid', 'khalid@hotmail.fr', 'Développeur Fullstack', 2);
+VALUES (2, 'ALIANE', 'Khalid', 'khalid@hotmail.fr', 'Développeur Fullstack', 1);
+
+INSERT INTO t_consultant( id,	last_name,	first_name,	mail, fonction,	company_id)
+VALUES (3,	'JERY', 'Hamed','jery@hotmail.fr' ,'Assistance Technique Business Intelligence', 2);
 
 
 INSERT INTO t_user (id, first_name, last_name, mail, password, company_id, user_role_id) 
-VALUES (1, 'Mustapha', 'Aliane', 'allouchi@hotmail.fr', '123456', 1, 1);
+VALUES (1, 'Mustapha', 'Aliane', 'allouchi@hotmail.fr', '123456', 2, 1);
 
 INSERT INTO t_user (id, first_name, last_name, mail, password, company_id, user_role_id) 
-VALUES (2, 'Khalid', 'Aliane', 'khalid@hotmail.fr', '123456', 2, 2);
+VALUES (2, 'Khalid', 'Aliane', 'khalid@hotmail.fr', '123456', 1, 2);
 
 
 

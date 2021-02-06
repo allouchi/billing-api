@@ -15,12 +15,9 @@ import com.aliateck.fact.infrastructure.repository.facture.FactureJpaRepository;
 public class FactureReader implements ItemReader<Facture> {
 
 	
-	private FactureMapper factureMapper;
-	
+	private FactureMapper factureMapper;	
     private FactureJpaRepository factureJpaRepository;
-
-    private Iterator<Facture> facturesIterator;   
-    
+    private Iterator<Facture> facturesIterator;    
 
     public FactureReader(FactureJpaRepository factureJpaRepository, FactureMapper factureMapper) {		
 		this.factureJpaRepository = factureJpaRepository;

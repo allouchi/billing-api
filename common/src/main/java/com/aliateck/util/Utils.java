@@ -95,9 +95,8 @@ public class Utils {
 			return null;
 		}
 
-		if (factureRequest != null && factureRequest.getDateEncaissement() != null
-				&& !factureRequest.getDateEncaissement().isEmpty()) {
-			String dateEncaissement = Utils.convertDomainToEntityDate(factureRequest.getDateEncaissement());
+		if (factureRequest.getDateEncaissement() != null && !factureRequest.getDateEncaissement().isEmpty()) {
+			String dateEncaissement = Utils.convertFromDomainToEntityDate(factureRequest.getDateEncaissement());
 			oFacture.setDateEncaissement(dateEncaissement);
 			oFacture.setFactureStatus(FactureStatus.OUI.getCode());
 			oFacture.setStatusDesc(FactureStatus.OUI.getDescription());
@@ -169,7 +168,7 @@ public class Utils {
 	/*
 	 *
 	 */
-	public static String convertDomainToEntityDate(String dateToConvert) {
+	public static String convertFromDomainToEntityDate(String dateToConvert) {
 		if (dateToConvert == null || dateToConvert.isEmpty()) {
 			return null;
 		}
@@ -187,6 +186,13 @@ public class Utils {
 
 		String tab[] = dateToConvert.split("/");
 		return tab[2] + "-" + tab[1] + "-" + tab[0];
+	}
+
+	/*
+	 *
+	 */
+	public static <T> T updateIdToNull(T element) {
+		return null;
 	}
 
 	/*
@@ -305,7 +311,7 @@ public class Utils {
 	 * @param annee
 	 * @return
 	 */
-	public static List<Date> getJourFeries(int annee) {
+	private static List<Date> getJourFeries(int annee) {
 		List<Date> datesFeries = new ArrayList<>();
 
 		// Jour de l'an

@@ -52,9 +52,21 @@ public class PrestationController {
     Prestation presta = prestationApiService.addPrestation(prestation, templateChoice, siret, moisPrestaId);
     return ResponseEntity.ok(presta);
   }
+  
 
-  @PutMapping(value = "/{siret}/{templateChoice}/{moisPrestaId}")
+  @PutMapping(value = "/{siret}")
   public ResponseEntity<Prestation> updatePrestation(
+    @RequestBody Prestation prestation,
+    @PathVariable String siret
+   
+  ) {
+    log.info("Create new Prestation");
+    Prestation presta = prestationApiService.updatePrestation(prestation, siret);
+    return ResponseEntity.ok(presta);
+  }
+  
+  @PutMapping(value = "/{siret}/{templateChoice}/{moisPrestaId}")
+  public ResponseEntity<Prestation> createFacture(
     @RequestBody Prestation prestationRequest,
     @PathVariable String siret,
     @PathVariable  boolean templateChoice,
