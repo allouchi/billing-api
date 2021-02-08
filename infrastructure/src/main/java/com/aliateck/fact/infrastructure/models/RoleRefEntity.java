@@ -15,14 +15,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "T_UserRoleRef")
+@Entity(name = "T_RoleRef")
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class UserRoleRefEntity implements Serializable{
+public class RoleRefEntity implements Serializable{
 
 	/**
 	 * 

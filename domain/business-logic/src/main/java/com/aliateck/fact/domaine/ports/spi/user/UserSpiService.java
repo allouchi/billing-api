@@ -1,9 +1,10 @@
 package com.aliateck.fact.domaine.ports.spi.user;
 
-import com.aliateck.fact.domaine.business.object.User;
 import java.util.List;
 
-public interface UserSpiService {
+import com.aliateck.fact.domaine.business.object.User;
+
+public interface UserSpiService{
   public User addUser(User user);
 
   public void removeUser(User user);
@@ -13,6 +14,8 @@ public interface UserSpiService {
   public List<User> findAllUsers();
 
   public User findUserById(Long id);
+  
+  public User findUserByName(String name);
   
   public User findUserByMailAndPassword(String email, String password);
   

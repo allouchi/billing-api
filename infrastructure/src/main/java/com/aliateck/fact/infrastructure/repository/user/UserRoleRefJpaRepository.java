@@ -3,9 +3,9 @@ package com.aliateck.fact.infrastructure.repository.user;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.aliateck.fact.infrastructure.models.UserRoleRefEntity;
+import com.aliateck.fact.infrastructure.models.RoleRefEntity;
 
 @Repository
-public interface UserRoleRefJpaRepository extends JpaRepository<UserRoleRefEntity, Long> {
+public interface UserRoleRefJpaRepository extends JpaRepository<RoleRefEntity, Long> {
   
 }

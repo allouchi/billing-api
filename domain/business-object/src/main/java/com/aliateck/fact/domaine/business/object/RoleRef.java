@@ -16,7 +16,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserRoleRef {
+public class RoleRef {
 
 	Long id;
 	

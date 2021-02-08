@@ -12,7 +12,7 @@ public interface CommonResource {
   // All http operations managed
   interface RequestType {
     String POST = "POST";
-    String GET = "PUT";
+    String GET = "GET";
     String PUT = "PUT";
     String DELETE = "DELETE";
   }

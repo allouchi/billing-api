@@ -1,7 +1,6 @@
 package com.aliateck.fact.infrastructure.models;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,14 +15,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "T_UserRole")
+@Entity(name = "T_Role")
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class UserRoleEntity implements Serializable{
+public class RoleEntity implements Serializable{
 
 	/**
 	 * 
@@ -35,13 +34,10 @@ public class UserRoleEntity implements Serializable{
 	@Column(name = "id", nullable = false)	
 	Long id;
 	
-	@Column(name = "role_id", nullable = false)
-	private String roleId;
+	@Column(name = "role", nullable = false)
+	private String role;	
 	
-	@Column(name = "role_code", nullable = false)
-	private String roleCode;
-	
-	@Column(name = "role_name", nullable = false)
-	private String roleName;
+	@Column(name = "description", nullable = false)
+	private String description;
 
 }

@@ -13,6 +13,8 @@ public interface UserApiService {
   public List<User> getUsers();
 
   public User findUserById(Long id);
+  
+  public User findUserByName(String name);
 
   public User findUserByMailAndPassword(String email, String password);
   

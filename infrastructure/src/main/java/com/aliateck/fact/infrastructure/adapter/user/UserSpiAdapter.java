@@ -45,7 +45,7 @@ public class UserSpiAdapter implements UserSpiService {
 		if (user == null) {
 			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
 		}
-		
+
 		if (user.getId() == 0) {
 			user.setId(null);
 		}
@@ -68,7 +68,8 @@ public class UserSpiAdapter implements UserSpiService {
 			}
 		} catch (Exception e) {
 			log.error("error while creating new user", e);
-			final String format = String.format("Un problème est survenu lors de l'ajout de l'utilisateur %s ", user.getEmail());
+			final String format = String.format("Un problème est survenu lors de l'ajout de l'utilisateur %s ",
+					user.getEmail());
 			throw new ServiceException(ErrorCatalog.DB_ERROR, format);
 		}
 
@@ -171,4 +172,32 @@ public class UserSpiAdapter implements UserSpiService {
 		return reponse;
 
 	}
+
+	@Override
+	public User findUserByName(String name) {
+
+		User reponse = null;
+		try {
+
+			Optional<UserEntity> userEntity = userJpaRepository.findByLastName(name);
+			if (userEntity.isPresent()) {
+				reponse = userMapper.fromEntityToDomain(userEntity.get());
+			}
+
+		} catch (Exception e) {
+			log.error("error while find user", e);
+			final String format = String.format("Un problème est survenu lors de la recherche de l'utilisateur %s", name);
+			throw new ServiceException(ErrorCatalog.DB_ERROR, format);
+		}
+
+		if (reponse == null) {
+
+			final String format = String.format("Aucun utilisateur avec %s comme nom ", name);
+			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, format);
+
+		}
+		return reponse;
+	}
+
+	
 }

@@ -18,17 +18,18 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserMapper {
   private final CompanyMapper companyMapper;
-  private final RoleUserMapper roleUserMapper;
+  private final RoleMapper roleUserMapper;
 
   public UserEntity fromDomainToEntity(User domain) {
       return UserEntity
-        .builder()
-        .id(domain.getId())
-        .firstName(domain.getFirstName())
+        .builder()        
+        .userName(domain.getUserName())
         .lastName(domain.getLastName())
+        .firstName(domain.getFirstName())
         .mail(domain.getEmail())
-        .password(domain.getPassword())        
-        .userRole(roleUserMapper.fromDomainToEntity(domain.getUserRole()))
+        .password(domain.getPassword())     
+        .actived(domain.getActived())
+        .roles(roleUserMapper.fromDomainToEntityList(domain.getRoles()))
         .company(companyMapper.fromDomainToEntity(domain.getCompany()))
         .build();
   }
@@ -36,16 +37,18 @@ public class UserMapper {
 
   public User fromEntityToDomain(UserEntity entity) {
     return User
-      .builder()
-      .id(entity.getId())
-      .firstName(entity.getFirstName())
+      .builder()      
+      .userName(entity.getUserName())
       .lastName(entity.getLastName())
+      .firstName(entity.getFirstName())
       .email(entity.getMail())
       .password(entity.getPassword())
-      .userRole(roleUserMapper.fromEntityToDomain(entity.getUserRole()))
+      .actived(entity.getActived())
+      .roles(roleUserMapper.fromEntityToDomainList(entity.getRoles()))
       .company(companyMapper.fromEntityToDomain(entity.getCompany()))
       .build();
-  }
+  } 
+  
 
   public List<User> fromEntityToDomainList(List<UserEntity> entities) {
     Function<UserEntity, User> fnToDomain = this::fromEntityToDomain;

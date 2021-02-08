@@ -1,33 +1,44 @@
 
-INSERT INTO t_user_role_ref (id, role_id, role_code, role_name)
- VALUES  (1,'1','admin', 'admin');
+INSERT INTO t_role_ref (id, role, description)
+ VALUES  (1,'admin', 'admin');
  
-INSERT INTO t_user_role_ref (id, role_id, role_code, role_name)
- VALUES  (2,'2','read', 'read');
+INSERT INTO t_role_ref (id, role, description)
+ VALUES  (2,'consult', 'consult');
  
-INSERT INTO t_user_role_ref (id, role_id, role_code, role_name)
- VALUES  (3,'3','write', 'write');
+INSERT INTO t_role_ref (id, role, description)
+ VALUES  (3,'read', 'read');
  
-INSERT INTO t_user_role_ref (id, role_id, role_code, role_name)
- VALUES (4,'4', 'cra','consultant');
+INSERT INTO t_role_ref (id, role, description)
+ VALUES  (4,'write', 'write');
 
  /************************************************************************************************************/
  
- /************************************************************************************************************/
+INSERT INTO t_role (id, role, description)
+ VALUES  (1,'ADMIN', 'ADMIN');
  
- INSERT INTO t_user_role (id, role_id, role_code, role_name)
- VALUES  (1,'1','admin', 'admin');
+INSERT INTO t_role (id, role, description)
+ VALUES  (2,'CONSULT', 'CONSULT');
  
-INSERT INTO t_user_role (id, role_id, role_code, role_name)
- VALUES  (2,'2','read', 'read');
+INSERT INTO t_role (id, role, description)
+ VALUES  (3,'READ', 'READ');
  
-INSERT INTO t_user_role (id, role_id, role_code, role_name)
- VALUES  (3,'3','write', 'write');
+INSERT INTO t_role (id, role, description)
+ VALUES  (4,'WRITE', 'WRITE');
  
-INSERT INTO t_user_role (id, role_id, role_code, role_name)
- VALUES (4,'4', 'cra','consultant');
+  /************************************************************************************************************/
+ /*
+ INSERT INTO t_user_role (user_id, role_id)
+ VALUES  (1, 1);
  
- /************************************************************************************************************/
+  INSERT INTO t_user_role (user_id, role_id)
+ VALUES  (2, 1); */
+ 
+/************************************************************************************************************/
+INSERT INTO t_user (user_name, last_name, first_name, mail, password, actived, company_id, role) 
+VALUES ('allouchi@hotmail.fr', 'Aliane', 'Mustapha', 'allouchi@hotmail.fr', '123456', true, 2, 1);
+
+INSERT INTO t_user (user_name, last_name,first_name, mail, password, actived, company_id, role) 
+VALUES ('khalid@hotmail.fr', 'Alianne', 'Khalid', 'khalid@hotmail.fr', '123456', false, 1, 2);
  
  /************************************************************************************************************/
   
@@ -55,11 +66,6 @@ INSERT INTO t_consultant( id,	last_name,	first_name,	mail, fonction,	company_id)
 VALUES (3,	'JERY', 'Hamed','jery@hotmail.fr' ,'Assistance Technique Business Intelligence', 2);
 
 
-INSERT INTO t_user (id, first_name, last_name, mail, password, company_id, user_role_id) 
-VALUES (1, 'Mustapha', 'Aliane', 'allouchi@hotmail.fr', '123456', 2, 1);
-
-INSERT INTO t_user (id, first_name, last_name, mail, password, company_id, user_role_id) 
-VALUES (2, 'Khalid', 'Aliane', 'khalid@hotmail.fr', '123456', 1, 2);
 
 
 

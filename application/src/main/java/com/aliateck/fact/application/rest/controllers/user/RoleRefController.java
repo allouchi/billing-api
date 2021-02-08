@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aliateck.util.CommonResource.Resource;
-import com.aliateck.fact.domaine.business.object.UserRoleRef;
-import com.aliateck.fact.domaine.ports.api.user.UserRoleRefApiService;
+import com.aliateck.fact.domaine.business.object.RoleRef;
+import com.aliateck.fact.domaine.ports.api.user.RoleRefApiService;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -21,14 +21,14 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(Resource.ROLES)
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class UserRoleRefController {
+public class RoleRefController {
 
-	UserRoleRefApiService userRoleRefApiService;
+	RoleRefApiService roleRefApiService;
 
 	@GetMapping
-	public ResponseEntity<List<UserRoleRef>> getAllRoles() {
+	public ResponseEntity<List<RoleRef>> getAllRoles() {
 		log.info("Get all role ref");
-		List<UserRoleRef> refs = userRoleRefApiService.getAll();
+		List<RoleRef> refs = roleRefApiService.getAll();
 		return ResponseEntity.ok(refs);
 	}
 

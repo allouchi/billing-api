@@ -1,5 +1,7 @@
 package com.aliateck.fact.domaine.business.object;
 
+import java.io.Serializable;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,11 +18,14 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserRole {
+public class Role implements Serializable {
 
-	Long id;	
-	String roleId;
-	String roleName;	
-	String roleCode;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	Long id;
+	private String role;
+	private String description;
 
 }

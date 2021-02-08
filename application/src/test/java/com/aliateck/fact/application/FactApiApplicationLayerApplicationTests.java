@@ -16,29 +16,6 @@ class FactApiApplicationLayerApplicationTests {
   @Autowired
   CompanyApiService companyApiService;
 
-  @Test
-  void contextLoads() {
-    Company company = Company
-      .builder()
-      .siret("85292702900011")
-      .rcsName("R.C.S. Nanterre 831 502 141")
-      .socialReason("SBATEC Consulting")
-      .status("SASU au capital de 500Euros")
-      //.tvaName("FR 188 315 021 41")
-      //.ape("6201Z")
-      .id(1L)
-      .build();
-
-    //companyApiService.addCompany(company);
-
-    User user = User
-      .builder()
-      .firstName("Aliane")
-      .lastName("Mustapha")
-      .email("allouchi@hotmail.fr")
-      .password("a")
-      .company(company)
-      .build();
-    //userApiService.addUser(user);
-  }
+ 
+  
 }

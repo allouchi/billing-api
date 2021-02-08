@@ -52,4 +52,9 @@ public class UserApiAdapter implements UserApiService {
 	public User findUserByMail(String email) {
 		return userSpiService.findUserByMail(email);
 	}
+
+	@Override
+	public User findUserByName(String name) {
+		return userSpiService.findUserByName(name);
+	}
 }
