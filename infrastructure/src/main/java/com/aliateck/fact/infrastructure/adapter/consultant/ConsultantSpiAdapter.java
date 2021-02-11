@@ -48,7 +48,7 @@ public class ConsultantSpiAdapter implements ConsultantSpiService {
 
 		CheckEmailAdress checkEmail = CheckEmailAdress.builder().build();
 		if (checkEmail.checkEmailAdress(consultant, consultantJpaRepository)) {
-			final String format = String.format("L'adresse mail %s est déjà utilisée", consultant.getMail());
+			final String format = String.format("L'adresse mail %s est déjà utilisée", consultant.getEmail());
 			throw new ServiceException(ErrorCatalog.DUPLICATE_DATA, format);
 
 		}
@@ -64,7 +64,7 @@ public class ConsultantSpiAdapter implements ConsultantSpiService {
 				List<ConsultantEntity> savedConsultants = cEntitySaved.getConsultants();
 				if (savedConsultants != null && !savedConsultants.isEmpty()) {
 					for (ConsultantEntity c : savedConsultants) {
-						if (c.getMail().equals(consultant.getMail())) {
+						if (c.getEmail().equals(consultant.getEmail())) {
 							reponse = consultantMapper.fromEntityToDomain(c);
 						}
 					}
@@ -91,12 +91,12 @@ public class ConsultantSpiAdapter implements ConsultantSpiService {
 
 		ConsultantEntity consultEntity = consultantMapper.fromDomainToEntity(Utils.formatConsulantName(consultant));
 		Optional<ConsultantEntity> oldEntity = consultantJpaRepository.findById(consultant.getId());
-		if (oldEntity.isPresent() && consultant.getMail() != null
-				&& !consultant.getMail().equalsIgnoreCase(oldEntity.get().getMail())) {
+		if (oldEntity.isPresent() && consultant.getEmail() != null
+				&& !consultant.getEmail().equalsIgnoreCase(oldEntity.get().getEmail())) {
 
 			CheckEmailAdress checkEmail = CheckEmailAdress.builder().build();
 			if (checkEmail.checkEmailAdress(consultant, consultantJpaRepository)) {
-				final String format = String.format("L'adresse mail %s est déjà utilisée", consultant.getMail());
+				final String format = String.format("L'adresse mail %s est déjà utilisée", consultant.getEmail());
 				throw new ServiceException(ErrorCatalog.DUPLICATE_DATA, format);
 			}
 		}
@@ -111,7 +111,7 @@ public class ConsultantSpiAdapter implements ConsultantSpiService {
 				List<ConsultantEntity> savedConsultants = cEntitySaved.getConsultants();
 				if (savedConsultants != null && !savedConsultants.isEmpty()) {
 					for (ConsultantEntity c : savedConsultants) {
-						if (c.getMail().equals(consultant.getMail())) {
+						if (c.getEmail().equals(consultant.getEmail())) {
 							reponse = consultantMapper.fromEntityToDomain(c);
 						}
 					}

@@ -20,7 +20,7 @@ public class ClientMapper implements Mapper<Client, ClientEntity> {
       .builder()
       .id(domain.getId())
       .socialReason(domain.getSocialReason())
-      .mail(domain.getMail())
+      .email(domain.getEmail())
       .adresseClient(adresseMapper.fromDomainToEntity(domain.getAdresseClient()))
       .build();
   }
@@ -34,7 +34,7 @@ public class ClientMapper implements Mapper<Client, ClientEntity> {
       .builder()
       .id(entity.getId())
       .socialReason(entity.getSocialReason())
-      .mail(entity.getMail())
+      .email(entity.getEmail())
       .adresseClient(adresseMapper.fromEntityToDomain(entity.getAdresseClient()))
       .build();
   }

@@ -7,6 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,18 +19,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "T_Role")
+
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
+@Entity
+@Table(name = "T_ROLE")
 public class RoleEntity implements Serializable{
 
 	/**
 	 * 
 	 */
+	
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -34,9 +41,9 @@ public class RoleEntity implements Serializable{
 	@Column(name = "id", nullable = false)	
 	Long id;
 	
-	@Column(name = "role", nullable = false)
-	private String role;	
-	
+	@Column(name = "role_name", nullable = false)
+	private String roleName;
+		
 	@Column(name = "description", nullable = false)
 	private String description;
 

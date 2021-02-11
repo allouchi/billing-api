@@ -20,10 +20,8 @@ public class RoleRef {
 
 	Long id;
 	
-	String roleId;
-
-	String roleName;
+	String role;
 	
-	String roleCode;
+	String description;
 
 }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ConsultantJpaRepository extends JpaRepository<ConsultantEntity, Long> {
-  public Optional<ConsultantEntity> findByMail(String mail);
+  public Optional<ConsultantEntity> findByEmail(String mail);
 
   public Optional<ConsultantEntity>  findByFirstName(String firstName);
 

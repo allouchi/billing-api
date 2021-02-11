@@ -25,7 +25,7 @@ public class Role implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	Long id;
-	private String role;
-	private String description;
+	String roleName;
+	String description;
 
 }

@@ -34,13 +34,13 @@ public class RoleRefEntity implements Serializable{
 	@Column(name = "id", nullable = false)	
 	Long id;
 	
-	@Column(name = "role_id", nullable = false)
-	private String roleId;
+	@Column(name = "role", nullable = false)
+	private String role;
 	
-	@Column(name = "role_code", nullable = false)
-	private String roleCode;
+	@Column(name = "email", nullable = false)
+	String email;
 	
-	@Column(name = "role_name", nullable = false)
-	private String roleName;
+	@Column(name = "description", nullable = false)
+	private String description;
 
 }

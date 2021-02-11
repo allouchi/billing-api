@@ -18,7 +18,7 @@ public class ConsultantMapper {
 			return null;
 		}
 		return ConsultantEntity.builder().id(domain.getId()).firstName(domain.getFirstName())
-				.lastName(domain.getLastName()).fonction(domain.getFonction()).mail(domain.getMail()).build();
+				.lastName(domain.getLastName()).fonction(domain.getFonction()).email(domain.getEmail()).build();
 	}
 
 	public Consultant fromEntityToDomain(ConsultantEntity entity) {
@@ -26,7 +26,7 @@ public class ConsultantMapper {
 			return null;
 		}
 		return Consultant.builder().id(entity.getId()).firstName(entity.getFirstName()).lastName(entity.getLastName())
-				.fonction(entity.getFonction()).mail(entity.getMail()).build();
+				.fonction(entity.getFonction()).email(entity.getEmail()).build();
 	}
 
 	public List<Consultant> fromEntityToDomain(List<ConsultantEntity> entities) {

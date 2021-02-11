@@ -14,9 +14,6 @@ public interface UserApiService {
 
   public User findUserById(Long id);
   
-  public User findUserByName(String name);
-
-  public User findUserByMailAndPassword(String email, String password);
+  public User findByUserName(String name);  
   
-  public User findUserByMail(String email);
 }

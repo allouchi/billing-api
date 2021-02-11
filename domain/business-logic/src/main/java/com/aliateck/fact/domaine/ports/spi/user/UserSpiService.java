@@ -2,22 +2,21 @@ package com.aliateck.fact.domaine.ports.spi.user;
 
 import java.util.List;
 
+import org.springframework.security.core.userdetails.UserDetailsService;
+
 import com.aliateck.fact.domaine.business.object.User;
 
-public interface UserSpiService{
-  public User addUser(User user);
+public interface UserSpiService extends UserDetailsService {
+	public User addUser(User user);
 
-  public void removeUser(User user);
+	public void removeUser(User user);
 
-  public void updateUser(User user);
+	public void updateUser(User user);
 
-  public List<User> findAllUsers();
+	public List<User> findAllUsers();
 
-  public User findUserById(Long id);
-  
-  public User findUserByName(String name);
-  
-  public User findUserByMailAndPassword(String email, String password);
-  
-  public User findUserByMail(String email);
+	public User findUserById(Long id);
+
+	public User findByUserName(String name);
+
 }

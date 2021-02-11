@@ -23,13 +23,10 @@ public class UserMapper {
   public UserEntity fromDomainToEntity(User domain) {
       return UserEntity
         .builder()        
-        .userName(domain.getUserName())
-        .lastName(domain.getLastName())
-        .firstName(domain.getFirstName())
-        .mail(domain.getEmail())
+        .userName(domain.getUserName())       
         .password(domain.getPassword())     
-        .actived(domain.getActived())
-        .roles(roleUserMapper.fromDomainToEntityList(domain.getRoles()))
+        .enabled(domain.getEnabled())
+        //.roles(roleUserMapper.fromDomainToEntityList(domain.getRoles()))
         .company(companyMapper.fromDomainToEntity(domain.getCompany()))
         .build();
   }
@@ -38,13 +35,10 @@ public class UserMapper {
   public User fromEntityToDomain(UserEntity entity) {
     return User
       .builder()      
-      .userName(entity.getUserName())
-      .lastName(entity.getLastName())
-      .firstName(entity.getFirstName())
-      .email(entity.getMail())
-      .password(entity.getPassword())
-      .actived(entity.getActived())
-      .roles(roleUserMapper.fromEntityToDomainList(entity.getRoles()))
+      .userName(entity.getUserName())       
+      .password(entity.getPassword())     
+      .enabled(entity.getEnabled())
+      //.roles(roleUserMapper.fromEntityToDomainList(entity.getRoles()))
       .company(companyMapper.fromEntityToDomain(entity.getCompany()))
       .build();
   } 

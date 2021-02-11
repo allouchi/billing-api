@@ -19,16 +19,18 @@ import lombok.RequiredArgsConstructor;
 public class RoleRefMapper {
 
 	public RoleRefEntity fromDomainToEntity(RoleRef domain) {
-		return RoleRefEntity.builder().id(domain.getId()).roleName(domain.getRoleName()).roleId(domain.getRoleId()).
-				roleName(domain.getRoleName())
+		return RoleRefEntity.builder()
+				.id(domain.getId())
+				.description(domain.getDescription())				
 				.build();
 	}
 
 	public RoleRef fromEntityToDomain(RoleRefEntity entity) {
-		return RoleRef.builder().id(entity.getId()).roleName(entity.getRoleName()).roleId(entity.getRoleId()).roleName(entity.getRoleName())
+		return RoleRef.builder()
+				.id(entity.getId())
+				.description(entity.getDescription())				
 				.build();
 	}
-	
 	 public List<RoleRef> fromEntityToDomainList(List<RoleRefEntity> entities) {
 		    Function<RoleRefEntity, RoleRef> fnToDomain = this::fromEntityToDomain;
 		    Function<List<RoleRefEntity>, List<RoleRef>> fnToDomains = list ->

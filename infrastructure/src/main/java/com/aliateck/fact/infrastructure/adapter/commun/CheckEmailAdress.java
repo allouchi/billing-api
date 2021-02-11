@@ -33,14 +33,14 @@ public class CheckEmailAdress implements ICheckEmailAdress {
 		if (object instanceof Consultant) {
 			Consultant consult = (Consultant) object;
 			ConsultantJpaRepository consultantJpaRepository = (ConsultantJpaRepository) jpaRepository;
-			Optional<ConsultantEntity> entity = consultantJpaRepository.findByMail(consult.getMail());
+			Optional<ConsultantEntity> entity = consultantJpaRepository.findByEmail(consult.getEmail());
 			if (entity.isPresent()) {
 				return true;
 			}
 		} else if (object instanceof Client) {
 			Client client = (Client) object;
 			ClientJpaRepository clientJpaRepository = (ClientJpaRepository) jpaRepository;
-			Optional<ClientEntity> entity = clientJpaRepository.findByMail(client.getMail());
+			Optional<ClientEntity> entity = clientJpaRepository.findByEmail(client.getEmail());
 			if (entity.isPresent()) {
 				return true;
 			}
@@ -54,7 +54,7 @@ public class CheckEmailAdress implements ICheckEmailAdress {
 		} else if (object instanceof User) {
 			User user = (User) object;
 			UserJpaRepository userJpaRepository = (UserJpaRepository) jpaRepository;
-			Optional<UserEntity> entity = userJpaRepository.findByMail(user.getEmail());
+			Optional<UserEntity> entity = userJpaRepository.findByUserName(user.getUserName());
 			if (entity.isPresent()) {
 				return true;
 			}

@@ -21,5 +21,5 @@ public class Consultant {
   String firstName;
   String lastName;
   String fonction;
-  String mail;
+  String email;
 }

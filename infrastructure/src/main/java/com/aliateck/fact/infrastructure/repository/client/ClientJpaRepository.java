@@ -10,5 +10,5 @@ import com.aliateck.fact.infrastructure.models.ClientEntity;
 @Repository
 public interface ClientJpaRepository extends JpaRepository<ClientEntity, Long> {
   public Optional<ClientEntity> getBySocialReasonIgnoreCase(String reasonSocial);
-  public Optional<ClientEntity> findByMail(String mail);
+  public Optional<ClientEntity> findByEmail(String mail);
 }

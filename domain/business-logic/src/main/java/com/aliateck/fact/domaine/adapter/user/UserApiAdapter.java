@@ -34,27 +34,17 @@ public class UserApiAdapter implements UserApiService {
 	}
 
 	@Override
-	public List<User> getUsers() {		
+	public List<User> getUsers() {
 		return userSpiService.findAllUsers();
 	}
 
 	@Override
-	public User findUserById(Long id) {		
+	public User findUserById(Long id) {
 		return userSpiService.findUserById(id);
 	}
 
 	@Override
-	public User findUserByMailAndPassword(String email, String password) {		
-		return userSpiService.findUserByMailAndPassword(email, password);
-	}
-	
-	@Override
-	public User findUserByMail(String email) {
-		return userSpiService.findUserByMail(email);
-	}
-
-	@Override
-	public User findUserByName(String name) {
-		return userSpiService.findUserByName(name);
+	public User findByUserName(String userName) {
+		return userSpiService.findByUserName(userName);
 	}
 }

@@ -53,7 +53,7 @@ public class ClientSpiAdapter implements ClientSpiService {
 
 		CheckEmailAdress checkEmail = CheckEmailAdress.builder().build();
 		if (checkEmail.checkEmailAdress(client, clientJpaRepository)) {
-			final String format = String.format("L'adresse mail %s est déjà utilisée", client.getMail());
+			final String format = String.format("L'adresse mail %s est déjà utilisée", client.getEmail());
 			throw new ServiceException(ErrorCatalog.DUPLICATE_DATA, format);
 		}
 
@@ -69,7 +69,7 @@ public class ClientSpiAdapter implements ClientSpiService {
 				List<ClientEntity> savedClients = cEntitySaved.getClients();
 				if (savedClients != null && !savedClients.isEmpty()) {
 					for (ClientEntity c : savedClients) {
-						if (c.getMail().equals(client.getMail())) {
+						if (c.getEmail().equals(client.getEmail())) {
 							reponse = clientMapper.fromEntityToDomain(c);
 						}
 					}
@@ -96,12 +96,12 @@ public class ClientSpiAdapter implements ClientSpiService {
 		}
 
 		Optional<ClientEntity> oldEntity = clientJpaRepository.findById(client.getId());
-		if (oldEntity.isPresent() && client.getMail() != null
-				&& !client.getMail().equalsIgnoreCase(oldEntity.get().getMail())) {
+		if (oldEntity.isPresent() && client.getEmail() != null
+				&& !client.getEmail().equalsIgnoreCase(oldEntity.get().getEmail())) {
 
 			CheckEmailAdress checkEmail = CheckEmailAdress.builder().build();
 			if (checkEmail.checkEmailAdress(client, clientJpaRepository)) {
-				final String format = String.format("L'adresse mail %s est déjà utilisée", client.getMail());
+				final String format = String.format("L'adresse mail %s est déjà utilisée", client.getEmail());
 				throw new ServiceException(ErrorCatalog.DUPLICATE_DATA, format);
 			}
 		}

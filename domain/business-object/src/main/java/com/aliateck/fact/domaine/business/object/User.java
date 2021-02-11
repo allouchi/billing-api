@@ -23,15 +23,11 @@ public class User implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	Long id;
+	private static final long serialVersionUID = 1L;	
 	String userName;
-	String lastName;
-	String firstName;
-	Boolean actived;
-	String email;
 	String password;
-	List<Role> roles;	
+	Boolean enabled;		
+	//private List<Role> roles;	
 	Company company;	
 	
 }

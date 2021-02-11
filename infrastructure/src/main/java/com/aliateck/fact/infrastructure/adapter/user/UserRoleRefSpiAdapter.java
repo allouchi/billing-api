@@ -12,7 +12,7 @@ import com.aliateck.fact.domaine.exception.ServiceException;
 import com.aliateck.fact.domaine.ports.spi.user.RoleRefSpiService;
 import com.aliateck.fact.infrastructure.mapper.RoleRefMapper;
 import com.aliateck.fact.infrastructure.models.RoleRefEntity;
-import com.aliateck.fact.infrastructure.repository.user.UserRoleRefJpaRepository;
+import com.aliateck.fact.infrastructure.repository.user.RoleRefJpaRepository;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserRoleRefSpiAdapter implements RoleRefSpiService {
 
-	UserRoleRefJpaRepository userRoleRefJpaRepository;
+	RoleRefJpaRepository userRoleRefJpaRepository;
 	RoleRefMapper roleUserRefMapper;
 
 	@Override

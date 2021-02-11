@@ -22,44 +22,10 @@ DROP TABLE IF EXISTS T_ADRESSE;
 CREATE TABLE T_ROLE_REF
 (
      id bigint(20) NOT NULL AUTO_INCREMENT,
-     role varchar(255) NOT NULL DEFAULT 0,  
-     description varchar(255) NOT NULL DEFAULT 0,
+     role varchar(255) NOT NULL,  
+     description varchar(255) NOT NULL,
      PRIMARY KEY ( id )
 );
-
-CREATE TABLE T_ROLE (
-  id bigint(20) NOT NULL AUTO_INCREMENT,
-  role varchar(255) NOT NULL DEFAULT 0,  
-  description varchar(255) NOT NULL DEFAULT 0,
-  PRIMARY KEY (id)
-);
-
-
-/* -------------------------------------------------------------------*/
-  
-CREATE TABLE T_USER
-(     
-     user_name varchar(50) NOT NULL DEFAULT 0,
-     last_name varchar(50) NOT NULL DEFAULT 0,
-     first_name varchar(50) NOT NULL DEFAULT 0,
-     mail varchar(50) NOT NULL DEFAULT 0,
-     password varchar(50) NOT NULL DEFAULT 0,
-     actived boolean  DEFAULT true,      
-     role varchar(50) DEFAULT NULL REFERENCES T_ROLE(id), 
-     company_id bigint(20) DEFAULT NULL REFERENCES T_COMPANY(id),     
-     PRIMARY KEY ( user_name )     
-);
-
-/* -------------------------------------------------------------------*/
-/*
-CREATE TABLE T_USER_ROLE (
-  user_id bigint(20) DEFAULT NULL REFERENCES T_USER(id),
-  role_id bigint(20) DEFAULT NULL REFERENCES T_ROLE(id)
-);
-*/
-
-
-/* -------------------------------------------------------------------*/
 
 
 CREATE TABLE T_ADRESSE (
@@ -74,7 +40,7 @@ CREATE TABLE T_ADRESSE (
 
 CREATE TABLE T_CLIENT (
   id bigint(20) NOT NULL AUTO_INCREMENT,
-  mail varchar(255) NOT NULL DEFAULT 0,
+  email varchar(255) NOT NULL DEFAULT 0,
   social_reason varchar(255) NOT NULL DEFAULT 0,
   adresse_id bigint(20) DEFAULT NULL REFERENCES T_ADRESSE(id),
   company_id bigint(20) DEFAULT NULL REFERENCES T_COMPANY(id),
@@ -85,7 +51,7 @@ CREATE TABLE T_CONSULTANT (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   last_name varchar(255) NOT NULL DEFAULT 0,
   first_name varchar(255) NOT NULL DEFAULT 0,
-  mail varchar(255) NOT NULL DEFAULT 0,
+  email varchar(255) NOT NULL DEFAULT 0,
   fonction varchar(255) NOT NULL DEFAULT 0,
   company_id bigint(20) DEFAULT NULL REFERENCES T_COMPANY(id),
   PRIMARY KEY (id)  
@@ -146,6 +112,25 @@ CREATE TABLE T_COMPANY (
   PRIMARY KEY (id)
   
 );
+
+  CREATE TABLE T_USER ( 
+  
+  user_name VARCHAR(45) NOT NULL DEFAULT 0,
+  password VARCHAR(45) NOT NULL DEFAULT 0,
+  enabled TINYINT NOT NULL DEFAULT 1 ,
+  company_id bigint(20) REFERENCES T_COMPANY(id), 
+  PRIMARY KEY (user_name)
+  );
+  
+CREATE TABLE T_ROLE ( 
+  id bigint(20) NOT NULL AUTO_INCREMENT, 
+  user_name varchar(45) NOT NULL DEFAULT 0,
+  role_name varchar(45) NOT NULL DEFAULT 0,
+  description varchar(45) NOT NULL, 
+  PRIMARY KEY (id),
+  FOREIGN KEY (user_name) REFERENCES T_USER(user_name)
+);
+
 
 
 

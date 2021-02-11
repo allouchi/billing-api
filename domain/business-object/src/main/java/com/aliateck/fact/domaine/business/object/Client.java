@@ -22,6 +22,6 @@ import lombok.experimental.SuperBuilder;
 public class Client extends Domain {
   Long id;
   String socialReason;
-  String mail;
+  String email;
   Adresse adresseClient;
 }

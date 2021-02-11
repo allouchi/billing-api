@@ -1,10 +1,16 @@
 package com.aliateck.fact.infrastructure.adapter.user;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.aliateck.fact.domaine.business.object.Company;
@@ -16,6 +22,7 @@ import com.aliateck.fact.infrastructure.adapter.commun.CheckEmailAdress;
 import com.aliateck.fact.infrastructure.mapper.CompanyMapper;
 import com.aliateck.fact.infrastructure.mapper.UserMapper;
 import com.aliateck.fact.infrastructure.models.CompanyEntity;
+import com.aliateck.fact.infrastructure.models.RoleEntity;
 import com.aliateck.fact.infrastructure.models.UserEntity;
 import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
 import com.aliateck.fact.infrastructure.repository.user.UserJpaRepository;
@@ -37,6 +44,7 @@ public class UserSpiAdapter implements UserSpiService {
 	private UserJpaRepository userJpaRepository;
 	private CompanyJpaRepository companyJpaRepository;
 	private CompanyMapper companyMapper;
+	
 
 	@Override
 	public User addUser(User user) {
@@ -44,15 +52,11 @@ public class UserSpiAdapter implements UserSpiService {
 		User reponse = null;
 		if (user == null) {
 			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
-		}
-
-		if (user.getId() == 0) {
-			user.setId(null);
-		}
+		}		
 
 		CheckEmailAdress checkEmail = CheckEmailAdress.builder().build();
 		if (checkEmail.checkEmailAdress(user, userJpaRepository)) {
-			final String format = String.format("L'adresse mail %s est déjà utilisée", user.getEmail());
+			final String format = String.format("L'adresse mail %s est déjà utilisée", user.getUserName());
 			throw new ServiceException(ErrorCatalog.DUPLICATE_DATA, format);
 		}
 
@@ -61,15 +65,16 @@ public class UserSpiAdapter implements UserSpiService {
 			Optional<CompanyEntity> company = companyJpaRepository.findById(user.getCompany().getId());
 			if (company.isPresent()) {
 				Company oCompany = companyMapper.fromEntityToDomain(company.get());
-				user.setCompany(oCompany);
+				user.setCompany(oCompany);		        
 				UserEntity userEntity = userMapper.fromDomainToEntity(user);
+				
 				UserEntity entity = userJpaRepository.save(userEntity);
 				reponse = userMapper.fromEntityToDomain(entity);
 			}
 		} catch (Exception e) {
 			log.error("error while creating new user", e);
 			final String format = String.format("Un problème est survenu lors de l'ajout de l'utilisateur %s ",
-					user.getEmail());
+					user.getUserName());
 			throw new ServiceException(ErrorCatalog.DB_ERROR, format);
 		}
 
@@ -83,7 +88,7 @@ public class UserSpiAdapter implements UserSpiService {
 	}
 
 	@Override
-	public void updateUser(User user) {
+	public void updateUser(User user) {		
 		UserEntity userEntity = userMapper.fromDomainToEntity(user);
 		userJpaRepository.save(userEntity);
 	}
@@ -118,35 +123,10 @@ public class UserSpiAdapter implements UserSpiService {
 		}
 		return reponse;
 	}
+	
 
 	@Override
-	public User findUserByMailAndPassword(String mail, String password) {
-		User reponse = null;
-		if (mail == null) {
-			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
-		}
-		try {
-			Optional<UserEntity> entity = userJpaRepository.findByMailAndPassword(mail, password);
-			if (entity.isPresent()) {
-				reponse = userMapper.fromEntityToDomain(entity.get());
-			}
-
-		} catch (Exception e) {
-			log.error("error while find user", e);
-			final String format = String.format("Problème lors de la recherche de l'utilisateur avec %s", mail);
-			throw new ServiceException(ErrorCatalog.DB_ERROR, format);
-		}
-
-		if (reponse == null) {
-			final String format = String.format("Aucun utilisateur avec %s comme mail", mail);
-			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, format);
-		}
-		return reponse;
-
-	}
-
-	@Override
-	public User findUserByMail(String mail) {
+	public User findByUserName(String mail) {
 
 		User reponse = null;
 		if (mail == null) {
@@ -154,7 +134,7 @@ public class UserSpiAdapter implements UserSpiService {
 		}
 		try {
 
-			Optional<UserEntity> entity = userJpaRepository.findByMail(mail);
+			Optional<UserEntity> entity = userJpaRepository.findByUserName(mail);
 			if (entity.isPresent()) {
 				reponse = userMapper.fromEntityToDomain(entity.get());
 			}
@@ -171,33 +151,50 @@ public class UserSpiAdapter implements UserSpiService {
 		}
 		return reponse;
 
-	}
+	}	
 
 	@Override
-	public User findUserByName(String name) {
-
-		User reponse = null;
+	public UserDetails loadUserByUsername(String username) {
+		UserDetails reponse = null;
+		/*
 		try {
 
-			Optional<UserEntity> userEntity = userJpaRepository.findByLastName(name);
+			Optional<UserEntity> userEntity = userJpaRepository.findByEmail(username);
 			if (userEntity.isPresent()) {
-				reponse = userMapper.fromEntityToDomain(userEntity.get());
+				List<GrantedAuthority> roles = getUserAuthority(userEntity.get().getRoles());
+				reponse = buildUserForAuthentication(userEntity.get(), roles);
 			}
 
 		} catch (Exception e) {
 			log.error("error while find user", e);
-			final String format = String.format("Un problème est survenu lors de la recherche de l'utilisateur %s", name);
+			final String format = String.format("Un problème est survenu lors de la recherche de l'utilisateur %s",
+					username);
 			throw new ServiceException(ErrorCatalog.DB_ERROR, format);
 		}
 
 		if (reponse == null) {
 
-			final String format = String.format("Aucun utilisateur avec %s comme nom ", name);
+			final String format = String.format("Aucun utilisateur avec %s comme userName ", username);
 			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, format);
 
-		}
+		}*/
+		
 		return reponse;
 	}
 
-	
+	private UserDetails buildUserForAuthentication(UserEntity user, List<GrantedAuthority> roles) {
+		return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(),
+				user.getEnabled(), true, true, true, roles);
+	}
+
+	private List<GrantedAuthority> getUserAuthority(List<RoleEntity> userRoles) {
+		List<GrantedAuthority> roles = new ArrayList<>();
+
+		for (RoleEntity role : userRoles) {
+			roles.add(new SimpleGrantedAuthority(role.getRoleName()));
+		}
+		List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+		return grantedAuthorities;
+	}
+
 }

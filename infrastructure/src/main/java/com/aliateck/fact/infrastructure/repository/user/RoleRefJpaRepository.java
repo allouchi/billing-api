@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.aliateck.fact.infrastructure.models.RoleRefEntity;
 
 @Repository
-public interface UserRoleRefJpaRepository extends JpaRepository<RoleRefEntity, Long> {
+public interface RoleRefJpaRepository extends JpaRepository<RoleRefEntity, Long> {
   
 }
