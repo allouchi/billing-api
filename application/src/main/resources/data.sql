@@ -20,17 +20,26 @@ VALUES ('allouchi@hotmail.fr', '123456', true, 1);
 
 INSERT INTO t_user (user_name, password, enabled, company_id) 
 VALUES ('khalid@hotmail.fr', '123456', true, 2);
+
+INSERT INTO t_user (user_name, password, enabled, company_id) 
+VALUES ('salma@hotmail.fr', '123456', true, 1);
+
+INSERT INTO t_user (user_name, password, enabled, company_id) 
+VALUES ('btissame@hotmail.fr', '123456', true, 1);
  
 /************************************************************************************************************/
  
 
 INSERT INTO t_role (id, user_name, role_name, description)
-VALUES (1, 'allouchi@hotmail.fr', 'USER', 'ROLE_USER');
+VALUES (1, 'allouchi@hotmail.fr', 'CONSULT', 'ROLE_CONSULT');
 INSERT INTO t_role (id, user_name, role_name, description)
 VALUES (2, 'allouchi@hotmail.fr', 'ADMIN', 'ROLE_ADMIN');
 INSERT INTO t_role (id, user_name, role_name, description)
-VALUES (3, 'khalid@hotmail.fr', 'USER', 'ROLE_USER');
-
+VALUES (3, 'khalid@hotmail.fr', 'WRITE', 'ROLE_WRITE');
+INSERT INTO t_role (id, user_name, role_name, description)
+VALUES (4, 'salma@hotmail.fr', 'READ', 'ROLE_READ');
+INSERT INTO t_role (id, user_name, role_name, description)
+VALUES (5, 'btissame@hotmail.fr', 'READ', 'ROLE_READ');
   
 INSERT INTO T_ADRESSE (id , code_postal , localite , numero , pays , rue)
 VALUES (1, '92500', 'Rueil-Malmaison', '111', 'FRANCE', 'Boulevard National');
