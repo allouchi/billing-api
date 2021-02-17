@@ -42,17 +42,23 @@ public class UserEntity implements Serializable {
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Long id;
+	
 	@Column(name = "user_name")
 	String userName;	
 	
 	@Column(name = "password", nullable = false)
 	String password;
 	
-	@Column(name = "enabled", length = 1, nullable = false)
-	Boolean enabled;	
-
+	@Column(name = "actived", length = 1)
+	Boolean actived;
+	
+	@Column(name = "roles", nullable = false)
+	String roles;
+	
 	/*
 
 	@ManyToMany(cascade = CascadeType.MERGE)

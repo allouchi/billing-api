@@ -110,7 +110,7 @@
 				<textFieldExpression><![CDATA[$P{adresse_client}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
-				<reportElement x="222" y="292" width="34" height="20" uuid="e2402d5a-7842-422b-b07e-4a5efcc97609"/>
+				<reportElement x="224" y="292" width="34" height="20" uuid="e2402d5a-7842-422b-b07e-4a5efcc97609"/>
 				<textElement>
 					<font fontName="Arial"/>
 				</textElement>
@@ -329,14 +329,14 @@
 				</graphicElement>
 			</line>
 			<textField>
-				<reportElement x="0" y="292" width="205" height="20" uuid="f3be6ec8-e00b-48fc-b768-bfc96d441341"/>
+				<reportElement x="0" y="292" width="216" height="20" uuid="f3be6ec8-e00b-48fc-b768-bfc96d441341"/>
 				<textElement>
 					<font size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{designation_ligne1}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="307" width="205" height="20" uuid="889698f6-53da-44f6-8959-ad3b614c382b"/>
+				<reportElement x="0" y="307" width="222" height="20" uuid="889698f6-53da-44f6-8959-ad3b614c382b"/>
 				<textElement>
 					<font size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>

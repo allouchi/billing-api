@@ -98,8 +98,8 @@ public class FactureSpiAdapter implements FactureSpiService {
 				prestaEntity.setNumeroCommande(prestation.getNumeroCommande());
 				prestaEntity.setDesignation(prestation.getDesignation());
 				prestaEntity.setClientPrestation(prestation.getClientPrestation());
-				prestaEntity.setDateDebut( Utils.convertFromDomainToEntityDate(prestation.getDateDebut()));
-				prestaEntity.setDateFin( Utils.convertFromDomainToEntityDate(prestation.getDateFin()));
+				prestaEntity.setDateDebut(prestation.getDateDebut());
+				prestaEntity.setDateFin(prestation.getDateFin());
 				PrestationEntity pEntity = prestationJpaRepository.save(prestaEntity);
 				reponse = prestationMapper.fromEntityToDomain(pEntity);
 			}

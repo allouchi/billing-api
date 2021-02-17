@@ -9,14 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,10 +42,10 @@ public class UserController {
 	static final String SPRING_SECURITY_CONTEXT_KEY = "SPRING_SECURITY_CONTEXT";
 
 	UserApiService userApiService;
-	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	//BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 	@Secured(value = { "ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ" })
-	@PostMapping(value = "/{userName:.+}/{password}")
+	@GetMapping(value = "/{userName:.+}/{password}")
 	public ResponseEntity<User> findByUserName(@PathVariable String userName, @PathVariable String password) {
 		log.info("Get user by Email and password : " + userName);
 		User user = userApiService.findByUserName(userName);

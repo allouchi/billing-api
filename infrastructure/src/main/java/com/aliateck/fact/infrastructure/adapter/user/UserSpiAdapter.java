@@ -1,16 +1,10 @@
 package com.aliateck.fact.infrastructure.adapter.user;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.aliateck.fact.domaine.business.object.Company;
@@ -22,7 +16,6 @@ import com.aliateck.fact.infrastructure.adapter.commun.CheckEmailAdress;
 import com.aliateck.fact.infrastructure.mapper.CompanyMapper;
 import com.aliateck.fact.infrastructure.mapper.UserMapper;
 import com.aliateck.fact.infrastructure.models.CompanyEntity;
-import com.aliateck.fact.infrastructure.models.RoleEntity;
 import com.aliateck.fact.infrastructure.models.UserEntity;
 import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
 import com.aliateck.fact.infrastructure.repository.user.UserJpaRepository;
@@ -151,50 +144,8 @@ public class UserSpiAdapter implements UserSpiService {
 		}
 		return reponse;
 
-	}	
-
-	@Override
-	public UserDetails loadUserByUsername(String username) {
-		UserDetails reponse = null;
-		/*
-		try {
-
-			Optional<UserEntity> userEntity = userJpaRepository.findByEmail(username);
-			if (userEntity.isPresent()) {
-				List<GrantedAuthority> roles = getUserAuthority(userEntity.get().getRoles());
-				reponse = buildUserForAuthentication(userEntity.get(), roles);
-			}
-
-		} catch (Exception e) {
-			log.error("error while find user", e);
-			final String format = String.format("Un problème est survenu lors de la recherche de l'utilisateur %s",
-					username);
-			throw new ServiceException(ErrorCatalog.DB_ERROR, format);
-		}
-
-		if (reponse == null) {
-
-			final String format = String.format("Aucun utilisateur avec %s comme userName ", username);
-			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, format);
-
-		}*/
-		
-		return reponse;
 	}
 
-	private UserDetails buildUserForAuthentication(UserEntity user, List<GrantedAuthority> roles) {
-		return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(),
-				user.getEnabled(), true, true, true, roles);
-	}
-
-	private List<GrantedAuthority> getUserAuthority(List<RoleEntity> userRoles) {
-		List<GrantedAuthority> roles = new ArrayList<>();
-
-		for (RoleEntity role : userRoles) {
-			roles.add(new SimpleGrantedAuthority(role.getRoleName()));
-		}
-		List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-		return grantedAuthorities;
-	}
+	
 
 }

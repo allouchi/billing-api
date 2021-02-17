@@ -138,7 +138,7 @@ public class PrestationSpiAdapter implements PrestationSpiService {
 		}
 
 		if (reponse == null) {
-			throw new ServiceException(ErrorCatalog.DB_ERROR, "Aucune prestation enregistrée !");
+			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucune prestation enregistrée !");
 		}
 
 		return reponse;

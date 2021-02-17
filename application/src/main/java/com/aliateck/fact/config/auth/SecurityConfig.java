@@ -1,12 +1,10 @@
 package com.aliateck.fact.config.auth;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,34 +16,27 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.rememberme.InMemoryTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
-import com.aliateck.fact.infrastructure.adapter.user.UserSpiAdapter;
+import com.aliateck.fact.domaine.adapter.user.UserApiDetailAdapter;
 
 @Configuration
 @EnableWebSecurity(debug = true)
-@EnableGlobalMethodSecurity(securedEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled  = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	UserSpiAdapter userDetailsService;
+	UserApiDetailAdapter userApiDetailsAdapter;
 
 	@Autowired
-	public void globalConfig(AuthenticationManagerBuilder auth, DataSource source) throws Exception {
-
-		auth.jdbcAuthentication().dataSource(source)
-				.usersByUsernameQuery(
-						"select user_name as principal, password as credentials, enabled from T_USER where user_name=?")
-				.authoritiesByUsernameQuery(
-						"select user_name as principal, role_name as role from t_role where user_name=?")
-				.rolePrefix("ROLE_");
-
+	public void globalConfig(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userApiDetailsAdapter).passwordEncoder(getPasswordEncoder());
+		//auth.userDetailsService(userApiDetailsAdapter);
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.httpBasic();
-		http.authorizeRequests()        
-        .antMatchers("/users/**", "/singup").permitAll();
-       
+		http.csrf().disable();
+		//http.authorizeRequests()
+        //.antMatchers("/users/").permitAll();
 
 		// Config Remember Me.
 		/*
@@ -57,6 +48,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	}
 
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
+	}
+
+	@Bean
+	public static BCryptPasswordEncoder getPasswordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
+	
 	@Bean
 	public PersistentTokenRepository persistentTokenRepository() {
 		return new InMemoryTokenRepositoryImpl();
@@ -67,14 +69,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	    return (request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 	}
 	
-	@Override
-	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
-	}
-
-	@Bean
-	public static BCryptPasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+	
+	/*
+	 * auth.jdbcAuthentication().dataSource(source) .usersByUsernameQuery(
+	 * "select user_name as principal, password as credentials, enabled from T_USER where user_name=?"
+	 * ) .authoritiesByUsernameQuery(
+	 * "select user_name as principal, role_name as role from t_role where user_name=?"
+	 * ) .rolePrefix("ROLE_");
+	 * 
+	 */
 
 }

@@ -101,8 +101,8 @@ public class EditionReportImpl implements EditionReportService {
 		String consultantIdentite = prestation.getConsultant().getFirstName() + ESPACE_BLANC +  prestation.getConsultant().getLastName().toUpperCase();
 		
 		if(!templateChoice) {
-			designationLigne1 = "Prestation" + ESPACE_BLANC + clientPrestation.toUpperCase() + ESPACE_BLANC + "du mois de ";
-			designationLigne2 = moisPrestation + ESPACE_BLANC + "de "+ consultantIdentite;
+			designationLigne1 = "Prestation" + ESPACE_BLANC + clientPrestation.toUpperCase() + ESPACE_BLANC + "du mois";
+			designationLigne2 = "de "+ moisPrestation + ESPACE_BLANC + "de "+ consultantIdentite;
 		}
 		
 		// infos client
