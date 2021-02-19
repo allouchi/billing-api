@@ -3,6 +3,7 @@ package com.aliateck.fact.application.rest.controllers.company;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,9 +28,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CompanyController {
+	
   CompanyApiService companyApiService;
   
   
+  @Secured(value = { "ROLE_ADMIN" })
   @GetMapping(value = "/{siret}")
   public ResponseEntity<Company> findBySiret(@PathVariable String siret) {
     log.info("Find company by siret : ", siret);
@@ -38,6 +41,7 @@ public class CompanyController {
   }
   
   
+  @Secured(value = { "ROLE_ADMIN" })
   @GetMapping
   public ResponseEntity<List<Company>> findAll(){
     log.info("Find all companies");
@@ -45,17 +49,21 @@ public class CompanyController {
   }
   
 
+  @Secured(value = { "ROLE_ADMIN" })
   @PostMapping
   public Company addCompany(@RequestBody Company companyRequest) {
 	 log.info("Create new company");	
 	 return companyApiService.addCompany(companyRequest);
   }
+  
+  @Secured(value = { "ROLE_ADMIN" })
   @PutMapping
-  public Company upfateCompany(@RequestBody Company companyRequest) {
+  public Company updateCompany(@RequestBody Company companyRequest) {
 	 log.info("Create new company");	
 	 return companyApiService.updateCompany(companyRequest);
   }
   
+  @Secured(value = { "ROLE_ADMIN" })
   @DeleteMapping(value = "/{id}")
   public boolean deleteCompany(
     @PathVariable long id    

@@ -22,7 +22,7 @@ DROP TABLE IF EXISTS T_ADRESSE;
 CREATE TABLE T_ROLE_REF
 (
      id bigint(20) NOT NULL AUTO_INCREMENT,
-     role varchar(255) NOT NULL,  
+     role_name varchar(255) NOT NULL,  
      description varchar(255) NOT NULL,
      PRIMARY KEY ( id )
 );
@@ -113,28 +113,34 @@ CREATE TABLE T_COMPANY (
   
 );
 
-  CREATE TABLE T_USER ( 
+
+CREATE TABLE T_USER ( 
   id bigint(20) NOT NULL AUTO_INCREMENT,
   user_name VARCHAR(45) NOT NULL DEFAULT 0,
+  first_name VARCHAR(45) NOT NULL DEFAULT 0,
+  last_name VARCHAR(45) NOT NULL DEFAULT 0,
   password VARCHAR(45) NOT NULL DEFAULT 0,
-  actived TINYINT NOT NULL DEFAULT 1 ,
-  roles VARCHAR(45) NOT NULL DEFAULT 0,
-  company_id bigint(20) REFERENCES T_COMPANY(id), 
+  actived TINYINT NOT NULL DEFAULT 1 , 
+  company_id bigint(20) REFERENCES T_COMPANY(id),   
   PRIMARY KEY (id)
   );
 
-  /*
 CREATE TABLE T_ROLE ( 
-  id bigint(20) NOT NULL AUTO_INCREMENT, 
-  user_name varchar(45) NOT NULL DEFAULT 0,
-  role_name varchar(45) NOT NULL DEFAULT 0,
+  id bigint(20) NOT NULL AUTO_INCREMENT,  
+  role_name varchar(45) NOT NULL,
   description varchar(45) NOT NULL, 
-  PRIMARY KEY (id),
-  FOREIGN KEY (user_name) REFERENCES T_USER(user_name)
+  user_id bigint(20) REFERENCES T_USER(id), 
+  PRIMARY KEY (id)
+  
 );
 
-*/
+  
 
+  
+
+
+
+/*FOREIGN KEY (user_name) REFERENCES T_USER(user_name) */
 
 DROP TABLE IF EXISTS BATCH_STEP_EXECUTION_CONTEXT ;
 DROP TABLE IF EXISTS BATCH_JOB_EXECUTION_CONTEXT ;

@@ -9,12 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,9 +44,10 @@ public class UserController {
 	static final String SPRING_SECURITY_CONTEXT_KEY = "SPRING_SECURITY_CONTEXT";
 
 	UserApiService userApiService;
-	//BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	@Autowired
+	BCryptPasswordEncoder passwordEncoder;
 
-	@Secured(value = { "ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ" })
+	@Secured(value = { "ADMIN" })
 	@GetMapping(value = "/{userName:.+}/{password}")
 	public ResponseEntity<User> findByUserName(@PathVariable String userName, @PathVariable String password) {
 		log.info("Get user by Email and password : " + userName);
@@ -52,15 +55,15 @@ public class UserController {
 		return ResponseEntity.ok(user);
 	}	
 
-	@Secured(value = { "ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ" })
+	@Secured(value = { "ADMIN" })
 	@PostMapping
 	public User addUser(@RequestBody User userReq) {
 		log.info("Add user : " + userReq.getUserName());
-		// passwordEncoder.encode(userReq.getPassword());
+		userReq.setPassword(passwordEncoder.encode(userReq.getPassword()));
 		return userApiService.addUser(userReq);
 	}
 
-	@Secured(value = { "ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ" })
+	@Secured(value = { "ADMIN", "WRITE", "READ" })
 	@GetMapping
 	public void logout(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -69,7 +72,7 @@ public class UserController {
 		}
 	}
 
-	@Secured(value = { "ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ" })
+	@Secured(value = { "ADMIN", "WRITE", "READ" })
 	@GetMapping(value = "/getUserLogged")
 	public ResponseEntity<Map<String, Object>> getLogedUser(HttpServletRequest httpServletRequest) {
 		Map<String, Object> params = new HashMap<>();

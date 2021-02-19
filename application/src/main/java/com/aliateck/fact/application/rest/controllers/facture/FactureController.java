@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class FactureController {
 	FactureApiService factureApiService;
 	StorageProperties resources;
 
+	@Secured(value = { "ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ" })
 	@GetMapping(value = "/{siret}")
 	public ResponseEntity<List<Facture>> findAllBySiret(@PathVariable String siret) {
 		log.info("get all bills by siret");
@@ -42,12 +44,14 @@ public class FactureController {
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
+	@Secured(value = { "ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ" })
 	@DeleteMapping(value = "/{factureId}")
 	public void deleteFacture(@PathVariable Long factureId) {
 		log.info("delete bill");
 		factureApiService.deleteFacture(factureId);
 	}
 
+	@Secured(value = { "ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ" })
 	@PutMapping(consumes = "application/json", produces = "application/json")
 	public ResponseEntity<Facture> updateFacture(@RequestBody Facture factureRequest) {
 		log.info("Update facture : " + factureRequest.getDateEncaissement());

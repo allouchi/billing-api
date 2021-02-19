@@ -119,27 +119,27 @@ public class UserSpiAdapter implements UserSpiService {
 	
 
 	@Override
-	public User findByUserName(String mail) {
+	public User findByUserName(String userName) {
 
 		User reponse = null;
-		if (mail == null) {
+		if (userName == null) {
 			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
 		}
 		try {
 
-			Optional<UserEntity> entity = userJpaRepository.findByUserName(mail);
+			Optional<UserEntity> entity = userJpaRepository.findByUserName(userName);
 			if (entity.isPresent()) {
 				reponse = userMapper.fromEntityToDomain(entity.get());
 			}
 
 		} catch (Exception e) {
 			log.error("error while find user", e);
-			final String format = String.format("Problème lors de la recherche de l'utilisateur avec %s", mail);
+			final String format = String.format("Problème lors de la recherche de l'utilisateur avec %s", userName);
 			throw new ServiceException(ErrorCatalog.DB_ERROR, format);
 		}
 
 		if (reponse == null) {
-			final String format = String.format("Aucun utilisateur avec %s comme adresse mail", mail);
+			final String format = String.format("Aucun utilisateur avec %s comme userName", userName);
 			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, format);
 		}
 		return reponse;
