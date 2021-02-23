@@ -94,6 +94,7 @@ public class FactureSpiAdapter implements FactureSpiService {
 				editionReportService.buildPdfFacture(paramJasper, templateChoice, pathFile);
 				String pathToSave = Utils.buildPath(pathFile, pathRoot);
 				factEntity.setFilePath(pathToSave + File.separator + fileName);
+				factEntity.setTarifHT(prestation.getTarifHT());
 				prestaEntity.getFacture().add(factEntity);
 				prestaEntity.setNumeroCommande(prestation.getNumeroCommande());
 				prestaEntity.setDesignation(prestation.getDesignation());

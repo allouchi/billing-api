@@ -70,7 +70,7 @@ public class UserEntity implements Serializable {
 	private List<RoleEntity> roles;
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	@JoinColumn(name = "id")
+	@JoinColumn(name = "company_id")
 	private CompanyEntity company;
 
 }

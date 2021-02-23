@@ -88,7 +88,7 @@ public class PrestationSpiAdapter implements PrestationSpiService {
 		}
 
 		try {
-			// prestation.setDateDebut(Utils.convertDomainToEntityDate(prestation.getDateDebut()));
+			
 			prestation.setDateFin(Utils.convertFromDomainToEntityDate(prestation.getDateFin()));
 			PrestationEntity entity = prestationMapper.fromDomainToEntity(prestation);
 			PrestationEntity oEntity = prestationJpaRepository.save(entity);

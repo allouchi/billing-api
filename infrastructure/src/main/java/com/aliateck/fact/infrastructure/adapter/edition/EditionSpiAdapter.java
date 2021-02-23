@@ -4,6 +4,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -16,6 +17,7 @@ import com.aliateck.fact.domaine.exception.ServiceException;
 import com.aliateck.fact.domaine.ports.spi.edition.EditionSpiService;
 import com.aliateck.fact.infrastructure.models.FactureEntity;
 import com.aliateck.fact.infrastructure.repository.facture.FactureJpaRepository;
+import com.aliateck.util.Utils;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -48,10 +50,11 @@ public class EditionSpiAdapter implements EditionSpiService {
 				String path = facture.getFilePath();
 				String pathComplet = rootDirectory + File.separator + path;
 				Path pathFile = Paths.get(pathComplet);
-				byte[] pdfBinary = Files.readAllBytes(pathFile);
+				byte[] pdfBinary = Files.readAllBytes(pathFile);	
+				byte[] encodedBytes = Base64.getEncoder().encode(pdfBinary);
 				String fileName = pathFile.getFileName().toString();
 				reponse = DataPDF.builder()
-						.fileContent(pdfBinary)
+						.fileContent(encodedBytes)
 						.fileName(fileName)
 						.filePath(pathFile)
 						.build();				
