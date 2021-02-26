@@ -1,9 +1,7 @@
 package com.aliateck.util;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Period;
@@ -81,7 +79,7 @@ public class Utils {
 	public static String buildMoisFacture(String mois) {
 
 		String[] moisId = new String[1];
-		
+
 		mapMois.forEach((key, value) -> {
 			if (value.equalsIgnoreCase(mois)) {
 				moisId[0] = key;
@@ -90,7 +88,7 @@ public class Utils {
 
 		int anneeCourante = LocalDate.now().getYear();
 		LocalDate date = LocalDate.of(anneeCourante, Integer.parseInt(moisId[0]), 1);
-		String [] stringDate = date.toString().split("-");
+		String[] stringDate = date.toString().split("-");
 		return stringDate[0] + stringDate[1];
 	}
 

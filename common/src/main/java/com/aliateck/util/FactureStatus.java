@@ -6,12 +6,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum FactureStatus {
-  OUI("OK", "Facture acquittée"),
-  NON("KO", "Facture non acquittée");
+	OUI("OK", "Acquitté"), NON("KO", "N. Acquitté");
 
-  private String code;
-  private String description;
+	private String code;
+	private String description;
 }
-
-
-

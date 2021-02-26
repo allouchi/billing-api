@@ -40,7 +40,7 @@ public class CompanyController {
 	}
 
 	@Secured(value = { "ROLE_ADMIN" })
-	@GetMapping(value = "/{userName}/{userName}")
+	@GetMapping(value = "/{userName:.+}/{userName:.+}")
 	public ResponseEntity<Company> findByUserName(@PathVariable String userName) {
 		log.info("Find company by userName : ", userName);
 		Company company = companyApiService.findByUserName(userName);

@@ -17,6 +17,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserApiDetailAdapter implements UserApiDetailService {
 
+	// For jenkins
 	UserSpiDetailService userSpiDetailsService;
 
 	@Override
@@ -25,7 +26,7 @@ public class UserApiDetailAdapter implements UserApiDetailService {
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username) {		
+	public UserDetails loadUserByUsername(String username) {
 		User user = userSpiDetailsService.findByUserName(username);
 		return new UserDetailMapper(user);
 	}

@@ -14,7 +14,7 @@ public interface CompanyJpaRepository extends JpaRepository<CompanyEntity, Long>
 
 	Optional<CompanyEntity> findBySiret(String siret);
 
-	@Query(value = "SELECT * FROM T_USER u INNER JOIN T_COMPANY c ON u.company_id = c.id where u.user_name= :userName", nativeQuery = true)
+	@Query(value = "SELECT * FROM T_User user INNER JOIN T_Company company ON user.company_id = company.id WHERE user.user_name= :userName", nativeQuery = true)
 	Optional<CompanyEntity> findByUserName(String userName);
 
 }
