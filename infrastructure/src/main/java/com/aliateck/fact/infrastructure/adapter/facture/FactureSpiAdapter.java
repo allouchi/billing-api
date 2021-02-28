@@ -58,16 +58,17 @@ public class FactureSpiAdapter implements FactureSpiService {
 	CompanyMapper companyMapper;
 
 	@Override
-	public Prestation addFacture(String siret, boolean templateChoice, Prestation prestation, String pathRoot, Long moisFactureId) {
+	public Prestation addFacture(String siret, boolean templateChoice, Prestation prestation, String pathRoot,
+			Long moisFactureId, boolean storeFile) {
 		Prestation reponse = null;
 		if (prestation == null || siret == null || siret.equals("") || pathRoot == null) {
 			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
 		}
-		
+
 		if (prestation.getId() != null && prestation.getId() == 0) {
 			prestation.setId(null);
 		}
-		
+
 		String moisFacture = Utils.convertMoisFacture(String.valueOf(moisFactureId));
 
 		try {
@@ -91,10 +92,13 @@ public class FactureSpiAdapter implements FactureSpiService {
 				String fileName = (String) paramJasper.get("fileName");
 				String pathFile = buildFactureService.buildPathFile(siret, pathRoot,
 						client.getSocialReason().toLowerCase(), moisFacture);
-				editionReportService.buildPdfFacture(paramJasper, templateChoice, pathFile);
+				byte[] binaryPdf = editionReportService.buildPdfFacture(paramJasper, templateChoice, pathFile,
+						storeFile);
 				String pathToSave = Utils.buildPath(pathFile, pathRoot);
 				factEntity.setFilePath(pathToSave + File.separator + fileName);
 				factEntity.setTarifHT(prestation.getTarifHT());
+				factEntity.setFileContent(binaryPdf);
+				factEntity.setFileName(fileName);
 				prestaEntity.getFacture().add(factEntity);
 				prestaEntity.setNumeroCommande(prestation.getNumeroCommande());
 				prestaEntity.setDesignation(prestation.getDesignation());

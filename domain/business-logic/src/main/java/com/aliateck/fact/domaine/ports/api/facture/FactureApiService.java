@@ -6,16 +6,17 @@ import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.business.object.Prestation;
 
 public interface FactureApiService {
-	
-	public Prestation addFacture(String siret, boolean templateChoice,  Prestation prestation, String pathRoot, Long moisFactureId);
 
-	public void deleteFacture(Long factureId);	
+	public Prestation addFacture(String siret, boolean templateChoice, Prestation prestation, String pathRoot,
+			Long moisFactureId, boolean storeFile);
+
+	public void deleteFacture(Long factureId);
 
 	public Facture updateFacture(Facture facture);
 
 	public Facture findById(Long id);
 
-	public Facture findByNumero(String numero);	
+	public Facture findByNumero(String numero);
 
 	public List<Facture> findAllBySiret(String siret);
 }

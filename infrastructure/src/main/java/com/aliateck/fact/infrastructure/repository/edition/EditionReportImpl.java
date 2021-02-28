@@ -26,12 +26,12 @@ import net.sf.jasperreports.engine.JasperReport;
 @Slf4j
 @Service
 public class EditionReportImpl implements EditionReportService {
+
 	private static final String TYPE_FILE = ".pdf";
 	private static final String IBAN = "IBAN: ";
 	private static final String BIC = "BIC: ";
 	private static final String FACTURE_LIBELLE = "FACTURE";
 	private static final String ESPACE_BLANC = " ";
-	private static final String TIRET = "-";
 	private static final String UNDERSCORE = "_";
 	private static final String RETURN = "\n";
 
@@ -109,9 +109,8 @@ public class EditionReportImpl implements EditionReportService {
 		String rsClient = prestation.getClient().getSocialReason();
 		// Facture_ALIATECK_FINAXYS_Prestation-SG_12-2020_1000.pdf
 		String moisFacture = Utils.buildMoisFacture(facture.getMoisFacture());
-		String fileName = FACTURE_LIBELLE + UNDERSCORE + rsCompany + UNDERSCORE + rsClient + UNDERSCORE
-				+ moisFacture + UNDERSCORE
-				+ numeroFacture.split("-")[1] + TYPE_FILE;
+		String fileName = FACTURE_LIBELLE + UNDERSCORE + rsCompany + UNDERSCORE + rsClient + UNDERSCORE + moisFacture
+				+ UNDERSCORE + numeroFacture.split("-")[1] + TYPE_FILE;
 
 		// - Parametres envoyes au rapport
 		Map<String, Object> parameters = new HashMap<>();
@@ -150,12 +149,11 @@ public class EditionReportImpl implements EditionReportService {
 		parameters.put("fileName", fileName);
 		return parameters;
 	}
-	
 
 	@Override
-	public void buildPdfFacture(Map<String, Object> paramJasper, boolean templateChoice, String path)
-			throws JRException, IOException {
-
+	public byte[] buildPdfFacture(Map<String, Object> paramJasper, boolean templateChoice, String path,
+			boolean storeFile) throws JRException, IOException {
+		byte[] file = null;
 		try {
 			File templateFile = null;
 			Map<String, File> mapFiles = Utils.loadJasperFile();
@@ -170,15 +168,19 @@ public class EditionReportImpl implements EditionReportService {
 			// - Execution du rapport
 			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperDesign, paramJasper, dataSource);
 			// - Creation du rapport au format PDF
-			JasperExportManager.exportReportToPdfFile(jasperPrint, path + File.separator + outputFileName);
+			if (storeFile) {
+				JasperExportManager.exportReportToPdfFile(jasperPrint, path + File.separator + outputFileName);
+			}
+
 			// JasperExportManager.exportReportToXmlFile(path+"\\", outputFileName, false);
-			// JasperExportManager.exportReportToPdf(jasperPrint);
+			file = JasperExportManager.exportReportToPdf(jasperPrint);
 			log.info("********************* Fin génération du fichier pdf *********************");
 
 		} catch (Exception e) {
 			log.info("Problème lors du chargement des fichiers templates");
 			throw e;
 		}
+		return file;
 
 	}
 

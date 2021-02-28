@@ -12,15 +12,14 @@ INSERT INTO t_role_ref (id, role_name, description)
  VALUES  (4, 'WRITE', 'ROLE_ADMIN');
 
 
-
  /************************************************************************************************************/
  
  
 INSERT INTO t_user (id, user_name, last_name, first_name, password, actived, company_id) 
-VALUES (1,'allouchi@hotmail.fr', 'Aliane', 'Mustapha', '123456', true,1);
+VALUES (1,'allouchi@hotmail.fr', 'Aliane', 'Mustapha', '123456', true, 1);
 
 INSERT INTO t_user (id, user_name, last_name, first_name, password, actived, company_id) 
-VALUES (2,'khalid@hotmail.fr','Aliane', 'Khalid', '123456', true,2);
+VALUES (2,'khalid@hotmail.fr','Aliane', 'Khalid', '123456', true, 2);
 
 INSERT INTO t_user (id, user_name, last_name, first_name, password, actived, company_id) 
 VALUES (3, 'salma@hotmail.fr','Aliane', 'Salma', '123456', true , 1);
@@ -63,12 +62,12 @@ VALUES (2, '6201Z','CRLYFRPP', 'FR3330002008970000005896J14', 'FR18831502141', '
 
 
 INSERT INTO t_consultant( id,	last_name,	first_name,	email, fonction,	company_id)
-VALUES (1,	'ALIANE', 'Mustapha','allouchi@hotmail.fr' ,'Développeur Fullstack', 2);
+VALUES (1,	'ALIANE', 'Mustapha','allouchi@hotmail.fr' ,'Développeur Fullstack', 1);
 
 INSERT INTO t_consultant( id, last_name, first_name, email, fonction, company_id)
-VALUES (2, 'ALIANE', 'Khalid', 'khalid@hotmail.fr', 'Développeur Fullstack', 1);
+VALUES (2, 'ALIANE', 'Khalid', 'khalid@hotmail.fr', 'Développeur Fullstack', 2);
 
-INSERT INTO t_consultant( id,	last_name,	first_name,	email, fonction,	company_id)
+INSERT INTO t_consultant( id,	last_name,	first_name,	email, fonction, company_id)
 VALUES (3,	'JERY', 'Hamed','jery@hotmail.fr' ,'Assistance Technique Business Intelligence', 2);
 
 

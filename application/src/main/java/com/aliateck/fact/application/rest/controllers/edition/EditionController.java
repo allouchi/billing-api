@@ -3,7 +3,6 @@ package com.aliateck.fact.application.rest.controllers.edition;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aliateck.fact.application.rest.util.MediaTypeUtils;
-import com.aliateck.fact.application.rest.util.StorageProperties;
 import com.aliateck.fact.domaine.business.object.DataPDF;
 import com.aliateck.fact.domaine.ports.api.edition.EditionApiService;
 
@@ -31,8 +29,6 @@ import lombok.extern.slf4j.Slf4j;
 public class EditionController {
 
 	EditionApiService editionApiService;
-	@Autowired
-	StorageProperties resources;
 
 	@Secured(value = { "ADMIN", "WRITE", "READ" })
 	@GetMapping(value = "/{factureId}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
@@ -40,7 +36,7 @@ public class EditionController {
 			HttpServletResponse response) {
 		log.info("Get PDF File By Id : " + factureId);
 
-		DataPDF reponse = editionApiService.downloadPdf(factureId, resources.getPathRoot());
+		DataPDF reponse = editionApiService.downloadPdf(factureId);
 
 		if (reponse != null && reponse.getFileContent() != null && reponse.getFileContent().length > 0) {
 			MediaType mediaType = MediaTypeUtils.getMediaTypeForFileName(request.getServletContext(),

@@ -25,43 +25,31 @@ public class FactureMapper {
 		return FactureEntity.builder().id(domain.getId()).dateEcheance(domain.getDateEcheance())
 				.dateEncaissement(domain.getDateEncaissement()).dateFacturation(domain.getDateFacturation())
 				.fraisRetard(domain.getFraisRetard()).nbJourRetard(domain.getNbJourRetard())
-				.delaiPaiement(domain.getDelaiPaiement())
-				.factureStatus(domain.getFactureStatus())
-				.statusDesc(domain.getStatusDesc())
-				.tarifHT(domain.getTarifHT())
+				.delaiPaiement(domain.getDelaiPaiement()).factureStatus(domain.getFactureStatus())
+				.statusDesc(domain.getStatusDesc()).tarifHT(domain.getTarifHT())
 				.numeroFacture(domain.getNumeroFacture()).prixTotalHT(domain.getPrixTotalHT())
 				.prixTotalTTC(domain.getPrixTotalTTC()).montantTVA(domain.getMontantTVA())
-				.quantite(domain.getQuantite())				
-				.numeroCommande(domain.getNumeroCommande())
-				.moisFacture(domain.getMoisFacture())				
-				.clientPrestation(domain.getClientPrestation()).filePath(domain.getFilePath()).build();
+				.quantite(domain.getQuantite()).numeroCommande(domain.getNumeroCommande())
+				.moisFacture(domain.getMoisFacture()).fileContent(domain.getFileContent())
+				.fileName(domain.getFileName()).clientPrestation(domain.getClientPrestation())
+				.filePath(domain.getFilePath()).build();
 	}
 
 	public Facture fromEntityToDomain(FactureEntity entity) {
 		if (entity == null) {
 			return null;
-		}		
+		}
 
-		return Facture.builder().
-				id(entity.getId())
-				.dateEcheance(entity.getDateEcheance())
-				.dateEncaissement(entity.getDateEncaissement())
-				.dateFacturation(entity.getDateFacturation())
-				.fraisRetard(entity.getFraisRetard())
-				.prixTotalHT(entity.getPrixTotalHT())
-				.prixTotalTTC(entity.getPrixTotalTTC())
-				.montantTVA(entity.getMontantTVA())
-				.nbJourRetard(entity.getNbJourRetard())
-				.delaiPaiement(entity.getDelaiPaiement())
-				.factureStatus(entity.getFactureStatus())
-				.statusDesc(entity.getStatusDesc())
-				.tarifHT(entity.getTarifHT())
-				.numeroFacture(entity.getNumeroFacture())				
-				.quantite(entity.getQuantite())				
-				.numeroCommande(entity.getNumeroCommande())
-				.moisFacture(entity.getMoisFacture())
-				.clientPrestation(entity.getClientPrestation())
-				.filePath(entity.getFilePath()).build();
+		return Facture.builder().id(entity.getId()).dateEcheance(entity.getDateEcheance())
+				.dateEncaissement(entity.getDateEncaissement()).dateFacturation(entity.getDateFacturation())
+				.fraisRetard(entity.getFraisRetard()).prixTotalHT(entity.getPrixTotalHT())
+				.prixTotalTTC(entity.getPrixTotalTTC()).montantTVA(entity.getMontantTVA())
+				.nbJourRetard(entity.getNbJourRetard()).delaiPaiement(entity.getDelaiPaiement())
+				.factureStatus(entity.getFactureStatus()).statusDesc(entity.getStatusDesc())
+				.tarifHT(entity.getTarifHT()).numeroFacture(entity.getNumeroFacture()).quantite(entity.getQuantite())
+				.numeroCommande(entity.getNumeroCommande()).moisFacture(entity.getMoisFacture())
+				.fileName(entity.getFileName()).fileContent(entity.getFileContent())
+				.clientPrestation(entity.getClientPrestation()).filePath(entity.getFilePath()).build();
 	}
 
 	public List<Facture> fromEntityToDomain(List<FactureEntity> entities) {

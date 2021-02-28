@@ -1,9 +1,5 @@
 package com.aliateck.fact.infrastructure.adapter.edition;
 
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.Optional;
 
@@ -17,7 +13,6 @@ import com.aliateck.fact.domaine.exception.ServiceException;
 import com.aliateck.fact.domaine.ports.spi.edition.EditionSpiService;
 import com.aliateck.fact.infrastructure.models.FactureEntity;
 import com.aliateck.fact.infrastructure.repository.facture.FactureJpaRepository;
-import com.aliateck.util.Utils;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -31,14 +26,13 @@ import lombok.extern.slf4j.Slf4j;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class EditionSpiAdapter implements EditionSpiService {
 
-
 	FactureJpaRepository factureJpaRepository;
 
 	@Override
-	public DataPDF downloadPdf(Long factureId, String rootDirectory) {
+	public DataPDF downloadPdf(Long factureId) {
 
 		DataPDF reponse = null;
-		if (factureId == null || rootDirectory == null) {
+		if (factureId == null) {
 			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
 		}
 
@@ -47,17 +41,8 @@ public class EditionSpiAdapter implements EditionSpiService {
 
 			if (entity.isPresent()) {
 				FactureEntity facture = entity.get();
-				String path = facture.getFilePath();
-				String pathComplet = rootDirectory + File.separator + path;
-				Path pathFile = Paths.get(pathComplet);
-				byte[] pdfBinary = Files.readAllBytes(pathFile);	
-				byte[] encodedBytes = Base64.getEncoder().encode(pdfBinary);
-				String fileName = pathFile.getFileName().toString();
-				reponse = DataPDF.builder()
-						.fileContent(encodedBytes)
-						.fileName(fileName)
-						.filePath(pathFile)
-						.build();				
+				byte[] encodedBytes = Base64.getEncoder().encode(facture.getFileContent());
+				reponse = DataPDF.builder().fileContent(encodedBytes).fileName(facture.getFileName()).build();
 			}
 
 		} catch (Exception e) {

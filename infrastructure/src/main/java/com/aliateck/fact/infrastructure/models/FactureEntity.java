@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -81,6 +82,13 @@ public class FactureEntity implements Serializable {
 
 	@Column(name = "file_path")
 	String filePath;
+
+	@Column(name = "file_name")
+	String fileName;
+
+	@Lob
+	@Column(name = "file_content", length = 10000000, columnDefinition = "longblob")
+	byte[] fileContent;
 
 	@Column(name = "numero_commande", nullable = false)
 	String numeroCommande;

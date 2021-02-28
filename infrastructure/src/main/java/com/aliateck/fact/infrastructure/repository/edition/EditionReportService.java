@@ -10,14 +10,9 @@ import com.aliateck.fact.domaine.business.object.Prestation;
 import net.sf.jasperreports.engine.JRException;
 
 public interface EditionReportService {
-  public void buildPdfFacture(
-    Map<String, Object> paramJasper, boolean templateChoice,
-    String path      
-  )  throws JRException, IOException;
+	public byte[] buildPdfFacture(Map<String, Object> paramJasper, boolean templateChoice, String path,
+			boolean storeFile) throws JRException, IOException;
 
-  public Map<String, Object> buildParamJasper(
-    Company company, boolean templateChoice,
-    Prestation prestation,
-    Facture facture
-  );
+	public Map<String, Object> buildParamJasper(Company company, boolean templateChoice, Prestation prestation,
+			Facture facture);
 }
