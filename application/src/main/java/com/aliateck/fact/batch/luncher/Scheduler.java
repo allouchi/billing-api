@@ -1,6 +1,7 @@
 package com.aliateck.fact.batch.luncher;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
@@ -12,9 +13,10 @@ public class Scheduler {
 	@Autowired
     private BatchLauncher batchLauncher;
 
-    //@Scheduled(fixedDelay = 8000)
+	// Déclenchement à 00H chaque jour
+	@Scheduled(cron = "0 00 00 * * ?")
     public void perform() throws Exception {
-        log.info("Batch programmé pour tourner toutes les 8 secondes");
+        log.info("Batch programmé pour tourner tous les jours à 00H00");
         batchLauncher.run();
     }
 

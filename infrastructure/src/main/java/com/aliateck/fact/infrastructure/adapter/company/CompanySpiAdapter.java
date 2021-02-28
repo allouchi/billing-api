@@ -1,5 +1,12 @@
 package com.aliateck.fact.infrastructure.adapter.company;
 
+import java.util.List;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
 import com.aliateck.fact.domaine.business.object.Company;
 import com.aliateck.fact.domaine.exception.ErrorCatalog;
 import com.aliateck.fact.domaine.exception.ServiceException;
@@ -8,14 +15,12 @@ import com.aliateck.fact.infrastructure.adapter.commun.CheckEmailAdress;
 import com.aliateck.fact.infrastructure.mapper.CompanyMapper;
 import com.aliateck.fact.infrastructure.models.CompanyEntity;
 import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
-import java.util.List;
-import java.util.Optional;
-import javax.transaction.Transactional;
+import com.aliateck.fact.infrastructure.repository.user.UserJpaRepository;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
@@ -24,6 +29,7 @@ import org.springframework.stereotype.Service;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CompanySpiAdapter implements CompanySpiService {
 	CompanyJpaRepository companyJpaRepository;
+	UserJpaRepository userJpaRepository;
 	CompanyMapper companyMapper;
 
 	@Override
@@ -170,5 +176,18 @@ public class CompanySpiAdapter implements CompanySpiService {
 			log.error("error while deleting data company with requested ID:" + "" + id, e);
 			throw new ServiceException(ErrorCatalog.DB_ERROR, e);
 		}
+	}
+
+	@Override
+	public Company findByUserName(String userName) {
+
+		Optional<CompanyEntity> company = companyJpaRepository.findByUserName(userName);
+		if (company.isPresent()) {
+			return companyMapper.fromEntityToDomain(company.get());
+		}
+
+		final String format = String.format("Aucune société trouvée");
+		throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, format);
+
 	}
 }

@@ -46,8 +46,8 @@ public class ClientSpiAdapter implements ClientSpiService {
 		if (client.getId() != null && client.getId() == 0) {
 			client.setId(null);
 		}
-		
-		if (client.getAdresseClient() != null && client.getAdresseClient().getId() == 0) {			
+
+		if (client.getAdresseClient() != null && client.getAdresseClient().getId() == 0) {
 			client.getAdresseClient().setId(null);
 		}
 
@@ -137,10 +137,11 @@ public class ClientSpiAdapter implements ClientSpiService {
 	public void deleteClient(Long id) {
 		try {
 			clientJpaRepository.deleteById(id);
+		} catch (ServiceException e) {
+			throw e;
 		} catch (Exception e) {
 			log.error("error while deleting client", e);
-			throw new ServiceException(ErrorCatalog.DB_ERROR, "Un problème est survenu lors de la suppression client",
-					e);
+			throw new ServiceException(ErrorCatalog.DB_ERROR, "Impossible de supprimer le client", e);
 		}
 
 	}

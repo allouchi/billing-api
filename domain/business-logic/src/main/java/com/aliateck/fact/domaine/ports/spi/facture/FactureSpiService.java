@@ -7,9 +7,10 @@ import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.business.object.Prestation;
 
 public interface FactureSpiService {
-	Prestation addFacture(String siret,  boolean templateChoice, Prestation prestation, String pathRoot, Long moisFactureId);
+	Prestation addFacture(String siret, boolean templateChoice, Prestation prestation, String pathRoot,
+			Long moisFactureId, boolean storeFile);
 
-	void deleteFacture(Long factureId);	
+	void deleteFacture(Long factureId);
 
 	Facture updateFacture(Facture facture);
 
@@ -21,7 +22,7 @@ public interface FactureSpiService {
 
 	List<Facture> findByDateEcheance(Date dateEcheance);
 
-	List<Facture> findByDateEncaissement(Date dateEncaissement);	
+	List<Facture> findByDateEncaissement(Date dateEncaissement);
 
 	List<Facture> findAllBySiret(String siret);
 }

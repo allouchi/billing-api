@@ -22,7 +22,7 @@ DROP TABLE IF EXISTS T_ADRESSE;
 CREATE TABLE T_ROLE_REF
 (
      id bigint(20) NOT NULL AUTO_INCREMENT,
-     role varchar(255) NOT NULL,  
+     role_name varchar(255) NOT NULL,  
      description varchar(255) NOT NULL,
      PRIMARY KEY ( id )
 );
@@ -59,20 +59,22 @@ CREATE TABLE T_CONSULTANT (
 
 
 CREATE TABLE T_FACTURE (
-  id bigint(20) NOT NULL AUTO_INCREMENT,
-  client_prestation varchar(255) NOT NULL DEFAULT 0,
+ id bigint(20) NOT NULL AUTO_INCREMENT,
+  client_prestation varchar(255) NOT NULL,
   date_echeance varchar(255) DEFAULT NULL,
   date_encaissement varchar(255) DEFAULT NULL,
   date_facturation varchar(255) DEFAULT NULL, 
-  delai_paiement bigint(20) NOT NULL DEFAULT 0,
-  facture_status varchar(255) DEFAULT NULL DEFAULT 0,
-  file_path varchar(255) DEFAULT NULL DEFAULT 0,
-  frais_retard float DEFAULT NULL DEFAULT 0,
-  mois_facture varchar(255) DEFAULT NULL DEFAULT 0,
-  montanttva float NOT NULL DEFAULT 0,
-  nb_jour_retard bigint(20) DEFAULT NULL DEFAULT 0,
-  numero_commande varchar(255) NOT NULL DEFAULT 0,
-  numero_facture varchar(255) DEFAULT NULL DEFAULT 0,
+  delai_paiement bigint(20) NOT NULL,
+  facture_status varchar(255) DEFAULT NULL,
+  file_path varchar(255) DEFAULT NULL,
+  file_name varchar(255) DEFAULT NULL,
+  file_content longblob DEFAULT NULL,
+  frais_retard float DEFAULT NULL,
+  mois_facture varchar(255) DEFAULT NULL,
+  montanttva float NOT NULL,
+  nb_jour_retard bigint(20) DEFAULT NULL,
+  numero_commande varchar(255) NOT NULL,
+  numero_facture varchar(255) DEFAULT NULL,
   prix_totalht float NOT NULL DEFAULT 0,
   prix_totalttc float NOT NULL DEFAULT 0,
   quantite float NOT NULL DEFAULT 0, 
@@ -91,9 +93,9 @@ CREATE TABLE T_PRESTATION (
   tarifht float(11) NOT NULL DEFAULT 0,  
   date_debut varchar(255) DEFAULT NULL,
   date_fin varchar(255) DEFAULT NULL,
-  client_id bigint(20) DEFAULT NULL DEFAULT 0 REFERENCES T_CLIENT(id),
-  consultant_id bigint(20) DEFAULT NULL DEFAULT 0 REFERENCES T_CONSULTANT(id),
-  facture_id bigint(20) DEFAULT NULL DEFAULT 0 REFERENCES T_FACTURE(id), 
+  client_id bigint(20) DEFAULT NULL REFERENCES T_CLIENT(id),
+  consultant_id bigint(20) REFERENCES T_CONSULTANT(id),
+  facture_id bigint(20) REFERENCES T_FACTURE(id), 
   PRIMARY KEY (id)  
 ); 
 
@@ -113,28 +115,34 @@ CREATE TABLE T_COMPANY (
   
 );
 
-  CREATE TABLE T_USER ( 
+
+CREATE TABLE T_USER ( 
   id bigint(20) NOT NULL AUTO_INCREMENT,
   user_name VARCHAR(45) NOT NULL DEFAULT 0,
+  first_name VARCHAR(45) NOT NULL DEFAULT 0,
+  last_name VARCHAR(45) NOT NULL DEFAULT 0,
   password VARCHAR(45) NOT NULL DEFAULT 0,
-  actived TINYINT NOT NULL DEFAULT 1 ,
-  roles VARCHAR(45) NOT NULL DEFAULT 0,
-  company_id bigint(20) REFERENCES T_COMPANY(id), 
+  actived TINYINT NOT NULL DEFAULT 1 , 
+  company_id bigint(20) REFERENCES T_COMPANY(id),   
   PRIMARY KEY (id)
   );
 
-  /*
 CREATE TABLE T_ROLE ( 
-  id bigint(20) NOT NULL AUTO_INCREMENT, 
-  user_name varchar(45) NOT NULL DEFAULT 0,
-  role_name varchar(45) NOT NULL DEFAULT 0,
+  id bigint(20) NOT NULL AUTO_INCREMENT,  
+  role_name varchar(45) NOT NULL,
   description varchar(45) NOT NULL, 
-  PRIMARY KEY (id),
-  FOREIGN KEY (user_name) REFERENCES T_USER(user_name)
+  user_id bigint(20) REFERENCES T_USER(id), 
+  PRIMARY KEY (id)
+  
 );
 
-*/
+  
 
+  
+
+
+
+/*FOREIGN KEY (user_name) REFERENCES T_USER(user_name) */
 
 DROP TABLE IF EXISTS BATCH_STEP_EXECUTION_CONTEXT ;
 DROP TABLE IF EXISTS BATCH_JOB_EXECUTION_CONTEXT ;

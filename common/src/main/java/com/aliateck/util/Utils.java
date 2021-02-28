@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -70,6 +71,25 @@ public class Utils {
 			mois = mapMois.get(moisId);
 		}
 		return mois;
+	}
+
+	/*
+	 *
+	 */
+	public static String buildMoisFacture(String mois) {
+
+		String[] moisId = new String[1];
+
+		mapMois.forEach((key, value) -> {
+			if (value.equalsIgnoreCase(mois)) {
+				moisId[0] = key;
+			}
+		});
+
+		int anneeCourante = LocalDate.now().getYear();
+		LocalDate date = LocalDate.of(anneeCourante, Integer.parseInt(moisId[0]), 1);
+		String[] stringDate = date.toString().split("-");
+		return stringDate[0] + stringDate[1];
 	}
 
 	/*
@@ -191,8 +211,10 @@ public class Utils {
 	/*
 	 *
 	 */
-	public static <T> T updateIdToNull(T element) {
-		return null;
+	public static byte[] encodeToBase64(byte[] inputFile) {
+		Base64.Encoder encoder = Base64.getEncoder();
+		return encoder.encode(inputFile);
+
 	}
 
 	/*

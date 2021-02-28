@@ -26,16 +26,18 @@ import net.sf.jasperreports.engine.JasperReport;
 @Slf4j
 @Service
 public class EditionReportImpl implements EditionReportService {
+
 	private static final String TYPE_FILE = ".pdf";
 	private static final String IBAN = "IBAN: ";
 	private static final String BIC = "BIC: ";
-	private static final String FACTURE_LIBELLE = "FACTURE ";
+	private static final String FACTURE_LIBELLE = "FACTURE";
 	private static final String ESPACE_BLANC = " ";
-	private static final String TIRET = "-";
-	private static final String RETURN ="\n";
+	private static final String UNDERSCORE = "_";
+	private static final String RETURN = "\n";
 
 	@Override
-	public Map<String, Object> buildParamJasper(Company company, boolean templateChoice, Prestation prestation, Facture facture) {
+	public Map<String, Object> buildParamJasper(Company company, boolean templateChoice, Prestation prestation,
+			Facture facture) {
 
 		// infos company
 		String rsCompany = company.getSocialReason();
@@ -49,45 +51,38 @@ public class EditionReportImpl implements EditionReportService {
 		String numeroTva = company.getNumeroTva().trim();
 		String numeroBic = BIC + company.getNumeroBic();
 		String numeroIban = company.getNumeroIban();
-		
-		//IBAN: FR17 2004 1010 1254 0796 1J03 367
-		//IBAN  FR33 3000 2008 9700 0000 5896 J14
-		
-		String ibanAffichage  = IBAN + numeroIban.substring(0, 4)
-				+ ESPACE_BLANC + numeroIban.substring(4, 8)
-				+ ESPACE_BLANC + numeroIban.substring(8, 12)
-				+ ESPACE_BLANC + numeroIban.substring(12, 16)
-				+ ESPACE_BLANC + numeroIban.substring(16, 20)
-				+ ESPACE_BLANC + numeroIban.substring(20, 24)
-				+ ESPACE_BLANC + numeroIban.substring(24, 27);				
-		
+
+		// IBAN: FR17 2004 1010 1254 0796 1J03 367
+		// IBAN FR33 3000 2008 9700 0000 5896 J14
+
+		String ibanAffichage = IBAN + numeroIban.substring(0, 4) + ESPACE_BLANC + numeroIban.substring(4, 8)
+				+ ESPACE_BLANC + numeroIban.substring(8, 12) + ESPACE_BLANC + numeroIban.substring(12, 16)
+				+ ESPACE_BLANC + numeroIban.substring(16, 20) + ESPACE_BLANC + numeroIban.substring(20, 24)
+				+ ESPACE_BLANC + numeroIban.substring(24, 27);
+
 		String siretAffichage = null;
 		String tvaAffichage = null;
-		if(numeroSiret != null) {
-			siretAffichage = numeroSiret.substring(0, 3) 
-					+ ESPACE_BLANC + numeroSiret.substring(3, 6)	 
-					+ ESPACE_BLANC	+ numeroSiret.substring(6, 9)
-					+ ESPACE_BLANC	+ numeroSiret.substring(9, 13);
-					
+		if (numeroSiret != null) {
+			siretAffichage = numeroSiret.substring(0, 3) + ESPACE_BLANC + numeroSiret.substring(3, 6) + ESPACE_BLANC
+					+ numeroSiret.substring(6, 9) + ESPACE_BLANC + numeroSiret.substring(9, 13);
+
 		}
-		
-		if(numeroTva != null) {
-			tvaAffichage = numeroTva.trim().substring(0, 2) 
-					+ ESPACE_BLANC + numeroTva.trim().substring(2, 5)	 
-					+ ESPACE_BLANC	+ numeroTva.trim().substring(5, 8)
-					+ ESPACE_BLANC	+ numeroTva.trim().substring(8, 11)
-					+ ESPACE_BLANC	+ numeroTva.trim().substring(11, 13);
+
+		if (numeroTva != null) {
+			tvaAffichage = numeroTva.trim().substring(0, 2) + ESPACE_BLANC + numeroTva.trim().substring(2, 5)
+					+ ESPACE_BLANC + numeroTva.trim().substring(5, 8) + ESPACE_BLANC + numeroTva.trim().substring(8, 11)
+					+ ESPACE_BLANC + numeroTva.trim().substring(11, 13);
 		}
-			
+
 		// infos factures
 		String dateFacturation = facture.getDateFacturation();
-		String numeroFacture = facture.getNumeroFacture();		
+		String numeroFacture = facture.getNumeroFacture();
 		float montantHT = facture.getPrixTotalHT();
 		float montantTTC = facture.getPrixTotalTTC();
 		float montantTva = facture.getMontantTVA();
 		float quantite = facture.getQuantite();
 		String moisPrestation = facture.getMoisFacture();
-		String communeDateEdition = adresseCompany.getLocalite() + ", le " + dateFacturation;		
+		String communeDateEdition = adresseCompany.getLocalite() + ", le " + dateFacturation;
 
 		String designationLigne1 = "";
 		String designationLigne2 = "";
@@ -96,25 +91,27 @@ public class EditionReportImpl implements EditionReportService {
 		String numeroCommande = prestation.getNumeroCommande();
 		long delaiPaiement = prestation.getDelaiPaiement();
 		String clientPrestation = prestation.getClientPrestation();
-		String designation = prestation.getDesignation();		
+		String designation = prestation.getDesignation();
 		String consultantFonction = prestation.getConsultant().getFonction();
-		String consultantIdentite = prestation.getConsultant().getFirstName() + ESPACE_BLANC +  prestation.getConsultant().getLastName().toUpperCase();
-		
-		if(!templateChoice) {
+		String consultantIdentite = prestation.getConsultant().getFirstName() + ESPACE_BLANC
+				+ prestation.getConsultant().getLastName().toUpperCase();
+
+		if (!templateChoice) {
 			designationLigne1 = "Prestation" + ESPACE_BLANC + clientPrestation.toUpperCase() + ESPACE_BLANC + "du mois";
-			designationLigne2 = "de "+ moisPrestation + ESPACE_BLANC + "de "+ consultantIdentite;
+			designationLigne2 = "de " + moisPrestation + ESPACE_BLANC + "de " + consultantIdentite;
 		}
-		
+
 		// infos client
 		Adresse adresseClient = prestation.getClient().getAdresseClient();
 		String adresseCompleteClient = adresseClient.getNumero() + ESPACE_BLANC + adresseClient.getRue() + RETURN
-				+ adresseClient.getCodePostal() + ESPACE_BLANC + adresseClient.getLocalite() + RETURN + adresseClient.getPays();
+				+ adresseClient.getCodePostal() + ESPACE_BLANC + adresseClient.getLocalite() + RETURN
+				+ adresseClient.getPays();
 		String rsClient = prestation.getClient().getSocialReason();
-		String nameCompany[] = rsCompany.split(ESPACE_BLANC);
-		
-		String fileName = FACTURE_LIBELLE + nameCompany[0] + TIRET + rsClient + " de " + moisPrestation + ESPACE_BLANC
-				+ numeroFacture.substring(0, 4) + TIRET + numeroFacture.split("-")[1]+TYPE_FILE;		
-        
+		// Facture_ALIATECK_FINAXYS_Prestation-SG_12-2020_1000.pdf
+		String moisFacture = Utils.buildMoisFacture(facture.getMoisFacture());
+		String fileName = FACTURE_LIBELLE + UNDERSCORE + rsCompany + UNDERSCORE + rsClient + UNDERSCORE + moisFacture
+				+ UNDERSCORE + numeroFacture.split("-")[1] + TYPE_FILE;
+
 		// - Parametres envoyes au rapport
 		Map<String, Object> parameters = new HashMap<>();
 		parameters.put("rs_company", rsCompany);
@@ -125,7 +122,7 @@ public class EditionReportImpl implements EditionReportService {
 		parameters.put("numero_tva", tvaAffichage);
 		parameters.put("numero_ape", numeroApe);
 		parameters.put("code_iban", ibanAffichage);
-		parameters.put("code_bic", numeroBic);		
+		parameters.put("code_bic", numeroBic);
 		parameters.put("date_facturation", dateFacturation);
 		parameters.put("rs_client", rsClient);
 		parameters.put("adresse_client", adresseCompleteClient);
@@ -141,46 +138,50 @@ public class EditionReportImpl implements EditionReportService {
 		parameters.put("designation", designation);
 		parameters.put("delai_paiement", delaiPaiement);
 		parameters.put("client_prestation", clientPrestation);
-		if(!templateChoice) {
+		if (!templateChoice) {
 			parameters.put("designation_ligne1", designationLigne1);
 			parameters.put("designation_ligne2", designationLigne2);
-		}else {
+		} else {
 			parameters.put("designation", designation);
 		}
-		
+
 		parameters.put("fonction_consultant", consultantFonction);
 		parameters.put("fileName", fileName);
 		return parameters;
 	}
 
 	@Override
-	public void buildPdfFacture(Map<String, Object> paramJasper, boolean templateChoice, String path) throws JRException, IOException {
-
+	public byte[] buildPdfFacture(Map<String, Object> paramJasper, boolean templateChoice, String path,
+			boolean storeFile) throws JRException, IOException {
+		byte[] file = null;
 		try {
 			File templateFile = null;
 			Map<String, File> mapFiles = Utils.loadJasperFile();
 			String outputFileName = (String) paramJasper.get("fileName");
-			if(templateChoice) {
+			if (templateChoice) {
 				templateFile = mapFiles.get("Custom");
-			}else {
+			} else {
 				templateFile = mapFiles.get("Default");
 			}
 			JasperReport jasperDesign = JasperCompileManager.compileReport(templateFile.getPath());
 			JRDataSource dataSource = new JREmptyDataSource();
 			// - Execution du rapport
 			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperDesign, paramJasper, dataSource);
-			// - Creation du rapport au format PDF			
-			JasperExportManager.exportReportToPdfFile(jasperPrint, path + File.separator + outputFileName);
-			//JasperExportManager.exportReportToXmlFile(path+"\\", outputFileName, false);
-			// JasperExportManager.exportReportToPdf(jasperPrint);
+			// - Creation du rapport au format PDF
+			if (storeFile) {
+				JasperExportManager.exportReportToPdfFile(jasperPrint, path + File.separator + outputFileName);
+			}
+
+			// JasperExportManager.exportReportToXmlFile(path+"\\", outputFileName, false);
+			file = JasperExportManager.exportReportToPdf(jasperPrint);
 			log.info("********************* Fin génération du fichier pdf *********************");
-			
+
 		} catch (Exception e) {
 			log.info("Problème lors du chargement des fichiers templates");
 			throw e;
-		}			
+		}
+		return file;
 
-	}		
+	}
 
-	
 }

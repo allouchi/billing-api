@@ -10,48 +10,40 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class UserDetailMapper implements UserDetails {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private String userName;
-	private String password;	
-	private boolean actived;
-	private List<GrantedAuthority> roles = new ArrayList<>();
-	
-     
-	public UserDetailMapper(User user) {
-		
-		 String[] split = user.getRoles().split(",");
-	     for (int i = 0; i < split.length; i++) {
-	    	 roles.add(new SimpleGrantedAuthority("role:"+split[i]));
-	     }
+	private User user;
 
-		this.userName = user.getUserName();
-		this.password = new BCryptPasswordEncoder().encode(user.getPassword());
-		//this.password = user.getPassword();
-		this.actived = user.getActived();		
-				
+	public UserDetailMapper(User user) {
+		this.user = user;
 	}
-	
 
 	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {		
-		return roles;
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+
+		List<Role> roles = user.getRoles();
+		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+
+		for (Role role : roles) {
+			authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
+		}
+		return authorities;
 	}
 
 	@Override
 	public String getPassword() {
-		
-		return password;
+
+		return new BCryptPasswordEncoder().encode(user.getPassword());
 	}
 
 	@Override
 	public String getUsername() {
-		
-		return userName;
+
+		return user.getUserName();
 	}
 
 	@Override
@@ -71,7 +63,7 @@ public class UserDetailMapper implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		return actived;
+		return user.getActived();
 	}
 
 }

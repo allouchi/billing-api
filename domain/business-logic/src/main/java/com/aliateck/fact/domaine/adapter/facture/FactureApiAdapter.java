@@ -17,37 +17,37 @@ import lombok.experimental.FieldDefaults;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FactureApiAdapter implements FactureApiService {
-  FactureSpiService factureSpiService;
+	FactureSpiService factureSpiService;
 
-  @Override
-  public Prestation addFacture(String siret, boolean templateChoice, Prestation prestation, String pathRoot, Long moisFactureId) {
-    return factureSpiService.addFacture(siret, templateChoice, prestation, pathRoot, moisFactureId);
-  }
+	@Override
+	public Prestation addFacture(String siret, boolean templateChoice, Prestation prestation, String pathRoot,
+			Long moisFactureId, boolean storeFile) {
+		return factureSpiService.addFacture(siret, templateChoice, prestation, pathRoot, moisFactureId, storeFile);
+	}
 
-  @Override
-  public void deleteFacture(Long factureId) {
-    factureSpiService.deleteFacture(factureId);
-  }  
-  
-  @Override
-  public Facture updateFacture(Facture facture) {
-    return factureSpiService.updateFacture(facture);
-  }
+	@Override
+	public void deleteFacture(Long factureId) {
+		factureSpiService.deleteFacture(factureId);
+	}
 
-  @Override
-  public Facture findById(Long id) {
-    return factureSpiService.findById(id);
-  }
+	@Override
+	public Facture updateFacture(Facture facture) {
+		return factureSpiService.updateFacture(facture);
+	}
 
-  @Override
-  public Facture findByNumero(String numeroFacture) {
-    return factureSpiService.findByNumeroFacture(numeroFacture);
-  }
+	@Override
+	public Facture findById(Long id) {
+		return factureSpiService.findById(id);
+	}
 
-  @Override
-  public List<Facture> findAllBySiret(String siret) {
-    return factureSpiService.findAllBySiret(siret);
-  }
+	@Override
+	public Facture findByNumero(String numeroFacture) {
+		return factureSpiService.findByNumeroFacture(numeroFacture);
+	}
 
- 
+	@Override
+	public List<Facture> findAllBySiret(String siret) {
+		return factureSpiService.findAllBySiret(siret);
+	}
+
 }

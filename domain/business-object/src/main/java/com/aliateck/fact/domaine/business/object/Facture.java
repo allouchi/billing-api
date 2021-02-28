@@ -29,13 +29,16 @@ public class Facture {
 	float prixTotalTTC;
 	long nbJourRetard;
 	float fraisRetard;
+	Float tarifHT;
 	long delaiPaiement;
 	String factureStatus;
-	String statusDesc; 
+	String statusDesc;
 	float quantite;
 	String numeroCommande;
 	String clientPrestation;
 	String filePath;
+	String fileName;
+	byte[] fileContent;
 	String moisFacture;
 
 }

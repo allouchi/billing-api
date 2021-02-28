@@ -28,6 +28,7 @@ public interface CommonResource {
     String USERS = "/users";
     String BATCHS = "/batchs";
     String ROLES = "/roles";
+    String LOGIN = "/login";
    
   }
 
