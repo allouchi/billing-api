@@ -15,7 +15,7 @@
 
     <dependencies>   
  
-        <dependency><artifactId>billing-api-common</artifactId>
+        <dependency><artifactId>billing-api-commun</artifactId>
         	<groupId>com.aliateck</groupId>
         	<version>0.0.1-SNAPSHOT</version>
         </dependency>

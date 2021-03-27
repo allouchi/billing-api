@@ -3,6 +3,7 @@ package com.aliateck.fact.infrastructure.repository.edition;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -182,6 +183,12 @@ public class EditionReportImpl implements EditionReportService {
 		}
 		return file;
 
+	}
+
+	@Override
+	public void buildSuiviFactures(List<Facture> factures) {
+		
+		
 	}
 
 }
