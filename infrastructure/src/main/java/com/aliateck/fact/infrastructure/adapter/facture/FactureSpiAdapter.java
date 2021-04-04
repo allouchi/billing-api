@@ -108,7 +108,7 @@ public class FactureSpiAdapter implements FactureSpiService {
 
         List<FactureEntity> listeFactures = entitySpiService.findAllFacturesBySiret(siret);
         List<Facture> suiviFacture = factureMapper.fromEntityToDomain(listeFactures);
-        editionReportService.buildSuiviFactures(suiviFacture);
+        editionReportService.buildSuiviFactures(suiviFacture, pathFile);
       }
 
     } catch (Exception e) {
