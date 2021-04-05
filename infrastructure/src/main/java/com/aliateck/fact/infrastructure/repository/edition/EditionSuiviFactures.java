@@ -6,11 +6,18 @@ import java.util.List;
 import java.util.logging.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import com.aliateck.fact.domaine.business.object.Facture;
+import com.aliateck.fact.infrastructure.repository.edition.commun.HSSFiSelectionColors;
 
 
 public class EditionSuiviFactures {
@@ -20,10 +27,136 @@ public class EditionSuiviFactures {
   HSSFCellStyle titleStyle;
   HSSFCellStyle normalStyle;
   HSSFCellStyle dateStyle;
+  protected static final String DEFAULT_FONT_NAME = "Arial";
+  protected HSSFCellStyle titre;
+  protected HSSFCellStyle ctitre;
 
-  public EditionSuiviFactures() {
 
+
+  protected static HSSFFont getFont(HSSFWorkbook wb, String fontName, short fontSize,
+      short fontColor, boolean bold) {
+    HSSFFont font = wb.createFont();
+    font.setFontHeightInPoints(fontSize);
+    font.setFontName(fontName);
+    font.setBold(bold);
+    font.setItalic(false);
+    font.setStrikeout(false);
+    font.setColor(fontColor);
+    return font;
   }
+
+  /**
+   * Creates and returns a cellstyle font that is Black Aerial 9 normal boldweight.
+   * 
+   * @param wb the workbook
+   */
+  protected static HSSFFont getNormalFont(HSSFWorkbook wb) {
+    return getFont(wb, DEFAULT_FONT_NAME, (short) 9, HSSFiSelectionColors.BLACK.getIndex(), false);
+  }
+
+
+  /**
+   * Creates and returns a cellstyle font that is Black Aerial 9 bold.
+   * 
+   * @param wb the workbook
+   */
+  protected static HSSFFont getBoldFont(HSSFWorkbook wb) {
+    return getFont(wb, DEFAULT_FONT_NAME, (short) 9, HSSFiSelectionColors.BLACK.getIndex(), true);
+  }
+
+  protected static HSSFFont getTitleFont(HSSFWorkbook wb, short fontSize, short fontColor) {
+    return getTitleFont(wb, DEFAULT_FONT_NAME, fontSize, fontColor);
+  }
+
+  protected static HSSFCellStyle getTitleStyle(HSSFWorkbook wb, short cellColor, short policeColor,
+      short policeSize) {
+    HSSFCellStyle titre = wb.createCellStyle();
+    titre.setAlignment(HorizontalAlignment.CENTER);
+    titre.setVerticalAlignment(VerticalAlignment.CENTER);
+    titre.setWrapText(false);
+    titre.setFillForegroundColor(cellColor);
+    titre.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+    titre.setFont(getTitleFont(wb, policeSize, policeColor));
+
+    return titre;
+  }
+
+  /**
+   * Creates and returns a cellstyle font that is bold with the requested font, size and color.
+   * 
+   * @param wb the workbook
+   * @param fontName name of the font eg Arial.
+   * @param fontSize size of the font eg 12.
+   * @param fontColor color of the font eg HSSFiSelectionColors.BLACK.index.
+   */
+  protected static HSSFFont getTitleFont(HSSFWorkbook wb, String fontName, short fontSize,
+      short fontColor) {
+    return getFont(wb, fontName, fontSize, fontColor, true);
+  }
+
+  /**
+   * Creates and returns a cellstyle that is aligned centre and with the requested color.
+   * 
+   * @param wb the workbook
+   * @param color color of the forground for the cell.
+   */
+  protected static HSSFCellStyle getTitleStyle(HSSFWorkbook wb, short color) {
+    HSSFCellStyle titre = wb.createCellStyle();
+    titre.setAlignment(HorizontalAlignment.CENTER);
+    titre.setVerticalAlignment(VerticalAlignment.CENTER);
+    titre.setWrapText(false);
+
+    titre.setFillForegroundColor(color);
+    titre.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+    return titre;
+  }
+
+  /**
+   *
+   * @param wb
+   */
+  protected void createStyles(HSSFWorkbook wb) {
+
+    // fonts
+    HSSFFont tFont = getTitleFont(wb, "Arial", (short) 8, HSSFiSelectionColors.BLACK.getIndex());
+    HSSFFont normalFont =
+        getTitleFont(wb, "Arial", (short) 8, HSSFiSelectionColors.BLACK.getIndex());
+    normalFont.setBold(true);
+
+    columnHeaderStyle = getTitleStyle(wb, HSSFiSelectionColors.WHITE.getIndex());
+    columnHeaderStyle.setFont(tFont);
+    columnHeaderStyle.setWrapText(true);
+    columnHeaderStyle.setAlignment(HorizontalAlignment.CENTER);
+    columnHeaderStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+
+    // titre de la feuille
+    titre = wb.createCellStyle();
+    titre.setAlignment(HorizontalAlignment.LEFT);
+    titre.setVerticalAlignment(VerticalAlignment.CENTER);
+    titre.setWrapText(false);
+    HSSFFont font = wb.createFont();
+    font.setFontHeightInPoints((short) 12);
+    font.setFontName(DEFAULT_FONT_NAME);
+    font.setBold(true);
+    font.setItalic(false);
+    font.setStrikeout(false);
+    titre.setFont(font);
+
+    // commentaire titre feuille
+    ctitre = wb.createCellStyle();
+    ctitre.setAlignment(HorizontalAlignment.LEFT);
+    ctitre.setVerticalAlignment(VerticalAlignment.CENTER);
+    ctitre.setWrapText(false);
+    font = wb.createFont();
+    font.setFontHeightInPoints((short) 10);
+    font.setFontName(DEFAULT_FONT_NAME);
+    font.setBold(false);
+    font.setItalic(true);
+    font.setStrikeout(false);
+    ctitre.setFont(font);
+  }
+
+
 
   /**
    * Création du fichier
@@ -41,24 +174,37 @@ public class EditionSuiviFactures {
 
       fs = new POIFSFileSystem(template);
       wb = new HSSFWorkbook(fs);
+      createStyles(wb);
       HSSFSheet sheet1 = wb.getSheetAt(0);
-      int rowCounter = 3;
+      createHeaders(sheet1, wb);
+      ligneNb++;
+
+
       short cellIdx = 0;
 
       for (Facture facture : factures) {
         // Création d'une ligne
-        // Création d'une ligne
-        HSSFRow row = getOrCreateRow(sheet1, rowCounter++);
-        createCell(wb, row, cellIdx++).setCellValue(facture.getNumeroFacture());
-        createCell(wb, row, cellIdx++).setCellValue(facture.getPrixTotalHT());
-        createCell(wb, row, cellIdx++).setCellValue(facture.getPrixTotalTTC());
-        createCell(wb, row, cellIdx++).setCellValue(facture.getDateFacturation());
-        createCell(wb, row, cellIdx++).setCellValue(facture.getDelaiPaiement());
-        createCell(wb, row, cellIdx++).setCellValue(facture.getDateEcheance());
-        createCell(wb, row, cellIdx++).setCellValue(facture.getNbJourRetard());
-        createCell(wb, row, cellIdx++).setCellValue(facture.getFactureStatus());
-        createCell(wb, row, cellIdx++).setCellValue(facture.getDateEncaissement());
-        createCell(wb, row, cellIdx++).setCellValue(facture.getFraisRetard());
+        HSSFRow row = getOrCreateRow(sheet1, ligneNb++);
+        createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+            .setCellValue(facture.getNumeroFacture());
+        createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+            .setCellValue(facture.getPrixTotalHT() + " €");
+        createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+            .setCellValue(facture.getPrixTotalTTC() + " €");
+        createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+            .setCellValue(facture.getDateFacturation());
+        createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+            .setCellValue(facture.getDelaiPaiement());
+        createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+            .setCellValue(facture.getDateEcheance());
+        createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+            .setCellValue(facture.getNbJourRetard());
+        createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+            .setCellValue(facture.getFactureStatus());
+        createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+            .setCellValue(facture.getDateEncaissement());
+        createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+            .setCellValue(facture.getFraisRetard());
         // retour à la ligne suivante
         cellIdx = 0;
       }
@@ -89,26 +235,20 @@ public class EditionSuiviFactures {
     logger.info("Saving excel file...");
     // transfer du contenu dans le fichier temporaire
     // creation d'un output stream
-    FileOutputStream fileOut = null;
 
-    try {
-      fileOut = new FileOutputStream(fileName);
+    try (FileOutputStream fileOut = new FileOutputStream(fileName)) {
       wb.write(fileOut);
-    } catch (Exception e) {
-      logger.info("Error creating EXCEL output stream: " + e);
-    } finally {
-      //
-      // fermeture du fichier temporaire
-      //
-      try {
-        if (fileOut != null) {
-          fileOut.close();
-        }
-      } catch (Exception e) {
-        logger.info("Error closing EXCEL output stream: " + e);
-
-      }
+    } catch (Exception fnfe) {
+      logger.info("Error creating EXCEL output stream: " + fnfe);
     }
+
+  }
+
+  protected static HSSFCell createCell(HSSFWorkbook wb, HSSFRow row, int column,
+      HSSFCellStyle cellStyle) {
+    HSSFCell cell = row.createCell((short) column);
+    cell.setCellStyle(cellStyle);
+    return cell;
   }
 
   /**
@@ -121,7 +261,6 @@ public class EditionSuiviFactures {
    */
   private HSSFCell createCell(HSSFWorkbook wb, HSSFRow row, int column) {
     return row.createCell((short) column);
-
   }
 
   /**
@@ -138,6 +277,59 @@ public class EditionSuiviFactures {
       row = sheet.createRow(lineNb);
     }
     return row;
+  }
+
+  /**
+   * Applies the border.
+   * 
+   * @param wb the workbook
+   * @param thickness thickness style of the border eg BorderStyle.THIN
+   * @param color color of the border HSSFiSelectionColors.BLACK.index
+   */
+  protected static HSSFCellStyle applyBorder(HSSFCellStyle style, BorderStyle thickness,
+      short color) {
+    HSSFCellStyle rstyle = style;
+    // Style the cell with borders all around.
+    rstyle.setBorderBottom(thickness);
+    rstyle.setBottomBorderColor(color);
+    rstyle.setBorderLeft(thickness);
+    rstyle.setLeftBorderColor(color);
+    rstyle.setBorderRight(thickness);
+    rstyle.setRightBorderColor(color);
+    rstyle.setBorderTop(thickness);
+    rstyle.setTopBorderColor(color);
+    return rstyle;
+  }
+
+  private HSSFCellStyle applyBorder(HSSFCellStyle style) {
+    return applyBorder(style, BorderStyle.THIN, HSSFiSelectionColors.BLACK.getIndex());
+  }
+
+
+  private void createHeaders(HSSFSheet sheet1, HSSFWorkbook wb) {
+    HSSFRow row = getOrCreateRow(sheet1, ligneNb++);
+    short cellIdx = 0;
+    createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+        .setCellValue(new HSSFRichTextString("Numéro de facture"));
+    createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+        .setCellValue(new HSSFRichTextString("Montant HT"));
+    createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+        .setCellValue(new HSSFRichTextString("Montant TTC"));
+    createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+        .setCellValue(new HSSFRichTextString("Date de facture"));
+    createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+        .setCellValue(new HSSFRichTextString("Délai"));
+    createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+        .setCellValue(new HSSFRichTextString("Date échéance"));
+    createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+        .setCellValue(new HSSFRichTextString("Jours retard"));
+    createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+        .setCellValue(new HSSFRichTextString("Facture réglée"));
+    createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+        .setCellValue(new HSSFRichTextString("Date encaissement"));
+    createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+        .setCellValue(new HSSFRichTextString("Frais de retard"));
+
   }
 
 }

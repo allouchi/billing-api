@@ -192,23 +192,14 @@ public class EditionReportImpl implements EditionReportService {
   @Override
   public void buildSuiviFactures(List<Facture> factures, String path) {
 
-    File file = new File(path + File.separator + "suivi-facturation.xls");
-    InputStream targetStream = null;
+    File file = new File(path);
 
     EditionSuiviFactures editionFacture = new EditionSuiviFactures();
-    try {
-      targetStream = new FileInputStream(file);
+    try (InputStream targetStream = new FileInputStream(file)) {
+
       editionFacture.build(factures, targetStream, file.getPath());
     } catch (Exception e) {
-      e.printStackTrace();
-    } finally {
-      if (targetStream != null) {
-        try {
-          targetStream.close();
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-      }
+      log.info("Problème lors de la création du fichier excel");
     }
 
   }
