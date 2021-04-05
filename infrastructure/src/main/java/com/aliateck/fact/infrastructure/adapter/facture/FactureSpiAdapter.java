@@ -141,7 +141,7 @@ public class FactureSpiAdapter implements FactureSpiService {
             entitySpiService.findAllFacturesBySiret(Utils.getSiretFromPath(filePath));
         List<Facture> suiviFacture = factureMapper.fromEntityToDomain(listeFactures);
         editionReportService.buildSuiviFactures(suiviFacture,
-            Utils.buildPathSuivi(filePath, fileSuiviName));
+            Utils.buildPathSuivi(rootPath + File.separator + filePath, fileSuiviName));
 
       }
 
