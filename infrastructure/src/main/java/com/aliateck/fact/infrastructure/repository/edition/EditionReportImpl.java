@@ -199,7 +199,7 @@ public class EditionReportImpl implements EditionReportService {
 
       editionFacture.build(factures, targetStream, file.getPath());
     } catch (Exception e) {
-      log.info("Problème lors de la création du fichier excel");
+      log.info("Problème lors de la création du fichier Excel");
     }
 
   }
