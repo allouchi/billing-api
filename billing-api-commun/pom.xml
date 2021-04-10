@@ -11,8 +11,7 @@
 
 
 	<artifactId>billing-api-commun</artifactId>
-
-	<packaging>pom</packaging>
+	<packaging>jar</packaging>
 
 	<dependencies>
 		<dependency>
