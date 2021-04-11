@@ -27,7 +27,8 @@ public class EditionSuiviFactures {
   HSSFCellStyle columnHeaderStyle;
   HSSFCellStyle titleStyle;
   HSSFCellStyle normalStyle;
-  HSSFCellStyle dateStyle;
+  HSSFCellStyle statutStyleOk;
+  HSSFCellStyle statutStyleKo;
   protected static final String DEFAULT_FONT_NAME = "Arial";
   protected HSSFCellStyle titre;
   protected HSSFCellStyle ctitre;
@@ -133,12 +134,23 @@ public class EditionSuiviFactures {
     columnHeaderStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 
 
-    normalStyle = getTitleStyle(wb, HSSFiSelectionColors.CORAL.getIndex());
+    normalStyle = getTitleStyle(wb, HSSFiSelectionColors.WHITE.getIndex());
     normalStyle.setFont(normalFont);
     normalStyle.setWrapText(true);
     normalStyle.setAlignment(HorizontalAlignment.CENTER);
     normalStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 
+    statutStyleOk = getTitleStyle(wb, HSSFiSelectionColors.GREEN.getIndex());
+    statutStyleOk.setFont(normalFont);
+    statutStyleOk.setWrapText(true);
+    statutStyleOk.setAlignment(HorizontalAlignment.CENTER);
+    statutStyleOk.setVerticalAlignment(VerticalAlignment.CENTER);
+
+    statutStyleKo = getTitleStyle(wb, HSSFiSelectionColors.RED.getIndex());
+    statutStyleKo.setFont(normalFont);
+    statutStyleKo.setWrapText(true);
+    statutStyleKo.setAlignment(HorizontalAlignment.CENTER);
+    statutStyleKo.setVerticalAlignment(VerticalAlignment.CENTER);
 
     // titre de la feuille
     titre = wb.createCellStyle();
@@ -239,10 +251,19 @@ public class EditionSuiviFactures {
             .setCellValue(facture.getDateEcheance());
         createCell(wb, row, cellIdx++, applyBorder(normalStyle))
             .setCellValue(facture.getNbJourRetard());
-        createCell(wb, row, cellIdx++, applyBorder(normalStyle))
-            .setCellValue(facture.getFactureStatus());
-        createCell(wb, row, cellIdx++, applyBorder(normalStyle))
-            .setCellValue(facture.getDateEncaissement());
+        if (facture.getFactureStatus().equalsIgnoreCase("OK")) {
+          createCell(wb, row, cellIdx++, applyBorder(statutStyleOk))
+              .setCellValue(facture.getFactureStatus());
+          createCell(wb, row, cellIdx++, applyBorder(statutStyleOk))
+              .setCellValue(facture.getDateEncaissement());
+        } else {
+          createCell(wb, row, cellIdx++, applyBorder(statutStyleKo))
+              .setCellValue(facture.getFactureStatus());
+          createCell(wb, row, cellIdx++, applyBorder(statutStyleKo))
+              .setCellValue(facture.getDateEncaissement());
+        }
+
+
         createCell(wb, row, cellIdx++, applyBorder(normalStyle))
             .setCellValue(facture.getFraisRetard());
         // retour à la ligne suivante
