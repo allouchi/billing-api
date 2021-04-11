@@ -160,7 +160,7 @@ public class EditionReportImpl implements EditionReportService {
     byte[] file = null;
     try {
       File templateFile = null;
-      Map<String, File> mapFiles = Utils.loadJasperFile();
+      Map<String, File> mapFiles = Utils.loadFilesResources();
       String outputFileName = (String) paramJasper.get("fileName");
       if (templateChoice) {
         templateFile = mapFiles.get("Custom");
@@ -192,14 +192,26 @@ public class EditionReportImpl implements EditionReportService {
   @Override
   public void buildSuiviFactures(List<Facture> factures, String path) {
 
-    File file = new File(path);
 
+    InputStream targetStream = null;
     EditionSuiviFactures editionFacture = new EditionSuiviFactures();
-    try (InputStream targetStream = new FileInputStream(file)) {
+    try {
+      Map<String, File> resources = Utils.loadFilesResources();
+      File templateSuivi = resources.get("Suivi");
+      targetStream = new FileInputStream(templateSuivi);
+      editionFacture.build(factures, targetStream, path);
 
-      editionFacture.build(factures, targetStream, file.getPath());
     } catch (Exception e) {
-      log.info("Problème lors de la création du fichier Excel");
+      log.info("Problème lors de la création du fichier Excel : " + e.getMessage());
+    } finally {
+      if (targetStream != null) {
+        try {
+          targetStream.close();
+        } catch (IOException e) {
+          log.info("Problème lors de la fermeture du fichier Excel : " + e.getMessage());
+        }
+      }
+
     }
 
   }

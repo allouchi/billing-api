@@ -23,7 +23,7 @@ import com.aliateck.fact.infrastructure.repository.edition.commun.HSSFiSelection
 
 public class EditionSuiviFactures {
   private static final Logger logger = Logger.getLogger(EditionSuiviFactures.class.getName());
-  short ligneNb = 6;
+  short ligneNb = 5;
   HSSFCellStyle columnHeaderStyle;
   HSSFCellStyle titleStyle;
   HSSFCellStyle normalStyle;
@@ -121,17 +121,23 @@ public class EditionSuiviFactures {
     // fonts
     HSSFFont tFont =
         getTitleFont(wb, DEFAULT_FONT_NAME, (short) 8, HSSFiSelectionColors.BLACK.getIndex());
+    tFont.setBold(true);
     HSSFFont normalFont =
         getTitleFont(wb, DEFAULT_FONT_NAME, (short) 8, HSSFiSelectionColors.BLACK.getIndex());
-    normalFont.setBold(true);
+    // normalFont.setBold(true);
 
-    columnHeaderStyle = getTitleStyle(wb, HSSFiSelectionColors.WHITE.getIndex());
+    columnHeaderStyle = getTitleStyle(wb, HSSFiSelectionColors.LIGHT_CORNFLOWER_BLUE.getIndex());
     columnHeaderStyle.setFont(tFont);
     columnHeaderStyle.setWrapText(true);
     columnHeaderStyle.setAlignment(HorizontalAlignment.CENTER);
     columnHeaderStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-    columnHeaderStyle.setFillForegroundColor((short) 1);
 
+
+    normalStyle = getTitleStyle(wb, HSSFiSelectionColors.CORAL.getIndex());
+    normalStyle.setFont(normalFont);
+    normalStyle.setWrapText(true);
+    normalStyle.setAlignment(HorizontalAlignment.CENTER);
+    normalStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 
 
     // titre de la feuille
@@ -219,25 +225,25 @@ public class EditionSuiviFactures {
       for (Facture facture : factures) {
         // Création d'une ligne
         HSSFRow row = getOrCreateRow(sheet1, ligneNb++);
-        createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+        createCell(wb, row, cellIdx++, applyBorder(normalStyle))
             .setCellValue(facture.getNumeroFacture());
-        createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+        createCell(wb, row, cellIdx++, applyBorder(normalStyle))
             .setCellValue(facture.getPrixTotalHT() + " €");
-        createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+        createCell(wb, row, cellIdx++, applyBorder(normalStyle))
             .setCellValue(facture.getPrixTotalTTC() + " €");
-        createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+        createCell(wb, row, cellIdx++, applyBorder(normalStyle))
             .setCellValue(facture.getDateFacturation());
-        createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+        createCell(wb, row, cellIdx++, applyBorder(normalStyle))
             .setCellValue(facture.getDelaiPaiement());
-        createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+        createCell(wb, row, cellIdx++, applyBorder(normalStyle))
             .setCellValue(facture.getDateEcheance());
-        createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+        createCell(wb, row, cellIdx++, applyBorder(normalStyle))
             .setCellValue(facture.getNbJourRetard());
-        createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+        createCell(wb, row, cellIdx++, applyBorder(normalStyle))
             .setCellValue(facture.getFactureStatus());
-        createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+        createCell(wb, row, cellIdx++, applyBorder(normalStyle))
             .setCellValue(facture.getDateEncaissement());
-        createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+        createCell(wb, row, cellIdx++, applyBorder(normalStyle))
             .setCellValue(facture.getFraisRetard());
         // retour à la ligne suivante
         cellIdx = 0;
@@ -245,8 +251,8 @@ public class EditionSuiviFactures {
       }
       ligneNb++;
       HSSFRow row = getOrCreateRow(sheet1, ligneNb++);
-      createCell(wb, row, 0, applyBorder(columnHeaderStyle)).setCellValue("Total TVA");
-      createCell(wb, row, 1, applyBorder(columnHeaderStyle)).setCellValue(totalTva + "€");
+      createCell(wb, row, 0, applyBorder(normalStyle)).setCellValue("Total TVA");
+      createCell(wb, row, 1, applyBorder(normalStyle)).setCellValue(totalTva + "€");
       // sauvegarder le fichier de sortie
       saveWorkBook(wb, path);
 

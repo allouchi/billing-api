@@ -92,13 +92,15 @@ public class Utils {
   /*
    *
    */
-  public static Map<String, File> loadJasperFile() throws IOException {
+  public static Map<String, File> loadFilesResources() throws IOException {
     Map<String, File> map = new HashMap<>();
 
     File customFile = new ClassPathResource("data/customTemplate.jrxml").getFile();
     File defaultFile = new ClassPathResource("data/defaultTemplate.jrxml").getFile();
+    File excelFile = new ClassPathResource("data/suivi-facturation.xls").getFile();
     map.put("Default", defaultFile);
     map.put("Custom", customFile);
+    map.put("Suivi", excelFile);
     return map;
   }
 
@@ -241,7 +243,7 @@ public class Utils {
     }
     for (Facture facture : listeFactures) {
       String filePath = facture.getFilePath();
-      String replace = filePath.replaceAll("\\\\", REGEX);
+      String replace = filePath.replace("\\\\", REGEX);
       replace = replace.substring(1, replace.length());
       String[] raisonSociale = replace.split(REGEX);
       if (rsClient != null && raisonSociale != null
