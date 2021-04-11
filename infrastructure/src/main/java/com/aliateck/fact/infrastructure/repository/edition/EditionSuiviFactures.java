@@ -130,6 +130,9 @@ public class EditionSuiviFactures {
     columnHeaderStyle.setWrapText(true);
     columnHeaderStyle.setAlignment(HorizontalAlignment.CENTER);
     columnHeaderStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+    columnHeaderStyle.setFillForegroundColor((short) 1);
+
+
 
     // titre de la feuille
     titre = wb.createCellStyle();
@@ -159,6 +162,37 @@ public class EditionSuiviFactures {
   }
 
 
+  private void createTitle(HSSFSheet sheet1, HSSFWorkbook wb) {
+    HSSFRow row = getOrCreateRow(sheet1, 1);
+    createCell(wb, row, 0, applyBorder(titre)).setCellValue(
+        new HSSFRichTextString("Fichier de suivi facturation : " + LocalDate.now().getYear()));
+  }
+
+  private void createHeaders(HSSFSheet sheet1, HSSFWorkbook wb) {
+    HSSFRow row = getOrCreateRow(sheet1, 4);
+    short cellIdx = 0;
+    createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+        .setCellValue(new HSSFRichTextString("Numéro de facture"));
+    createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+        .setCellValue(new HSSFRichTextString("Montant HT"));
+    createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+        .setCellValue(new HSSFRichTextString("Montant TTC"));
+    createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+        .setCellValue(new HSSFRichTextString("Date de facture"));
+    createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+        .setCellValue(new HSSFRichTextString("Délai"));
+    createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+        .setCellValue(new HSSFRichTextString("Date échéance"));
+    createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+        .setCellValue(new HSSFRichTextString("Jours retard"));
+    createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+        .setCellValue(new HSSFRichTextString("Statut facture"));
+    createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+        .setCellValue(new HSSFRichTextString("Date encaissement"));
+    createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
+        .setCellValue(new HSSFRichTextString("Frais de retard"));
+
+  }
 
   /**
    * Création du fichier
@@ -173,10 +207,11 @@ public class EditionSuiviFactures {
 
     try (POIFSFileSystem fs = new POIFSFileSystem(template);
         HSSFWorkbook wb = new HSSFWorkbook(fs)) {
+
       createStyles(wb);
       HSSFSheet sheet1 = wb.getSheetAt(0);
+      createTitle(sheet1, wb);
       createHeaders(sheet1, wb);
-      ligneNb++;
 
       float totalTva = 0;
       short cellIdx = 0;
@@ -230,8 +265,6 @@ public class EditionSuiviFactures {
   private void saveWorkBook(HSSFWorkbook wb, String fileName) {
 
     logger.info("Saving excel file...");
-    // transfer du contenu dans le fichier temporaire
-    // creation d'un output stream
 
     try (FileOutputStream fileOut = new FileOutputStream(fileName)) {
       wb.write(fileOut);
@@ -302,35 +335,5 @@ public class EditionSuiviFactures {
     return applyBorder(style, BorderStyle.THIN, HSSFiSelectionColors.BLACK.getIndex());
   }
 
-
-  private void createHeaders(HSSFSheet sheet1, HSSFWorkbook wb) {
-    HSSFRow row = getOrCreateRow(sheet1, 1);
-    createCell(wb, row, 5, applyBorder(columnHeaderStyle)).setCellValue(
-        new HSSFRichTextString("Fichier de suivi facturation : " + LocalDate.now().getYear()));
-
-    row = getOrCreateRow(sheet1, ligneNb++);
-    short cellIdx = 0;
-    createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
-        .setCellValue(new HSSFRichTextString("Numéro de facture"));
-    createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
-        .setCellValue(new HSSFRichTextString("Montant HT"));
-    createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
-        .setCellValue(new HSSFRichTextString("Montant TTC"));
-    createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
-        .setCellValue(new HSSFRichTextString("Date de facture"));
-    createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
-        .setCellValue(new HSSFRichTextString("Délai"));
-    createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
-        .setCellValue(new HSSFRichTextString("Date échéance"));
-    createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
-        .setCellValue(new HSSFRichTextString("Jours retard"));
-    createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
-        .setCellValue(new HSSFRichTextString("Statut facture"));
-    createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
-        .setCellValue(new HSSFRichTextString("Date encaissement"));
-    createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
-        .setCellValue(new HSSFRichTextString("Frais de retard"));
-
-  }
 
 }
