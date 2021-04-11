@@ -2,6 +2,7 @@ package com.aliateck.fact.infrastructure.repository.edition;
 
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -22,7 +23,7 @@ import com.aliateck.fact.infrastructure.repository.edition.commun.HSSFiSelection
 
 public class EditionSuiviFactures {
   private static final Logger logger = Logger.getLogger(EditionSuiviFactures.class.getName());
-  short ligneNb = 0;
+  short ligneNb = 6;
   HSSFCellStyle columnHeaderStyle;
   HSSFCellStyle titleStyle;
   HSSFCellStyle normalStyle;
@@ -118,9 +119,10 @@ public class EditionSuiviFactures {
   protected void createStyles(HSSFWorkbook wb) {
 
     // fonts
-    HSSFFont tFont = getTitleFont(wb, "Arial", (short) 8, HSSFiSelectionColors.BLACK.getIndex());
+    HSSFFont tFont =
+        getTitleFont(wb, DEFAULT_FONT_NAME, (short) 8, HSSFiSelectionColors.BLACK.getIndex());
     HSSFFont normalFont =
-        getTitleFont(wb, "Arial", (short) 8, HSSFiSelectionColors.BLACK.getIndex());
+        getTitleFont(wb, DEFAULT_FONT_NAME, (short) 8, HSSFiSelectionColors.BLACK.getIndex());
     normalFont.setBold(true);
 
     columnHeaderStyle = getTitleStyle(wb, HSSFiSelectionColors.WHITE.getIndex());
@@ -167,19 +169,16 @@ public class EditionSuiviFactures {
    * @throws Exception
    */
   public void build(List<Facture> factures, InputStream template, String path) throws Exception {
-    POIFSFileSystem fs = null;
-    HSSFWorkbook wb = null;
 
-    try {
 
-      fs = new POIFSFileSystem(template);
-      wb = new HSSFWorkbook(fs);
+    try (POIFSFileSystem fs = new POIFSFileSystem(template);
+        HSSFWorkbook wb = new HSSFWorkbook(fs)) {
       createStyles(wb);
       HSSFSheet sheet1 = wb.getSheetAt(0);
       createHeaders(sheet1, wb);
       ligneNb++;
 
-
+      float totalTva = 0;
       short cellIdx = 0;
 
       for (Facture facture : factures) {
@@ -207,19 +206,17 @@ public class EditionSuiviFactures {
             .setCellValue(facture.getFraisRetard());
         // retour à la ligne suivante
         cellIdx = 0;
+        totalTva += facture.getMontantTVA();
       }
+      ligneNb++;
+      HSSFRow row = getOrCreateRow(sheet1, ligneNb++);
+      createCell(wb, row, 0, applyBorder(columnHeaderStyle)).setCellValue("Total TVA");
+      createCell(wb, row, 1, applyBorder(columnHeaderStyle)).setCellValue(totalTva + "€");
       // sauvegarder le fichier de sortie
       saveWorkBook(wb, path);
 
     } catch (Exception exception) {
       logger.info("Une exception s'est produite : " + exception);
-    } finally {
-      if (fs != null) {
-        fs.close();
-      }
-      if (wb != null) {
-        wb.close();
-      }
     }
   }
 
@@ -307,7 +304,11 @@ public class EditionSuiviFactures {
 
 
   private void createHeaders(HSSFSheet sheet1, HSSFWorkbook wb) {
-    HSSFRow row = getOrCreateRow(sheet1, ligneNb++);
+    HSSFRow row = getOrCreateRow(sheet1, 1);
+    createCell(wb, row, 5, applyBorder(columnHeaderStyle)).setCellValue(
+        new HSSFRichTextString("Fichier de suivi facturation : " + LocalDate.now().getYear()));
+
+    row = getOrCreateRow(sheet1, ligneNb++);
     short cellIdx = 0;
     createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
         .setCellValue(new HSSFRichTextString("Numéro de facture"));
@@ -324,7 +325,7 @@ public class EditionSuiviFactures {
     createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
         .setCellValue(new HSSFRichTextString("Jours retard"));
     createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
-        .setCellValue(new HSSFRichTextString("Facture réglée"));
+        .setCellValue(new HSSFRichTextString("Statut facture"));
     createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))
         .setCellValue(new HSSFRichTextString("Date encaissement"));
     createCell(wb, row, cellIdx++, applyBorder(columnHeaderStyle))

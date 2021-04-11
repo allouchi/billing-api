@@ -282,8 +282,8 @@ public class Utils {
   */
   public static String buildPathSuivi(String pathComplet, String fileName) {
     String path = null;
-    String[] url = pathComplet.replace("\\", "_").split("_");
-    path = File.separator + url[0] + File.separator + url[1] + File.separator + fileName;
+    int anneeCourante = LocalDate.now().getYear();
+    path = pathComplet + File.separator + anneeCourante + File.separator + fileName;
 
     return path;
   }

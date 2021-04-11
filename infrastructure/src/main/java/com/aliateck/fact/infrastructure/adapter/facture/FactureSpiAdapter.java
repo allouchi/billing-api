@@ -107,9 +107,9 @@ public class FactureSpiAdapter implements FactureSpiService {
         reponse = prestationMapper.fromEntityToDomain(pEntity);
 
         List<FactureEntity> listeFactures = entitySpiService.findAllFacturesBySiret(siret);
-        List<Facture> suiviFacture = factureMapper.fromEntityToDomain(listeFactures);
-        editionReportService.buildSuiviFactures(suiviFacture,
-            Utils.buildPathSuivi(pathFile, fileSuivi));
+        List<Facture> suiviFactures = factureMapper.fromEntityToDomain(listeFactures);
+        String pathSuivi = Utils.buildPathSuivi(pathRoot + File.separator + siret, fileSuivi);
+        editionReportService.buildSuiviFactures(suiviFactures, pathSuivi);
       }
 
     } catch (Exception e) {
@@ -137,11 +137,11 @@ public class FactureSpiAdapter implements FactureSpiService {
         FactureEntity oEntity = factureJpaRepository.saveAndFlush(fEntity);
         reponse = factureMapper.fromEntityToDomain(oEntity);
         String filePath = reponse.getFilePath();
-        List<FactureEntity> listeFactures =
-            entitySpiService.findAllFacturesBySiret(Utils.getSiretFromPath(filePath));
-        List<Facture> suiviFacture = factureMapper.fromEntityToDomain(listeFactures);
-        editionReportService.buildSuiviFactures(suiviFacture,
-            Utils.buildPathSuivi(rootPath + File.separator + filePath, fileSuiviName));
+        String siret = Utils.getSiretFromPath(filePath);
+        List<FactureEntity> listeFactures = entitySpiService.findAllFacturesBySiret(siret);
+        List<Facture> suiviFactures = factureMapper.fromEntityToDomain(listeFactures);
+        String pathSuivi = Utils.buildPathSuivi(rootPath + File.separator + siret, fileSuiviName);
+        editionReportService.buildSuiviFactures(suiviFactures, pathSuivi);
 
       }
 
