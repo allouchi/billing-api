@@ -121,6 +121,8 @@ public class Utils {
       oFacture.setDateEncaissement(dateEncaissement);
       oFacture.setFactureStatus(FactureStatus.OUI.getCode());
       oFacture.setStatusDesc(FactureStatus.OUI.getDescription());
+      oFacture.setFraisRetard(0);
+      oFacture.setNbJourRetard(0);
     }
     return oFacture;
 
@@ -157,7 +159,12 @@ public class Utils {
     }
     if (facture.getFactureStatus().equalsIgnoreCase(FactureStatus.NON.getCode())) {
       float div = (float) joursRetard / 365;
-      return (2.52f / 100) * facture.getPrixTotalHT() * div;
+      float cal = (0.1f * facture.getPrixTotalTTC() * div) + 40;
+      System.out.println("********************************");
+      System.out.println(cal);
+      System.out.println("********************************");
+      // String fraisRetard = String.format("%.2f", cal);
+      return cal;
 
     }
     return 0f;

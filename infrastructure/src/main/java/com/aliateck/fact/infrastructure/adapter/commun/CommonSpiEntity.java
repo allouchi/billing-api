@@ -4,17 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
 import javax.transaction.Transactional;
-
 import org.springframework.stereotype.Service;
-
 import com.aliateck.fact.infrastructure.models.CompanyEntity;
 import com.aliateck.fact.infrastructure.models.FactureEntity;
 import com.aliateck.fact.infrastructure.models.PrestationEntity;
 import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
 import com.aliateck.fact.infrastructure.repository.facture.FactureJpaRepository;
-
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -58,7 +54,7 @@ public class CommonSpiEntity implements EntitySpiService {
     if (prestations != null && !prestations.isEmpty()) {
       for (PrestationEntity entity : prestations) {
         if (entity.getId().longValue() == prestationId) {
-          return entity;         
+          return entity;
         }
       }
     }
@@ -67,12 +63,12 @@ public class CommonSpiEntity implements EntitySpiService {
   }
 
   @Override
-  public FactureEntity findFactureById(Long factureId) {    
-     Optional<FactureEntity> entity = factureJpaRepository.findById(factureId);
-     if(entity.isPresent()) {
-    	 return entity.get();
-     }
-     return null;
+  public FactureEntity findFactureById(Long factureId) {
+    Optional<FactureEntity> entity = factureJpaRepository.findById(factureId);
+    if (entity.isPresent()) {
+      return entity.get();
+    }
+    return null;
   }
 
   @Override

@@ -30,7 +30,7 @@ public class EditionReportImpl implements EditionReportService {
   private static final String TYPE_FILE = ".pdf";
   private static final String IBAN = "IBAN: ";
   private static final String BIC = "BIC: ";
-  private static final String FACTURE_LIBELLE = "FACTURE";
+  private static final String FACTURE_LIBELLE = "Facture";
   private static final String ESPACE_BLANC = " ";
   private static final String UNDERSCORE = "_";
   private static final String RETURN = "\n";
@@ -113,8 +113,9 @@ public class EditionReportImpl implements EditionReportService {
     String rsClient = prestation.getClient().getSocialReason();
     // Facture_ALIATECK_FINAXYS_Prestation-SG_12-2020_1000.pdf
     String moisFacture = Utils.buildMoisFacture(facture.getMoisFacture());
-    String fileName = FACTURE_LIBELLE + UNDERSCORE + rsCompany + UNDERSCORE + rsClient + UNDERSCORE
-        + moisFacture + UNDERSCORE + numeroFacture.split("-")[1] + TYPE_FILE;
+    String fileName =
+        FACTURE_LIBELLE + UNDERSCORE + formatString(rsCompany) + UNDERSCORE + formatString(rsClient)
+            + UNDERSCORE + moisFacture + UNDERSCORE + numeroFacture.split("-")[1] + TYPE_FILE;
 
     // - Parametres envoyes au rapport
     Map<String, Object> parameters = new HashMap<>();
@@ -213,6 +214,14 @@ public class EditionReportImpl implements EditionReportService {
       }
 
     }
+
+  }
+
+  private String formatString(String s) {
+    String format = s.split(" ")[0];
+    String start = format.substring(0, 1);
+    format = start.toUpperCase() + format.substring(1).toLowerCase();
+    return format;
 
   }
 

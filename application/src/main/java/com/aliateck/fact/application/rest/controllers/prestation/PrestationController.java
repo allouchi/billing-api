@@ -1,6 +1,8 @@
 package com.aliateck.fact.application.rest.controllers.prestation;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,6 +39,9 @@ public class PrestationController {
   public ResponseEntity<List<Prestation>> getAllPrestations(@PathVariable String siret) {
     log.info("get all prestations");
     List<Prestation> listPrestats = prestationApiService.findAll(siret);
+    listPrestats =
+        listPrestats.stream().sorted(Comparator.comparingLong(Prestation::getId).reversed())
+            .collect(Collectors.toList());
     return ResponseEntity.ok(listPrestats);
   }
 

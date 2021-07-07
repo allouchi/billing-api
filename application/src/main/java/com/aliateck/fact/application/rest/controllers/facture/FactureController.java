@@ -1,6 +1,8 @@
 package com.aliateck.fact.application.rest.controllers.facture;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +40,8 @@ public class FactureController {
     log.info("get all bills by siret");
     List<Facture> reponse = factureApiService.findAllBySiret(siret);
     if (reponse != null && !reponse.isEmpty()) {
+      reponse = reponse.stream().sorted(Comparator.comparingLong(Facture::getId).reversed())
+          .collect(Collectors.toList());
       return ResponseEntity.ok(reponse);
     }
     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
