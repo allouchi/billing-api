@@ -289,7 +289,7 @@ public class Utils {
     String dateFacture = dateActuelle.getYear() +TIRET+ moisFacture  + TIRET +"01";
     LocalDate date = LocalDate.parse(dateFacture);
     LocalDate endOfMonth = date.withDayOfMonth(date.lengthOfMonth());    
-    String dateConvert = convertToDateFromLocalDate(endOfMonth);
+    String dateConvert = endOfMonth.toString().replaceAll("-", "");
     return dateConvert + "-" + endNumero;
   }
 
