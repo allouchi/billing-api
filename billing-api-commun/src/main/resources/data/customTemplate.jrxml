@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report" pageWidth="595" pageHeight="842" columnWidth="435" leftMargin="80" rightMargin="80" topMargin="30" bottomMargin="30" uuid="ebdfb22f-7910-4931-a885-ebc871ef36bc">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="rs_company" class="java.lang.String"/>
+	<parameter name="numero_siret" class="java.lang.String"/>
+	<parameter name="adresse_company" class="java.lang.String"/>
+	<parameter name="numero_facture" class="java.lang.String"/>
+	<parameter name="statut_company" class="java.lang.String"/>
+	<parameter name="numero_rcs" class="java.lang.String"/>
+	<parameter name="numero_tva" class="java.lang.String"/>
+	<parameter name="date_facturation" class="java.lang.String"/>
+	<parameter name="numero_ape" class="java.lang.String"/>
+	<parameter name="rs_client" class="java.lang.String"/>
+	<parameter name="adresse_client" class="java.lang.String"/>
+	<parameter name="mois_facture" class="java.lang.String"/>
+	<parameter name="numero_commande" class="java.lang.String"/>
+	<parameter name="quantite" class="java.lang.Float"/>
+	<parameter name="montantHT" class="java.lang.Float"/>
+	<parameter name="montantTTC" class="java.lang.Float"/>
+	<parameter name="montantTva" class="java.lang.Float"/>
+	<parameter name="tarifHT" class="java.lang.Float"/>
+	<parameter name="commune_company" class="java.lang.String"/>
+	<parameter name="designation" class="java.lang.String"/>
+	<parameter name="delai_paiement" class="java.lang.Long"/>
+	<parameter name="client_prestation" class="java.lang.String"/>
+	<parameter name="fonction_consultant" class="java.lang.String"/>
+	<parameter name="code_iban" class="java.lang.String"/>
+	<parameter name="code_bic" class="java.lang.String"/>
+	<title>
+		<band height="769">
+			<textField>
+				<reportElement x="0" y="0" width="192" height="20" uuid="2d1296d8-77eb-4f5e-8e10-e3c525b46c03"/>
+				<textElement>
+					<font fontName="Arial" size="16" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{rs_company}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="32" y="66" width="100" height="20" uuid="30c45601-9b86-4577-8457-526fa024b635"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numero_siret}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="31" width="192" height="23" uuid="d67b8d8f-f7e8-45fd-b6ca-b9b6d1d200b4"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{adresse_company}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="18" width="192" height="20" uuid="6d24a36b-804b-463c-8924-672f719b517b"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{statut_company}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="51" width="192" height="20" uuid="b0eeee7e-98c9-44d1-ab57-a2d9e58c67a3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numero_rcs}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="29" y="79" width="195" height="20" uuid="db4931c9-10a4-4af6-90a2-c5283f8d172f"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numero_tva}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="174" width="163" height="24" uuid="84f45377-99cc-42bb-ab1e-d73d54386125"/>
+				<textElement>
+					<font fontName="Arial" size="20" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Facture]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="199" width="20" height="20" uuid="1a4e1cb1-545b-4536-b201-ce24da9d9d44"/>
+				<textElement>
+					<font fontName="Arial" size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[N°]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="150" y="68" width="59" height="20" uuid="3d8f7daf-0bd7-4daf-950b-ef36da1ad19c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numero_ape}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="253" y="174" width="176" height="20" uuid="8ffa14a3-ea32-4692-b783-ccf0bd44a308"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="16" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{rs_client}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="253" y="194" width="176" height="52" uuid="f79c24af-573b-40ca-a013-3e24651776d4"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{adresse_client}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="222" y="292" width="34" height="20" uuid="e2402d5a-7842-422b-b07e-4a5efcc97609"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{quantite}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00¤">
+				<reportElement x="348" y="292" width="87" height="20" uuid="1b3aa09b-7a7a-4264-9d77-7adba355e705"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{montantHT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="79" width="28" height="20" uuid="6aa78d80-32c7-42e6-905a-52a783a4d160"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[TVA : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="65" width="37" height="20" uuid="2264c709-f5a5-4897-b77e-fd66b440bebf"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Siret : ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="3" y="126" width="189" height="20" uuid="d21dc5a5-dc67-46e9-abf6-fcdbede6242a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{commune_company}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="116" y="67" width="39" height="20" uuid="3a0d8dfa-1e7b-4a4b-be4b-2d5b5b59302d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[- APE :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="533" width="429" height="17" uuid="ad2b40d5-a380-4f6f-b8ae-9bd1efaef2a2"/>
+				<textElement>
+					<font fontName="Calibri" size="11"/>
+				</textElement>
+				<text><![CDATA[Le règlement sera réalisé à l'une de ces dates : 10, 20 et dernier jour de chaque mois,]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="516" width="127" height="20" uuid="d457e477-5cb0-4d11-926a-84d6db12649b"/>
+				<textElement>
+					<font fontName="Calibri" size="11" isBold="true" isItalic="true" pdfFontName="Helvetica-BoldOblique"/>
+				</textElement>
+				<text><![CDATA[Conditions de paiement]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="579" width="280" height="20" uuid="63a7e758-a092-4b05-a1b6-8ea2d9f526cc"/>
+				<textElement>
+					<font fontName="Calibri" size="11" isBold="true" isItalic="true" pdfFontName="Helvetica-BoldOblique"/>
+				</textElement>
+				<text><![CDATA[Coordonnées bancaires pour les règlements par virement]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="650" width="431" height="29" uuid="05bf13d3-1600-4290-828e-6a171f81f827"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Pénalités en cas de retard : Tout retard de paiement fera courir de plein droit des pénalités calculées au taux de trois (3) fois le taux d'intérêt légal, à compter de la date d'échéance.]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement mode="Opaque" x="1" y="248" width="434" height="40" backcolor="#CCCCCC" uuid="d59a84a7-46e6-4a1e-aec6-2bc340ac2cad"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="3" y="260" width="64" height="20" uuid="b3410f8e-d809-4eff-bddf-dc82a55b78a7"/>
+				<textElement>
+					<font fontName="Arial" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Désignation]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="216" y="260" width="41" height="20" uuid="7dc27ce8-81e1-49e3-a3dd-8bd7b9d7e2d6"/>
+				<textElement>
+					<font pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Quantité]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="262" y="260" width="26" height="20" uuid="594c6e5f-1b64-40e3-be29-28b7c612cb04"/>
+				<textElement>
+					<font pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Unité]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="295" y="260" width="76" height="20" uuid="dce44918-50e4-479b-bc87-ecd01894fab3"/>
+				<textElement>
+					<font pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Prix unitaire HT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="367" y="260" width="65" height="20" uuid="3eb83429-35ee-436f-a16c-3a7620993cb7"/>
+				<textElement textAlignment="Right">
+					<font pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Prix total HT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="262" y="291" width="26" height="20" uuid="dcc926f0-47c1-4703-8164-2bd1088961a0"/>
+				<text><![CDATA[Jour]]></text>
+			</staticText>
+			<textField pattern="#,##0.00¤">
+				<reportElement x="347" y="406" width="87" height="20" uuid="eb331c6a-cafc-4e56-8c5d-72365427e7b8"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{montantHT}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00¤">
+				<reportElement x="347" y="437" width="87" height="20" uuid="812e186a-23eb-4bad-9c45-e981976cd5f5"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{montantTva}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="1" y="467" width="434" height="24" backcolor="#CCCCCC" uuid="ab7c127f-cf06-4cf1-8130-55be7840d9db"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="3" y="469" width="162" height="20" uuid="a7d2b631-4ca6-498d-8bfc-7f1a332c5406"/>
+				<textElement>
+					<font fontName="Arial" size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Total TTC en euros]]></text>
+			</staticText>
+			<textField pattern="#,##0.00¤">
+				<reportElement x="347" y="469" width="87" height="20" uuid="1174a1f6-43f8-4571-9f64-ab715eef2f28"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{montantTTC}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00¤">
+				<reportElement x="291" y="292" width="49" height="20" uuid="cbc36ef6-d12e-44a5-9e11-003e94886700"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tarifHT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="406" width="110" height="20" uuid="1a69efad-6364-4321-bd0a-c82d2cb12871"/>
+				<text><![CDATA[Total Hors Taxe]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="437" width="191" height="20" uuid="4ab9d8c0-f514-4377-8289-5031527c44c3"/>
+				<text><![CDATA[TVA à Taux applicable 20,0 %]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="19" y="199" width="175" height="20" uuid="4b97eb88-362f-4425-9e1f-2a823d0b402b"/>
+				<textElement>
+					<font fontName="Arial" size="14" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numero_facture}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="550" width="159" height="17" uuid="343f4d8e-0b33-4a23-98bf-1c24ae54da2c"/>
+				<textElement>
+					<font fontName="Calibri" size="11"/>
+				</textElement>
+				<text><![CDATA[suivant l'expiration d'un délai de]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="172" y="550" width="218" height="17" uuid="1cdf7b82-f1d2-4d9c-82de-c651305fa072"/>
+				<textElement>
+					<font fontName="Calibri" size="11"/>
+				</textElement>
+				<text><![CDATA[ jours suivant la réception de la facture.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="160" y="549" width="14" height="16" uuid="84cce8de-92f3-4efd-b259-c6afb7296cb4"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{delai_paiement}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="635" width="280" height="20" uuid="1c61bd3d-9f5d-4355-b2a3-3bb99e6b8411"/>
+				<textElement>
+					<font fontName="Calibri" size="11" isBold="true" isItalic="true" pdfFontName="Helvetica-BoldOblique"/>
+				</textElement>
+				<text><![CDATA[Pénalités en cas de retard]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="690" width="280" height="20" uuid="740b5bce-e4a0-4e91-9c77-f0fb7a602d56"/>
+				<textElement>
+					<font fontName="Calibri" size="11" isBold="true" isItalic="true" pdfFontName="Helvetica-BoldOblique"/>
+				</textElement>
+				<text><![CDATA[Mode de réglement accepté]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="704" width="435" height="41" uuid="83dbb09c-4991-4c8b-8332-71b555321d2b"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Le règlement sera réalisé en Euros par virement bancaire ou par chèque. Membre d’un centre de gestion agréé, le règlement par chèque est accepté.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="112" width="433" height="1" uuid="57350ed9-fac3-48ed-b9c2-aba740328583"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="0" y="292" width="209" height="66" uuid="f3be6ec8-e00b-48fc-b768-bfc96d441341"/>
+				<textElement>
+					<font size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{designation}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="595" width="310" height="20" uuid="fe41acb2-36dc-4900-8dc9-6a5785dda46c"/>
+				<textFieldExpression><![CDATA[$P{code_iban}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="609" width="262" height="20" uuid="86697be0-7d6c-4c30-bb67-54739fb73017"/>
+				<textFieldExpression><![CDATA[$P{code_bic}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+</jasperReport>
