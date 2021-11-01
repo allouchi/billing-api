@@ -86,6 +86,7 @@ public class EditionReportImpl implements EditionReportService {
     float quantite = facture.getQuantite();
     String moisPrestation = facture.getMoisFacture();
     String communeDateEdition = adresseCompany.getLocalite() + ", le " + dateFacturation;
+    
 
     String designationLigne1 = "";
     String designationLigne2 = "";
