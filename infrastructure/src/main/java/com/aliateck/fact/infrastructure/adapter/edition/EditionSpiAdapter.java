@@ -52,4 +52,6 @@ public class EditionSpiAdapter implements EditionSpiService {
 
 		return reponse;
 	}
+	
+	
 }

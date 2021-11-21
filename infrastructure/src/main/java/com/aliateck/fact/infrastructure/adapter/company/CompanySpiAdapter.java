@@ -63,6 +63,7 @@ public class CompanySpiAdapter implements CompanySpiService {
 		}
 		return reponse;
 	}
+	
 
 	@Override
 	public Company updateCompany(Company company) {

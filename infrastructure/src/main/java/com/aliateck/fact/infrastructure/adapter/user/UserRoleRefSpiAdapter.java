@@ -43,5 +43,6 @@ public class UserRoleRefSpiAdapter implements RoleRefSpiService {
 		}
 		return reponse;		
 	}
+	
 
 }

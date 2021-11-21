@@ -4,6 +4,7 @@ import com.aliateck.fact.domaine.business.object.Consultant;
 import java.util.List;
 
 public interface ConsultantSpiService {
+  
   public Consultant addConsultant(Consultant consultant, String siret);
 
   public void deleteConsultant(Long id);

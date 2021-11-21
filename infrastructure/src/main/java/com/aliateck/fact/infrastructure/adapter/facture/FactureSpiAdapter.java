@@ -66,6 +66,7 @@ public class FactureSpiAdapter implements FactureSpiService {
     if (prestation.getId() != null && prestation.getId() == 0) {
       prestation.setId(null);
     }
+    
 
     String moisFacture = Utils.convertMoisFacture(String.valueOf(moisFactureId));
 

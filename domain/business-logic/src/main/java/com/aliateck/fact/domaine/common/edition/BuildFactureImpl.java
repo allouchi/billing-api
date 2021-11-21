@@ -63,6 +63,7 @@ public class BuildFactureImpl implements BuildFactureService {
 		}else {
 		  mois = moisFactureId+TIRET;
 		}
+		
 		try {
 			final DateTimeFormatter formaterDate = DateTimeFormatter.ofPattern("yyyy");
 			LocalDate dateJour = LocalDate.now();
@@ -88,6 +89,7 @@ public class BuildFactureImpl implements BuildFactureService {
 		} catch (IOException e) {
 			Log.debug("Probleme lors de la creation du repertoire :" + e.getMessage());
 		}
+		
 		return filePath1;
 	}
 }

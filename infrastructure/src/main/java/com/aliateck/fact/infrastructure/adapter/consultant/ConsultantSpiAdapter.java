@@ -30,7 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ConsultantSpiAdapter implements ConsultantSpiService {
-	private ConsultantJpaRepository consultantJpaRepository;
+	
+    private ConsultantJpaRepository consultantJpaRepository;
 	private ConsultantMapper consultantMapper;
 	private CompanyJpaRepository companyJpaRepository;
 
@@ -76,8 +77,7 @@ public class ConsultantSpiAdapter implements ConsultantSpiService {
 		} catch (Exception e) {
 			log.error("error while creating new consultant", e);			
 			throw new ServiceException(ErrorCatalog.DB_ERROR, "Un problème est survenu lors de l'ajout du consultant", e);
-		}
-		
+		}		
 		return reponse;
 	}
 

@@ -25,6 +25,7 @@ public interface CommonResource {
     String FACTURES = "/factures";
     String EDITIONS = "/editions";
     String PRESTATIONS = "/prestations";
+    String TVAS = "/tvas";  
     String USERS = "/users";
     String BATCHS = "/batchs";
     String ROLES = "/roles";
