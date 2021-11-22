@@ -58,7 +58,9 @@ public class TvaSpiAdapter implements TvaSpiService{
 
   @Override
   public void updateTva(Tva Tva) {
-    // TODO Auto-generated method stub
+	  
+	  TvaEntity entity  = tvaMapper.fromDomainToEntity(Tva);
+	  tvaJpaRepository.saveAndFlush(entity);   
     
   } 
   
