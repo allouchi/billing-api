@@ -19,444 +19,513 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+
 import org.springframework.core.io.ClassPathResource;
+
 import com.aliateck.fact.domaine.business.object.Consultant;
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.business.object.Prestation;
 
 public class Utils {
-  
-  private static Map<String, String> mapMois = new HashMap<>();
-  private static final String TIRET="-";
 
-  static {
+	private static Map<String, String> mapMois = new HashMap<>();
+	private static final String TIRET = "-";
 
-    mapMois.put("1", "Janvier");
-    mapMois.put("2", "Février");
-    mapMois.put("3", "Mars");
-    mapMois.put("4", "Avril");
-    mapMois.put("5", "Mai");
-    mapMois.put("6", "Juin");
-    mapMois.put("7", "Juillet");
-    mapMois.put("8", "Août");
-    mapMois.put("9", "Septembre");
-    mapMois.put("10", "Octobre");
-    mapMois.put("11", "Novembre");
-    mapMois.put("12", "Décembre");
-  }
+	static {
 
-  private Utils() {}
+		mapMois.put("1", "Janvier");
+		mapMois.put("2", "Février");
+		mapMois.put("3", "Mars");
+		mapMois.put("4", "Avril");
+		mapMois.put("5", "Mai");
+		mapMois.put("6", "Juin");
+		mapMois.put("7", "Juillet");
+		mapMois.put("8", "Août");
+		mapMois.put("9", "Septembre");
+		mapMois.put("10", "Octobre");
+		mapMois.put("11", "Novembre");
+		mapMois.put("12", "Décembre");
+	}
 
-  public static boolean isEmpty() {
-    return true;
-  }
+	private Utils() {
+	}
 
-  public static Consultant formatConsulantName(Consultant consultant) {
+	/**
+	 * 
+	 * @param consultant
+	 * @return
+	 */
+	public static Consultant formatConsulantName(Consultant consultant) {
 
-    consultant.setLastName(consultant.getLastName().toUpperCase());
-    String firstName = consultant.getFirstName().substring(0, 1).toUpperCase()
-        + consultant.getFirstName().substring(1, consultant.getFirstName().length());
-    consultant.setFirstName(firstName);
-    return consultant;
-  }
+		consultant.setLastName(consultant.getLastName().toUpperCase());
+		String firstName = consultant.getFirstName().substring(0, 1).toUpperCase()
+				+ consultant.getFirstName().substring(1, consultant.getFirstName().length());
+		consultant.setFirstName(firstName);
+		return consultant;
+	}
 
-  /*
-   *
-   */
-  public static String convertMoisFacture(String moisId) {
-    String mois = "";
-    if (mapMois.containsKey(moisId)) {
-      mois = mapMois.get(moisId);
-    }
-    return mois;
-  }
+	/**
+	 * 
+	 * @param moisId
+	 * @return
+	 */
+	public static String convertMoisFacture(String moisId) {
+		String mois = "";
+		if (mapMois.containsKey(moisId)) {
+			mois = mapMois.get(moisId);
+		}
+		return mois;
+	}
 
-  /*
-   *
-   */
-  public static String buildMoisFacture(String mois) {
+	/**
+	 * 	
+	 */
+	public static List<String> makeExercises() {
+		List<String> excercises = new ArrayList<>();
+		excercises.add("2001-2022");
+		excercises.add("2002-2023");
+		excercises.add("2003-2024");
+		excercises.add("2004-2025");
+		LocalDate dateActuelle = LocalDate.now();
+		Month mois = dateActuelle.getMonth();
+		if (mois.getValue() == 11) {
+			int annee = dateActuelle.getYear();
+			int anneeSuivante = annee + 1;
+			excercises.add(annee + "-" + anneeSuivante);
+		}
 
-    String[] moisId = new String[1];
+		return excercises;
+	}
 
-    mapMois.forEach((key, value) -> {
-      if (value.equalsIgnoreCase(mois)) {
-        moisId[0] = key;
-      }
-    });
+	/**
+	 * 
+	 * @param mois
+	 * @return
+	 */
+	public static String buildMoisFacture(String mois) {
 
-    int anneeCourante = LocalDate.now().getYear();
-    LocalDate date = LocalDate.of(anneeCourante, Integer.parseInt(moisId[0]), 1);
-    String[] stringDate = date.toString().split("-");
-    return stringDate[0] + stringDate[1];
-  }
+		String[] moisId = new String[1];
 
-  /*
-   *
-   */
-  public static Map<String, File> loadFilesResources() throws IOException {
-    Map<String, File> map = new HashMap<>();
+		mapMois.forEach((key, value) -> {
+			if (value.equalsIgnoreCase(mois)) {
+				moisId[0] = key;
+			}
+		});
 
-    File customFile = new ClassPathResource("data/customTemplate.jrxml").getFile();
-    File defaultFile = new ClassPathResource("data/defaultTemplate.jrxml").getFile();
-    File excelFile = new ClassPathResource("data/suivi-facturation.xls").getFile();
-    map.put("Default", defaultFile);
-    map.put("Custom", customFile);
-    map.put("Suivi", excelFile);
-    return map;
-  }
+		int anneeCourante = LocalDate.now().getYear();
+		LocalDate date = LocalDate.of(anneeCourante, Integer.parseInt(moisId[0]), 1);
+		String[] stringDate = date.toString().split("-");
+		return stringDate[0] + stringDate[1];
+	}
 
-  /*
-   *
-   */
+	/**
+	 * 
+	 * @return
+	 * @throws IOException
+	 */
+	public static Map<String, File> loadFilesResources() throws IOException {
+		Map<String, File> map = new HashMap<>();
 
-  public static Facture updateFacture(Facture oFacture, Facture factureRequest) {
+		File customFile = new ClassPathResource("data/customTemplate.jrxml").getFile();
+		File defaultFile = new ClassPathResource("data/defaultTemplate.jrxml").getFile();
+		File excelFile = new ClassPathResource("data/suivi-facturation.xls").getFile();
+		map.put("Default", defaultFile);
+		map.put("Custom", customFile);
+		map.put("Suivi", excelFile);
+		return map;
+	}
 
-    if (oFacture == null || factureRequest == null) {
-      return null;
-    }
+	/**
+	 * 
+	 * @param oFacture
+	 * @param factureRequest
+	 * @return
+	 */
+	public static Facture updateFacture(Facture oFacture, Facture factureRequest) {
 
-    if (factureRequest.getDateEncaissement() != null
-        && !factureRequest.getDateEncaissement().isEmpty()) {
-      String dateEncaissement =
-          Utils.convertFromDomainToEntityDate(factureRequest.getDateEncaissement());
-      oFacture.setDateEncaissement(dateEncaissement);
-      oFacture.setFactureStatus(FactureStatus.OUI.getCode());
-      oFacture.setStatusDesc(FactureStatus.OUI.getDescription());
-      oFacture.setFraisRetard(0);
-      oFacture.setNbJourRetard(0);
-    }
-    return oFacture;
+		if (oFacture == null || factureRequest == null) {
+			return null;
+		}
 
-  }
+		if (factureRequest.getDateEncaissement() != null && !factureRequest.getDateEncaissement().isEmpty()) {
+			String dateEncaissement = Utils.convertFromDomainToEntityDate(factureRequest.getDateEncaissement());
+			oFacture.setDateEncaissement(dateEncaissement);
+			oFacture.setFactureStatus(FactureStatus.OUI.getCode());
+			oFacture.setStatusDesc(FactureStatus.OUI.getDescription());
+			oFacture.setFraisRetard(0);
+			oFacture.setNbJourRetard(0);
+		}
+		return oFacture;
 
-  public static LocalDate convertStringToDate(String dateToConvert) {
-    if (dateToConvert == null) {
-      return null;
-    }
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    return LocalDate.parse(dateToConvert, formatter);
-  }
+	}
 
-  public static long calculerNbJourRetard(Facture facture) {
-    if (facture == null) {
-      return 0;
-    }
-    if (facture.getFactureStatus().equalsIgnoreCase(FactureStatus.NON.getCode())) {
-      LocalDate dateEcheance = convertStringToDate(facture.getDateEcheance());
-      LocalDate dateJour = LocalDate.now();
-      if (Period.between(dateEcheance, dateJour).getDays() > 0) {
-        return ChronoUnit.DAYS.between(dateEcheance, dateJour);
-      }
-    }
-    return 0;
-  }
+	/**
+	 * 
+	 * @param dateToConvert
+	 * @return
+	 */
+	public static LocalDate convertStringToDate(String dateToConvert) {
+		if (dateToConvert == null) {
+			return null;
+		}
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		return LocalDate.parse(dateToConvert, formatter);
+	}
 
-  /*
-   *
-   */
-  public static float calculerFraisRetard(Facture facture, long joursRetard) {
-    if (facture == null) {
-      return 0;
-    }
-    if (facture.getFactureStatus().equalsIgnoreCase(FactureStatus.NON.getCode())) {
-      float div = (float) joursRetard / 365;
-      float cal = (0.1f * facture.getPrixTotalTTC() * div) + 40;
-      System.out.println("********************************");
-      System.out.println(cal);
-      System.out.println("********************************");
-      // String fraisRetard = String.format("%.2f", cal);
-      return cal;
+	/**
+	 * 
+	 * @param facture
+	 * @return
+	 */
+	public static long calculerNbJourRetard(Facture facture) {
+		if (facture == null) {
+			return 0;
+		}
+		if (facture.getFactureStatus().equalsIgnoreCase(FactureStatus.NON.getCode())) {
+			LocalDate dateEcheance = convertStringToDate(facture.getDateEcheance());
+			LocalDate dateJour = LocalDate.now();
+			if (Period.between(dateEcheance, dateJour).getDays() > 0) {
+				return ChronoUnit.DAYS.between(dateEcheance, dateJour);
+			}
+		}
+		return 0;
+	}
 
-    }
-    return 0f;
-  }
+	/**
+	 * 
+	 * @param facture
+	 * @param joursRetard
+	 * @return
+	 */
+	public static float calculerFraisRetard(Facture facture, long joursRetard) {
+		if (facture == null) {
+			return 0;
+		}
+		if (facture.getFactureStatus().equalsIgnoreCase(FactureStatus.NON.getCode())) {
+			float div = (float) joursRetard / 365;
+			return 1 * ((0.1f * facture.getPrixTotalTTC() * div) + 40);
 
-  /*
-   *
-   */
-  public static String calculerDateEcheance(Prestation prestation, String moisFacture) {
-    
-    if (prestation == null) {
-      return null;
-    }
-    
-    String[] moisId = new String[1];
+		}
+		return 0f;
+	}
 
-    mapMois.forEach((key, value) -> {
-      if (value.equalsIgnoreCase(moisFacture)) {
-        moisId[0] = key;
-      }
-    });
-    
-    long delai = prestation.getDelaiPaiement();
-    LocalDate dateActuelle = LocalDate.now();   
-    String dateFacture = dateActuelle.getYear() +TIRET+  moisId[0]  + TIRET +"01";
-    LocalDate date = LocalDate.parse(dateFacture);
-    LocalDate endOfMonth = date.withDayOfMonth(date.lengthOfMonth());
-    LocalDate dateEcheance = endOfMonth.plusDays(delai);
-    return convertToDateFromLocalDate(dateEcheance);
-  }
+	/**
+	 * 
+	 * @param prestation
+	 * @param moisFacture
+	 * @return
+	 */
+	public static String calculerDateEcheance(Prestation prestation, String moisFacture) {
 
-  /*
-   *
-   */
-  public static String convertToDateFromLocalDate(LocalDate dateToConvert) {
-    if (dateToConvert == null) {
-      return null;
-    }
-    final DateTimeFormatter formaterDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    return formaterDate.format(dateToConvert);
-  }
+		if (prestation == null) {
+			return null;
+		}
 
-  /*
-   *
-   */
-  public static String convertFromDomainToEntityDate(String dateToConvert) {
-    if (dateToConvert == null || dateToConvert.isEmpty()) {
-      return null;
-    }
-    String tab[] = dateToConvert.split("-");
-    return tab[2] + "/" + tab[1] + "/" + tab[0];
-  }
+		String[] moisId = new String[1];
 
-  /*
-   *
-   */
-  public static String convertFromEntityToDomainDate(String dateToConvert) {
-    if (dateToConvert == null || dateToConvert.isEmpty()) {
-      return null;
-    }
+		mapMois.forEach((key, value) -> {
+			if (value.equalsIgnoreCase(moisFacture)) {
+				moisId[0] = key;
+			}
+		});
 
-    String tab[] = dateToConvert.split("/");
-    return tab[2] + "-" + tab[1] + "-" + tab[0];
-  }
+		long delai = prestation.getDelaiPaiement();
+		LocalDate dateActuelle = LocalDate.now();
+		String dateFacture = dateActuelle.getYear() + TIRET + moisId[0] + TIRET + "01";
+		LocalDate date = LocalDate.parse(dateFacture);
+		LocalDate endOfMonth = date.withDayOfMonth(date.lengthOfMonth());
+		LocalDate dateEcheance = endOfMonth.plusDays(delai);
+		return convertToDateFromLocalDate(dateEcheance);
+	}
 
-  /*
-   *
-   */
-  public static byte[] encodeToBase64(byte[] inputFile) {
-    Base64.Encoder encoder = Base64.getEncoder();
-    return encoder.encode(inputFile);
+	/**
+	 * 
+	 * @param dateToConvert
+	 * @return
+	 */
+	public static String convertToDateFromLocalDate(LocalDate dateToConvert) {
+		if (dateToConvert == null) {
+			return null;
+		}
+		final DateTimeFormatter formaterDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		return formaterDate.format(dateToConvert);
+	}
 
-  }
+	/**
+	 * 
+	 * @param dateToConvert
+	 * @return
+	 */
+	public static String convertFromDomainToEntityDate(String dateToConvert) {
+		if (dateToConvert == null || dateToConvert.isEmpty()) {
+			return null;
+		}
+		String tab[] = dateToConvert.split("-");
+		return tab[2] + "/" + tab[1] + "/" + tab[0];
+	}
 
-  /*
-   *
-   */
-  public static String determinerMoisFacture() {
-    Month mois = LocalDate.now().getMonth();
-    mois = mois.minus(1);
-    String formatMois = mois.getDisplayName(TextStyle.FULL, Locale.FRENCH);
-    formatMois =
-        formatMois.substring(0, 1).toUpperCase() + formatMois.substring(1, formatMois.length());
-    return formatMois;
-  }
+	/**
+	 * 
+	 * @param dateToConvert
+	 * @return
+	 */
+	public static String convertFromEntityToDomainDate(String dateToConvert) {
+		if (dateToConvert == null || dateToConvert.isEmpty()) {
+			return null;
+		}
 
-  /*
-  *
-  */
-  public static String updateNumeroFacture(String rsClient, List<Facture> listeFactures, Long moisId) {
+		String tab[] = dateToConvert.split("/");
+		return tab[2] + "-" + tab[1] + "-" + tab[0];
+	}
 
-    Set<Integer> numeros = new HashSet<>();
-    
-    String numeroFacture = null;
-    if (listeFactures == null || listeFactures.isEmpty()) {
-      return Utils.buildNumeroFacture("1000", moisId);
-    }
-    numeros.add(1000);
-    
-    for (Facture facture : listeFactures) {
-      String client = facture.getClientPrestation();     
-      if (rsClient != null && client != null &&  client.toLowerCase().equals(rsClient) ) {
-        numeroFacture = facture.getNumeroFacture();
-        String endNumero[] = numeroFacture.split("-");
-        Integer numero = Integer.parseInt(endNumero[1]);
-        numeros.add(numero);
-      }
-    }
-    int max = Collections.max(numeros);
-    return Utils.buildNumeroFacture(String.valueOf(max + 1), moisId);
-  }
+	/**
+	 * 
+	 * @param inputFile
+	 * @return
+	 */
+	public static byte[] encodeToBase64(byte[] inputFile) {
+		Base64.Encoder encoder = Base64.getEncoder();
+		return encoder.encode(inputFile);
 
-  /*
-   *
-   */
-  public static String buildNumeroFacture(String endNumero, Long moisFacture) {
-    
-   
-    
-    LocalDate dateActuelle = LocalDate.now();   
-    String dateFacture = dateActuelle.getYear() +TIRET+ moisFacture  + TIRET +"01";
-    LocalDate date = LocalDate.parse(dateFacture);
-    LocalDate endOfMonth = date.withDayOfMonth(date.lengthOfMonth());    
-    String dateConvert = endOfMonth.toString().replaceAll("-", "");
-    return dateConvert + "-" + endNumero;
-  }
+	}
 
-  /*
-   *
-   */
-  public static String buildPath(String pathComplet, String rootPath) {
-    String path = null;
-    if (pathComplet != null && rootPath != null) {
-      int lg = rootPath.length();
-      path = pathComplet.substring(lg, pathComplet.length());
-    }
-    return path;
-  }
+	/**
+	 * 
+	 * @return
+	 */
+	public static String determinerMoisFacture() {
+		Month mois = LocalDate.now().getMonth();
+		mois = mois.minus(1);
+		String formatMois = mois.getDisplayName(TextStyle.FULL, Locale.FRENCH);
+		formatMois = formatMois.substring(0, 1).toUpperCase() + formatMois.substring(1, formatMois.length());
+		return formatMois;
+	}
 
-  /*
-  *
-  */
-  public static String buildPathSuivi(String pathComplet, String fileName) {
-    String path = null;
-    int anneeCourante = LocalDate.now().getYear();
-    path = pathComplet + File.separator + anneeCourante + File.separator + fileName;
+	/**
+	 * 
+	 * @param rsClient
+	 * @param listeFactures
+	 * @param moisId
+	 * @return
+	 */
+	public static String updateNumeroFacture(String rsClient, List<Facture> listeFactures, Long moisId) {
 
-    return path;
-  }
+		Set<Integer> numeros = new HashSet<>();
 
-  /*
-  *
-  */
-  public static String getSiretFromPath(String pathComplet) {
-    String sub = pathComplet.substring(1);
-    String[] url = sub.replace("\\", "_").split("_");
-    return url[0];
-  }
+		String numeroFacture = null;
+		if (listeFactures == null || listeFactures.isEmpty()) {
+			return Utils.buildNumeroFacture("1000", moisId);
+		}
+		numeros.add(1000);
 
-  /**
-   * nombre de jours entre 2 dates
-   * 
-   * @param d1
-   * @param d2
-   * @param notionJourFerie prendre en compte les jours fériés
-   * @param priseCompteLundi prendre en compte les Lundi
-   * @param priseCompteMardi prendre en compte les Mardi
-   * @param priseCompteMercredi prendre en compte les Mercredi
-   * @param priseCompteJeudi prendre en compte les Jeudi
-   * @param priseCompteVendredi prendre en compte Vendredi
-   * @param priseCompteSamedi prendre en compte les Samedi
-   * @param priseCompteDimanche prendre en compte les Dimanche
-   * @return
-   */
-  public static int nbJours(Date d1, Date d2, boolean notionJourFerie, boolean priseCompteLundi,
-      boolean priseCompteMardi, boolean priseCompteMercredi, boolean priseCompteJeudi,
-      boolean priseCompteVendredi, boolean priseCompteSamedi, boolean priseCompteDimanche) {
+		for (Facture facture : listeFactures) {
+			String client = facture.getClientPrestation();
+			if (rsClient != null && client != null && client.toLowerCase().equals(rsClient)) {
+				numeroFacture = facture.getNumeroFacture();
+				String endNumero[] = numeroFacture.split("-");
+				Integer numero = Integer.parseInt(endNumero[1]);
+				numeros.add(numero);
+			}
+		}
+		int max = Collections.max(numeros);
+		return Utils.buildNumeroFacture(String.valueOf(max + 1), moisId);
+	}
 
-    if (d2.compareTo(d1) <= 0)
-      return 0;
+	/**
+	 * 
+	 * @param endNumero
+	 * @param moisFacture
+	 * @return
+	 */
+	public static String buildNumeroFacture(String endNumero, Long moisFacture) {
 
-    // Tableau des jours a prendre en compte
-    Boolean[] joursPrisEncompte =
-        new Boolean[] {priseCompteDimanche, priseCompteLundi, priseCompteMardi, priseCompteMercredi,
-            priseCompteJeudi, priseCompteVendredi, priseCompteSamedi};
+		LocalDate dateActuelle = LocalDate.now();
+		String dateFacture = dateActuelle.getYear() + TIRET + moisFacture + TIRET + "01";
+		LocalDate date = LocalDate.parse(dateFacture);
+		LocalDate endOfMonth = date.withDayOfMonth(date.lengthOfMonth());
+		String dateConvert = endOfMonth.toString().replace("-", "");
+		return dateConvert + "-" + endNumero;
+	}
 
-    GregorianCalendar date1 = new GregorianCalendar();
-    date1.setTime(d1);
-    GregorianCalendar date2 = new GregorianCalendar();
-    date2.setTime(d2);
+	/**
+	 * 
+	 * @param pathComplet
+	 * @param rootPath
+	 * @return
+	 */
+	public static String buildPath(String pathComplet, String rootPath) {
+		String path = null;
+		if (pathComplet != null && rootPath != null) {
+			int lg = rootPath.length();
+			path = pathComplet.substring(lg, pathComplet.length());
+		}
+		return path;
+	}
 
-    // Récupération des jours fériés
-    List<Date> joursFeries = new ArrayList<>();
-    for (int i = date1.get(GregorianCalendar.YEAR); i <= date2.get(GregorianCalendar.YEAR); i++) {
-      joursFeries.addAll(getJourFeries(i));
-    }
+	/**
+	 * 
+	 * @param pathComplet
+	 * @param fileName
+	 * @return
+	 */
+	public static String buildPathSuivi(String pathComplet, String fileName) {
+		String path = null;
+		int anneeCourante = LocalDate.now().getYear();
+		path = pathComplet + File.separator + anneeCourante + File.separator + fileName;
 
-    // Calcul du nombre de jour
-    int nbJour = 0;
-    while (date1.before(date2) || date1.equals(date2)) {
-      if (!notionJourFerie || !joursFeries.contains(date1.getTime())) {
-        if (joursPrisEncompte[date1.get(GregorianCalendar.DAY_OF_WEEK) - 1] != null)
-          nbJour++;
-      }
+		return path;
+	}
 
-      date1.add(GregorianCalendar.DAY_OF_MONTH, 1);
-    }
+	/**
+	 * 
+	 * @param pathComplet
+	 * @return
+	 */
+	public static String getSiretFromPath(String pathComplet) {
+		String sub = pathComplet.substring(1);
+		String[] url = sub.replace("\\", "_").split("_");
+		return url[0];
+	}
 
-    return nbJour;
-  }
+	/**
+	 * nombre de jours entre 2 dates
+	 * 
+	 * @param d1
+	 * @param d2
+	 * @param notionJourFerie
+	 *            prendre en compte les jours fériés
+	 * @param priseCompteLundi
+	 *            prendre en compte les Lundi
+	 * @param priseCompteMardi
+	 *            prendre en compte les Mardi
+	 * @param priseCompteMercredi
+	 *            prendre en compte les Mercredi
+	 * @param priseCompteJeudi
+	 *            prendre en compte les Jeudi
+	 * @param priseCompteVendredi
+	 *            prendre en compte Vendredi
+	 * @param priseCompteSamedi
+	 *            prendre en compte les Samedi
+	 * @param priseCompteDimanche
+	 *            prendre en compte les Dimanche
+	 * @return
+	 */
+	public static int nbJours(Date d1, Date d2, boolean notionJourFerie, boolean priseCompteLundi,
+			boolean priseCompteMardi, boolean priseCompteMercredi, boolean priseCompteJeudi,
+			boolean priseCompteVendredi, boolean priseCompteSamedi, boolean priseCompteDimanche) {
 
-  /**
-   * retourne une liste de jours fériés pour une année
-   * 
-   * @param annee
-   * @return
-   */
-  private static List<Date> getJourFeries(int annee) {
-    List<Date> datesFeries = new ArrayList<>();
+		if (d2.compareTo(d1) <= 0)
+			return 0;
 
-    // Jour de l'an
-    GregorianCalendar jourAn = new GregorianCalendar(annee, 0, 1);
-    datesFeries.add(jourAn.getTime());
+		// Tableau des jours a prendre en compte
+		Boolean[] joursPrisEncompte = new Boolean[] { priseCompteDimanche, priseCompteLundi, priseCompteMardi,
+				priseCompteMercredi, priseCompteJeudi, priseCompteVendredi, priseCompteSamedi };
 
-    // Lundi de pacques
-    GregorianCalendar pacques = calculLundiPacques(annee);
-    datesFeries.add(pacques.getTime());
+		GregorianCalendar date1 = new GregorianCalendar();
+		date1.setTime(d1);
+		GregorianCalendar date2 = new GregorianCalendar();
+		date2.setTime(d2);
 
-    // Fete du travail
-    GregorianCalendar premierMai = new GregorianCalendar(annee, 4, 1);
-    datesFeries.add(premierMai.getTime());
+		// Récupération des jours fériés
+		List<Date> joursFeries = new ArrayList<>();
+		for (int i = date1.get(GregorianCalendar.YEAR); i <= date2.get(GregorianCalendar.YEAR); i++) {
+			joursFeries.addAll(getJourFeries(i));
+		}
 
-    // 8 mai
-    GregorianCalendar huitMai = new GregorianCalendar(annee, 4, 8);
-    datesFeries.add(huitMai.getTime());
+		// Calcul du nombre de jour
+		int nbJour = 0;
+		while (date1.before(date2) || date1.equals(date2)) {
+			if (!notionJourFerie || !joursFeries.contains(date1.getTime())) {
+				if (joursPrisEncompte[date1.get(GregorianCalendar.DAY_OF_WEEK) - 1] != null)
+					nbJour++;
+			}
 
-    // Ascension (= pâques + 38 jours)
-    GregorianCalendar ascension = new GregorianCalendar(annee, pacques.get(GregorianCalendar.MONTH),
-        pacques.get(GregorianCalendar.DAY_OF_MONTH));
-    ascension.add(GregorianCalendar.DAY_OF_MONTH, 38);
-    datesFeries.add(ascension.getTime());
+			date1.add(GregorianCalendar.DAY_OF_MONTH, 1);
+		}
 
-    // Pentecôte (= pâques + 49 jours)
-    GregorianCalendar pentecote = new GregorianCalendar(annee, pacques.get(GregorianCalendar.MONTH),
-        pacques.get(GregorianCalendar.DAY_OF_MONTH));
-    pentecote.add(GregorianCalendar.DAY_OF_MONTH, 49);
-    datesFeries.add(pentecote.getTime());
+		return nbJour;
+	}
 
-    // Fête Nationale
-    GregorianCalendar quatorzeJuillet = new GregorianCalendar(annee, 6, 14);
-    datesFeries.add(quatorzeJuillet.getTime());
+	/**
+	 * retourne une liste de jours fériés pour une année
+	 * 
+	 * @param annee
+	 * @return
+	 */
+	private static List<Date> getJourFeries(int annee) {
+		List<Date> datesFeries = new ArrayList<>();
 
-    // Assomption
-    GregorianCalendar assomption = new GregorianCalendar(annee, 7, 15);
-    datesFeries.add(assomption.getTime());
+		// Jour de l'an
+		GregorianCalendar jourAn = new GregorianCalendar(annee, 0, 1);
+		datesFeries.add(jourAn.getTime());
 
-    // La Toussaint
-    GregorianCalendar toussaint = new GregorianCalendar(annee, 10, 1);
-    datesFeries.add(toussaint.getTime());
+		// Lundi de pacques
+		GregorianCalendar pacques = calculLundiPacques(annee);
+		datesFeries.add(pacques.getTime());
 
-    // L'Armistice
-    GregorianCalendar armistice = new GregorianCalendar(annee, 10, 11);
-    datesFeries.add(armistice.getTime());
+		// Fete du travail
+		GregorianCalendar premierMai = new GregorianCalendar(annee, 4, 1);
+		datesFeries.add(premierMai.getTime());
 
-    // Noël
-    GregorianCalendar noel = new GregorianCalendar(annee, 11, 25);
-    datesFeries.add(noel.getTime());
+		// 8 mai
+		GregorianCalendar huitMai = new GregorianCalendar(annee, 4, 8);
+		datesFeries.add(huitMai.getTime());
 
-    return datesFeries;
-  }
+		// Ascension (= pâques + 38 jours)
+		GregorianCalendar ascension = new GregorianCalendar(annee, pacques.get(GregorianCalendar.MONTH),
+				pacques.get(GregorianCalendar.DAY_OF_MONTH));
+		ascension.add(GregorianCalendar.DAY_OF_MONTH, 38);
+		datesFeries.add(ascension.getTime());
 
-  public static GregorianCalendar calculLundiPacques(int annee) {
-    int a = annee / 100;
-    int b = annee % 100;
-    int c = (3 * (a + 25)) / 4;
-    int d = (3 * (a + 25)) % 4;
-    int e = (8 * (a + 11)) / 25;
-    int f = (5 * a + b) % 19;
-    int g = (19 * f + c - e) % 30;
-    int h = (f + 11 * g) / 319;
-    int j = (60 * (5 - d) + b) / 4;
-    int k = (60 * (5 - d) + b) % 4;
-    int m = (2 * j - k - g + h) % 7;
-    int n = (g - h + m + 114) / 31;
-    int p = (g - h + m + 114) % 31;
-    int jour = p + 1;
-    int mois = n;
+		// Pentecôte (= pâques + 49 jours)
+		GregorianCalendar pentecote = new GregorianCalendar(annee, pacques.get(GregorianCalendar.MONTH),
+				pacques.get(GregorianCalendar.DAY_OF_MONTH));
+		pentecote.add(GregorianCalendar.DAY_OF_MONTH, 49);
+		datesFeries.add(pentecote.getTime());
 
-    GregorianCalendar date = new GregorianCalendar(annee, mois - 1, jour);
-    date.add(GregorianCalendar.DAY_OF_MONTH, 1);
-    return date;
-  }
+		// Fête Nationale
+		GregorianCalendar quatorzeJuillet = new GregorianCalendar(annee, 6, 14);
+		datesFeries.add(quatorzeJuillet.getTime());
+
+		// Assomption
+		GregorianCalendar assomption = new GregorianCalendar(annee, 7, 15);
+		datesFeries.add(assomption.getTime());
+
+		// La Toussaint
+		GregorianCalendar toussaint = new GregorianCalendar(annee, 10, 1);
+		datesFeries.add(toussaint.getTime());
+
+		// L'Armistice
+		GregorianCalendar armistice = new GregorianCalendar(annee, 10, 11);
+		datesFeries.add(armistice.getTime());
+
+		// Noël
+		GregorianCalendar noel = new GregorianCalendar(annee, 11, 25);
+		datesFeries.add(noel.getTime());
+
+		return datesFeries;
+	}
+
+	public static GregorianCalendar calculLundiPacques(int annee) {
+		int a = annee / 100;
+		int b = annee % 100;
+		int c = (3 * (a + 25)) / 4;
+		int d = (3 * (a + 25)) % 4;
+		int e = (8 * (a + 11)) / 25;
+		int f = (5 * a + b) % 19;
+		int g = (19 * f + c - e) % 30;
+		int h = (f + 11 * g) / 319;
+		int j = (60 * (5 - d) + b) / 4;
+		int k = (60 * (5 - d) + b) % 4;
+		int m = (2 * j - k - g + h) % 7;
+		int n = (g - h + m + 114) / 31;
+		int p = (g - h + m + 114) % 31;
+		int jour = p + 1;
+		int mois = n;
+
+		GregorianCalendar date = new GregorianCalendar(annee, mois - 1, jour);
+		date.add(GregorianCalendar.DAY_OF_MONTH, 1);
+		return date;
+	}
 
 }

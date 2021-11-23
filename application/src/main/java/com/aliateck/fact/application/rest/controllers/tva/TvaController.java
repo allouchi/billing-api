@@ -1,6 +1,9 @@
 package com.aliateck.fact.application.rest.controllers.tva;
 
+import java.util.List;
+
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,40 +26,41 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequestMapping(Resource.TVAS)
-public class TvaController implements CommandLineRunner{
-  
-  private TvaApiService tvaApiService;
-  
+public class TvaController implements CommandLineRunner {
 
-  @GetMapping(value = "/{exercice}")
-  public Tva getTva( @PathVariable  String exercice) {    
-    return tvaApiService.findByExercice(exercice);
-  }
-  
-  @PutMapping(consumes = "application/json", produces = "application/json")
-  public void updateTva( @RequestBody Tva tvaRequest ) {    
-    tvaApiService.updateTva(tvaRequest);
-  }
-  
-  @GetMapping(value = "/{id}")
-  public void deleteTva( @PathVariable Long id ) {    
-    tvaApiService.deleteTva(id);
-  }
-  
-  @PostMapping(value = "/{id}")
-  public void addTva( @PathVariable Tva tvaRequest ) {    
-    tvaApiService.addTva(tvaRequest);
-  }
+	private TvaApiService tvaApiService;
 
-@Override
-public void run(String... args) throws Exception {
-	Tva tva = Tva.builder()
-			.datePayment("21/11/2021")
-			.montantPayment(1000f)
-			.exercice("2021-2022")
-			.build();
-	tvaApiService.addTva(tva)	;  	
-	
+	@GetMapping(value = "/{exercice}")
+	public Tva getTva(@PathVariable String exercice) {
+		return tvaApiService.findByExercice(exercice);
 	}
-  
+
+	@PutMapping(consumes = "application/json", produces = "application/json")
+	public void updateTva(@RequestBody Tva tvaRequest) {
+		tvaApiService.updateTva(tvaRequest);
+	}
+
+	@GetMapping(value = "/{id}")
+	public void deleteTva(@PathVariable Long id) {
+		tvaApiService.deleteTva(id);
+	}
+
+	@PostMapping(value = "/{id}")
+	public void addTva(@PathVariable Tva tvaRequest) {
+		tvaApiService.addTva(tvaRequest);
+	}
+
+	@GetMapping
+	public ResponseEntity<List<String>> findAllExercises() {
+		log.info("find all exercises");
+		return ResponseEntity.ok(tvaApiService.findAllExercises());
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		Tva tva = Tva.builder().datePayment("21/11/2021").montantPayment(1000f).exercice("2021-2022").build();
+		tvaApiService.addTva(tva);
+
+	}
+
 }
