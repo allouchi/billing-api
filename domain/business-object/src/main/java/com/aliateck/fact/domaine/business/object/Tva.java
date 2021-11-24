@@ -17,9 +17,9 @@ import lombok.experimental.FieldDefaults;
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Tva {
-  
-  Long id;
-  String exercice;
-  String datePayment;
-  Float montantPayment;
+
+	Long id;
+	String datePayment;
+	Float montantPayment;
+	String exercise;
 }

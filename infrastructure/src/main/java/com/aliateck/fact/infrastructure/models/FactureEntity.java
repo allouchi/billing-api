@@ -1,7 +1,5 @@
 package com.aliateck.fact.infrastructure.models;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,22 +7,24 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 
+import com.aliateck.fact.infrastructure.models.common.CommonEntity;
+
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Entity(name = "T_Facture")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @EqualsAndHashCode
-//@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class FactureEntity implements Serializable {
+// @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class FactureEntity extends CommonEntity {
 	/**
 	 *
 	 */

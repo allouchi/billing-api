@@ -15,14 +15,14 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-@Entity(name = "T_Tva")
+@Entity(name = "T_Exercise")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @SuperBuilder
 @ToString
-public class TvaEntity extends CommonEntity {
+public class ExerciseEntity extends CommonEntity {
 
 	/**
 	 * 
@@ -34,13 +34,7 @@ public class TvaEntity extends CommonEntity {
 	@Column(name = "id", nullable = false)
 	Long id;
 
-	@Column(name = "datePayment", nullable = false, unique = true)
-	String datePayment;
-
-	@Column(name = "montantPayment", nullable = false)
-	Float montantPayment;
-
-	@Column(name = "exercise", nullable = false)
+	@Column(name = "exercise", nullable = false, unique = true)
 	String exercise;
 
 }

@@ -1,6 +1,5 @@
 package com.aliateck.fact.infrastructure.models;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,22 +13,24 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.aliateck.fact.infrastructure.models.common.CommonEntity;
+
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "T_Prestation")
 @EqualsAndHashCode
-//@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class PrestationEntity implements Serializable {
+// @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class PrestationEntity extends CommonEntity {
 	/**
 	 *
 	 */
@@ -57,14 +58,13 @@ public class PrestationEntity implements Serializable {
 
 	@Column(name = "client_prestation", nullable = false)
 	String clientPrestation;
-	
+
 	@Column(name = "date_debut", nullable = true)
-	String dateDebut;	
-	
+	String dateDebut;
+
 	@Column(name = "date_fin", nullable = true)
-	String dateFin;	
-	
-	
+	String dateFin;
+
 	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JoinColumn(name = "client_id")
 	private ClientEntity client;
@@ -72,11 +72,9 @@ public class PrestationEntity implements Serializable {
 	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JoinColumn(name = "consultant_id")
 	private ConsultantEntity consultant;
-	
+
 	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JoinColumn(name = "facture_id")
 	private List<FactureEntity> facture;
-
-	
 
 }

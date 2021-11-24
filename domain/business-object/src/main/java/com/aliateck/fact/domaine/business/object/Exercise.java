@@ -1,10 +1,5 @@
 package com.aliateck.fact.domaine.business.object;
 
-import java.io.Serializable;
-import java.util.List;
-
-import com.aliateck.fact.domaine.business.object.common.Domain;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -23,23 +18,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Company extends Domain implements Serializable {
+public class Exercise {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	Long id;
-	String socialReason;
-	String status;
-	String siret;
-	String rcsName;
-	String numeroTva;
-	String codeApe;
-	String numeroIban;
-	String numeroBic;
-	Adresse companyAdresse;
-	List<Client> clients;
-	List<Consultant> consultants;
-	List<Prestation> prestations;
+	String exercise;
 }

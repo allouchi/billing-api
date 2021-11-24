@@ -40,7 +40,7 @@ CREATE TABLE T_ADRESSE (
 
 CREATE TABLE T_CLIENT (
   id bigint(20) NOT NULL AUTO_INCREMENT,
-  email varchar(255) NOT NULL DEFAULT 0,
+  email varchar(255) NOT NULL,
   social_reason varchar(255) NOT NULL DEFAULT 0,
   adresse_id bigint(20) DEFAULT NULL REFERENCES T_ADRESSE(id),
   company_id bigint(20) DEFAULT NULL REFERENCES T_COMPANY(id),
@@ -51,7 +51,7 @@ CREATE TABLE T_CONSULTANT (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   last_name varchar(255) NOT NULL DEFAULT 0,
   first_name varchar(255) NOT NULL DEFAULT 0,
-  email varchar(255) NOT NULL DEFAULT 0,
+  email varchar(255) NOT NULL,
   fonction varchar(255) NOT NULL DEFAULT 0,
   company_id bigint(20) DEFAULT NULL REFERENCES T_COMPANY(id),
   PRIMARY KEY (id)  

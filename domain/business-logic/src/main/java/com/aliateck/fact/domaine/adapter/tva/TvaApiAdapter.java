@@ -26,7 +26,7 @@ public class TvaApiAdapter implements TvaApiService {
 
 	@Override
 	public void deleteTva(Long id) {
-		tvaSpiService.delteById(id);
+		tvaSpiService.deleteById(id);
 
 	}
 
@@ -37,13 +37,23 @@ public class TvaApiAdapter implements TvaApiService {
 	}
 
 	@Override
-	public Tva findByExercice(String exercice) {
-		return tvaSpiService.findByExercice(exercice);
+	public List<Tva> findByExercise(String exercise) {
+		return tvaSpiService.findByExercise(exercise);
 	}
 
 	@Override
-	public List<String> findAllExercises() {
-		return tvaSpiService.makeExercises();
+	public Tva findById(Long id) {
+		return tvaSpiService.findById(id);
+	}
+
+	@Override
+	public List<Tva> findAllTva() {
+		return tvaSpiService.findAllTva();
+	}
+
+	@Override
+	public void deleteByExercise(String exercise) {
+		tvaSpiService.deleteByExercise(exercise);
 	}
 
 }

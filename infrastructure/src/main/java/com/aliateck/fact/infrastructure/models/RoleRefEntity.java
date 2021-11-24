@@ -1,28 +1,28 @@
 package com.aliateck.fact.infrastructure.models;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.aliateck.fact.infrastructure.models.common.CommonEntity;
+
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Entity(name = "T_RoleRef")
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class RoleRefEntity implements Serializable{
+public class RoleRefEntity extends CommonEntity {
 
 	/**
 	 * 
@@ -31,15 +31,15 @@ public class RoleRefEntity implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false)	
+	@Column(name = "id", nullable = false)
 	Long id;
-	
+
 	@Column(name = "role", nullable = false)
 	private String role;
-	
+
 	@Column(name = "email", nullable = false)
 	String email;
-	
+
 	@Column(name = "description", nullable = false)
 	private String description;
 

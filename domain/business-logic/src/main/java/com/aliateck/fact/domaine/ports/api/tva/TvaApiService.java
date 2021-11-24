@@ -12,8 +12,12 @@ public interface TvaApiService {
 
 	public void updateTva(Tva tva);
 
-	public Tva findByExercice(String exercice);
+	public List<Tva> findByExercise(String exercise);
 
-	public List<String> findAllExercises();
+	public Tva findById(Long id);
+
+	public void deleteByExercise(String exercise);
+
+	public List<Tva> findAllTva();
 
 }

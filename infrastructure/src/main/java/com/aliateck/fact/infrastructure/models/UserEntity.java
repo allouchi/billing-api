@@ -1,6 +1,5 @@
 package com.aliateck.fact.infrastructure.models;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -15,23 +14,25 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.aliateck.fact.infrastructure.models.common.CommonEntity;
+
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @ToString
-//@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+// @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Entity
 @Table(name = "T_USER")
-public class UserEntity implements Serializable {
+public class UserEntity extends CommonEntity {
 
 	/**
 	 *
