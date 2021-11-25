@@ -2,6 +2,11 @@ package com.aliateck.fact.domaine.ports.spi.tva;
 
 import com.aliateck.fact.domaine.business.object.Exercise;
 
+/**
+ * 
+ * @author MALIANE
+ *
+ */
 public interface ExerciseSpiService {
 
 	public void delteByExercise(String exercice);
