@@ -10,9 +10,11 @@ import org.springframework.stereotype.Service;
 
 import com.aliateck.fact.domaine.business.object.Tva;
 import com.aliateck.fact.domaine.ports.spi.tva.TvaSpiService;
+import com.aliateck.fact.infrastructure.mapper.ExerciseMapper;
 import com.aliateck.fact.infrastructure.mapper.TvaMapper;
-import com.aliateck.fact.infrastructure.models.ExerciseEntity;
+import com.aliateck.fact.infrastructure.models.FactureEntity;
 import com.aliateck.fact.infrastructure.models.TvaEntity;
+import com.aliateck.fact.infrastructure.repository.facture.FactureJpaRepository;
 import com.aliateck.fact.infrastructure.repository.tva.ExerciseJpaRepository;
 import com.aliateck.fact.infrastructure.repository.tva.TvaJpaRepository;
 
@@ -29,25 +31,24 @@ import lombok.extern.slf4j.Slf4j;
 public class TvaSpiAdapter implements TvaSpiService {
 
 	private TvaMapper tvaMapper;
+	private ExerciseMapper exerciseMapper;
 	private TvaJpaRepository tvaJpaRepository;
 	private ExerciseJpaRepository exerciseJpaRepository;
+	private FactureJpaRepository factureJpaRepository;
 
 	@Override
 	public List<Tva> findByExercise(String exercice) {
 
-		Optional<ExerciseEntity> e = exerciseJpaRepository.findByExercise(exercice);
-		if (e.isPresent()) {
-
+		List<TvaEntity> e = tvaJpaRepository.findByExercise(exercice);
+		if (e != null) {
+			return tvaMapper.fromEntityToDomain(e);
 		}
+
 		return Collections.emptyList();
 	}
 
 	@Override
 	public void deleteByExercise(String exercise) {
-		Optional<ExerciseEntity> e = exerciseJpaRepository.findByExercise(exercise);
-		if (e.isPresent()) {
-
-		}
 
 	}
 
@@ -89,6 +90,26 @@ public class TvaSpiAdapter implements TvaSpiService {
 	public List<Tva> findAllTva() {
 		List<TvaEntity> entities = tvaJpaRepository.findAll();
 		return tvaMapper.fromEntityToDomain(entities);
+	}
+
+	@Override
+	public float findSumTva(String exercise) {
+		float sumOfTva = 0;
+		List<FactureEntity> entities = factureJpaRepository.findAll();
+		for (FactureEntity e : entities) {
+			if (e.getDateEncaissement() != null) {
+				String[] dateEncaissement = e.getDateEncaissement().split("/");
+				if (exercise != null && !exercise.equals("")) {
+					String[] annee = exercise.split("/");
+					if (dateEncaissement[2] != null && annee[0] != null && annee[1] != null) {
+						if (annee[0].equals(dateEncaissement[2]) || annee[1].equals(dateEncaissement[2])) {
+							sumOfTva += e.getMontantTVA();
+						}
+					}
+				}
+			}
+		}
+		return sumOfTva;
 	}
 
 }

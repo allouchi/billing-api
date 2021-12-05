@@ -42,9 +42,8 @@ public class ExerciseApiAdapter implements ExerciseApiService {
 	}
 
 	@Override
-	public List<String> findAllExercises() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Exercise> findAllExercises() {
+		return exerciseSpiService.findExercisesRef();
 	}
 
 }

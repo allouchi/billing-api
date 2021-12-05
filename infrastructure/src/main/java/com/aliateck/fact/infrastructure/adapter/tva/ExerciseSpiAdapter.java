@@ -1,6 +1,6 @@
 package com.aliateck.fact.infrastructure.adapter.tva;
 
-import java.util.Optional;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -44,10 +44,6 @@ public class ExerciseSpiAdapter implements ExerciseSpiService {
 
 	@Override
 	public Exercise findByExercise(String exercice) {
-		Optional<ExerciseEntity> o = exerciseJpaRepository.findByExercise(exercice);
-		if (o.isPresent()) {
-			return exerciseMapper.fromEntityToDomain(o.get());
-		}
 		return null;
 	}
 
@@ -56,6 +52,12 @@ public class ExerciseSpiAdapter implements ExerciseSpiService {
 		ExerciseEntity entity = exerciseJpaRepository.save(exerciseMapper.fromDomainToEntity(exercise));
 		return exerciseMapper.fromEntityToDomain(entity);
 
+	}
+
+	@Override
+	public List<Exercise> findExercisesRef() {
+		List<ExerciseEntity> e = exerciseJpaRepository.findAll();
+		return exerciseMapper.fromEntityToDomain(e);
 	}
 
 }

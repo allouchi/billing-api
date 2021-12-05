@@ -9,6 +9,7 @@ import com.aliateck.fact.domaine.business.object.Exercise;
  * @author MALIANE
  *
  */
+
 public interface ExerciseApiService {
 
 	public Exercise addExercise(Exercise exercise);
@@ -19,6 +20,6 @@ public interface ExerciseApiService {
 
 	public Exercise findByExercise(String exercice);
 
-	public List<String> findAllExercises();
+	public List<Exercise> findAllExercises();
 
 }

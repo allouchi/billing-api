@@ -56,4 +56,9 @@ public class TvaApiAdapter implements TvaApiService {
 		tvaSpiService.deleteByExercise(exercise);
 	}
 
+	@Override
+	public float findSumTva(String exercise) {
+		return tvaSpiService.findSumTva(exercise);
+	}
+
 }

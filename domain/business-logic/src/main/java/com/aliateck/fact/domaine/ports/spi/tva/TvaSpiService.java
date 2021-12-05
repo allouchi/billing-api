@@ -20,4 +20,5 @@ public interface TvaSpiService {
 
 	public List<Tva> findAllTva();
 
+	public float findSumTva(String exercise);
 }
