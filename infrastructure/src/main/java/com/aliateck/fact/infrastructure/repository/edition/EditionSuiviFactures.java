@@ -307,18 +307,7 @@ public class EditionSuiviFactures {
     cell.setCellStyle(cellStyle);
     return cell;
   }
-
-  /**
-   * Création d'une cellule
-   *
-   * @param wb
-   * @param row
-   * @param column
-   * @return
-   */
-  private HSSFCell createCell(HSSFWorkbook wb, HSSFRow row, int column) {
-    return row.createCell((short) column);
-  }
+ 
 
   /**
    * Création d'une ligne

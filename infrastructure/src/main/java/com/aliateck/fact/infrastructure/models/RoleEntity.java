@@ -21,7 +21,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper=false)
 @Entity
 @Table(name = "T_ROLE")
 public class RoleEntity extends CommonEntity {

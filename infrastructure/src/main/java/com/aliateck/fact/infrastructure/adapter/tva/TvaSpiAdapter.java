@@ -10,12 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.aliateck.fact.domaine.business.object.Tva;
 import com.aliateck.fact.domaine.ports.spi.tva.TvaSpiService;
-import com.aliateck.fact.infrastructure.mapper.ExerciseMapper;
 import com.aliateck.fact.infrastructure.mapper.TvaMapper;
 import com.aliateck.fact.infrastructure.models.FactureEntity;
 import com.aliateck.fact.infrastructure.models.TvaEntity;
 import com.aliateck.fact.infrastructure.repository.facture.FactureJpaRepository;
-import com.aliateck.fact.infrastructure.repository.tva.ExerciseJpaRepository;
 import com.aliateck.fact.infrastructure.repository.tva.TvaJpaRepository;
 
 import lombok.AccessLevel;
@@ -31,9 +29,9 @@ import lombok.extern.slf4j.Slf4j;
 public class TvaSpiAdapter implements TvaSpiService {
 
 	private TvaMapper tvaMapper;
-	private ExerciseMapper exerciseMapper;
+	//private ExerciseMapper exerciseMapper;
 	private TvaJpaRepository tvaJpaRepository;
-	private ExerciseJpaRepository exerciseJpaRepository;
+	//private ExerciseJpaRepository exerciseJpaRepository;
 	private FactureJpaRepository factureJpaRepository;
 
 	@Override
@@ -55,7 +53,6 @@ public class TvaSpiAdapter implements TvaSpiService {
 	@Override
 	public void deleteById(Long id) {
 		tvaJpaRepository.deleteById(id);
-
 	}
 
 	@Override

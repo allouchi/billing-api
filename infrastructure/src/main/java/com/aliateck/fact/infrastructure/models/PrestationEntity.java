@@ -28,7 +28,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "T_Prestation")
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper=false)
 // @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PrestationEntity extends CommonEntity {
 	/**

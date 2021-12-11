@@ -2,13 +2,16 @@ package com.aliateck.fact.application.rest.controllers.tva;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aliateck.fact.domaine.business.object.Tva;
-import com.aliateck.fact.domaine.ports.api.tva.ExerciseApiService;
 import com.aliateck.fact.domaine.ports.api.tva.TvaApiService;
 import com.aliateck.util.CommonResource.Resource;
 
@@ -25,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 public class TvaController {
 
 	private TvaApiService tvaApiService;
-	private ExerciseApiService exerciseApiService;
+	//private ExerciseApiService exerciseApiService;
 
 	// @GetMapping(value = "/{id}")
 	// public Tva getTva(@PathVariable Long id) {
@@ -34,9 +37,9 @@ public class TvaController {
 
 	@GetMapping(value = "/{exercise}")
 	public List<Tva> getByExercise(@PathVariable String exercise) {
-		log.info("---- get all tva by exercise : " + exercise);
+		log.info("---- Get All tvas by exercise : " + exercise);
 		List<Tva> tvas = tvaApiService.findByExercise(exercise);
-		System.out.println(tvas);
+
 		return tvas;
 	}
 
@@ -45,20 +48,23 @@ public class TvaController {
 	// return tvaApiService.findSumTva(exercise);
 	// }
 	//
-	// @PutMapping(consumes = "application/json", produces = "application/json")
-	// public void updateTva(@RequestBody Tva tvaRequest) {
-	// tvaApiService.updateTva(tvaRequest);
-	// }
+	 @PutMapping(consumes = "application/json", produces = "application/json")
+	 public void updateTva(@RequestBody Tva tvaRequest) {
+		 log.info("---- add or update tva : " + tvaRequest);
+		 tvaApiService.updateTva(tvaRequest);
+	 }
 	//
-	// @DeleteMapping(value = "/{id}")
-	// public void deleteTva(@PathVariable Long id) {
-	// tvaApiService.deleteTva(id);
-	// }
+	@DeleteMapping(value = "/{id}")
+	public void deleteTva(@PathVariable Long id) {
+		log.info("---- delete by id : " + id);
+		// tvaApiService.deleteTva(id);
+	}
 	//
-	// @PostMapping(value = "/{id}")
-	// public void addTva(@PathVariable Tva tvaRequest) {
-	// tvaApiService.addTva(tvaRequest);
-	// }
+	@PostMapping(consumes = "application/json", produces = "application/json")
+	public void addTva(@RequestBody Tva tvaRequest) {
+		log.info("---- add or update tva : " + tvaRequest);
+		tvaApiService.addTva(tvaRequest);
+	}
 
 	/*
 	 * @Override public void run(String... args) throws Exception {

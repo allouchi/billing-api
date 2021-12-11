@@ -37,7 +37,7 @@ public class BuildFactureImpl implements BuildFactureService {
 			facture.setPrixTotalTTC(prixTotalHT + tva);
 			facture.setMontantTVA(tva);
 			facture.setDelaiPaiement(prestation.getDelaiPaiement());
-			facture.setDateFacturation(Utils.convertToDateFromLocalDate(LocalDate.now()));
+			facture.setDateFacturation(Utils.calculDateFacturation(moisFacture));
 			facture.setDateEcheance(Utils.calculerDateEcheance(prestation, moisFacture));			
 			facture.setFactureStatus(FactureStatus.NON.getCode());
 			facture.setStatusDesc(FactureStatus.NON.getDescription());

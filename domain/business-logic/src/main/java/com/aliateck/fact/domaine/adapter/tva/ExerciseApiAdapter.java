@@ -26,13 +26,13 @@ public class ExerciseApiAdapter implements ExerciseApiService {
 
 	@Override
 	public void deleteExercise(Long id) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public void updateExercise(Exercise exercise) {
-		// TODO Auto-generated method stub
+		
 
 	}
 

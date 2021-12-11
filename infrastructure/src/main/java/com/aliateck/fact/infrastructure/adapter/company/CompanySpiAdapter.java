@@ -15,7 +15,6 @@ import com.aliateck.fact.infrastructure.adapter.commun.CheckEmailAdress;
 import com.aliateck.fact.infrastructure.mapper.CompanyMapper;
 import com.aliateck.fact.infrastructure.models.CompanyEntity;
 import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
-import com.aliateck.fact.infrastructure.repository.user.UserJpaRepository;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CompanySpiAdapter implements CompanySpiService {
-	CompanyJpaRepository companyJpaRepository;
-	UserJpaRepository userJpaRepository;
+	CompanyJpaRepository companyJpaRepository;	
 	CompanyMapper companyMapper;
 
 	@Override

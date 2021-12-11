@@ -21,7 +21,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper=false)
 public class RoleRefEntity extends CommonEntity {
 
 	/**

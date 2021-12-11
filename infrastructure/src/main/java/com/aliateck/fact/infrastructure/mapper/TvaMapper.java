@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TvaMapper {
 
-	private final ExerciseMapper exerciseMapper;
+	//private final ExerciseMapper exerciseMapper;
 
 	public TvaEntity fromDomainToEntity(Tva domain) {
 		if (domain == null) {

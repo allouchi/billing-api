@@ -22,7 +22,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @SuperBuilder
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper=false)
 // @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FactureEntity extends CommonEntity {
 	/**
