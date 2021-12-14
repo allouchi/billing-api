@@ -57,7 +57,7 @@ public class TvaController {
 	@DeleteMapping(value = "/{id}")
 	public void deleteTva(@PathVariable Long id) {
 		log.info("---- delete by id : " + id);
-		// tvaApiService.deleteTva(id);
+		tvaApiService.deleteTva(id);
 	}
 	//
 	@PostMapping(consumes = "application/json", produces = "application/json")

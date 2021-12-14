@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.aliateck.fact.domaine.business.object.Tva;
 import com.aliateck.fact.domaine.ports.api.tva.TvaApiService;
 import com.aliateck.fact.domaine.ports.spi.tva.TvaSpiService;
+import com.aliateck.util.Utils;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,8 @@ public class TvaApiAdapter implements TvaApiService {
 
 	@Override
 	public Tva addTva(Tva tva) {
+		String datePaiment = Utils.convertFromDomainToEntityDate(tva.getDatePayment());
+		tva.setDatePayment(datePaiment);
 		return tvaSpiService.addTva(tva);
 	}
 

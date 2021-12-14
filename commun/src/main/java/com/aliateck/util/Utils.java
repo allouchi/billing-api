@@ -155,6 +155,7 @@ public class Utils {
 			oFacture.setStatusDesc(FactureStatus.OUI.getDescription());
 			oFacture.setFraisRetard(0);
 			oFacture.setNbJourRetard(0);
+			oFacture.setMontantTVA(factureRequest.getPrixTotalHT() * 0.2f);
 		}
 		return oFacture;
 
