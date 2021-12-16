@@ -9,12 +9,14 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.aliateck.fact.domaine.business.object.Tva;
+import com.aliateck.fact.domaine.business.object.TvaInfo;
 import com.aliateck.fact.domaine.ports.spi.tva.TvaSpiService;
 import com.aliateck.fact.infrastructure.mapper.TvaMapper;
 import com.aliateck.fact.infrastructure.models.FactureEntity;
 import com.aliateck.fact.infrastructure.models.TvaEntity;
 import com.aliateck.fact.infrastructure.repository.facture.FactureJpaRepository;
 import com.aliateck.fact.infrastructure.repository.tva.TvaJpaRepository;
+import com.aliateck.util.Utils;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -64,6 +66,8 @@ public class TvaSpiAdapter implements TvaSpiService {
 
 	@Override
 	public void updateTva(Tva tva) {
+		String datePaiement = Utils.convertFromDomainToEntityDate(tva.getDatePayment());
+		tva.setDatePayment(datePaiement);
 		Optional<TvaEntity> entity = tvaJpaRepository.findById(tva.getId());
 		if (entity.isPresent()) {
 			TvaEntity e = entity.get();
@@ -90,23 +94,31 @@ public class TvaSpiAdapter implements TvaSpiService {
 	}
 
 	@Override
-	public float findSumTva(String exercise) {
+	public TvaInfo findTvaInfo(String exercise) {
 		float sumOfTva = 0;
+		float sumOfTvaPaye = 0;
+		TvaInfo info = new TvaInfo();
 		List<FactureEntity> entities = factureJpaRepository.findAll();
 		for (FactureEntity e : entities) {
-			if (e.getDateEncaissement() != null) {
-				String[] dateEncaissement = e.getDateEncaissement().split("/");
-				if (exercise != null && !exercise.equals("")) {
-					String[] annee = exercise.split("/");
-					if (dateEncaissement[2] != null && annee[0] != null && annee[1] != null) {
-						if (annee[0].equals(dateEncaissement[2]) || annee[1].equals(dateEncaissement[2])) {
+			if (e.getDateFacturation() != null) {
+				String[] dateFacturation = e.getDateFacturation().split("/");
+				if (exercise != null) {					
+					if (dateFacturation[2] != null) {
+						if (exercise.equals(dateFacturation[2])) {
 							sumOfTva += e.getMontantTVA();
 						}
 					}
 				}
 			}
 		}
-		return sumOfTva;
+		
+		List<TvaEntity> listeTvaPayee = tvaJpaRepository.findByExercise(exercise);
+		for(TvaEntity e: listeTvaPayee) {
+			sumOfTvaPaye+=e.getMontantPayment();
+		}
+		info.setTotalTvaPaye(sumOfTva);
+		info.setTotalTvaRestant(sumOfTva - sumOfTvaPaye);
+		return info;
 	}
 
 }

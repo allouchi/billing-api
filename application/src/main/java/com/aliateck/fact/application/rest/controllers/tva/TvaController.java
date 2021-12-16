@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aliateck.fact.domaine.business.object.Tva;
+import com.aliateck.fact.domaine.business.object.TvaInfo;
 import com.aliateck.fact.domaine.ports.api.tva.TvaApiService;
 import com.aliateck.util.CommonResource.Resource;
 
@@ -42,18 +43,20 @@ public class TvaController {
 
 		return tvas;
 	}
-
-	// @GetMapping(value = "/{exercise}")
-	// public float getSumTva(@PathVariable String exercise) {
-	// return tvaApiService.findSumTva(exercise);
-	// }
-	//
+	
+	@GetMapping(value = "/{exercise}/{exercise}")
+	public TvaInfo getTvaInfoByExercise(@PathVariable String exercise) {
+		log.info("---- Get All tvas info by exercise : " + exercise);
+		TvaInfo tvas = tvaApiService.findTvaInfo(exercise);
+		return tvas;
+	}	
+	
 	 @PutMapping(consumes = "application/json", produces = "application/json")
 	 public void updateTva(@RequestBody Tva tvaRequest) {
 		 log.info("---- add or update tva : " + tvaRequest);
 		 tvaApiService.updateTva(tvaRequest);
 	 }
-	//
+	
 	@DeleteMapping(value = "/{id}")
 	public void deleteTva(@PathVariable Long id) {
 		log.info("---- delete by id : " + id);
@@ -65,26 +68,6 @@ public class TvaController {
 		log.info("---- add or update tva : " + tvaRequest);
 		tvaApiService.addTva(tvaRequest);
 	}
-
-	/*
-	 * @Override public void run(String... args) throws Exception {
-	 * 
-	 * List<Tva> tvas1 = new ArrayList<>(); List<Tva> tvas2 = new ArrayList<>(); Tva tva1 =
-	 * Tva.builder().datePayment("01/01/2021").montantPayment(1000f).exercise("2020/2021").build(); Tva tva2 =
-	 * Tva.builder().datePayment("01/02/2021").montantPayment(2000f).exercise("2020/2021").build(); Tva tva3 =
-	 * Tva.builder().datePayment("01/03/2021").montantPayment(3000f).exercise("2021/2022").build(); Tva tva4 =
-	 * Tva.builder().datePayment("01/04/2021").montantPayment(4000f).exercise("2022/2023").build();
-	 * 
-	 * tvas1.add(tva1); tvas1.add(tva2); tvas2.add(tva3); tvas2.add(tva4);
-	 * 
-	 * Exercise e1 = Exercise.builder().exercise("2020/2021").build(); Exercise e2 =
-	 * Exercise.builder().exercise("2021/2022").build(); Exercise e3 = Exercise.builder().exercise("2022/2023").build();
-	 * 
-	 * exerciseApiService.addExercise(e1); // exerciseApiService.addExercise(e2); // exerciseApiService.addExercise(e3);
-	 * 
-	 * tvaApiService.addTva(tva1); // tvaApiService.addTva(tva2); // tvaApiService.addTva(tva3);
-	 * 
-	 * }
-	 */
+	
 
 }

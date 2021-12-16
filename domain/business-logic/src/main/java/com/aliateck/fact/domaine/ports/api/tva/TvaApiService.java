@@ -3,6 +3,7 @@ package com.aliateck.fact.domaine.ports.api.tva;
 import java.util.List;
 
 import com.aliateck.fact.domaine.business.object.Tva;
+import com.aliateck.fact.domaine.business.object.TvaInfo;
 
 public interface TvaApiService {
 
@@ -20,6 +21,6 @@ public interface TvaApiService {
 
 	public List<Tva> findAllTva();
 
-	public float findSumTva(String exercise);
+	public TvaInfo findTvaInfo(String exercise);
 
 }

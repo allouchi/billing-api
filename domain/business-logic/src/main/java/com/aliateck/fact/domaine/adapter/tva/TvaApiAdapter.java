@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.aliateck.fact.domaine.business.object.Tva;
+import com.aliateck.fact.domaine.business.object.TvaInfo;
 import com.aliateck.fact.domaine.ports.api.tva.TvaApiService;
 import com.aliateck.fact.domaine.ports.spi.tva.TvaSpiService;
 import com.aliateck.util.Utils;
@@ -60,8 +61,8 @@ public class TvaApiAdapter implements TvaApiService {
 	}
 
 	@Override
-	public float findSumTva(String exercise) {
-		return tvaSpiService.findSumTva(exercise);
+	public TvaInfo findTvaInfo(String exercise) {
+		return tvaSpiService.findTvaInfo(exercise);
 	}
 
 }
