@@ -2,6 +2,9 @@ package com.aliateck.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Period;
@@ -20,17 +23,19 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import org.springframework.core.io.ClassPathResource;
-
 import com.aliateck.fact.domaine.business.object.Consultant;
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.business.object.Prestation;
 
 public class Utils {
 
+	static Map<String, File> map = null;
 	private static Map<String, String> mapMois = new HashMap<>();
 	private static final String TIRET = "-";
 	private static final String SLATSH = "/";
+	private String custTemplate = "data/customTemplate.jrxml";
+	private String custDefaultTemplate = "data/defaultTemplate.jrxml";
+	private String suiviFacturation = "data/suivi-facturation.xls";
 
 	static {
 
@@ -46,9 +51,24 @@ public class Utils {
 		mapMois.put("10", "Octobre");
 		mapMois.put("11", "Novembre");
 		mapMois.put("12", "Décembre");
+
 	}
 
-	private Utils() {
+	private Utils() throws URISyntaxException, IOException {
+		map = new HashMap<>();
+		URL custTemplateUrl = getClass().getClassLoader().getResource(custTemplate);
+		URL custDefaultTemplateUrl = getClass().getClassLoader().getResource(custDefaultTemplate);
+		URL suiviFacturationUrl = getClass().getClassLoader().getResource(suiviFacturation);
+		File customFile = Paths.get(custTemplateUrl.toURI()).toFile();
+		File defaultFile = Paths.get(custDefaultTemplateUrl.toURI()).toFile();
+		File suiviFile = Paths.get(suiviFacturationUrl.toURI()).toFile();
+
+		// File customFile = new ClassPathResource(custTemplate).getFile();
+		// File defaultFile = new ClassPathResource(custDefaultTemplate).getFile();
+		// File excelFile = new ClassPathResource(suiviFacturation).getFile();
+		map.put("Default", defaultFile);
+		map.put("Custom", customFile);
+		map.put("Suivi", suiviFile);
 	}
 
 	/**
@@ -125,14 +145,18 @@ public class Utils {
 	 * @throws IOException
 	 */
 	public static Map<String, File> loadFilesResources() throws IOException {
-		Map<String, File> map = new HashMap<>();
+		// Map<String, File> map = new HashMap<>();
+		// String custTemplate = "data/customTemplate.jrxml";
+		// String custDefaultTemplate = "data/defaultTemplate.jrxml";
+		// String suiviFacturation = "data/suivi-facturation.xls";
+		//
+		// File customFile = new ClassPathResource(custTemplate).getFile();
+		// File defaultFile = new ClassPathResource(custDefaultTemplate).getFile();
+		// File excelFile = new ClassPathResource(suiviFacturation).getFile();
+		// map.put("Default", defaultFile);
+		// map.put("Custom", customFile);
+		// map.put("Suivi", excelFile);
 
-		File customFile = new ClassPathResource("data/customTemplate.jrxml").getFile();
-		File defaultFile = new ClassPathResource("data/defaultTemplate.jrxml").getFile();
-		File excelFile = new ClassPathResource("data/suivi-facturation.xls").getFile();
-		map.put("Default", defaultFile);
-		map.put("Custom", customFile);
-		map.put("Suivi", excelFile);
 		return map;
 	}
 
@@ -252,14 +276,14 @@ public class Utils {
 		final DateTimeFormatter formaterDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		return formaterDate.format(dateToConvert);
 	}
-	
+
 	/**
 	 * 
 	 * @param dateToConvert
 	 * @return
 	 */
 	public static String calculDateFacturation(String moisFacture) {
-		
+
 		String[] moisId = new String[1];
 
 		mapMois.forEach((key, value) -> {
@@ -267,13 +291,13 @@ public class Utils {
 				moisId[0] = key;
 			}
 		});
-		
+
 		LocalDate dateActuelle = LocalDate.now();
 		int mois = Integer.parseInt(moisId[0]);
-		
-		LocalDate initial = LocalDate.of(dateActuelle.getYear(), mois, 01);		
-		LocalDate endOfMonth = initial.withDayOfMonth(initial.lengthOfMonth());		
-		String dateFacture = endOfMonth.getMonth().maxLength()  + SLATSH + moisId[0] + SLATSH + dateActuelle.getYear();		
+
+		LocalDate initial = LocalDate.of(dateActuelle.getYear(), mois, 01);
+		LocalDate endOfMonth = initial.withDayOfMonth(initial.lengthOfMonth());
+		String dateFacture = endOfMonth.getMonth().maxLength() + SLATSH + moisId[0] + SLATSH + dateActuelle.getYear();
 		return dateFacture;
 	}
 

@@ -116,7 +116,7 @@ public class EditionReportImpl implements EditionReportService {
         + RETURN + adresseClient.getCodePostal() + ESPACE_BLANC + adresseClient.getLocalite()
         + RETURN + adresseClient.getPays();
     String rsClient = prestation.getClient().getSocialReason();
-    // Facture_ALIATECK_FINAXYS_Prestation-SG_12-2020_1000.pdf
+    
     String moisFacture = Utils.buildMoisFacture(facture.getMoisFacture());
     String fileName =
         FACTURE_LIBELLE + UNDERSCORE + formatString(rsCompany) + UNDERSCORE + formatString(rsClient)

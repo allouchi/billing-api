@@ -10,6 +10,7 @@
 	</parent>
 	
 	<artifactId>billing-api-application</artifactId>
+	<packaging>war</packaging>
 
 	<name>Billing API :: Application Layer</name>
 	<description>Application Layer for Billing API based on Rest</description>
