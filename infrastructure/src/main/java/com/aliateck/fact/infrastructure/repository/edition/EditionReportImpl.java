@@ -189,7 +189,7 @@ public class EditionReportImpl implements EditionReportService {
 
     } catch (Exception e) {
       log.info("Problème lors du chargement des fichiers templates");
-      throw e;
+      //throw e;
     }
     return file;
 

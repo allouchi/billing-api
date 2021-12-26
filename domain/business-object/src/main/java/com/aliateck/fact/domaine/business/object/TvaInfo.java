@@ -19,5 +19,6 @@ import lombok.experimental.FieldDefaults;
 public class TvaInfo {	
 	
 	Float totalTvaPaye;
-	Float totalTvaRestant;	
+	Float totalTvaRestant;
+	Float totalHT;
 }

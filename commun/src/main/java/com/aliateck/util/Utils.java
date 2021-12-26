@@ -23,6 +23,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.core.io.ClassPathResource;
+
 import com.aliateck.fact.domaine.business.object.Consultant;
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.business.object.Prestation;
@@ -54,21 +56,8 @@ public class Utils {
 
 	}
 
-	private Utils() throws URISyntaxException, IOException {
-		map = new HashMap<>();
-		URL custTemplateUrl = getClass().getClassLoader().getResource(custTemplate);
-		URL custDefaultTemplateUrl = getClass().getClassLoader().getResource(custDefaultTemplate);
-		URL suiviFacturationUrl = getClass().getClassLoader().getResource(suiviFacturation);
-		File customFile = Paths.get(custTemplateUrl.toURI()).toFile();
-		File defaultFile = Paths.get(custDefaultTemplateUrl.toURI()).toFile();
-		File suiviFile = Paths.get(suiviFacturationUrl.toURI()).toFile();
-
-		// File customFile = new ClassPathResource(custTemplate).getFile();
-		// File defaultFile = new ClassPathResource(custDefaultTemplate).getFile();
-		// File excelFile = new ClassPathResource(suiviFacturation).getFile();
-		map.put("Default", defaultFile);
-		map.put("Custom", customFile);
-		map.put("Suivi", suiviFile);
+	private Utils()  {
+		
 	}
 
 	/**
@@ -143,20 +132,22 @@ public class Utils {
 	 * 
 	 * @return
 	 * @throws IOException
+	 * @throws URISyntaxException 
 	 */
-	public static Map<String, File> loadFilesResources() throws IOException {
-		// Map<String, File> map = new HashMap<>();
-		// String custTemplate = "data/customTemplate.jrxml";
-		// String custDefaultTemplate = "data/defaultTemplate.jrxml";
-		// String suiviFacturation = "data/suivi-facturation.xls";
-		//
-		// File customFile = new ClassPathResource(custTemplate).getFile();
-		// File defaultFile = new ClassPathResource(custDefaultTemplate).getFile();
-		// File excelFile = new ClassPathResource(suiviFacturation).getFile();
-		// map.put("Default", defaultFile);
-		// map.put("Custom", customFile);
-		// map.put("Suivi", excelFile);
-
+	public static Map<String, File> loadFilesResources() throws IOException, URISyntaxException {
+		Map<String, File> map = new HashMap<>();
+		 String custTemplate = "data/customTemplate.jrxml";
+		 String custDefaultTemplate = "data/defaultTemplate.jrxml";
+		 String suiviFacturation = "data/suivi-facturation.xls";
+		
+		 File customFile = new ClassPathResource(custTemplate).getFile();
+		 File defaultFile = new ClassPathResource(custDefaultTemplate).getFile();
+		 File excelFile = new ClassPathResource(suiviFacturation).getFile();
+		 map.put("Default", defaultFile);
+		 map.put("Custom", customFile);
+		 map.put("Suivi", excelFile);
+		//LoadRessources load = new LoadRessources();
+		//map = load.load();
 		return map;
 	}
 
@@ -243,7 +234,7 @@ public class Utils {
 	 */
 	public static String calculerDateEcheance(Prestation prestation, String moisFacture) {
 
-		if (prestation == null) {
+		if (prestation == null || moisFacture == null || moisFacture.equals("")) {
 			return null;
 		}
 
@@ -284,6 +275,9 @@ public class Utils {
 	 */
 	public static String calculDateFacturation(String moisFacture) {
 
+		if(moisFacture == null || moisFacture.equals("")) {
+			return null;
+		}
 		String[] moisId = new String[1];
 
 		mapMois.forEach((key, value) -> {

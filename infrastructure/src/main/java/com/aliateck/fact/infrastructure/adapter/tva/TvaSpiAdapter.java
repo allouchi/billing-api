@@ -97,6 +97,7 @@ public class TvaSpiAdapter implements TvaSpiService {
 	public TvaInfo findTvaInfo(String exercise) {
 		float sumOfTva = 0;
 		float sumOfTvaPaye = 0;
+		float totalHT  =0;
 		TvaInfo info = new TvaInfo();
 		List<FactureEntity> entities = factureJpaRepository.findAll();
 		for (FactureEntity e : entities) {
@@ -106,6 +107,7 @@ public class TvaSpiAdapter implements TvaSpiService {
 					if (dateFacturation[2] != null) {
 						if (exercise.equals(dateFacturation[2])) {
 							sumOfTva += e.getMontantTVA();
+							totalHT += e.getPrixTotalHT();
 						}
 					}
 				}
@@ -116,8 +118,9 @@ public class TvaSpiAdapter implements TvaSpiService {
 		for(TvaEntity e: listeTvaPayee) {
 			sumOfTvaPaye+=e.getMontantPayment();
 		}
-		info.setTotalTvaPaye(sumOfTva);
+		info.setTotalTvaPaye(sumOfTvaPaye);
 		info.setTotalTvaRestant(sumOfTva - sumOfTvaPaye);
+		info.setTotalHT(totalHT);
 		return info;
 	}
 
