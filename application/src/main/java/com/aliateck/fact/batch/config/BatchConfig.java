@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @EnableBatchProcessing
-//@EnableScheduling
+// @EnableScheduling
 @NoArgsConstructor
 @Slf4j
 public class BatchConfig {
@@ -49,7 +49,7 @@ public class BatchConfig {
 
 	@Bean
 	public Step factureStep() {
-		return stepBuilderFactory.get(STEP_NAME).<Facture, Facture>chunk(5).reader(factureItemReader())
+		return stepBuilderFactory.get(STEP_NAME).<Facture, Facture> chunk(5).reader(factureItemReader())
 				.processor(factureItemProcessor()).writer(factureItemWriter()).build();
 	}
 
@@ -89,7 +89,7 @@ public class BatchConfig {
 				if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
 					log.info("!!! JOB FINISHED! Time to verify the results");
 					batchApiService.findAllFactures()
-							.forEach(facture -> log.info("Found <" + facture + "> in the database."));
+							.forEach(facture -> log.info("Found <" + facture.getMoisFacture() + "> in the database."));
 				}
 			}
 		};

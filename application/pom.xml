@@ -15,6 +15,10 @@
 	<name>Billing API :: Application Layer</name>
 	<description>Application Layer for Billing API based on Rest</description>
 
+	<properties>		
+        <start-class>com.aliateck.fact.ApplicationStarter</start-class>
+	</properties>
+	
 	<dependencies>
 		<dependency>
 			<artifactId>billing-api-commun</artifactId>
@@ -74,7 +78,7 @@
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+				<artifactId>spring-boot-maven-plugin</artifactId>					
 			</plugin>
 		</plugins>
 	</build>

@@ -22,7 +22,7 @@ public class FactureWriter implements ItemWriter<Facture> {
 	public void write(List<? extends Facture> factures) throws Exception {
 
 		factures.stream().forEach(facture -> {
-			log.info("Enregistrement en base de l'objet {} ", facture);
+			log.info("Enregistrement en base de l'objet {} ", facture.getMoisFacture());
 			batchApiService.updateFactures(facture);
 		});
 

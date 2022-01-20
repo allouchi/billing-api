@@ -3,8 +3,6 @@ package com.aliateck.util;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Period;
@@ -56,8 +54,8 @@ public class Utils {
 
 	}
 
-	private Utils()  {
-		
+	private Utils() {
+
 	}
 
 	/**
@@ -81,6 +79,9 @@ public class Utils {
 	 */
 	public static String convertMoisFacture(String moisId) {
 		String mois = "";
+		if (moisId != null && moisId.length() == 1) {
+			moisId = "0" + moisId;
+		}
 		if (mapMois.containsKey(moisId)) {
 			mois = mapMois.get(moisId);
 		}
@@ -132,22 +133,22 @@ public class Utils {
 	 * 
 	 * @return
 	 * @throws IOException
-	 * @throws URISyntaxException 
+	 * @throws URISyntaxException
 	 */
 	public static Map<String, File> loadFilesResources() throws IOException, URISyntaxException {
 		Map<String, File> map = new HashMap<>();
-		 String custTemplate = "data/customTemplate.jrxml";
-		 String custDefaultTemplate = "data/defaultTemplate.jrxml";
-		 String suiviFacturation = "data/suivi-facturation.xls";
-		
-		 File customFile = new ClassPathResource(custTemplate).getFile();
-		 File defaultFile = new ClassPathResource(custDefaultTemplate).getFile();
-		 File excelFile = new ClassPathResource(suiviFacturation).getFile();
-		 map.put("Default", defaultFile);
-		 map.put("Custom", customFile);
-		 map.put("Suivi", excelFile);
-		//LoadRessources load = new LoadRessources();
-		//map = load.load();
+		String custTemplate = "data/customTemplate.jrxml";
+		String custDefaultTemplate = "data/defaultTemplate.jrxml";
+		String suiviFacturation = "data/suivi-facturation.xls";
+
+		File customFile = new ClassPathResource(custTemplate).getFile();
+		File defaultFile = new ClassPathResource(custDefaultTemplate).getFile();
+		File excelFile = new ClassPathResource(suiviFacturation).getFile();
+		map.put("Default", defaultFile);
+		map.put("Custom", customFile);
+		map.put("Suivi", excelFile);
+		// LoadRessources load = new LoadRessources();
+		// map = load.load();
 		return map;
 	}
 
@@ -275,7 +276,7 @@ public class Utils {
 	 */
 	public static String calculDateFacturation(String moisFacture) {
 
-		if(moisFacture == null || moisFacture.equals("")) {
+		if (moisFacture == null || moisFacture.equals("")) {
 			return null;
 		}
 		String[] moisId = new String[1];
@@ -355,10 +356,16 @@ public class Utils {
 	public static String updateNumeroFacture(String rsClient, List<Facture> listeFactures, Long moisId) {
 
 		Set<Integer> numeros = new HashSet<>();
+		String moisSelected = null;
+		if (moisId != null && moisId.toString().length() == 1) {
+			moisSelected = "0" + moisId;
+		} else {
+			moisSelected = moisId.toString();
+		}
 
 		String numeroFacture = null;
 		if (listeFactures == null || listeFactures.isEmpty()) {
-			return Utils.buildNumeroFacture("1000", moisId);
+			return Utils.buildNumeroFacture("1000", Long.parseLong(moisSelected));
 		}
 		numeros.add(1000);
 
@@ -372,7 +379,7 @@ public class Utils {
 			}
 		}
 		int max = Collections.max(numeros);
-		return Utils.buildNumeroFacture(String.valueOf(max + 1), moisId);
+		return Utils.buildNumeroFacture(String.valueOf(max + 1), Long.parseLong(moisSelected));
 	}
 
 	/**
@@ -383,8 +390,15 @@ public class Utils {
 	 */
 	public static String buildNumeroFacture(String endNumero, Long moisFacture) {
 
+		String moisSelected = null;
+		if (moisFacture != null && moisFacture.toString().length() == 1) {
+			moisSelected = "0" + moisFacture;
+		} else {
+			moisSelected = moisFacture.toString();
+		}
+
 		LocalDate dateActuelle = LocalDate.now();
-		String dateFacture = dateActuelle.getYear() + TIRET + moisFacture + TIRET + "01";
+		String dateFacture = dateActuelle.getYear() + TIRET + moisSelected + TIRET + "01";
 		LocalDate date = LocalDate.parse(dateFacture);
 		LocalDate endOfMonth = date.withDayOfMonth(date.lengthOfMonth());
 		String dateConvert = endOfMonth.toString().replace("-", "");

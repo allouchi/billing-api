@@ -5,8 +5,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
 import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
+
 import com.aliateck.fact.domaine.business.object.Client;
 import com.aliateck.fact.domaine.business.object.Company;
 import com.aliateck.fact.domaine.business.object.Facture;
@@ -27,6 +30,7 @@ import com.aliateck.fact.infrastructure.repository.edition.EditionReportService;
 import com.aliateck.fact.infrastructure.repository.facture.FactureJpaRepository;
 import com.aliateck.fact.infrastructure.repository.prestation.PrestationJpaRepository;
 import com.aliateck.util.Utils;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -42,208 +46,204 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FactureSpiAdapter implements FactureSpiService {
-  
-   
-  FactureJpaRepository factureJpaRepository;
-  PrestationJpaRepository prestationJpaRepository;
-  BuildFactureService calculerFactureService;
-  FactureMapper factureMapper;
-  PrestationMapper prestationMapper;
-  EntitySpiService entitySpiService;
-  BuildFactureService buildFactureService;
-  EditionReportService editionReportService;
-  CompanyJpaRepository companyJpaRepository;
-  CompanyMapper companyMapper;
 
-  @Override
-  public Prestation addFacture(String siret, boolean templateChoice, Prestation prestation,
-      String pathRoot, Long moisFactureId, boolean storeFile, String fileSuivi) {
-    Prestation reponse = null;
-    if (prestation == null || siret == null || siret.equals("") || pathRoot == null) {
-      throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
-    }
+	FactureJpaRepository factureJpaRepository;
+	PrestationJpaRepository prestationJpaRepository;
+	BuildFactureService calculerFactureService;
+	FactureMapper factureMapper;
+	PrestationMapper prestationMapper;
+	EntitySpiService entitySpiService;
+	BuildFactureService buildFactureService;
+	EditionReportService editionReportService;
+	CompanyJpaRepository companyJpaRepository;
+	CompanyMapper companyMapper;
 
-    if (prestation.getId() != null && prestation.getId() == 0) {
-      prestation.setId(null);
-    }
-    
+	@Override
+	public Prestation addFacture(String siret, boolean templateChoice, Prestation prestation, String pathRoot,
+			Long moisFactureId, boolean storeFile, String fileSuivi) {
+		Prestation reponse = null;
+		if (prestation == null || siret == null || siret.equals("") || pathRoot == null) {
+			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
+		}
 
-    String moisFacture = Utils.convertMoisFacture(String.valueOf(moisFactureId));
+		if (prestation.getId() != null && prestation.getId() == 0) {
+			prestation.setId(null);
+		}
 
-    try {
+		String moisFacture = Utils.convertMoisFacture(String.valueOf(moisFactureId));
 
-      Optional<CompanyEntity> cEntity = companyJpaRepository.findBySiret(siret);
-      PrestationEntity prestaEntity =
-          entitySpiService.findPrestationById(siret, prestation.getId());
-      List<FactureEntity> listeFacture =
-          entitySpiService.findFacturesByPrestation(siret, prestation.getId());
+		try {
 
-      if (cEntity.isPresent()) {
-        CompanyEntity oEntity = cEntity.get();
-        Company company = companyMapper.fromEntityToDomain(oEntity);
-        Prestation oPrestation = prestationMapper.fromEntityToDomain(prestaEntity);
-        Client client = oPrestation.getClient();
-        Facture factureEditee = calculerFactureService.buildFacture(siret, prestation, moisFacture);
-        String numeroFacture = Utils.updateNumeroFacture(factureEditee.getClientPrestation().toLowerCase(),
-            factureMapper.fromEntityToDomain(listeFacture), moisFactureId);
-        factureEditee.setNumeroFacture(numeroFacture);
-        Map<String, Object> paramJasper = editionReportService.buildParamJasper(company,
-            templateChoice, prestation, factureEditee);
-        FactureEntity factEntity = factureMapper.fromDomainToEntity(factureEditee);
-        String fileName = (String) paramJasper.get("fileName");
-        String pathFile = buildFactureService.buildPathFile(siret, pathRoot,
-            client.getSocialReason().toLowerCase(), moisFacture, moisFactureId);
-        byte[] binaryPdf =
-            editionReportService.buildPdfFacture(paramJasper, templateChoice, pathFile, storeFile);
-        String pathToSave = Utils.buildPath(pathFile, pathRoot);
-        factEntity.setFilePath(pathToSave + File.separator + fileName);
-        factEntity.setTarifHT(prestation.getTarifHT());
-        factEntity.setFileContent(binaryPdf);
-        factEntity.setFileName(fileName);
-        factEntity.setMontantTVA(factEntity.getPrixTotalHT() * 0.2f);
-        prestaEntity.getFacture().add(factEntity);
-        prestaEntity.setNumeroCommande(prestation.getNumeroCommande());
-        prestaEntity.setDesignation(prestation.getDesignation());
-        prestaEntity.setClientPrestation(prestation.getClientPrestation());
-        prestaEntity.setDateDebut(prestation.getDateDebut());
-        prestaEntity.setDateFin(prestation.getDateFin());
-        PrestationEntity pEntity = prestationJpaRepository.save(prestaEntity);
-        reponse = prestationMapper.fromEntityToDomain(pEntity);
+			Optional<CompanyEntity> cEntity = companyJpaRepository.findBySiret(siret);
+			PrestationEntity prestaEntity = entitySpiService.findPrestationById(siret, prestation.getId());
+			List<FactureEntity> listeFacture = entitySpiService.findFacturesByPrestation(siret, prestation.getId());
 
-        List<FactureEntity> listeFactures = entitySpiService.findAllFacturesBySiret(siret);
-        List<Facture> suiviFactures = factureMapper.fromEntityToDomain(listeFactures);
-        String pathSuivi = Utils.buildPathSuivi(pathRoot, fileSuivi);
-        editionReportService.buildSuiviFactures(suiviFactures, pathSuivi);
-      }
+			if (cEntity.isPresent()) {
+				CompanyEntity oEntity = cEntity.get();
+				Company company = companyMapper.fromEntityToDomain(oEntity);
+				Prestation oPrestation = prestationMapper.fromEntityToDomain(prestaEntity);
+				Client client = oPrestation.getClient();
+				Facture factureEditee = calculerFactureService.buildFacture(siret, prestation, moisFacture);
+				String numeroFacture = Utils.updateNumeroFacture(factureEditee.getClientPrestation().toLowerCase(),
+						factureMapper.fromEntityToDomain(listeFacture), moisFactureId);
+				factureEditee.setNumeroFacture(numeroFacture);
+				Map<String, Object> paramJasper = editionReportService.buildParamJasper(company, templateChoice,
+						prestation, factureEditee);
+				FactureEntity factEntity = factureMapper.fromDomainToEntity(factureEditee);
+				String fileName = (String) paramJasper.get("fileName");
+				String pathFile = buildFactureService.buildPathFile(siret, pathRoot,
+						client.getSocialReason().toLowerCase(), moisFacture, moisFactureId);
+				byte[] binaryPdf = editionReportService.buildPdfFacture(paramJasper, templateChoice, pathFile,
+						storeFile);
+				String pathToSave = Utils.buildPath(pathFile, pathRoot);
+				factEntity.setFilePath(pathToSave + File.separator + fileName);
+				factEntity.setTarifHT(prestation.getTarifHT());
+				factEntity.setFileContent(binaryPdf);
+				factEntity.setFileName(fileName);
+				factEntity.setMontantTVA(factEntity.getPrixTotalHT() * 0.2f);
+				prestaEntity.getFacture().add(factEntity);
+				prestaEntity.setNumeroCommande(prestation.getNumeroCommande());
+				prestaEntity.setDesignation(prestation.getDesignation());
+				prestaEntity.setClientPrestation(prestation.getClientPrestation());
+				prestaEntity.setDateDebut(prestation.getDateDebut());
+				prestaEntity.setDateFin(prestation.getDateFin());
+				PrestationEntity pEntity = prestationJpaRepository.save(prestaEntity);
+				reponse = prestationMapper.fromEntityToDomain(pEntity);
 
-    } catch (Exception e) {
-      log.error("error while creating new facture");
-      throw new ServiceException(ErrorCatalog.DB_ERROR,
-          "Un problème est survenu lors de l'édition de la facture", e);
-    }
+				List<FactureEntity> listeFactures = entitySpiService.findAllFacturesBySiret(siret);
+				List<Facture> suiviFactures = factureMapper.fromEntityToDomain(listeFactures);
+				String pathSuivi = Utils.buildPathSuivi(pathRoot, fileSuivi);
+				editionReportService.buildSuiviFactures(suiviFactures, pathSuivi);
+			}
 
-    return reponse;
+		} catch (Exception e) {
+			log.error("error while creating new facture : " + e.getMessage());
+			throw new ServiceException(ErrorCatalog.DB_ERROR, "Un problème est survenu lors de l'édition de la facture",
+					e);
+		}
 
-  }
+		return reponse;
 
-  @Override
-  public Facture updateFacture(Facture factureRequest, String rootPath, String fileSuiviName) {
-    Facture reponse = null;
-    if (factureRequest == null) {
-      throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
-    }
-    try {
-      Optional<FactureEntity> entity = factureJpaRepository.findById(factureRequest.getId());
-      if (entity.isPresent()) {
-        Facture facture = factureMapper.fromEntityToDomain(entity.get());
-        Facture oFacture = Utils.updateFacture(facture, factureRequest);
-        FactureEntity fEntity = factureMapper.fromDomainToEntity(oFacture);
-        factureJpaRepository.saveAndFlush(fEntity);       
-      
-        List<FactureEntity> listeFactures = entitySpiService.findAllFactures();
-        List<Facture> suiviFactures = factureMapper.fromEntityToDomain(listeFactures);
-        String pathSuivi = Utils.buildPathSuivi(rootPath, fileSuiviName);
-        editionReportService.buildSuiviFactures(suiviFactures, pathSuivi);
+	}
 
-      }
+	@Override
+	public Facture updateFacture(Facture factureRequest, String rootPath, String fileSuiviName) {
+		Facture reponse = null;
+		if (factureRequest == null) {
+			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
+		}
+		try {
+			Optional<FactureEntity> entity = factureJpaRepository.findById(factureRequest.getId());
+			if (entity.isPresent()) {
+				Facture facture = factureMapper.fromEntityToDomain(entity.get());
+				Facture oFacture = Utils.updateFacture(facture, factureRequest);
+				FactureEntity fEntity = factureMapper.fromDomainToEntity(oFacture);
+				factureJpaRepository.saveAndFlush(fEntity);
 
-    } catch (ServiceException e) {
-      throw e;
-    } catch (Exception e) {
-      log.error("error while updating facture with requested ID:" + "" + factureRequest.getId(), e);
-      throw new ServiceException(ErrorCatalog.DB_ERROR,
-          "Un problème est survenu lors de la mise à jour de la facture", e);
-    }
-    return reponse;
+				List<FactureEntity> listeFactures = entitySpiService.findAllFactures();
+				List<Facture> suiviFactures = factureMapper.fromEntityToDomain(listeFactures);
+				String pathSuivi = Utils.buildPathSuivi(rootPath, fileSuiviName);
+				editionReportService.buildSuiviFactures(suiviFactures, pathSuivi);
 
-  }
+			}
 
-  @Override
-  public void deleteFacture(Long factureId) {
+		} catch (ServiceException e) {
+			throw e;
+		} catch (Exception e) {
+			log.error("error while updating facture with requested ID:" + "" + factureRequest.getId(), e);
+			throw new ServiceException(ErrorCatalog.DB_ERROR,
+					"Un problème est survenu lors de la mise à jour de la facture", e);
+		}
+		return reponse;
 
-    if (factureId == null) {
-      throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
-    }
-    try {
-      factureJpaRepository.deleteById(factureId);
-    } catch (Exception e) {
-      log.error("error while deleting facture with requested ID:" + "" + factureId, e);
-      throw new ServiceException(ErrorCatalog.DB_ERROR, e);
-    }
+	}
 
-  }
+	@Override
+	public void deleteFacture(Long factureId) {
 
-  @Override
-  public Facture findById(Long id) {
-    Facture reponse = null;
-    if (id == null) {
-      throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
-    }
-    try {
-      Optional<FactureEntity> entity = factureJpaRepository.findById(id);
-      if (entity.isPresent()) {
-        reponse = factureMapper.fromEntityToDomain(entity.get());
-      }
-    } catch (Exception e) {
-      log.error("error while updating facture with requested ID:" + "" + id, e);
-      throw new ServiceException(ErrorCatalog.DB_ERROR,
-          "Un problème est survenu lors de la recherche de la facture", e);
-    }
+		if (factureId == null) {
+			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
+		}
+		try {
+			factureJpaRepository.deleteById(factureId);
+		} catch (Exception e) {
+			log.error("error while deleting facture with requested ID:" + "" + factureId, e);
+			throw new ServiceException(ErrorCatalog.DB_ERROR, e);
+		}
 
-    if (reponse == null) {
-      throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucune facture enregistrée !");
-    }
-    return reponse;
+	}
 
-  }
+	@Override
+	public Facture findById(Long id) {
+		Facture reponse = null;
+		if (id == null) {
+			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
+		}
+		try {
+			Optional<FactureEntity> entity = factureJpaRepository.findById(id);
+			if (entity.isPresent()) {
+				reponse = factureMapper.fromEntityToDomain(entity.get());
+			}
+		} catch (Exception e) {
+			log.error("error while updating facture with requested ID:" + "" + id, e);
+			throw new ServiceException(ErrorCatalog.DB_ERROR,
+					"Un problème est survenu lors de la recherche de la facture", e);
+		}
 
-  @Override
-  public Facture findByNumeroFacture(String numeroFacture) {
-    FactureEntity entity = factureJpaRepository.getByNumeroFacture(numeroFacture);
+		if (reponse == null) {
+			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucune facture enregistrée !");
+		}
+		return reponse;
 
-    return factureMapper.fromEntityToDomain(entity);
-  }
+	}
 
-  @Override
-  public List<Facture> findByFactureStatus(boolean statusFacture) {
-    List<FactureEntity> entitys = factureJpaRepository.findByFactureStatus(statusFacture);
+	@Override
+	public Facture findByNumeroFacture(String numeroFacture) {
+		FactureEntity entity = factureJpaRepository.getByNumeroFacture(numeroFacture);
 
-    return factureMapper.fromEntityToDomain(entitys);
-  }
+		return factureMapper.fromEntityToDomain(entity);
+	}
 
-  @Override
-  public List<Facture> findByDateEcheance(Date dateEcheance) {
-    List<FactureEntity> entities = factureJpaRepository.findByDateEcheance(dateEcheance);
+	@Override
+	public List<Facture> findByFactureStatus(boolean statusFacture) {
+		List<FactureEntity> entitys = factureJpaRepository.findByFactureStatus(statusFacture);
 
-    return factureMapper.fromEntityToDomain(entities);
-  }
+		return factureMapper.fromEntityToDomain(entitys);
+	}
 
-  @Override
-  public List<Facture> findByDateEncaissement(Date dateEncaissement) {
-    List<FactureEntity> entitys = factureJpaRepository.findByDateEncaissement(dateEncaissement);
+	@Override
+	public List<Facture> findByDateEcheance(Date dateEcheance) {
+		List<FactureEntity> entities = factureJpaRepository.findByDateEcheance(dateEcheance);
 
-    return factureMapper.fromEntityToDomain(entitys);
-  }
+		return factureMapper.fromEntityToDomain(entities);
+	}
 
-  @Override
-  public List<Facture> findAllBySiret(String siret) {
-    List<Facture> reponse = null;
-    if (siret == null) {
-      throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
-    }
-    try {
-      List<FactureEntity> entities = entitySpiService.findAllFacturesBySiret(siret);
-      reponse = factureMapper.fromEntityToDomain(entities);
-    } catch (Exception e) {
-      log.error("error while retrieving facture with requested siret :" + "" + siret, e);
-      throw new ServiceException(ErrorCatalog.DB_ERROR,
-          "Un problème est survenu lors de la recherche de la facture", e);
-    }
-    if (reponse == null || reponse.isEmpty()) {
-      throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucune facture enregistrée !");
-    }
-    return reponse;
+	@Override
+	public List<Facture> findByDateEncaissement(Date dateEncaissement) {
+		List<FactureEntity> entitys = factureJpaRepository.findByDateEncaissement(dateEncaissement);
 
-  }
+		return factureMapper.fromEntityToDomain(entitys);
+	}
+
+	@Override
+	public List<Facture> findAllBySiret(String siret) {
+		List<Facture> reponse = null;
+		if (siret == null) {
+			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
+		}
+		try {
+			List<FactureEntity> entities = entitySpiService.findAllFacturesBySiret(siret);
+			reponse = factureMapper.fromEntityToDomain(entities);
+		} catch (Exception e) {
+			log.error("error while retrieving facture with requested siret :" + "" + siret, e);
+			throw new ServiceException(ErrorCatalog.DB_ERROR,
+					"Un problème est survenu lors de la recherche de la facture", e);
+		}
+		if (reponse == null || reponse.isEmpty()) {
+			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucune facture enregistrée !");
+		}
+		return reponse;
+
+	}
 
 }
