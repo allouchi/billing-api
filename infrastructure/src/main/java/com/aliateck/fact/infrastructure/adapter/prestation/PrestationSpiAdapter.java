@@ -88,7 +88,7 @@ public class PrestationSpiAdapter implements PrestationSpiService {
 		}
 
 		try {
-			
+
 			prestation.setDateFin(Utils.convertFromDomainToEntityDate(prestation.getDateFin()));
 			PrestationEntity entity = prestationMapper.fromDomainToEntity(prestation);
 			PrestationEntity oEntity = prestationJpaRepository.save(entity);
@@ -184,6 +184,5 @@ public class PrestationSpiAdapter implements PrestationSpiService {
 			throw new ServiceException(ErrorCatalog.DB_ERROR,
 					"Un problème est survenu lors de la suppression de la prestation", e);
 		}
-
 	}
 }

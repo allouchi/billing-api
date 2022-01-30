@@ -31,9 +31,9 @@ import lombok.extern.slf4j.Slf4j;
 public class TvaSpiAdapter implements TvaSpiService {
 
 	private TvaMapper tvaMapper;
-	//private ExerciseMapper exerciseMapper;
+	// private ExerciseMapper exerciseMapper;
 	private TvaJpaRepository tvaJpaRepository;
-	//private ExerciseJpaRepository exerciseJpaRepository;
+	// private ExerciseJpaRepository exerciseJpaRepository;
 	private FactureJpaRepository factureJpaRepository;
 
 	@Override
@@ -97,15 +97,15 @@ public class TvaSpiAdapter implements TvaSpiService {
 	public TvaInfo findTvaInfo(String exercise) {
 		float sumOfTva = 0;
 		float sumOfTvaPaye = 0;
-		float totalHT  =0;
+		float totalHT = 0;
 		TvaInfo info = new TvaInfo();
 		List<FactureEntity> entities = factureJpaRepository.findAll();
 		for (FactureEntity e : entities) {
-			if (e.getDateFacturation() != null) {
-				String[] dateFacturation = e.getDateFacturation().split("/");
-				if (exercise != null) {					
-					if (dateFacturation[2] != null) {
-						if (exercise.equals(dateFacturation[2])) {
+			if (e.getDateEncaissement() != null) {
+				String[] dateEncaissement = e.getDateEncaissement().split("/");
+				if (exercise != null) {
+					if (dateEncaissement[2] != null) {
+						if (exercise.equals(dateEncaissement[2])) {
 							sumOfTva += e.getMontantTVA();
 							totalHT += e.getPrixTotalHT();
 						}
@@ -113,10 +113,10 @@ public class TvaSpiAdapter implements TvaSpiService {
 				}
 			}
 		}
-		
+
 		List<TvaEntity> listeTvaPayee = tvaJpaRepository.findByExercise(exercise);
-		for(TvaEntity e: listeTvaPayee) {
-			sumOfTvaPaye+=e.getMontantPayment();
+		for (TvaEntity e : listeTvaPayee) {
+			sumOfTvaPaye += e.getMontantPayment();
 		}
 		info.setTotalTvaPaye(sumOfTvaPaye);
 		info.setTotalTvaRestant(sumOfTva - sumOfTvaPaye);
