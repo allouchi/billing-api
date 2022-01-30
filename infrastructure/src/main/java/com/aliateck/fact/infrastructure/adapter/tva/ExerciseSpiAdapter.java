@@ -1,5 +1,6 @@
 package com.aliateck.fact.infrastructure.adapter.tva;
 
+import java.util.Comparator;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -56,8 +57,9 @@ public class ExerciseSpiAdapter implements ExerciseSpiService {
 
 	@Override
 	public List<Exercise> findExercisesRef() {
-		List<ExerciseEntity> e = exerciseJpaRepository.findAll();
-		return exerciseMapper.fromEntityToDomain(e);
+		List<ExerciseEntity> entities = exerciseJpaRepository.findAll();
+		entities.sort(Comparator.comparing(ExerciseEntity::getId));
+		return exerciseMapper.fromEntityToDomain(entities);
 	}
 
 }

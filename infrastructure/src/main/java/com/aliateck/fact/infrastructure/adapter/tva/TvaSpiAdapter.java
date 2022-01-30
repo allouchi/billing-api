@@ -37,13 +37,17 @@ public class TvaSpiAdapter implements TvaSpiService {
 	private FactureJpaRepository factureJpaRepository;
 
 	@Override
-	public List<Tva> findByExercise(String exercice) {
+	public List<Tva> findByExercise(String exercise) {
+		List<TvaEntity> e = null;
+		if (exercise.equalsIgnoreCase("All")) {
+			e = tvaJpaRepository.findAll();
+		} else {
+			e = tvaJpaRepository.findByExercise(exercise);
+		}
 
-		List<TvaEntity> e = tvaJpaRepository.findByExercise(exercice);
 		if (e != null) {
 			return tvaMapper.fromEntityToDomain(e);
 		}
-
 		return Collections.emptyList();
 	}
 
@@ -99,22 +103,29 @@ public class TvaSpiAdapter implements TvaSpiService {
 		float sumOfTvaPaye = 0;
 		float totalHT = 0;
 		TvaInfo info = new TvaInfo();
+
 		List<FactureEntity> entities = factureJpaRepository.findAll();
 		for (FactureEntity e : entities) {
 			if (e.getDateEncaissement() != null) {
 				String[] dateEncaissement = e.getDateEncaissement().split("/");
-				if (exercise != null) {
-					if (dateEncaissement[2] != null) {
-						if (exercise.equals(dateEncaissement[2])) {
-							sumOfTva += e.getMontantTVA();
-							totalHT += e.getPrixTotalHT();
-						}
-					}
+
+				if (exercise.equalsIgnoreCase("All")) {
+					sumOfTva += e.getMontantTVA();
+					totalHT += e.getPrixTotalHT();
+				} else if (dateEncaissement[2] != null && exercise.equals(dateEncaissement[2])) {
+					sumOfTva += e.getMontantTVA();
+					totalHT += e.getPrixTotalHT();
 				}
 			}
 		}
 
-		List<TvaEntity> listeTvaPayee = tvaJpaRepository.findByExercise(exercise);
+		List<TvaEntity> listeTvaPayee = null;
+		if (exercise.equalsIgnoreCase("All")) {
+			listeTvaPayee = tvaJpaRepository.findAll();
+		} else {
+			listeTvaPayee = tvaJpaRepository.findByExercise(exercise);
+		}
+
 		for (TvaEntity e : listeTvaPayee) {
 			sumOfTvaPaye += e.getMontantPayment();
 		}
