@@ -106,7 +106,7 @@ public class TvaSpiAdapter implements TvaSpiService {
 
 		List<FactureEntity> entities = factureJpaRepository.findAll();
 		for (FactureEntity e : entities) {
-			if (e.getDateEncaissement() != null) {
+			if (e.getDateEncaissement() != null && !e.getDateEncaissement().equals("")) {
 				String[] dateEncaissement = e.getDateEncaissement().split("/");
 
 				if (exercise.equalsIgnoreCase("All")) {
