@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class TvaController {
 
 	private TvaApiService tvaApiService;
-	//private ExerciseApiService exerciseApiService;
+	// private ExerciseApiService exerciseApiService;
 
 	// @GetMapping(value = "/{id}")
 	// public Tva getTva(@PathVariable Long id) {
@@ -43,31 +43,30 @@ public class TvaController {
 
 		return tvas;
 	}
-	
+
 	@GetMapping(value = "/{exercise}/{exercise}")
 	public TvaInfo getTvaInfoByExercise(@PathVariable String exercise) {
 		log.info("---- Get All tvas info by exercise : " + exercise);
 		TvaInfo tvas = tvaApiService.findTvaInfo(exercise);
 		return tvas;
-	}	
-	
-	 @PutMapping(consumes = "application/json", produces = "application/json")
-	 public void updateTva(@RequestBody Tva tvaRequest) {
-		 log.info("---- add or update tva : " + tvaRequest);
-		 tvaApiService.updateTva(tvaRequest);
-	 }
-	
+	}
+
+	@PutMapping(consumes = "application/json", produces = "application/json")
+	public void updateTva(@RequestBody Tva tvaRequest) {
+		log.info("---- add or update tva : " + tvaRequest);
+		tvaApiService.updateTva(tvaRequest);
+	}
+
 	@DeleteMapping(value = "/{id}")
 	public void deleteTva(@PathVariable Long id) {
 		log.info("---- delete by id : " + id);
 		tvaApiService.deleteTva(id);
 	}
-	//
+
 	@PostMapping(consumes = "application/json", produces = "application/json")
 	public void addTva(@RequestBody Tva tvaRequest) {
 		log.info("---- add or update tva : " + tvaRequest);
 		tvaApiService.addTva(tvaRequest);
 	}
-	
 
 }
