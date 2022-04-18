@@ -23,6 +23,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * 
+ * @author maliane
+ *
+ */
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -91,6 +96,9 @@ public class TvaSpiAdapter implements TvaSpiService {
 
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public List<Tva> findAllTva() {
 		List<TvaEntity> entities = tvaJpaRepository.findAll();
