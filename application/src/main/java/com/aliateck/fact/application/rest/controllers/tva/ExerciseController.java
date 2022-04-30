@@ -1,7 +1,11 @@
 package com.aliateck.fact.application.rest.controllers.tva;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +37,14 @@ public class ExerciseController {
 	@GetMapping
 	public ResponseEntity<List<Exercise>> findAllExercises() {
 		log.info("find all exercises ref");
-		return ResponseEntity.ok(exerciseApiService.findAllExercises());
+		List<Exercise> reponse = exerciseApiService.findAllExercises();
+		if (reponse != null && !reponse.isEmpty()) {
+			reponse = reponse.stream().sorted(Comparator.comparing(Exercise::getExercise).reversed())
+					.collect(Collectors.toList());			
+			return ResponseEntity.ok(reponse);
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
 	}
 
 	@GetMapping(value = "/{exercice}")

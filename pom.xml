@@ -40,8 +40,46 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
-	
+		
+		
+		<dependency>
+		    <groupId>com.atlassian.jira</groupId>
+		    <artifactId>jira-rest-java-client-core</artifactId>
+		    <version>5.2.3</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-lang3</artifactId>    
+		</dependency>
 
+		
+		<!-- https://mvnrepository.com/artifact/com.atlassian.sal/sal-api -->
+	<dependency>
+	    <groupId>com.atlassian.sal</groupId>
+	    <artifactId>sal-api</artifactId>
+	    <version>3.0.7</version>
+	    <scope>provided</scope>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/com.atlassian.jira/jira-rest-java-client-app -->
+		<dependency>
+		    <groupId>com.atlassian.jira</groupId>
+		    <artifactId>jira-rest-java-client-app</artifactId>
+		    <version>5.2.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>io.atlassian.fugue</groupId>
+			<artifactId>fugue</artifactId>
+			<version>4.4.0</version>
+		</dependency>
+<!-- Thanks for using https://jar-download.com -->
+
+
+		
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
