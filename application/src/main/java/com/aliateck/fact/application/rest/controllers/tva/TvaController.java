@@ -1,6 +1,8 @@
 package com.aliateck.fact.application.rest.controllers.tva;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,7 +42,10 @@ public class TvaController {
 	public List<Tva> getByExercise(@PathVariable String exercise) {
 		log.info("---- Get All tvas by exercise : " + exercise);
 		List<Tva> tvas = tvaApiService.findByExercise(exercise);
-
+		if (tvas != null && !tvas.isEmpty()) {
+			tvas = tvas.stream().sorted(Comparator.comparingLong(Tva::getId).reversed())
+		          .collect(Collectors.toList());		      
+		}		   
 		return tvas;
 	}
 
