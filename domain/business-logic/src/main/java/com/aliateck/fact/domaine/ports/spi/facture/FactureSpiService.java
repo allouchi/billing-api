@@ -5,7 +5,8 @@ import java.util.List;
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.business.object.Prestation;
 
-public interface FactureSpiService {
+public interface FactureSpiService {	
+	
   Prestation addFacture(String siret, boolean templateChoice, Prestation prestation,
       String pathRoot, Long moisFactureId, boolean storeFile, String fileSuivi);
 

@@ -10,6 +10,8 @@ import com.aliateck.fact.infrastructure.models.CompanyEntity;
 
 @Repository
 public interface CompanyJpaRepository extends JpaRepository<CompanyEntity, Long> {
+	
+	
 	Optional<CompanyEntity> findBySocialReasonIgnoreCase(String reasonSocial);
 
 	Optional<CompanyEntity> findBySiret(String siret);
