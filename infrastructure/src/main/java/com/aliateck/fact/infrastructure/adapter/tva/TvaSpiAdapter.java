@@ -1,8 +1,10 @@
 package com.aliateck.fact.infrastructure.adapter.tva;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import com.aliateck.fact.domaine.business.object.Tva;
@@ -17,6 +19,7 @@ import com.aliateck.fact.infrastructure.repository.tva.TvaJpaRepository;
 import com.aliateck.util.Utils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.var;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
@@ -48,7 +51,9 @@ public class TvaSpiAdapter implements TvaSpiService {
     }
 
     if (e != null) {
-      return tvaMapper.fromEntityToDomain(e);
+      var tvas = tvaMapper.fromEntityToDomain(e);
+      return tvas.stream().sorted(Comparator.comparingLong(Tva::getId).reversed())
+          .collect(Collectors.toList());
     }
     return Collections.emptyList();
   }
