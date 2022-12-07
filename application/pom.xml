@@ -17,6 +17,7 @@
 
 	<properties>		
         <start-class>com.aliateck.fact.ApplicationStarter</start-class>
+        <docker.image.prefix>spring-boot-billing</docker.image.prefix>
 	</properties>
 	
 	<dependencies>
@@ -88,6 +89,22 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>					
 			</plugin>
+			<plugin>
+                 <groupId>com.spotify</groupId>
+                 <artifactId>docker-maven-plugin</artifactId>
+                 <version>1.0.0</version>
+                 
+                 <configuration>
+                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+                    <dockerDirectory>src/main/docker</dockerDirectory>
+                    <resources>
+                       <resource>
+                          <directory>${project.build.directory}</directory>
+                          <include>${project.build.finalName}.jar</include>
+                       </resource>
+                    </resources>
+                 </configuration>
+            </plugin>      
 		</plugins>
 	</build>
 

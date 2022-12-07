@@ -2,12 +2,10 @@ package com.aliateck.fact.infrastructure.adapter.consultant;
 
 import java.util.List;
 import java.util.Optional;
-
 import javax.transaction.Transactional;
-
 import org.springframework.stereotype.Service;
-
 import com.aliateck.fact.domaine.business.object.Consultant;
+import com.aliateck.fact.domaine.exception.CompanyNotFoundException;
 import com.aliateck.fact.domaine.exception.ErrorCatalog;
 import com.aliateck.fact.domaine.exception.ServiceException;
 import com.aliateck.fact.domaine.ports.spi.consultant.ConsultantSpiService;
@@ -18,7 +16,6 @@ import com.aliateck.fact.infrastructure.models.ConsultantEntity;
 import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
 import com.aliateck.fact.infrastructure.repository.consultant.ConsultantJpaRepository;
 import com.aliateck.util.Utils;
-
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -30,172 +27,186 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ConsultantSpiAdapter implements ConsultantSpiService {
-	
-    private ConsultantJpaRepository consultantJpaRepository;
-	private ConsultantMapper consultantMapper;
-	private CompanyJpaRepository companyJpaRepository;
 
-	@Override
-	public Consultant addConsultant(Consultant consultant, String siret) {
+  private ConsultantJpaRepository consultantJpaRepository;
+  private ConsultantMapper consultantMapper;
+  private CompanyJpaRepository companyJpaRepository;
 
-		Consultant reponse = null;
-		if (consultant == null || siret == null || siret.equals("")) {
-			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
-		}
-		
-		if (consultant.getId() != null && consultant.getId() == 0) {
-			consultant.setId(null);
-		}
+  @Override
+  public Consultant addConsultant(Consultant consultant, String siret) {
 
-		CheckEmailAdress checkEmail = CheckEmailAdress.builder().build();
-		if (checkEmail.checkEmailAdress(consultant, consultantJpaRepository)) {
-			final String format = String.format("L'adresse mail %s est déjà utilisée", consultant.getEmail());
-			throw new ServiceException(ErrorCatalog.DUPLICATE_DATA, format);
+    Consultant reponse = null;
+    if (consultant == null || siret == null || siret.equals("")) {
+      throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
+    }
 
-		}
-		ConsultantEntity consultEntity = consultantMapper.fromDomainToEntity(Utils.formatConsulantName(consultant));
+    if (consultant.getId() != null && consultant.getId() == 0) {
+      consultant.setId(null);
+    }
 
-		try {
-			Optional<CompanyEntity> oCompany = companyJpaRepository.findBySiret(siret);
+    CheckEmailAdress checkEmail = CheckEmailAdress.builder().build();
+    if (checkEmail.checkEmailAdress(consultant, consultantJpaRepository)) {
+      final String format =
+          String.format("L'adresse mail %s est déjà utilisée", consultant.getEmail());
+      throw new ServiceException(ErrorCatalog.DUPLICATE_DATA, format);
 
-			if (oCompany.isPresent()) {
-				CompanyEntity companyEntity = oCompany.get();
-				companyEntity.getConsultants().add(consultEntity);
-				CompanyEntity cEntitySaved = companyJpaRepository.saveAndFlush(companyEntity);
-				List<ConsultantEntity> savedConsultants = cEntitySaved.getConsultants();
-				if (savedConsultants != null && !savedConsultants.isEmpty()) {
-					for (ConsultantEntity c : savedConsultants) {
-						if (c.getEmail().equals(consultant.getEmail())) {
-							reponse = consultantMapper.fromEntityToDomain(c);
-						}
-					}
-				}
-			}
+    }
+    ConsultantEntity consultEntity =
+        consultantMapper.fromDomainToEntity(Utils.formatConsulantName(consultant));
 
-		} catch (ServiceException e) {
-			throw e;
-		} catch (Exception e) {
-			log.error("error while creating new consultant", e);			
-			throw new ServiceException(ErrorCatalog.DB_ERROR, "Un problème est survenu lors de l'ajout du consultant", e);
-		}		
-		return reponse;
-	}
+    try {
+      Optional<CompanyEntity> oCompany = companyJpaRepository.findBySiret(siret);
+      oCompany.orElseThrow(
+          () -> new CompanyNotFoundException(String.format("La société %s n'existe pas", siret)));
 
-	@Override
-	public Consultant updateConsultant(Consultant consultant, String siret) {
+      CompanyEntity companyEntity = oCompany.get();
+      companyEntity.getConsultants().add(consultEntity);
+      CompanyEntity cEntitySaved = companyJpaRepository.saveAndFlush(companyEntity);
+      List<ConsultantEntity> savedConsultants = cEntitySaved.getConsultants();
+      if (savedConsultants != null && !savedConsultants.isEmpty()) {
+        for (ConsultantEntity c : savedConsultants) {
+          if (c.getEmail().equals(consultant.getEmail())) {
+            reponse = consultantMapper.fromEntityToDomain(c);
+          }
+        }
+      }
 
-		Consultant reponse = null;
-		if (consultant == null || siret == null || siret.equals("")) {
-			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
-		}
+    } catch (ServiceException e) {
+      throw e;
+    } catch (Exception e) {
+      log.error("error while creating new consultant", e);
+      throw new ServiceException(ErrorCatalog.DB_ERROR,
+          "Un problème est survenu lors de l'ajout du consultant", e);
+    }
+    return reponse;
+  }
 
-		ConsultantEntity consultEntity = consultantMapper.fromDomainToEntity(Utils.formatConsulantName(consultant));
-		Optional<ConsultantEntity> oldEntity = consultantJpaRepository.findById(consultant.getId());
-		if (oldEntity.isPresent() && consultant.getEmail() != null
-				&& !consultant.getEmail().equalsIgnoreCase(oldEntity.get().getEmail())) {
+  @Override
+  public Consultant updateConsultant(Consultant consultant, String siret) {
 
-			CheckEmailAdress checkEmail = CheckEmailAdress.builder().build();
-			if (checkEmail.checkEmailAdress(consultant, consultantJpaRepository)) {
-				final String format = String.format("L'adresse mail %s est déjà utilisée", consultant.getEmail());
-				throw new ServiceException(ErrorCatalog.DUPLICATE_DATA, format);
-			}
-		}
+    Consultant reponse = null;
+    if (consultant == null || siret == null || siret.equals("")) {
+      throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
+    }
 
-		try {
-			Optional<CompanyEntity> oCompany = companyJpaRepository.findBySiret(siret);
+    ConsultantEntity consultEntity =
+        consultantMapper.fromDomainToEntity(Utils.formatConsulantName(consultant));
+    Optional<ConsultantEntity> oldEntity = consultantJpaRepository.findById(consultant.getId());
+    if (oldEntity.isPresent() && consultant.getEmail() != null
+        && !consultant.getEmail().equalsIgnoreCase(oldEntity.get().getEmail())) {
 
-			if (oCompany.isPresent()) {
-				CompanyEntity companyEntity = oCompany.get();
-				companyEntity.getConsultants().add(consultEntity);
-				CompanyEntity cEntitySaved = companyJpaRepository.saveAndFlush(companyEntity);
-				List<ConsultantEntity> savedConsultants = cEntitySaved.getConsultants();
-				if (savedConsultants != null && !savedConsultants.isEmpty()) {
-					for (ConsultantEntity c : savedConsultants) {
-						if (c.getEmail().equals(consultant.getEmail())) {
-							reponse = consultantMapper.fromEntityToDomain(c);
-						}
-					}
-				}
-			}
+      CheckEmailAdress checkEmail = CheckEmailAdress.builder().build();
+      if (checkEmail.checkEmailAdress(consultant, consultantJpaRepository)) {
+        final String format =
+            String.format("L'adresse mail %s est déjà utilisée", consultant.getEmail());
+        throw new ServiceException(ErrorCatalog.DUPLICATE_DATA, format);
+      }
+    }
 
-		} catch (ServiceException e) {
-			throw e;
-		} catch (Exception e) {
-			log.error("error while creating new consultant", e);			
-			throw new ServiceException(ErrorCatalog.DB_ERROR, "Un problème est survenu lors de la mise à jour du consultant", e);
-		}
-		
-		return reponse;
-	}
+    try {
+      Optional<CompanyEntity> oCompany = companyJpaRepository.findBySiret(siret);
 
-	@Override
-	public void deleteConsultant(Long id) {
-		if (id == null) {
-			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
-		}
+      oCompany.orElseThrow(
+          () -> new CompanyNotFoundException(String.format("La société %s n'existe pas", siret)));
 
-		try {
-			consultantJpaRepository.deleteById(id);
-		} catch (ServiceException e) {
-			throw e;
-		} catch (Exception e) {
-			log.error("error while deleting consultant with requested ID:" + "" + id, e);			
-			throw new ServiceException(ErrorCatalog.DB_ERROR, "Un problème est survenu lors de la suppression du consultant", e);
-		}
-	}
+      CompanyEntity companyEntity = oCompany.get();
+      companyEntity.getConsultants().add(consultEntity);
+      CompanyEntity cEntitySaved = companyJpaRepository.saveAndFlush(companyEntity);
+      List<ConsultantEntity> savedConsultants = cEntitySaved.getConsultants();
+      if (!Utils.isEmpty(savedConsultants)) {
+        for (ConsultantEntity c : savedConsultants) {
+          if (c.getEmail().equals(consultant.getEmail())) {
+            reponse = consultantMapper.fromEntityToDomain(c);
+          }
+        }
+      }
 
-	@Override
-	public List<Consultant> findAll(String siret) {
+    } catch (ServiceException e) {
+      throw e;
+    } catch (Exception e) {
+      log.error("error while creating new consultant", e);
+      throw new ServiceException(ErrorCatalog.DB_ERROR,
+          "Un problème est survenu lors de la mise à jour du consultant", e);
+    }
 
-		List<Consultant> reponse = null;
+    return reponse;
+  }
 
-		if (siret == null || siret.equals("")) {
-			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
-		}
-		try {
+  @Override
+  public void deleteConsultant(Long id) {
+    if (id == null) {
+      throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
+    }
 
-			Optional<CompanyEntity> oCompnay = companyJpaRepository.findBySiret(siret);
-			if (oCompnay.isPresent()) {
-				CompanyEntity entity = oCompnay.get();
-				List<ConsultantEntity> oConsultant = entity.getConsultants();
-				reponse = consultantMapper.fromEntityToDomain(oConsultant);
-			}
+    try {
+      consultantJpaRepository.deleteById(id);
+    } catch (ServiceException e) {
+      throw e;
+    } catch (Exception e) {
+      log.error("error while deleting consultant with requested ID:" + "" + id, e);
+      throw new ServiceException(ErrorCatalog.DB_ERROR,
+          "Un problème est survenu lors de la suppression du consultant", e);
+    }
+  }
 
-		} catch (Exception e) {
-			log.error("error while retrieving data type with requested siret :" + "" + siret, e);
-			throw new ServiceException(ErrorCatalog.DB_ERROR,"Un problème est survenu lors de la recherche des consultants", e);
-		}
-		if (reponse == null || reponse.isEmpty()) {
-			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucun consultant enregistré !");
-		}
-		return reponse;
+  @Override
+  public List<Consultant> findAll(String siret) {
 
-	}
+    List<Consultant> reponse = null;
 
-	@Override
-	public Consultant findById(Long id) {
-		
-		Consultant reponse = null;
-		
-		if (id == null) {
-			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
-		}
-		
-		try {
-			
-			Optional<ConsultantEntity> entity = consultantJpaRepository.findById(id);
-			if (entity.isPresent()) {
-				reponse = consultantMapper.fromEntityToDomain(entity.get());
-			}
-			
-		} catch (Exception e) {
-			log.error("error while retrieving consultant with requested Id :" + "" + id, e);
-			throw new ServiceException(ErrorCatalog.DB_ERROR, "Un problème est survenu lors de la recherche du consultant", e);
-		}
-		
-		if (reponse == null) {			
-			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucun consultant enregistré !");
-		}
-		return reponse;
-	}
+    if (siret == null || siret.equals("")) {
+      throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
+    }
+    try {
+
+      Optional<CompanyEntity> oCompany = companyJpaRepository.findBySiret(siret);
+
+      oCompany.orElseThrow(
+          () -> new CompanyNotFoundException(String.format("La société %s n'existe pas", siret)));
+
+      CompanyEntity entity = oCompany.get();
+      List<ConsultantEntity> oConsultant = entity.getConsultants();
+      reponse = consultantMapper.fromEntityToDomain(oConsultant);
+
+
+    } catch (Exception e) {
+      log.error("error while retrieving data type with requested siret :" + "" + siret, e);
+      throw new ServiceException(ErrorCatalog.DB_ERROR,
+          "Un problème est survenu lors de la recherche des consultants", e);
+    }
+    if (Utils.isEmpty(reponse)) {
+      throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucun consultant enregistré !");
+    }
+    return reponse;
+
+  }
+
+  @Override
+  public Consultant findById(Long id) {
+
+    Consultant reponse = null;
+
+    if (id == null) {
+      throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
+    }
+
+    try {
+
+      Optional<ConsultantEntity> entity = consultantJpaRepository.findById(id);
+
+      entity.orElseThrow(
+          () -> new CompanyNotFoundException(String.format("Le consultant %s n'existe pas", id)));
+      reponse = consultantMapper.fromEntityToDomain(entity.get());
+
+    } catch (Exception e) {
+      log.error("error while retrieving consultant with requested Id :" + "" + id, e);
+      throw new ServiceException(ErrorCatalog.DB_ERROR,
+          "Un problème est survenu lors de la recherche du consultant", e);
+    }
+
+    if (reponse == null) {
+      throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucun consultant enregistré !");
+    }
+    return reponse;
+  }
 }
