@@ -8,90 +8,87 @@ import org.springframework.stereotype.Component;
 @PropertySource("classpath:application.properties")
 public class StorageProperties {
 
-  @Value("${storage-pathRoot-pdf}")
-  private String pathRoot;
+    @Value("${storage-pathRoot-pdf}")
+    private String pathRoot;
 
-  @Value("${save-file-local-disque}")
-  private boolean saveFileLocalDisque;
-
-
-  @Value("${fichier_suivi_name}")
-  private String fichierSuiviFactures;
-  
-  @Value("${storage-pathRoot-libelle-facture}")
-  private String pathLibelleFacture;
-  
-  @Value("${storage-pathRoot-libelle-charges}")
-  private String pathLibelleCharges;
-  
-  @Value("${storage-pathRoot-libelle-releve}")
-  private String pathLibelleReleve;
+    @Value("${save-file-local-disque}")
+    private boolean saveFileLocalDisque;
 
 
-  public String getPathLibelleFacture() {
-    return pathLibelleFacture;
-  }
+    @Value("${fichier_suivi_name}")
+    private String fichierSuiviFactures;
 
-  public void setPathLibelleFacture(String pathLibelleFacture) {
-    this.pathLibelleFacture = pathLibelleFacture;
-  }
+    @Value("${storage-pathRoot-libelle-facture}")
+    private String pathLibelleFacture;
 
-  public String getPathLibelleCharges() {
-    return pathLibelleCharges;
-  }
+    @Value("${storage-pathRoot-libelle-charges}")
+    private String pathLibelleCharges;
 
-  public void setPathLibelleCharges(String pathLibelleCharges) {
-    this.pathLibelleCharges = pathLibelleCharges;
-  }
-
- 
-  public String getPathLibelleReleve() {
-    return pathLibelleReleve;
-  }
-
-  public void setPathLibelleReleve(String pathLibelleReleve) {
-    this.pathLibelleReleve = pathLibelleReleve;
-  }
-
-  public String getPathRoot() {
-    return pathRoot;
-  }
-
-  public void setPathRoot(String pathRoot) {
-    this.pathRoot = pathRoot;
-  }
-
-  /**
-   * @return the saveFileLocalDisque
-   */
-  public boolean saveFileLocalDisque() {
-    return saveFileLocalDisque;
-  }
-
-  /**
-   * @param saveFileLocalDisque the saveFileLocalDisque to set
-   */
-  public void setSaveFileLocalDisque(boolean saveFileLocalDisque) {
-    this.saveFileLocalDisque = saveFileLocalDisque;
-  }
+    @Value("${storage-pathRoot-libelle-releve}")
+    private String pathLibelleReleve;
 
 
+    public String getPathLibelleFacture() {
+        return pathLibelleFacture;
+    }
 
-  /**
-   * @return the fichierSuiviFactures
-   */
-  public String getFichierSuiviFactures() {
-    return fichierSuiviFactures;
-  }
+    public void setPathLibelleFacture(String pathLibelleFacture) {
+        this.pathLibelleFacture = pathLibelleFacture;
+    }
 
-  /**
-   * @param fichierSuiviFactures the fichierSuiviFactures to set
-   */
-  public void setFichierSuiviFactures(String fichierSuiviFactures) {
-    this.fichierSuiviFactures = fichierSuiviFactures;
-  }
+    public String getPathLibelleCharges() {
+        return pathLibelleCharges;
+    }
 
-  
+    public void setPathLibelleCharges(String pathLibelleCharges) {
+        this.pathLibelleCharges = pathLibelleCharges;
+    }
+
+
+    public String getPathLibelleReleve() {
+        return pathLibelleReleve;
+    }
+
+    public void setPathLibelleReleve(String pathLibelleReleve) {
+        this.pathLibelleReleve = pathLibelleReleve;
+    }
+
+    public String getPathRoot() {
+        return pathRoot;
+    }
+
+    public void setPathRoot(String pathRoot) {
+        this.pathRoot = pathRoot;
+    }
+
+    /**
+     * @return the saveFileLocalDisque
+     */
+    public boolean saveFileLocalDisque() {
+        return saveFileLocalDisque;
+    }
+
+    /**
+     * @param saveFileLocalDisque the saveFileLocalDisque to set
+     */
+    public void setSaveFileLocalDisque(boolean saveFileLocalDisque) {
+        this.saveFileLocalDisque = saveFileLocalDisque;
+    }
+
+
+    /**
+     * @return the fichierSuiviFactures
+     */
+    public String getFichierSuiviFactures() {
+        return fichierSuiviFactures;
+    }
+
+    /**
+     * @param fichierSuiviFactures the fichierSuiviFactures to set
+     */
+    public void setFichierSuiviFactures(String fichierSuiviFactures) {
+        this.fichierSuiviFactures = fichierSuiviFactures;
+    }
 
 
 }

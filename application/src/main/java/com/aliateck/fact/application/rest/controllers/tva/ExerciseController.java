@@ -1,28 +1,19 @@
 package com.aliateck.fact.application.rest.controllers.tva;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.aliateck.fact.domaine.business.object.Exercise;
 import com.aliateck.fact.domaine.ports.api.tva.ExerciseApiService;
 import com.aliateck.util.CommonResource.Resource;
-
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,39 +22,13 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(Resource.EXERCISES)
 public class ExerciseController {
 
-	private ExerciseApiService exerciseApiService;
+    ExerciseApiService exerciseApiService;
 
-	@GetMapping
-	public ResponseEntity<List<Exercise>> findAllExercises() {
-		log.info("find all exercises ref");
-		List<Exercise> reponse = exerciseApiService.findAllExercises();
-		if (reponse != null && !reponse.isEmpty()) {
-			reponse = reponse.stream().sorted(Comparator.comparing(Exercise::getExercise).reversed())
-					.collect(Collectors.toList());			
-			return ResponseEntity.ok(reponse);
-		}
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-	}
-
-	@GetMapping(value = "/{exercice}")
-	public Exercise getExercise(@PathVariable String exercice) {
-		return exerciseApiService.findByExercise(exercice);
-	}
-
-	@PutMapping(consumes = "application/json", produces = "application/json")
-	public void updateExercise(@RequestBody Exercise exercise) {
-		exerciseApiService.updateExercise(exercise);
-	}
-
-	@DeleteMapping(value = "/{id}")
-	public void deleteExercise(@PathVariable Long id) {
-		exerciseApiService.deleteExercise(id);
-	}
-
-	@PostMapping(value = "/{id}")
-	public void addExercise(@PathVariable Exercise tvaRequest) {
-		exerciseApiService.addExercise(tvaRequest);
-	}
-
+    @GetMapping("/exerciceRef")
+    public List<Exercise> findAllExercises() {
+        log.info("find all exercises ref");
+        List<Exercise> reponse = exerciseApiService.findExercisesRef();
+        return reponse.stream().sorted(Comparator.comparing(Exercise::getExercise).reversed())
+                .collect(Collectors.toList());
+    }
 }

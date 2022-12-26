@@ -1,19 +1,22 @@
 package com.aliateck.fact.domaine.ports.api.user;
 
 import com.aliateck.fact.domaine.business.object.User;
+
 import java.util.List;
 
 public interface UserApiService {
-  public User addUser(User user);
+    User addUser(User user);
 
-  public void deleteUser(User user);
+    void deleteUser(User user);
 
-  public void updateUser(User user);
+    void updateUser(User user);
 
-  public List<User> getUsers();
+    List<User> getUsers();
 
-  public User findUserById(Long id);
-  
-  public User findByUserName(String name);  
-  
+    User findUserById(Long id);
+
+    User findByUserName(String userName);
+
+    User findByUserNameAndPassword(String userName, String password);
+
 }

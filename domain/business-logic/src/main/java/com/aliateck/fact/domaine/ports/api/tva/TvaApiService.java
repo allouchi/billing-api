@@ -7,20 +7,20 @@ import com.aliateck.fact.domaine.business.object.TvaInfo;
 
 public interface TvaApiService {
 
-	public Tva addTva(Tva tva);
+	 Tva addTva(Tva tva);
 
-	public void deleteTva(Long id);
+	 void deleteTva(Long id);
 
-	public void updateTva(Tva tva);
+	 void updateTva(Tva tva);
 
-	public List<Tva> findByExercise(String exercise);
+	List<Tva> findByExercise(String exercise);
 
-	public Tva findById(Long id);
+	 Tva findById(Long id);
 
-	public void deleteByExercise(String exercise);
+	 void deleteByExercise(String exercise);
 
-	public List<Tva> findAllTva();
+	 List<Tva> findAllTva();
 
-	public TvaInfo findTvaInfo(String exercise);
+	 TvaInfo findTvaInfo(String exercise);
 
 }

@@ -1,111 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>com.aliateck</groupId>
-		<artifactId>billing-api-parent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
-	
-	<artifactId>billing-api-application</artifactId>
-	<packaging>jar</packaging>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.aliateck</groupId>
+        <artifactId>billing-api-parent</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
 
-	<name>Billing API :: Application Layer</name>
-	<description>Application Layer for Billing API based on Rest</description>
+    <artifactId>billing-api-application</artifactId>
+    <packaging>jar</packaging>
 
-	<properties>		
+    <name>Billing API :: Application Layer</name>
+    <description>Application Layer for Billing API based on Rest</description>
+
+    <properties>
         <start-class>com.aliateck.fact.ApplicationStarter</start-class>
         <docker.image.prefix>spring-boot-billing</docker.image.prefix>
-	</properties>
-	
-	<dependencies>
-		<dependency>
-			<artifactId>billing-api-commun</artifactId>
-			<groupId>com.aliateck</groupId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
-		<dependency>
-			<groupId>com.aliateck</groupId>
-			<artifactId>billing-api-domain-business-logic</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.aliateck</groupId>
-			<artifactId>billing-api-infrastructure</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-batch</artifactId>
-		</dependency>
-		
-		<!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui -->
+    <dependencies>
         <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.6.12</version>
+            <artifactId>billing-api-commun</artifactId>
+            <groupId>com.aliateck</groupId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.aliateck</groupId>
+            <artifactId>billing-api-domain-business-logic</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.junit.vintage</groupId>
-					<artifactId>junit-vintage-engine</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.keycloak</groupId> -->
-<!-- 			<artifactId>keycloak-spring-boot-starter</artifactId> -->
-<!-- 		</dependency> -->
-	</dependencies>
+        <dependency>
+            <groupId>com.aliateck</groupId>
+            <artifactId>billing-api-infrastructure</artifactId>
+        </dependency>
 
-	<dependencyManagement>
-		<dependencies>
-<!-- 			<dependency> -->
-<!-- 				<groupId>org.keycloak.bom</groupId> -->
-<!-- 				<artifactId>keycloak-adapter-bom</artifactId> -->
-<!-- 				<version>12.0.3</version> -->
-<!-- 				<type>pom</type> -->
-<!-- 				<scope>import</scope> -->
-<!-- 			</dependency> -->
-		</dependencies>
-	</dependencyManagement>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-batch</artifactId>
+        </dependency>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>					
-			</plugin>
-			<plugin>
-                 <groupId>com.spotify</groupId>
-                 <artifactId>docker-maven-plugin</artifactId>
-                 <version>1.0.0</version>
-                 
-                 <configuration>
-                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
-                    <dockerDirectory>src/main/docker</dockerDirectory>
-                    <resources>
-                       <resource>
-                          <directory>${project.build.directory}</directory>
-                          <include>${project.build.finalName}.jar</include>
-                       </resource>
-                    </resources>
-                 </configuration>
-            </plugin>      
-		</plugins>
-	</build>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- 		<dependency> -->
+        <!-- 			<groupId>org.keycloak</groupId> -->
+        <!-- 			<artifactId>keycloak-spring-boot-starter</artifactId> -->
+        <!-- 		</dependency> -->
+
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- 			<dependency> -->
+            <!-- 				<groupId>org.keycloak.bom</groupId> -->
+            <!-- 				<artifactId>keycloak-adapter-bom</artifactId> -->
+            <!-- 				<version>12.0.3</version> -->
+            <!-- 				<type>pom</type> -->
+            <!-- 				<scope>import</scope> -->
+            <!-- 			</dependency> -->
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.1.0</version>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

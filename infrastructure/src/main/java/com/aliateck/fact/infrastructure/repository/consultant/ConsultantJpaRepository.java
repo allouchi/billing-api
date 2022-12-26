@@ -1,17 +1,16 @@
 package com.aliateck.fact.infrastructure.repository.consultant;
 
 import com.aliateck.fact.infrastructure.models.ConsultantEntity;
-
-import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface ConsultantJpaRepository extends JpaRepository<ConsultantEntity, Long> {
-  public Optional<ConsultantEntity> findByEmail(String mail);
+    Optional<ConsultantEntity> findByEmail(String mail);
 
-  public Optional<ConsultantEntity>  findByFirstName(String firstName);
+    Optional<ConsultantEntity> findByFirstName(String firstName);
 
-  public Optional<ConsultantEntity>  findByLastName(String lastName);
+    Optional<ConsultantEntity> findByLastName(String lastName);
 }

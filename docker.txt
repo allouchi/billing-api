@@ -1,0 +1,22 @@
+- docker exec -i database-container mysql -uroot -padmin docker-database < data.sql
+- docker-compose up --build -d
+- docker-compose down --rmi all
+
+
+
+- changer ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci; avec ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
+
+
+FROM maven:3.6.3 AS build
+
+# build the app (no dependency download here)
+RUN mvn clean package  -Dmaven.test.skip
+#CMD docker exec -i base-container mysql -uroot -padmin bill-database < data.sql
+
+FROM openjdk:17-jdk-alpine
+COPY application/target/billing-api-application-0.0.1-SNAPSHOT.jar billing-api.jar
+EXPOSE 8181
+ENTRYPOINT ["java","-jar","/billing-api.jar"]
+

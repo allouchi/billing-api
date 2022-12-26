@@ -13,8 +13,8 @@
     <name>Billing API :: Domain Layer - Business Logic</name>
     <description>Business logic for domain Layer</description>
 
-    <dependencies>   
- 
+    <dependencies>
+
         <dependency><artifactId>billing-api-commun</artifactId>
         	<groupId>com.aliateck</groupId>
         	<version>0.0.1-SNAPSHOT</version>
@@ -26,17 +26,17 @@
         <dependency>
 			<groupId>net.sf.jasperreports</groupId>
 			<artifactId>jasperreports</artifactId>
-			<version>6.16.0</version>
+			<version>6.20.0</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.codehaus.groovy/groovy-all -->
 		<dependency>
 			<groupId>org.codehaus.groovy</groupId>
 			<artifactId>groovy-all</artifactId>
-			<version>3.0.7</version>
+			<version>3.0.13</version>
 			<type>pom</type>
 		</dependency>
-        
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>

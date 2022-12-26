@@ -1,20 +1,5 @@
 package com.aliateck.fact.application.rest.controllers.prestation;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import com.aliateck.fact.application.rest.util.StorageProperties;
 import com.aliateck.fact.domaine.business.object.Prestation;
 import com.aliateck.fact.domaine.ports.api.facture.FactureApiService;
@@ -24,6 +9,13 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @RestController
 @RequestMapping(Resource.PRESTATIONS)
@@ -32,63 +24,47 @@ import lombok.extern.slf4j.Slf4j;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PrestationController {
 
-  private PrestationApiService prestationApiService;
-  FactureApiService factureApiService;
-  @Autowired
-  StorageProperties resources;
+    PrestationApiService prestationApiService;
+    FactureApiService factureApiService;
+    @Autowired
+    StorageProperties resources;
 
-  @GetMapping(value = "/{siret}")
-  public ResponseEntity<List<Prestation>> getAllPrestations(@PathVariable String siret) {
-    log.info("get all prestations");
-    List<Prestation> listPrestats = prestationApiService.findAll(siret);
-    listPrestats =
-        listPrestats.stream().sorted(Comparator.comparingLong(Prestation::getId).reversed())
-            .collect(Collectors.toList());
-    return ResponseEntity.ok(listPrestats);
-  }
+    @GetMapping("/{siret}")
+    public List<Prestation> getAllPrestations(@PathVariable String siret) {
+        log.info("get all prestations");
+        return prestationApiService.findAll(siret);
+    }
 
-  @PostMapping(value = "/{siret}/{templateChoice}/{moisPrestaId}")
-  public ResponseEntity<Prestation> addPrestation(@RequestBody Prestation prestation,
-      @PathVariable String siret, @PathVariable boolean templateChoice,
-      @PathVariable Long moisPrestaId) {
-    log.info("Create new Prestation");
-    Prestation presta =
-        prestationApiService.addPrestation(prestation, templateChoice, siret, moisPrestaId);
-    return ResponseEntity.ok(presta);
-  }
+    @PostMapping("/{siret}/{templateChoice}/{moisPrestaId}")
+    public Prestation addPrestation(@RequestBody @NotBlank Prestation prestation,
+                                    @PathVariable @NotNull String siret, @PathVariable boolean templateChoice,
+                                    @PathVariable @NotNull Long moisPrestaId) {
+        log.info("Create new Prestation");
+        return prestationApiService.addPrestation(prestation, templateChoice, siret, moisPrestaId);
 
-  
-  @PutMapping(value = "/{siret}")
-  public ResponseEntity<Prestation> updatePrestation(@RequestBody Prestation prestation,
-      @PathVariable String siret
+    }
 
-  ) {
-    log.info("Create new Prestation");
-    Prestation presta = prestationApiService.updatePrestation(prestation, siret);
-    return ResponseEntity.ok(presta);
-  }
+    @PutMapping("/{siret}")
+    public Prestation updatePrestation(@RequestBody @Valid Prestation prestation,
+                                       @PathVariable @NotNull String siret) {
+        log.info("Create or update Prestation");
+        return prestationApiService.updatePrestation(prestation, siret);
+    }
 
-  @PutMapping(value = "/{siret}/{templateChoice}/{moisPrestaId}")
-  public ResponseEntity<Prestation> createFacture(@RequestBody Prestation prestationRequest,
-      @PathVariable String siret, @PathVariable boolean templateChoice,
-      @PathVariable Long moisPrestaId) {
-    log.info("Update prestation");
-    Map<String, String> params = new HashMap<String, String>();
-    params.put("storage-pathRoot-pdf",  resources.getPathRoot());
-    params.put("storage-pathRoot-libelle-facture", resources.getPathLibelleFacture());
-    params.put("storage-pathRoot-libelle-charges", resources.getPathLibelleCharges());
-    params.put("storage-pathRoot-libelle-releve", resources.getPathLibelleReleve());
-    params.put("fichier_suivi_name", resources.getFichierSuiviFactures());   
-       
-    Prestation presta = factureApiService.addFacture(siret, templateChoice, prestationRequest,
-        resources.getPathRoot(), moisPrestaId, resources.saveFileLocalDisque(),
-        resources.getFichierSuiviFactures());
-    return ResponseEntity.ok(presta);
-  }
+    @PutMapping("/{siret}/{templateChoice}/{moisPrestaId}")
+    public Prestation createFacture(@RequestBody Prestation prestation,
+                                    @PathVariable @NotNull String siret,
+                                    @PathVariable Boolean templateChoice,
+                                    @PathVariable @NotNull Long moisPrestaId) {
+        log.info("Create prestation");
+        return factureApiService.addFacture(siret, templateChoice, prestation,
+                resources.getPathRoot(), moisPrestaId, resources.saveFileLocalDisque(),
+                resources.getFichierSuiviFactures());
+    }
 
-  @DeleteMapping(value = "/{id}")
-  public void deletePrestation(@PathVariable long id) {
-    log.info("delete prestation by id :" + id);
-    prestationApiService.deletePrestation(id);
-  }
+    @DeleteMapping(value = "/{id}")
+    public void deletePrestation(@PathVariable @NotNull long id) {
+        log.info("delete prestation by id :" + id);
+        prestationApiService.deletePrestation(id);
+    }
 }

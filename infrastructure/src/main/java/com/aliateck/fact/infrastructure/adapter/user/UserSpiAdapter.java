@@ -1,30 +1,26 @@
 package com.aliateck.fact.infrastructure.adapter.user;
 
-import java.util.List;
-import java.util.Optional;
-
-import javax.transaction.Transactional;
-
-import org.springframework.stereotype.Service;
-
-import com.aliateck.fact.domaine.business.object.Company;
 import com.aliateck.fact.domaine.business.object.User;
 import com.aliateck.fact.domaine.exception.ErrorCatalog;
 import com.aliateck.fact.domaine.exception.ServiceException;
+import com.aliateck.fact.domaine.exception.UserNotFoundException;
 import com.aliateck.fact.domaine.ports.spi.user.UserSpiService;
-import com.aliateck.fact.infrastructure.adapter.commun.CheckEmailAdress;
+import com.aliateck.fact.infrastructure.adapter.commun.CheckEmailAdresse;
 import com.aliateck.fact.infrastructure.mapper.CompanyMapper;
 import com.aliateck.fact.infrastructure.mapper.UserMapper;
-import com.aliateck.fact.infrastructure.models.CompanyEntity;
 import com.aliateck.fact.infrastructure.models.UserEntity;
 import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
 import com.aliateck.fact.infrastructure.repository.user.UserJpaRepository;
-
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -33,119 +29,99 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserSpiAdapter implements UserSpiService {
-	private UserMapper userMapper;
-	private UserJpaRepository userJpaRepository;
-	private CompanyJpaRepository companyJpaRepository;
-	private CompanyMapper companyMapper;
-	
+    UserMapper userMapper;
+    UserJpaRepository userJpaRepository;
+    CompanyJpaRepository companyJpaRepository;
+    CompanyMapper companyMapper;
 
-	@Override
-	public User addUser(User user) {
 
-		User reponse = null;
-		if (user == null) {
-			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
-		}		
+    @Override
+    public User addUser(User user) {
 
-		CheckEmailAdress checkEmail = CheckEmailAdress.builder().build();
-		if (checkEmail.checkEmailAdress(user, userJpaRepository)) {
-			final String format = String.format("L'adresse mail %s est déjà utilisée", user.getUserName());
-			throw new ServiceException(ErrorCatalog.DUPLICATE_DATA, format);
-		}
+        Optional.ofNullable(user).orElseThrow(() -> new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT));
+        CheckEmailAdresse checkEmail = CheckEmailAdresse.builder().build();
+        if (checkEmail.checkEmailAdresse(user, userJpaRepository)) {
+            final String format = String.format("L'adresse mail %s est déjà utilisée", user.getUserName());
+            throw new ServiceException(ErrorCatalog.DUPLICATE_DATA, format);
+        }
 
-		try {
+        try {
+            UserEntity entity = userJpaRepository.save(userMapper.fromDomainToEntity(user));
+            return userMapper.fromEntityToDomain(entity);
+        } catch (Exception e) {
+            log.error("error while creating new user", e);
+            throw new ServiceException(ErrorCatalog.DB_ERROR, e.getMessage());
+        }
+    }
 
-			Optional<CompanyEntity> company = companyJpaRepository.findById(user.getCompany().getId());
-			if (company.isPresent()) {
-				Company oCompany = companyMapper.fromEntityToDomain(company.get());
-				user.setCompany(oCompany);		        
-				UserEntity userEntity = userMapper.fromDomainToEntity(user);
-				
-				UserEntity entity = userJpaRepository.save(userEntity);
-				reponse = userMapper.fromEntityToDomain(entity);
-			}
-		} catch (Exception e) {
-			log.error("error while creating new user", e);
-			final String format = String.format("Un problème est survenu lors de l'ajout de l'utilisateur %s ",
-					user.getUserName());
-			throw new ServiceException(ErrorCatalog.DB_ERROR, format);
-		}
+    @Override
+    public void removeUser(User user) {
+        Optional.ofNullable(user).orElseThrow(() -> new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT));
+        UserEntity userEntity = userMapper.fromDomainToEntity(user);
+        userJpaRepository.delete(userEntity);
+    }
 
-		return reponse;
-	}
+    @Override
+    public void updateUser(User user) {
+        Optional.ofNullable(user).orElseThrow(() -> new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT));
+        UserEntity userEntity = userMapper.fromDomainToEntity(user);
+        userJpaRepository.save(userEntity);
+    }
 
-	@Override
-	public void removeUser(User user) {
-		UserEntity userEntity = userMapper.fromDomainToEntity(user);
-		userJpaRepository.delete(userEntity);
-	}
+    @Override
+    public List<User> findAllUsers() {
+        try {
+            List<UserEntity> usersEntity = userJpaRepository.findAll();
+            Optional.ofNullable(usersEntity).orElseThrow(() -> new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND));
+            return userMapper.fromEntityToDomainList(usersEntity);
+        } catch (Exception e) {
+            throw new ServiceException(ErrorCatalog.DB_ERROR, e.getMessage());
+        }
+    }
 
-	@Override
-	public void updateUser(User user) {		
-		UserEntity userEntity = userMapper.fromDomainToEntity(user);
-		userJpaRepository.save(userEntity);
-	}
+    @Override
+    public User findUserById(Long id) {
 
-	@Override
-	public List<User> findAllUsers() {
-		List<UserEntity> usersEntity = userJpaRepository.findAll();
-		return userMapper.fromEntityToDomainList(usersEntity);
-	}
+        Optional.ofNullable(id).orElseThrow(() -> new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT));
 
-	@Override
-	public User findUserById(Long id) {
+        try {
+            Optional<UserEntity> entity = userJpaRepository.findById(id);
+            final String message = String.format("L'utilisateur %s est introuvable", id);
+            entity.orElseThrow((() -> new UserNotFoundException(message)));
+            return userMapper.fromEntityToDomain(entity.get());
 
-		User reponse = null;
-		if (id == null) {
-			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
-		}
-		try {
-			Optional<UserEntity> entity = userJpaRepository.findById(id);
-			if (entity.isPresent()) {
-				reponse = userMapper.fromEntityToDomain(entity.get());
-			}
+        } catch (Exception e) {
+            throw new ServiceException(ErrorCatalog.DB_ERROR, e.getMessage());
+        }
+    }
 
-		} catch (Exception e) {
-			final String format = String.format("Problème lors de la recherche de l'utilisateur avec Id %s", id);
-			throw new ServiceException(ErrorCatalog.DB_ERROR, format);
-		}
+    @Override
+    public User findByUserName(String userName) {
 
-		if (reponse == null) {
-			final String format = String.format("Aucun utilisateur avec %s avec Id", id);
-			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, format);
-		}
-		return reponse;
-	}
-	
+        Optional.ofNullable(userName).orElseThrow(() -> new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT));
+        try {
+            Optional<UserEntity> entity = userJpaRepository.findByUserName(userName);
+            final String message = String.format("L'utilisateur %s est introuvable", userName);
+            entity.orElseThrow((() -> new UserNotFoundException(message)));
+            return userMapper.fromEntityToDomain(entity.get());
+        } catch (Exception e) {
+            log.error("error while find user", e);
+            throw new ServiceException(ErrorCatalog.DB_ERROR, e.getMessage());
+        }
+    }
 
-	@Override
-	public User findByUserName(String userName) {
-
-		User reponse = null;
-		if (userName == null) {
-			throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
-		}
-		try {
-
-			Optional<UserEntity> entity = userJpaRepository.findByUserName(userName);
-			if (entity.isPresent()) {
-				reponse = userMapper.fromEntityToDomain(entity.get());
-			}
-
-		} catch (Exception e) {
-			log.error("error while find user", e);
-			final String format = String.format("Problème lors de la recherche de l'utilisateur avec %s", userName);
-			throw new ServiceException(ErrorCatalog.DB_ERROR, format);
-		}
-
-		if (reponse == null) {
-			final String format = String.format("Aucun utilisateur avec %s comme userName", userName);
-			throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, format);
-		}
-		return reponse;
-
-	}
-
-	
-
+    @Override
+    public User findByUserNameAndPassword(String userName, String password) {
+        Optional.ofNullable(userName).orElseThrow(() -> new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT));
+        Optional.ofNullable(password).orElseThrow(() -> new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT));
+        try {
+            Optional<UserEntity> user = userJpaRepository.findByUserNameAndPassword(userName, password);
+            final String message = String.format("L'utilisateur %s est introuvable", userName);
+            user.orElseThrow(() -> new UserNotFoundException(message));
+            return userMapper.fromEntityToDomain(user.get());
+        } catch (Exception e) {
+            log.error("error while find user", e.getMessage());
+            throw new ServiceException(ErrorCatalog.DB_ERROR, e.getMessage());
+        }
+    }
 }

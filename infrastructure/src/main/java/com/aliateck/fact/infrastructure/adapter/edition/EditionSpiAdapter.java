@@ -1,12 +1,7 @@
 package com.aliateck.fact.infrastructure.adapter.edition;
 
-import java.util.Base64;
-import java.util.Optional;
-import javax.transaction.Transactional;
-import org.springframework.stereotype.Service;
 import com.aliateck.fact.domaine.business.object.DataPDF;
 import com.aliateck.fact.domaine.exception.ErrorCatalog;
-import com.aliateck.fact.domaine.exception.FactureNotFoundException;
 import com.aliateck.fact.domaine.exception.ServiceException;
 import com.aliateck.fact.domaine.ports.spi.edition.EditionSpiService;
 import com.aliateck.fact.infrastructure.models.FactureEntity;
@@ -15,6 +10,12 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Base64;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -23,32 +24,27 @@ import lombok.extern.slf4j.Slf4j;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class EditionSpiAdapter implements EditionSpiService {
 
-  FactureJpaRepository factureJpaRepository;
+    FactureJpaRepository factureJpaRepository;
 
-  @Override
-  public DataPDF downloadPdf(Long factureId) {
+    @Override
+    public DataPDF downloadPdf(Long factureId) {
 
-    DataPDF reponse = null;
-    if (factureId == null) {
-      throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
+        if (Objects.isNull(factureId)) {
+            throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
+        }
+        try {
+            Optional<FactureEntity> entity = factureJpaRepository.findById(factureId);
+            entity.orElseThrow(() -> new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND));
+            FactureEntity facture = entity.get();
+            byte[] encodedBytes = Base64.getEncoder().encode(facture.getFileContent());
+            return DataPDF.builder().fileContent(encodedBytes).fileName(facture.getFileName()).build();
+
+        } catch (Exception e) {
+            log.error("error while getting pdf file : file not found");
+            throw new ServiceException(ErrorCatalog.PDF_ERROR,
+                    "Un problème est survenu lors du chargement du pdf", e);
+        }
+
     }
-
-    try {
-      Optional<FactureEntity> entity = factureJpaRepository.findById(factureId);
-
-      entity.orElseThrow(() -> new FactureNotFoundException(
-          String.format("La facture numéro %s n'existe pas ", factureId)));
-      FactureEntity facture = entity.get();
-      byte[] encodedBytes = Base64.getEncoder().encode(facture.getFileContent());
-      reponse = DataPDF.builder().fileContent(encodedBytes).fileName(facture.getFileName()).build();
-
-    } catch (Exception e) {
-      log.error("error while getting pdf file : file not found");
-      throw new ServiceException(ErrorCatalog.PDF_ERROR,
-          "Un problème est survenu lors du chargement du pdf", e);
-    }
-
-    return reponse;
-  }
 
 }

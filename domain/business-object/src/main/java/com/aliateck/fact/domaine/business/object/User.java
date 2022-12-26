@@ -1,16 +1,10 @@
 package com.aliateck.fact.domaine.business.object;
 
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
 import java.io.Serializable;
 import java.util.List;
-
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
@@ -20,16 +14,17 @@ import lombok.experimental.FieldDefaults;
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;	
-	String userName;
-	String firstName;	
-	String lastName;
-	String password;
-	Boolean actived;		
-	List<Role> roles;	
-	Company company;	
-	
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    Long id;
+    String userName;
+    String firstName;
+    String lastName;
+    String password;
+    Boolean activated;
+    List<Role> roles;
+    Company company;
+
 }

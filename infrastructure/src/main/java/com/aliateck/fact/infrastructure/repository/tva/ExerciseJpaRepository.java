@@ -1,17 +1,16 @@
 package com.aliateck.fact.infrastructure.repository.tva;
 
-import java.util.List;
-
+import com.aliateck.fact.infrastructure.models.ExerciseEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.aliateck.fact.infrastructure.models.ExerciseEntity;
+import java.util.List;
 
 @Repository
 public interface ExerciseJpaRepository extends JpaRepository<ExerciseEntity, Long> {
 
-	public List<ExerciseEntity> findByExercise(String exercise);
+    List<ExerciseEntity> findByExercise(String exercise);
 
-	public void deleteByExercise(String exercise);
+    void deleteByExercise(String exercise);
 
 }

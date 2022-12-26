@@ -1,19 +1,11 @@
 package com.aliateck.fact.infrastructure.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
 import com.aliateck.fact.infrastructure.models.common.CommonEntity;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
+
+import javax.persistence.*;
+
 
 @Entity(name = "T_Exercise")
 @AllArgsConstructor
@@ -24,17 +16,17 @@ import lombok.experimental.SuperBuilder;
 @ToString
 public class ExerciseEntity extends CommonEntity {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false)
-	Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    Long id;
 
-	@Column(name = "exercise", nullable = false, unique = true)
-	String exercise;
+    @Column(name = "exercise", nullable = false, unique = true, length = 4)
+    String exercise;
 
 }

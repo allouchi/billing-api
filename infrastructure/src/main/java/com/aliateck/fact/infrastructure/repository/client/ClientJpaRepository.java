@@ -1,14 +1,14 @@
 package com.aliateck.fact.infrastructure.repository.client;
 
-import java.util.Optional;
-
+import com.aliateck.fact.infrastructure.models.ClientEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.aliateck.fact.infrastructure.models.ClientEntity;
+import java.util.Optional;
 
 @Repository
 public interface ClientJpaRepository extends JpaRepository<ClientEntity, Long> {
-  public Optional<ClientEntity> getBySocialReasonIgnoreCase(String reasonSocial);
-  public Optional<ClientEntity> findByEmail(String mail);
+    Optional<ClientEntity> getBySocialReasonIgnoreCase(String reasonSocial);
+
+    Optional<ClientEntity> findByEmail(String mail);
 }

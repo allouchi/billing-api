@@ -1,28 +1,22 @@
 package com.aliateck.fact.domaine.ports.spi.facture;
 
-import java.util.Date;
-import java.util.List;
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.business.object.Prestation;
 
-public interface FactureSpiService {	
-	
-  Prestation addFacture(String siret, boolean templateChoice, Prestation prestation,
-      String pathRoot, Long moisFactureId, boolean storeFile, String fileSuivi);
+import java.util.List;
 
-  void deleteFacture(Long factureId);
+public interface FactureSpiService {
 
-  Facture updateFacture(Facture facture, String rootPath, String fileSuiviName);
+    Prestation addFacture(String siret, Boolean templateChoice, Prestation prestation,
+                          String pathRoot, Long moisFactureId, Boolean storeFile, String fileSuivi);
 
-  Facture findByNumeroFacture(String numeroFacture);
+    void deleteFacture(Long factureId);
 
-  Facture findById(Long id);
+    Facture updateFacture(Facture facture, String rootPath, String fileSuiviName);
 
-  List<Facture> findByFactureStatus(boolean statusFacture);
+    Facture findByNumeroFacture(String numeroFacture);
 
-  List<Facture> findByDateEcheance(Date dateEcheance);
+    Facture findById(Long id);
 
-  List<Facture> findByDateEncaissement(Date dateEncaissement);
-
-  List<Facture> findAllBySiret(String siret);
+    List<Facture> findAllBySiret(String siret);
 }

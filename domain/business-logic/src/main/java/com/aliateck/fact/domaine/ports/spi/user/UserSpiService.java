@@ -1,20 +1,22 @@
 package com.aliateck.fact.domaine.ports.spi.user;
 
-import java.util.List;
-
 import com.aliateck.fact.domaine.business.object.User;
 
+import java.util.List;
+
 public interface UserSpiService {
-	public User addUser(User user);
+    User addUser(User user);
 
-	public void removeUser(User user);
+    void removeUser(User user);
 
-	public void updateUser(User user);
+    void updateUser(User user);
 
-	public List<User> findAllUsers();
+    List<User> findAllUsers();
 
-	public User findUserById(Long id);
+    User findUserById(Long id);
 
-	public User findByUserName(String name);
+    User findByUserName(String userName);
+
+    User findByUserNameAndPassword(String userName, String password);
 
 }

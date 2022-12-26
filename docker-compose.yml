@@ -1,0 +1,32 @@
+version: '3.7'
+services:
+
+  db:
+    image: mysql:5.7.8
+    container_name: database-container
+    env_file: ./.env
+    networks:
+      - spring-network
+    ports:
+      - ${MYSQLDB_LOCAL_PORT}:${MYSQLDB_DOCKER_PORT}
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQLDB_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQLDB_DATABASE}
+      - MYSQL_ALLOW_EMPTY_PASSWORD=YES
+
+  api:
+    depends_on:
+      - db
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: img-back-api
+    container_name: back-api-container
+    ports:
+      - ${BILL_LOCAL_PORT}:${BILL_DOCKER_PORT}
+    networks:
+      - spring-network
+
+networks:
+  spring-network:

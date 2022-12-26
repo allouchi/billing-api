@@ -1,19 +1,12 @@
 package com.aliateck.fact.infrastructure.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 import com.aliateck.fact.infrastructure.models.common.CommonEntity;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
+
+import javax.persistence.*;
+
 
 @Entity(name = "T_Adresse")
 @AllArgsConstructor
@@ -24,29 +17,30 @@ import lombok.experimental.SuperBuilder;
 @ToString
 // @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AdresseEntity extends CommonEntity {
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false)
-	Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    Long id;
 
-	@Column(name = "numero", nullable = false)
-	String numero;
+    @Column(name = "numero", nullable = false)
+    String numero;
 
-	@Column(name = "rue", nullable = false)
-	String rue;
+    @Column(name = "rue", nullable = false)
+    String rue;
 
-	@Column(name = "code_postal", nullable = false)
-	String codePostal;
+    @Column(name = "code_postal", nullable = false)
+    String codePostal;
 
-	@Column(name = "localite", nullable = false)
-	String localite;
+    @Column(name = "localite", nullable = false)
+    String localite;
 
-	@Column(name = "pays", nullable = false)
-	String pays;
+    @Column(name = "pays", nullable = false)
+    String pays;
+
 
 }
