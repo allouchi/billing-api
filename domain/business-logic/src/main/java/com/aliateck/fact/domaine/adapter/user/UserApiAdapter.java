@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+@Service("UserApiAdapter")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserApiAdapter implements UserApiService {
@@ -23,7 +23,17 @@ public class UserApiAdapter implements UserApiService {
 
     @Override
     public void deleteUser(User user) {
-        userSpiService.removeUser(user);
+        userSpiService.deleteUser(user);
+    }
+
+    @Override
+    public void deleteUserById(Long id) {
+        userSpiService.deleteUserById(id);
+    }
+
+    @Override
+    public void deleteAll() {
+        userSpiService.findAllUsers();
     }
 
     @Override
@@ -32,7 +42,7 @@ public class UserApiAdapter implements UserApiService {
     }
 
     @Override
-    public List<User> getUsers() {
+    public List<User> findAllUsers() {
         return userSpiService.findAllUsers();
     }
 

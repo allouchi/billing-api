@@ -7,7 +7,11 @@ import java.util.List;
 public interface UserSpiService {
     User addUser(User user);
 
-    void removeUser(User user);
+    void deleteUser(User user);
+
+    void deleteUserById(Long id);
+
+    void deleteAll();
 
     void updateUser(User user);
 

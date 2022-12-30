@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.GrantedAuthority;
@@ -37,28 +38,45 @@ public class UserController {
     BCryptPasswordEncoder passwordEncoder;
 
     @Secured(value = {"ADMIN"})
+    @ResponseStatus(code = HttpStatus.OK)
     @GetMapping(value = "/{userName:.+}")
-    public ResponseEntity<User> findByUserName(@PathVariable @NotNull String userName) {
+    public User findByUserName(@PathVariable @NotNull String userName) {
         log.info("Get user by Email : " + userName);
-        User user = userApiService.findByUserName(userName);
-        return ResponseEntity.ok(user);
+        return userApiService.findByUserName(userName);
+    }
+
+
+    @ResponseStatus(code = HttpStatus.OK)
+    @GetMapping()
+    public List<User> findAllUsers() {
+        log.info("Get all users by Email");
+        return userApiService.findAllUsers();
     }
 
     @Secured(value = {"ADMIN"})
+    @ResponseStatus(code = HttpStatus.OK)
     @GetMapping(value = "/{userName:.+}/{password}")
-    public ResponseEntity<User> findByUserNameAndPassword(@PathVariable @NotNull String userName,
-                                                          @PathVariable @NotNull String password) {
+    public User findByUserNameAndPassword(@PathVariable @NotNull String userName,
+                                          @PathVariable @NotNull String password) {
         log.info("Get user by Email and password : " + userName);
-        User user = userApiService.findByUserNameAndPassword(userName, password);
-        return ResponseEntity.ok(user);
+        return userApiService.findByUserNameAndPassword(userName, password);
+
     }
 
-    @Secured(value = {"ADMIN"})
-    @PostMapping
-    public User addUser(@RequestBody User userReq) {
-        log.info("Add user : " + userReq.getUserName());
-        userReq.setPassword(passwordEncoder.encode(userReq.getPassword()));
-        return userApiService.addUser(userReq);
+    //@Secured(value = {"ADMIN"})
+    @ResponseStatus(code = HttpStatus.CREATED)
+    @PostMapping("/")
+    public User addUser(@RequestBody @NotNull User user) {
+        log.info("Add user : " + user.getUserName());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userApiService.addUser(user);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(code = HttpStatus.ACCEPTED)
+    public void deleteUser(@PathVariable @NotNull long id) {
+        log.info("delete client by id :" + id);
+        userApiService.deleteUserById(id);
     }
 
     @Secured(value = {"ADMIN", "WRITE", "READ"})

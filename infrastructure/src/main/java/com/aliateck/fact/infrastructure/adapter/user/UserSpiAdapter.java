@@ -55,10 +55,20 @@ public class UserSpiAdapter implements UserSpiService {
     }
 
     @Override
-    public void removeUser(User user) {
+    public void deleteAll() {
+        userJpaRepository.deleteAll();
+    }
+
+    @Override
+    public void deleteUser(User user) {
         Optional.ofNullable(user).orElseThrow(() -> new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT));
         UserEntity userEntity = userMapper.fromDomainToEntity(user);
         userJpaRepository.delete(userEntity);
+    }
+
+    @Override
+    public void deleteUserById(Long id) {
+        userJpaRepository.deleteById(id);
     }
 
     @Override
@@ -116,12 +126,11 @@ public class UserSpiAdapter implements UserSpiService {
         Optional.ofNullable(password).orElseThrow(() -> new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT));
         try {
             Optional<UserEntity> user = userJpaRepository.findByUserNameAndPassword(userName, password);
-            final String message = String.format("L'utilisateur %s est introuvable", userName);
-            user.orElseThrow(() -> new UserNotFoundException(message));
+            user.orElseThrow(() -> new UserNotFoundException("L'identifiant et/ou le mot de passe est incorrect"));
             return userMapper.fromEntityToDomain(user.get());
         } catch (Exception e) {
             log.error("error while find user", e.getMessage());
-            throw new ServiceException(ErrorCatalog.DB_ERROR, e.getMessage());
+            throw new ServiceException(ErrorCatalog.ACCESS_DENIED, e.getMessage());
         }
     }
 }

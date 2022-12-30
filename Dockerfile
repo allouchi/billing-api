@@ -3,7 +3,7 @@ FROM maven:3.8.2-openjdk-17 AS build
 WORKDIR /usr/src/app
 
 ADD . /usr/src/app
-RUN mvn clean install -Dmaven.test.skip=true
+RUN mvn clean package -Dmaven.test.skip=true
 
 
 FROM openjdk:17-jdk-alpine

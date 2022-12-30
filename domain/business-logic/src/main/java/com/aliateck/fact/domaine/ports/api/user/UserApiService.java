@@ -9,9 +9,13 @@ public interface UserApiService {
 
     void deleteUser(User user);
 
+    void deleteUserById(Long id);
+
+    void deleteAll();
+
     void updateUser(User user);
 
-    List<User> getUsers();
+    List<User> findAllUsers();
 
     User findUserById(Long id);
 
