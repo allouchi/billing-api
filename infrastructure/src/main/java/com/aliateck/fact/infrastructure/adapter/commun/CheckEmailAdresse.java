@@ -26,7 +26,6 @@ public class CheckEmailAdresse implements ICheckEmailAdresse {
             ConsultantJpaRepository consultantJpaRepository = (ConsultantJpaRepository) jpaRepository;
             return consultantJpaRepository
                     .findByEmail(consult.getEmail()).isPresent();
-
         } else if (object instanceof Client client) {
             ClientJpaRepository clientJpaRepository = (ClientJpaRepository) jpaRepository;
             return clientJpaRepository
