@@ -275,8 +275,14 @@ public class Utils {
 
         LocalDate initial = LocalDate.of(dateActuelle.getYear(), mois, 01);
         LocalDate endOfMonth = initial.withDayOfMonth(initial.lengthOfMonth());
-        String dateFacture =
-                endOfMonth.getMonth().maxLength() + SLATSH + moisId[0] + SLATSH + dateActuelle.getYear();
+
+        String dateFacture = null;
+        boolean isAnneeBissextile = isBissextile(dateActuelle.getYear());
+        if (isAnneeBissextile == true) {
+            dateFacture = endOfMonth.getMonth().maxLength() + SLATSH + moisId[0] + SLATSH + dateActuelle.getYear();
+        } else {
+            dateFacture = endOfMonth.getMonth().maxLength() - 1 + SLATSH + moisId[0] + SLATSH + dateActuelle.getYear();
+        }
         return dateFacture;
     }
 
@@ -557,11 +563,18 @@ public class Utils {
     }
 
     /**
-     * @param collection
+     * @param
      * @return
      */
     public static boolean isEmpty(Collection<?> obj) {
         return obj == null || obj.isEmpty();
+    }
+
+    private static boolean isBissextile(int annee) {
+        if (annee % 4 == 0) {
+            return true;
+        }
+        return false;
     }
 
 }

@@ -2,6 +2,7 @@ package com.aliateck.fact.infrastructure.models;
 
 import com.aliateck.fact.infrastructure.models.common.CommonEntity;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
@@ -14,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity(name = "T_Prestation")
 @EqualsAndHashCode(callSuper = false)
-// @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class PrestationEntity extends CommonEntity {
     /**
      *

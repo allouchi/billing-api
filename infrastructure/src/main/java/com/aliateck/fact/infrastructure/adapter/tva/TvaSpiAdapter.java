@@ -107,11 +107,12 @@ public class TvaSpiAdapter implements TvaSpiService {
 
     @Override
     public TvaInfo findTvaInfo(String exercise) {
-        float sumOfTva = 0;
-        float sumOfTvaPaye = 0;
-        float totalHT = 0;
+        double sumOfTva = 0;
+        double sumOfTvaPaye = 0;
+        double totalHT = 0;
 
         List<FactureEntity> entities = factureJpaRepository.findAll();
+
         for (FactureEntity e : entities) {
             if (e.getDateEncaissement() != null && !e.getDateEncaissement().equals("")) {
                 String[] dateEncaissement = e.getDateEncaissement().split("/");
@@ -142,6 +143,18 @@ public class TvaSpiAdapter implements TvaSpiService {
         info.setTotalTvaRestant(sumOfTva - sumOfTvaPaye);
         info.setTotalHT(totalHT);
         return info;
+    }
+
+    private boolean isFactureEncaissee(String dateEncaissement, String exercice) {
+
+        if (dateEncaissement == null || dateEncaissement.equals("")) {
+            return false;
+        }
+        String[] date = dateEncaissement.split("/");
+        if (date[2] != null && exercice.equals(date[2])) {
+            return true;
+        }
+        return false;
     }
 
 }
