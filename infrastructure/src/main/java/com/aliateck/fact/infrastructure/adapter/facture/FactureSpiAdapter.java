@@ -183,6 +183,7 @@ public class FactureSpiAdapter implements FactureSpiService {
 
         try {
             List<FactureEntity> entities = entitySpiService.findAllFacturesBySiret(siret);
+            System.out.println(entities);
             Optional.ofNullable(entities).orElseThrow(() -> new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND));
             return entities.stream().map((entity) ->
                             factureMapper.fromEntityToDomain(entity))

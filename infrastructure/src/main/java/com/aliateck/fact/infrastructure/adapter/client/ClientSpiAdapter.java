@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -154,7 +155,8 @@ public class ClientSpiAdapter implements ClientSpiService {
             Optional.ofNullable(oCompnay).orElseThrow(() -> new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND));
             List<ClientEntity> oClient = oCompnay.get().getClients();
             Optional.ofNullable(oClient).orElseThrow(() -> new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND));
-            return oClient.stream().map((c) -> clientMapper.fromEntityToDomain(c)).collect(Collectors.toList());
+            return oClient.stream().map((c) -> clientMapper.fromEntityToDomain(c))
+                    .sorted((Comparator.comparing(Client::getId).reversed())).collect(Collectors.toList());
 
         } catch (Exception e) {
             log.error("error while getting all clients", e);
