@@ -1,12 +1,6 @@
 package com.aliateck.fact.domaine.business.object;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Getter
@@ -16,9 +10,9 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TvaInfo {	
-	
-	Float totalTvaPaye;
-	Float totalTvaRestant;
-	Float totalHT;
+public class TvaInfo {
+
+    Float totalTvaPaye;
+    Float totalTvaRestant;
+    Float totalTTC;
 }

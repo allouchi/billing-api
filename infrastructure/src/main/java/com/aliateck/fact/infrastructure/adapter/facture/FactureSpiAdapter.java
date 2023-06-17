@@ -86,14 +86,13 @@ public class FactureSpiAdapter implements FactureSpiService {
             byte[] binaryPdf = editionReportService.buildPdfFacture(paramJasper, templateChoice, pathFile,
                     storeFile);
             String pathToSave = Utils.buildPath(pathFile, pathRoot);
-            FactureEntity.builder()
-                    .filePath(pathToSave + File.separator + fileName)
-                    .tarifHT(prestation.getTarifHT())
-                    .fileContent(binaryPdf)
-                    .fileName(fileName)
-                    .montantTVA(factEntity.getPrixTotalHT() * 0.2f)
-                    .build();
+            factEntity.setFilePath(pathToSave + File.separator + fileName);
+            factEntity.setTarifHT(prestation.getTarifHT());
+            factEntity.setFileContent(binaryPdf);
+            factEntity.setFileName(fileName);
+            factEntity.setMontantTVA(factEntity.getPrixTotalHT() * 0.2f);
             prestaEntity.getFacture().add(factEntity);
+
             prestaEntity.setNumeroCommande(prestation.getNumeroCommande());
             prestaEntity.setDesignation(prestation.getDesignation());
             prestaEntity.setClientPrestation(prestation.getClientPrestation());
