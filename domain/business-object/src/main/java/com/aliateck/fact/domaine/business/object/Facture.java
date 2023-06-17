@@ -1,12 +1,6 @@
 package com.aliateck.fact.domaine.business.object;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 // @Data
@@ -19,27 +13,28 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 // @JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class Facture {
-  Long id;
-  String numeroFacture;
-  String dateFacturation;
-  String dateEcheance;
-  String dateEncaissement;
-  float montantTVA;
-  float prixTotalHT;
-  float prixTotalTTC;
-  long nbJourRetard;
-  float fraisRetard;
-  Float tarifHT;
-  long delaiPaiement;
-  String factureStatus;
-  String statusDesc;
-  float quantite;
-  String numeroCommande;
-  String clientPrestation;
-  String filePath;
-  String fileName;
-  byte[] fileContent;
-  String moisFacture;
-  
+    Long id;
+    String numeroFacture;
+    String dateFacturation;
+    String dateEcheance;
+    String dateEncaissement;
+    float montantTVA;
+    float prixTotalHT;
+    float prixTotalTTC;
+    long nbJourRetard;
+    float fraisRetard;
+    Float tarifHT;
+    long delaiPaiement;
+    String factureStatus;
+    String statusDesc;
+    float quantite;
+    String numeroCommande;
+    String clientPrestation;
+    String filePath;
+    String fileName;
+    byte[] fileContent;
+    String moisFacture;
+    String exercice;
+
 
 }

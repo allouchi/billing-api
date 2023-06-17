@@ -107,24 +107,28 @@ public class TvaSpiAdapter implements TvaSpiService {
 
     @Override
     public TvaInfo findTvaInfo(String exercise) {
+<<<<<<< HEAD
         double sumOfTva = 0;
         double sumOfTvaPaye = 0;
         double totalHT = 0;
 
         List<FactureEntity> entities = factureJpaRepository.findAll();
 
-        for (FactureEntity e : entities) {
-            if (e.getDateEncaissement() != null && !e.getDateEncaissement().equals("")) {
-                String[] dateEncaissement = e.getDateEncaissement().split("/");
+=======
+        float totalTva = 0;
+        float totalTvaPaye = 0;
+        float totalTTC = 0;
 
-                if (exercise.equalsIgnoreCase(TOUS)) {
-                    sumOfTva += e.getMontantTVA();
-                    totalHT += e.getPrixTotalHT();
-                } else if (dateEncaissement[2] != null && exercise.equals(dateEncaissement[2])) {
-                    sumOfTva += e.getMontantTVA();
-                    totalHT += e.getPrixTotalHT();
-                }
-            }
+        List<FactureEntity> entities = null;
+        if (exercise.equalsIgnoreCase(TOUS)) {
+            entities = factureJpaRepository.findAll();
+        } else {
+            entities = factureJpaRepository.findByExercice(exercise);
+        }
+>>>>>>> develop
+        for (FactureEntity e : entities) {
+            totalTva += e.getMontantTVA();
+            totalTTC += e.getPrixTotalTTC();
         }
 
         List<TvaEntity> listeTvaPayee;
@@ -133,15 +137,13 @@ public class TvaSpiAdapter implements TvaSpiService {
         } else {
             listeTvaPayee = tvaJpaRepository.findByExercise(exercise);
         }
-
         if (listeTvaPayee != null) {
-            sumOfTvaPaye = listeTvaPayee.stream().map(e -> e.getMontantPayment()).reduce(0f, Float::sum);
+            totalTvaPaye = listeTvaPayee.stream().map(e -> e.getMontantPayment()).reduce(0f, Float::sum);
         }
-
         TvaInfo info = new TvaInfo();
-        info.setTotalTvaPaye(sumOfTvaPaye);
-        info.setTotalTvaRestant(sumOfTva - sumOfTvaPaye);
-        info.setTotalHT(totalHT);
+        info.setTotalTvaPaye(totalTvaPaye);
+        info.setTotalTvaRestant(totalTva - totalTvaPaye);
+        info.setTotalTTC(totalTTC);
         return info;
     }
 

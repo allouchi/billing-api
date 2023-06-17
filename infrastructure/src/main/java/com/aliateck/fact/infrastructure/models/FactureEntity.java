@@ -16,6 +16,7 @@ import javax.persistence.*;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = false)
+
 public class FactureEntity extends CommonEntity {
     /**
      *
@@ -77,6 +78,9 @@ public class FactureEntity extends CommonEntity {
 
     @Column(name = "file_name")
     String fileName;
+
+    @Column(name = "exercice", nullable = false)
+    String exercice;
 
     @Lob
     @Column(name = "file_content", length = 10000000, columnDefinition = "longblob")
