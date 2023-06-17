@@ -107,14 +107,7 @@ public class TvaSpiAdapter implements TvaSpiService {
 
     @Override
     public TvaInfo findTvaInfo(String exercise) {
-<<<<<<< HEAD
-        double sumOfTva = 0;
-        double sumOfTvaPaye = 0;
-        double totalHT = 0;
 
-        List<FactureEntity> entities = factureJpaRepository.findAll();
-
-=======
         float totalTva = 0;
         float totalTvaPaye = 0;
         float totalTTC = 0;
@@ -125,7 +118,6 @@ public class TvaSpiAdapter implements TvaSpiService {
         } else {
             entities = factureJpaRepository.findByExercice(exercise);
         }
->>>>>>> develop
         for (FactureEntity e : entities) {
             totalTva += e.getMontantTVA();
             totalTTC += e.getPrixTotalTTC();
