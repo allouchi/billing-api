@@ -12,13 +12,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TvaInfo {
 
-<<<<<<< HEAD
-    Double totalTvaPaye;
-    Double totalTvaRestant;
-    Double totalHT;
-=======
     Float totalTvaPaye;
     Float totalTvaRestant;
     Float totalTTC;
->>>>>>> develop
+
 }
