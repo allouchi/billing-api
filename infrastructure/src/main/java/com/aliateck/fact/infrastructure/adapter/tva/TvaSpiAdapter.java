@@ -107,35 +107,32 @@ public class TvaSpiAdapter implements TvaSpiService {
 
     @Override
     public TvaInfo findTvaInfo(String exercise) {
-        float totalTva = 0;
-        float totalTvaPaye = 0;
-        float totalTTC = 0;
 
         List<FactureEntity> entities = null;
+        TvaInfo info = new TvaInfo();
+
         if (exercise.equalsIgnoreCase(TOUS)) {
             entities = factureJpaRepository.findAll();
         } else {
             entities = factureJpaRepository.findByExercice(exercise);
         }
-        for (FactureEntity e : entities) {
-            totalTva += e.getMontantTVA();
-            totalTTC += e.getPrixTotalTTC();
+        if (entities != null) {
+            float totalTvaPaye = 0;
+            float totalTva = entities.stream().map(e -> e.getMontantTVA()).reduce(0f, Float::sum);
+            float totalTTC = entities.stream().map(e -> e.getPrixTotalTTC()).reduce(0f, Float::sum);
+            List<TvaEntity> listeTvaPayee;
+            if (exercise.equalsIgnoreCase(TOUS)) {
+                listeTvaPayee = tvaJpaRepository.findAll();
+            } else {
+                listeTvaPayee = tvaJpaRepository.findByExercise(exercise);
+            }
+            if (listeTvaPayee != null) {
+                totalTvaPaye = listeTvaPayee.stream().map(e -> e.getMontantPayment()).reduce(0f, Float::sum);
+            }
+            info.setTotalTvaPaye(totalTvaPaye);
+            info.setTotalTvaRestant(totalTva - totalTvaPaye);
+            info.setTotalTTC(totalTTC);
         }
-
-        List<TvaEntity> listeTvaPayee;
-        if (exercise.equalsIgnoreCase(TOUS)) {
-            listeTvaPayee = tvaJpaRepository.findAll();
-        } else {
-            listeTvaPayee = tvaJpaRepository.findByExercise(exercise);
-        }
-        if (listeTvaPayee != null) {
-            totalTvaPaye = listeTvaPayee.stream().map(e -> e.getMontantPayment()).reduce(0f, Float::sum);
-        }
-        TvaInfo info = new TvaInfo();
-        info.setTotalTvaPaye(totalTvaPaye);
-        info.setTotalTvaRestant(totalTva - totalTvaPaye);
-        info.setTotalTTC(totalTTC);
         return info;
     }
-
 }
