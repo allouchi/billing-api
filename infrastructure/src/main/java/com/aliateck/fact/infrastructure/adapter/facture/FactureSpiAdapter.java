@@ -109,7 +109,6 @@ public class FactureSpiAdapter implements FactureSpiService {
             throw new ServiceException(ErrorCatalog.DB_ERROR, "Un problème est survenu lors de l'édition de la facture",
                     e);
         }
-
     }
 
     @Override
@@ -123,7 +122,6 @@ public class FactureSpiAdapter implements FactureSpiService {
             Facture oFacture = Utils.updateFacture(facture, factureRequest);
             FactureEntity fact = factureMapper.fromDomainToEntity(oFacture);
             factureJpaRepository.saveAndFlush(fact);
-
             List<FactureEntity> listeFactures = entitySpiService.findAllFactures();
             List<Facture> suiviFactures = factureMapper.fromEntityToDomain(listeFactures);
             String pathSuivi = Utils.buildPathSuivi(rootPath, fileSuiviName);
@@ -136,7 +134,6 @@ public class FactureSpiAdapter implements FactureSpiService {
             throw new ServiceException(ErrorCatalog.DB_ERROR,
                     "Un problème est survenu lors de la mise à jour de la facture", e);
         }
-
     }
 
     @Override
