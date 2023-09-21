@@ -21,7 +21,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: img-back-api
+    image: back-api
     container_name: back-api-container
     ports:
       - ${BILL_LOCAL_PORT}:${BILL_DOCKER_PORT}

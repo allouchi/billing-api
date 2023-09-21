@@ -50,6 +50,9 @@ public class PrestationEntity extends CommonEntity {
     @Column(name = "date_fin", nullable = true)
     String dateFin;
 
+    @Column(name = "siret", nullable = true)
+    String siret;
+
     @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "client_id")
     private ClientEntity client;

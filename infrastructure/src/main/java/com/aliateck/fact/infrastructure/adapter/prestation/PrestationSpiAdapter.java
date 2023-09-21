@@ -35,16 +35,13 @@ public class PrestationSpiAdapter implements PrestationSpiService {
     PrestationMapper prestationMapper;
 
     @Override
-    public Prestation addPrestation(Prestation prestation, Boolean templateChoice, String siret, Long moisPrestaId) {
-        if (Objects.isNull(prestation) || Objects.isNull(siret) || Objects.isNull(moisPrestaId)) {
+    public Prestation addPrestation(Prestation prestation, String siret) {
+        if (Objects.isNull(prestation) || Objects.isNull(siret)) {
             throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
-        }
-        if (!templateChoice) {
-            prestation.setClientPrestation(prestation.getClient().getSocialReason());
         }
 
         try {
-
+            prestation.setSiret(siret);
             prestation.setDateDebut(Utils.convertFromDomainToEntityDate(prestation.getDateDebut()));
             prestation.setDateFin(Utils.convertFromDomainToEntityDate(prestation.getDateFin()));
             PrestationEntity pEntity = prestationMapper.fromDomainToEntity(prestation);

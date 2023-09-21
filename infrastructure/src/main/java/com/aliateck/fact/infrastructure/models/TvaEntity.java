@@ -31,7 +31,7 @@ public class TvaEntity extends CommonEntity {
     @Column(name = "montantPayment", nullable = false)
     Float montantPayment;
 
-    @Column(name = "exercise", nullable = false)
-    String exercise;
+    @Column(name = "siret", nullable = false)
+    String siret;
 
 }

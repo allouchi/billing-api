@@ -31,12 +31,17 @@ public class CompanySpiAdapter implements CompanySpiService {
     public Company addCompany(Company company) {
         Optional.ofNullable(company).orElseThrow(() -> new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT));
 
+        if (company != null && company.getId() == 0) {
+            company.setId(null);
+        }
+
         CheckEmailAdresse checkEmail = CheckEmailAdresse.builder().build();
         if (checkEmail.checkEmailAdresse(company, companyJpaRepository)) {
             final String format = String.format("Le siret %s est déjà utilisé", company.getSiret());
             throw new ServiceException(ErrorCatalog.DUPLICATE_DATA, format);
         }
         try {
+            company.setSiret(company.getSiret().replace(" ", ""));
             CompanyEntity baseEntity = companyJpaRepository.save(companyMapper.fromDomainToEntity(company));
             return companyMapper.fromEntityToDomain(baseEntity);
         } catch (Exception e) {
@@ -57,14 +62,14 @@ public class CompanySpiAdapter implements CompanySpiService {
         try {
             List<CompanyEntity> listEnities = companyJpaRepository.findAll();
             reponse = companyMapper.fromEntityToDomain(listEnities);
+            if (reponse == null || reponse.isEmpty()) {
+                throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucune société enregistrée !");
+            }
         } catch (Exception e) {
             log.error("error while get companies", e);
             throw new ServiceException(ErrorCatalog.DB_ERROR, e);
         }
 
-        if (reponse == null || reponse.isEmpty()) {
-            throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucune société enregistrée !");
-        }
         return reponse;
     }
 
@@ -81,15 +86,16 @@ public class CompanySpiAdapter implements CompanySpiService {
             if (entity.isPresent()) {
                 reponse = companyMapper.fromEntityToDomain(entity.get());
             }
+            if (reponse == null) {
+                final String format = String.format("La société avec l'id %s est absente", id);
+                throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, format);
+            }
         } catch (Exception e) {
             log.error("error while get companies", e);
             throw new ServiceException(ErrorCatalog.DB_ERROR, e);
         }
 
-        if (reponse == null) {
-            final String format = String.format("La société avec l'id %s est absente", id);
-            throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, format);
-        }
+
         return reponse;
     }
 
@@ -161,15 +167,15 @@ public class CompanySpiAdapter implements CompanySpiService {
     }
 
     @Override
-    public Company findByUserName(String userName) {
+    public List<Company> findByUserName(String userName) {
 
-        Optional<CompanyEntity> company = companyJpaRepository.findByUserName(userName);
-        if (company.isPresent()) {
-            return companyMapper.fromEntityToDomain(company.get());
+        Optional<List<CompanyEntity>> companies = companyJpaRepository.findByUserName(userName);
+
+        if (companies.isPresent()) {
+            return companyMapper.fromEntityToDomain(companies.get());
+        } else {
+            final String format = "Aucune société trouvée";
+            throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, format);
         }
-
-        final String format = "Aucune société trouvée";
-        throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, format);
-
     }
 }

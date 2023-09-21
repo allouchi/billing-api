@@ -17,8 +17,8 @@ public class PrestationApiAdapter implements PrestationApiService {
     PrestationSpiService prestationSpiService;
 
     @Override
-    public Prestation addPrestation(Prestation prestation, boolean templateChoice, String siret, Long moisPrestaId) {
-        return prestationSpiService.addPrestation(prestation, templateChoice, siret, moisPrestaId);
+    public Prestation addPrestation(Prestation prestation, String siret) {
+        return prestationSpiService.addPrestation(prestation, siret);
     }
 
     @Override

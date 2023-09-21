@@ -20,6 +20,4 @@ public class UserApiDetailAdapter implements UserApiDetailService {
     public User findByUserName(String name) {
         return userSpiDetailsService.findByUserName(name);
     }
-
-   
 }

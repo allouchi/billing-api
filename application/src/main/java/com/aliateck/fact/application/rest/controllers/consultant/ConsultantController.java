@@ -25,10 +25,19 @@ public class ConsultantController implements CommonResource {
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @GetMapping(value = "/{siret}")
-    public List<Consultant> getAllConsultants(@PathVariable @NotNull String siret) {
+    public List<Consultant> getAllConsultantsBySiret(@PathVariable @NotNull String siret) {
         log.info("get all consultants");
-        return consultantApiService.findAll(siret);
+        return consultantApiService.findAllBySiret(siret);
     }
+
+
+    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
+    @GetMapping()
+    public List<Consultant> getAllConsultants() {
+        log.info("get all consultants");
+        return consultantApiService.findAll();
+    }
+
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @PostMapping(value = "/{siret}")

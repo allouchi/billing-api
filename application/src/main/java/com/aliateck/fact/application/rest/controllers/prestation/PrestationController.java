@@ -12,8 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -32,26 +30,26 @@ public class PrestationController {
     @GetMapping("/{siret}")
     public List<Prestation> getAllPrestations(@PathVariable String siret) {
         log.info("get all prestations");
-        return prestationApiService.findAll(siret);
+        List<Prestation> prestations = prestationApiService.findAll(siret);
+        return prestations;
     }
 
-    @PostMapping("/{siret}/{templateChoice}/{moisPrestaId}")
-    public Prestation addPrestation(@RequestBody @NotBlank Prestation prestation,
-                                    @PathVariable @NotNull String siret, @PathVariable boolean templateChoice,
-                                    @PathVariable @NotNull Long moisPrestaId) {
+    @PostMapping(value = "/{siret}")
+    public Prestation addPrestation(@RequestBody Prestation prestation,
+                                    @PathVariable @NotNull String siret) {
         log.info("Create new Prestation");
-        return prestationApiService.addPrestation(prestation, templateChoice, siret, moisPrestaId);
+        return prestationApiService.addPrestation(prestation, siret);
 
     }
 
-    @PutMapping("/{siret}")
-    public Prestation updatePrestation(@RequestBody @Valid Prestation prestation,
+    @PutMapping(value = "/{siret}")
+    public Prestation updatePrestation(@RequestBody Prestation prestation,
                                        @PathVariable @NotNull String siret) {
         log.info("Create or update Prestation");
         return prestationApiService.updatePrestation(prestation, siret);
     }
 
-    @PutMapping("/{siret}/{templateChoice}/{moisPrestaId}")
+    @PutMapping(value = "/{siret}/{templateChoice}/{moisPrestaId}")
     public Prestation createFacture(@RequestBody Prestation prestation,
                                     @PathVariable @NotNull String siret,
                                     @PathVariable Boolean templateChoice,
