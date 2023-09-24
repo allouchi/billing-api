@@ -1,26 +1,26 @@
 package com.aliateck.fact.domaine.ports.api.tva;
 
-import java.util.List;
-
 import com.aliateck.fact.domaine.business.object.Tva;
 import com.aliateck.fact.domaine.business.object.TvaInfo;
 
+import java.util.List;
+
 public interface TvaApiService {
 
-	 Tva addTva(Tva tva);
+    Tva addTva(Tva tva);
 
-	 void deleteTva(Long id);
+    void deleteTva(Long id);
 
-	 void updateTva(Tva tva);
+    void updateTva(Tva tva);
 
-	List<Tva> findByExercise(String exercise);
+    List<Tva> findByExerciseAndSiret(String exercise, String siret);
 
-	 Tva findById(Long id);
+    Tva findById(Long id);
 
-	 void deleteByExercise(String exercise);
+    void deleteByExercise(String exercise);
 
-	 List<Tva> findAllTva();
+    List<Tva> findBySiret(String siret);
 
-	 TvaInfo findTvaInfo(String exercise);
+    TvaInfo findTvaInfo(String exercise, String siret);
 
 }

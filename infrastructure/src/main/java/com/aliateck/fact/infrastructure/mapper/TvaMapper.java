@@ -21,7 +21,7 @@ public class TvaMapper {
         }
 
         return TvaEntity.builder().id(domain.getId()).datePayment(domain.getDatePayment())
-                .montantPayment(domain.getMontantPayment()).siret(domain.getSiret()).build();
+                .montantPayment(domain.getMontantPayment()).siret(domain.getSiret()).exercise(domain.getExercise()).build();
     }
 
     public Tva fromEntityToDomain(TvaEntity entity) {
@@ -30,7 +30,7 @@ public class TvaMapper {
             return null;
         }
         return Tva.builder().id(entity.getId()).datePayment(entity.getDatePayment())
-                .montantPayment(entity.getMontantPayment()).siret(entity.getSiret()).build();
+                .montantPayment(entity.getMontantPayment()).siret(entity.getSiret()).exercise(entity.getExercise()).build();
     }
 
     public List<Tva> fromEntityToDomain(List<TvaEntity> entities) {

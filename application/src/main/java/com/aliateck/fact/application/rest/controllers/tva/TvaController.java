@@ -21,16 +21,16 @@ public class TvaController {
 
     TvaApiService tvaApiService;
 
-    @GetMapping("/{exercise}")
-    public List<Tva> getByExercise(@PathVariable String exercise) {
+    @GetMapping("/{siret}/{exercise}")
+    public List<Tva> getByExercise(@PathVariable String siret, @PathVariable String exercise) {
         log.info("---- Get All tvas by exercise : " + exercise);
-        return tvaApiService.findByExercise(exercise);
+        return tvaApiService.findByExerciseAndSiret(exercise, siret);
     }
 
-    @GetMapping(Resource.TVASINFO + "/{exercise}")
-    public TvaInfo getTvaInfoByExercise(@PathVariable String exercise) {
+    @GetMapping(Resource.TVASINFO + "/{siret}/{exercise}")
+    public TvaInfo getTvaInfoByExercise(@PathVariable String exercise, @PathVariable String siret) {
         log.info("---- Get All tvas info by exercise : " + exercise);
-        return tvaApiService.findTvaInfo(exercise);
+        return tvaApiService.findTvaInfo(exercise, siret);
     }
 
     @PutMapping(consumes = "application/json", produces = "application/json")

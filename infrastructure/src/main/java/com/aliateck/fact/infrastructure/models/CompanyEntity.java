@@ -50,19 +50,17 @@ public class CompanyEntity extends CommonEntity {
 
     @Column(name = "numero_bic")
     String numeroBic;
-
+    @Column(name = "checked")
+    Boolean checked;
     @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "adresse_id")
     private AdresseEntity companyAdresse;
-
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "company_id")
     private List<ConsultantEntity> consultants;
-
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "company_id")
     private List<ClientEntity> clients;
-
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "company_id")
     private List<PrestationEntity> prestations;

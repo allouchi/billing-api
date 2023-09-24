@@ -5,8 +5,11 @@ import com.aliateck.fact.domaine.business.object.TvaInfo;
 import com.aliateck.fact.domaine.exception.TvaNotFoundException;
 import com.aliateck.fact.domaine.ports.spi.tva.TvaSpiService;
 import com.aliateck.fact.infrastructure.mapper.TvaMapper;
+import com.aliateck.fact.infrastructure.models.CompanyEntity;
 import com.aliateck.fact.infrastructure.models.FactureEntity;
+import com.aliateck.fact.infrastructure.models.PrestationEntity;
 import com.aliateck.fact.infrastructure.models.TvaEntity;
+import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
 import com.aliateck.fact.infrastructure.repository.facture.FactureJpaRepository;
 import com.aliateck.fact.infrastructure.repository.tva.TvaJpaRepository;
 import com.aliateck.util.Utils;
@@ -17,10 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -41,13 +41,15 @@ public class TvaSpiAdapter implements TvaSpiService {
     // private ExerciseJpaRepository exerciseJpaRepository;
     private FactureJpaRepository factureJpaRepository;
 
+    private CompanyJpaRepository companyJpaRepository;
+
     @Override
-    public List<Tva> findByExercise(String exercise) {
+    public List<Tva> findByExerciseAndSiret(String exercise, String siret) {
         List<TvaEntity> e;
         if (exercise.equalsIgnoreCase("Tous")) {
-            e = tvaJpaRepository.findAll();
+            e = tvaJpaRepository.findBySiret(siret);
         } else {
-            e = tvaJpaRepository.findByExercise(exercise);
+            e = tvaJpaRepository.findByExerciseAndSiret(exercise, siret);
         }
 
         if (Objects.isNull(e)) {
@@ -57,6 +59,11 @@ public class TvaSpiAdapter implements TvaSpiService {
         return tvas.stream().sorted(Comparator.comparingLong(Tva::getId).reversed())
                 .collect(Collectors.toList());
 
+    }
+
+    @Override
+    public List<Tva> findByExercise(String exercise) {
+        return null;
     }
 
     @Override
@@ -100,39 +107,56 @@ public class TvaSpiAdapter implements TvaSpiService {
      *
      */
     @Override
-    public List<Tva> findAllTva() {
-        List<TvaEntity> entities = tvaJpaRepository.findAll();
+    public List<Tva> findBySiret(String siret) {
+        List<TvaEntity> entities = tvaJpaRepository.findBySiret(siret);
         return tvaMapper.fromEntityToDomain(entities);
     }
 
-    @Override
-    public TvaInfo findTvaInfo(String exercise) {
 
-        List<FactureEntity> entities = null;
+    @Override
+    public TvaInfo findTvaInfo(String exercise, String siret) {
+
+        List<FactureEntity> entities = new ArrayList<>();
         TvaInfo info = new TvaInfo();
 
+        Optional<CompanyEntity> company = companyJpaRepository.findBySiret(siret);
+        if (company.isPresent()) {
+            CompanyEntity entity = company.get();
+            List<PrestationEntity> prestations = entity.getPrestations();
+
+            for (PrestationEntity prestation : prestations) {
+                for (FactureEntity factures : prestation.getFacture()) {
+                    entities.add(factures);
+                }
+            }
+        }
+        if (!exercise.equalsIgnoreCase(TOUS)) {
+            Iterator<FactureEntity> it = entities.iterator();
+            while (it.hasNext()) {
+                FactureEntity facture = it.next();
+                if (!facture.getExercice().equals(exercise)) {
+                    it.remove();
+                }
+            }
+        }
+
+        float totalTvaPaye = 0;
+        float totalTva = entities.stream().map(e -> e.getMontantTVA()).reduce(0f, Float::sum);
+        float totalTTC = entities.stream().map(e -> e.getPrixTotalTTC()).reduce(0f, Float::sum);
+        List<TvaEntity> listeTvaPayee;
+
         if (exercise.equalsIgnoreCase(TOUS)) {
-            entities = factureJpaRepository.findAll();
+            listeTvaPayee = tvaJpaRepository.findBySiret(siret);
         } else {
-            entities = factureJpaRepository.findByExercice(exercise);
+            listeTvaPayee = tvaJpaRepository.findByExerciseAndSiret(exercise, siret);
         }
-        if (entities != null) {
-            float totalTvaPaye = 0;
-            float totalTva = entities.stream().map(e -> e.getMontantTVA()).reduce(0f, Float::sum);
-            float totalTTC = entities.stream().map(e -> e.getPrixTotalTTC()).reduce(0f, Float::sum);
-            List<TvaEntity> listeTvaPayee;
-            if (exercise.equalsIgnoreCase(TOUS)) {
-                listeTvaPayee = tvaJpaRepository.findAll();
-            } else {
-                listeTvaPayee = tvaJpaRepository.findByExercise(exercise);
-            }
-            if (listeTvaPayee != null) {
-                totalTvaPaye = listeTvaPayee.stream().map(e -> e.getMontantPayment()).reduce(0f, Float::sum);
-            }
-            info.setTotalTvaPaye(totalTvaPaye);
-            info.setTotalTvaRestant(totalTva - totalTvaPaye);
-            info.setTotalTTC(totalTTC);
+        if (listeTvaPayee != null) {
+            totalTvaPaye = listeTvaPayee.stream().map(e -> e.getMontantPayment()).reduce(0f, Float::sum);
         }
+        info.setTotalTvaPaye(totalTvaPaye);
+        info.setTotalTvaRestant(totalTva - totalTvaPaye);
+        info.setTotalTTC(totalTTC);
+
         return info;
     }
 }

@@ -53,7 +53,15 @@ public class CompanySpiAdapter implements CompanySpiService {
 
     @Override
     public Company updateCompany(Company company) {
-        return this.addCompany(company);
+        List<Company> companies = this.findAll();
+        companies.forEach(c -> {
+            if (!c.getSiret().equals(company.getSiret())) {
+                c.setChecked(false);
+                companyJpaRepository.save(companyMapper.fromDomainToEntity(c));
+            }
+        });
+        CompanyEntity baseEntity = companyJpaRepository.save(companyMapper.fromDomainToEntity(company));
+        return companyMapper.fromEntityToDomain(baseEntity);
     }
 
     @Override
@@ -80,7 +88,6 @@ public class CompanySpiAdapter implements CompanySpiService {
         if (id == null) {
             throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
         }
-
         try {
             Optional<CompanyEntity> entity = companyJpaRepository.findById(id);
             if (entity.isPresent()) {
@@ -94,8 +101,6 @@ public class CompanySpiAdapter implements CompanySpiService {
             log.error("error while get companies", e);
             throw new ServiceException(ErrorCatalog.DB_ERROR, e);
         }
-
-
         return reponse;
     }
 
