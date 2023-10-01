@@ -1,12 +1,6 @@
 package com.aliateck.fact.domaine.business.object;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Getter
@@ -18,8 +12,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Tva {
 
-	Long id;
-	String datePayment;
-	Float montantPayment;
-	String exercise;
+    Long id;
+    String datePayment;
+    Float montantPayment;
+    String siret;
+    String exercise;
 }

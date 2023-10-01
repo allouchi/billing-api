@@ -142,7 +142,7 @@ public class ConsultantSpiAdapter implements ConsultantSpiService {
     }
 
     @Override
-    public List<Consultant> findAll(String siret) {
+    public List<Consultant> findAllBySiret(String siret) {
 
         List<Consultant> reponse;
 
@@ -161,6 +161,12 @@ public class ConsultantSpiAdapter implements ConsultantSpiService {
             throw new ServiceException(ErrorCatalog.DB_ERROR,
                     "Un problème est survenu lors de la recherche des consultants", e);
         }
+    }
+
+    @Override
+    public List<Consultant> findAll() {
+        List<ConsultantEntity> consultants = consultantJpaRepository.findAll();
+        return consultantMapper.fromEntityToDomain(consultants);
     }
 
     @Override

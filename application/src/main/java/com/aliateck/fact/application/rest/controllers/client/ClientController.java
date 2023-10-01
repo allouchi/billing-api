@@ -23,9 +23,16 @@ public class ClientController {
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @GetMapping("/{siret}")
-    public List<Client> getAllClients(@PathVariable @NotNull String siret) {
+    public List<Client> getAllClientsBySiret(@PathVariable @NotNull String siret) {
+        log.info("get all clients by siret : {} ", siret);
+        return clientApiService.findAllClientsBySiret(siret);
+    }
+
+    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
+    @GetMapping
+    public List<Client> getAllClients() {
         log.info("get all clients");
-        return clientApiService.findAllClients(siret);
+        return clientApiService.findAllClients();
     }
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})

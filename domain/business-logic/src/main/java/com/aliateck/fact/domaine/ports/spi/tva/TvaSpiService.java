@@ -1,25 +1,27 @@
 package com.aliateck.fact.domaine.ports.spi.tva;
 
-import java.util.List;
-
 import com.aliateck.fact.domaine.business.object.Tva;
 import com.aliateck.fact.domaine.business.object.TvaInfo;
 
+import java.util.List;
+
 public interface TvaSpiService {
 
-	public void deleteByExercise(String exercise);
+    public void deleteByExercise(String exercise);
 
-	public void deleteById(Long id);
+    public void deleteById(Long id);
 
-	public List<Tva> findByExercise(String exercise);
+    public List<Tva> findByExerciseAndSiret(String exercise, String siret);
 
-	public Tva findById(Long id);
+    public Tva findById(Long id);
 
-	public void updateTva(Tva tva);
+    public void updateTva(Tva tva);
 
-	public Tva addTva(Tva tva);
+    public Tva addTva(Tva tva);
 
-	public List<Tva> findAllTva();
+    public List<Tva> findBySiret(String siret);
 
-	public TvaInfo findTvaInfo(String exercise);
+    public List<Tva> findByExercise(String exercise);
+
+    public TvaInfo findTvaInfo(String exercise, String siret);
 }

@@ -191,4 +191,5 @@ public class FactureSpiAdapter implements FactureSpiService {
                     "Un problème est survenu lors de la recherche de la facture", e);
         }
     }
+
 }

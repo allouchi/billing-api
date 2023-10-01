@@ -146,7 +146,7 @@ public class ClientSpiAdapter implements ClientSpiService {
     }
 
     @Override
-    public List<Client> findAll(String siret) {
+    public List<Client> findAllBySiret(String siret) {
 
         Optional.ofNullable(siret).orElseThrow(() -> new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT));
         try {
@@ -163,6 +163,12 @@ public class ClientSpiAdapter implements ClientSpiService {
             throw new ServiceException(ErrorCatalog.DB_ERROR,
                     "Un problème est survenu lors de la recherche des clients", e);
         }
+    }
+
+    @Override
+    public List<Client> findAll() {
+        List<ClientEntity> clients = clientJpaRepository.findAll();
+        return clientMapper.fromEntityToDomain(clients);
     }
 
     @Override

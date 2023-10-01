@@ -34,4 +34,7 @@ public class TvaEntity extends CommonEntity {
     @Column(name = "exercise", nullable = false)
     String exercise;
 
+    @Column(name = "siret", nullable = false)
+    String siret;
+
 }

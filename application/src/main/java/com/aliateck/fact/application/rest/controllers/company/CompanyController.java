@@ -32,7 +32,7 @@ public class CompanyController {
 
     @Secured(value = {"ROLE_ADMIN"})
     @GetMapping(value = "/user/{userName:.+}")
-    public Company findByUserName(@PathVariable String userName) {
+    public List<Company> findByUserName(@PathVariable String userName) {
         log.info("Find company by userName : ", userName);
         return companyApiService.findByUserName(userName);
     }
@@ -41,7 +41,8 @@ public class CompanyController {
     @GetMapping
     public ResponseEntity<List<Company>> findAll() {
         log.info("Find all companies");
-        return ResponseEntity.ok(companyApiService.findAll());
+        List<Company> companies = companyApiService.findAll();
+        return ResponseEntity.ok(companies);
     }
 
     @Secured(value = {"ROLE_ADMIN"})
