@@ -141,7 +141,7 @@ public class TvaSpiAdapter implements TvaSpiService {
         }
 
         float totalTvaPaye = 0;
-        float totalTva = entities.stream().map(e -> e.getMontantTVA()).reduce(0f, Float::sum);
+        float totalTva = entities.stream().map(e -> (e.getMontantTVA() - 180)).reduce(0f, Float::sum);
         float totalTTC = entities.stream().map(e -> e.getPrixTotalTTC()).reduce(0f, Float::sum);
         List<TvaEntity> listeTvaPayee;
 

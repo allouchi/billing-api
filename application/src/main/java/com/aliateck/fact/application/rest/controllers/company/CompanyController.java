@@ -26,14 +26,14 @@ public class CompanyController {
     @Secured(value = {"ROLE_ADMIN"})
     @GetMapping("/{siret}")
     public Company findBySiret(@PathVariable String siret) {
-        log.info("Find company by siret : ", siret);
+        log.info("Find company by siret : {}", siret);
         return companyApiService.findBySiret(siret);
     }
 
     @Secured(value = {"ROLE_ADMIN"})
     @GetMapping(value = "/user/{userName:.+}")
     public List<Company> findByUserName(@PathVariable String userName) {
-        log.info("Find company by userName : ", userName);
+        log.info("Find company by userName : {}", userName);
         return companyApiService.findByUserName(userName);
     }
 
@@ -55,7 +55,7 @@ public class CompanyController {
     @Secured(value = {"ROLE_ADMIN"})
     @PutMapping
     public Company updateCompany(@RequestBody Company companyRequest) {
-        log.info("Create new company");
+        log.info("Update company");
         return companyApiService.updateCompany(companyRequest);
     }
 
