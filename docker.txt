@@ -2,10 +2,7 @@
 - docker-compose up --build -d
 - docker-compose down --rmi all
 
-
-
 - changer ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci; avec ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
 
 docker build . -t front-api-bill
 docker run -p 3000:3000 front-api-bill

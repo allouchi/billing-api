@@ -1,8 +1,6 @@
 package com.aliateck.fact.batch.config;
 
 import com.aliateck.fact.batch.items.FactureProcessor;
-import com.aliateck.fact.batch.items.FactureReader;
-import com.aliateck.fact.batch.items.FactureWriter;
 import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.ports.api.batch.BatchApiService;
 import com.aliateck.fact.infrastructure.mapper.FactureMapper;
@@ -10,13 +8,14 @@ import com.aliateck.fact.infrastructure.repository.facture.FactureJpaRepository;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.*;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
-import org.springframework.batch.item.ItemReader;
-import org.springframework.batch.item.ItemWriter;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.batch.item.support.ListItemReader;
+import org.springframework.batch.item.support.ListItemWriter;
 import org.springframework.context.annotation.Bean;
+import org.springframework.transaction.PlatformTransactionManager;
 
 //@Service
 //@EnableBatchProcessing
@@ -28,26 +27,31 @@ public class BatchConfig {
     private static final String JOB_NAME = "listFacturesJob";
     private static final String STEP_NAME = "processingStep";
 
-    @Autowired
-    private StepBuilderFactory stepBuilderFactory;
-    @Autowired
-    private JobBuilderFactory jobBuilderFactory;
-    @Autowired
+    private StepBuilder stepBuilder;
+    private JobBuilder jobBuilder;
     private BatchApiService batchApiService;
-    @Autowired
     private FactureJpaRepository factureJpaRepository;
-    @Autowired
     private FactureMapper factureMapper;
+    private JobRepository jobRepository;
+    private PlatformTransactionManager transactionManager;
+
 
     @Bean
     public Step factureStep() {
-        return stepBuilderFactory.get(STEP_NAME).<Facture, Facture>chunk(5).reader(factureItemReader())
-                .processor(factureItemProcessor()).writer(factureItemWriter()).build();
+        /*
+        return new StepBuilder(STEP_NAME, jobRepository).<String, String>chunk(2, transactionManager)
+                .reader(factureItemReader())
+                .writer(factureItemWriter())
+                .build(); */
+        return null;
+
     }
 
     @Bean
     public Job listFacturesJob(Step step1) {
-        return jobBuilderFactory.get(JOB_NAME).start(step1).build();
+
+        //return jobBuilder.get(JOB_NAME).start(step1).build();
+        return null;
     }
 
     @Bean
@@ -56,13 +60,15 @@ public class BatchConfig {
     }
 
     @Bean
-    public ItemReader<Facture> factureItemReader() {
-        return new FactureReader(factureJpaRepository, factureMapper);
+    public ListItemReader<Facture> factureItemReader() {
+        //return new FactureReader(factureJpaRepository, factureMapper);
+        return null;
     }
 
     @Bean
-    public ItemWriter<Facture> factureItemWriter() {
-        return new FactureWriter(batchApiService);
+    public ListItemWriter<Facture> factureItemWriter() {
+        //return new FactureWriter(batchApiService);
+        return null;
     }
 
     @Bean

@@ -1,6 +1,7 @@
 package com.aliateck.fact.application.rest.util;
 
 
+import jakarta.servlet.ServletContext;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
@@ -8,7 +9,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaType;
 
-import javax.servlet.ServletContext;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 

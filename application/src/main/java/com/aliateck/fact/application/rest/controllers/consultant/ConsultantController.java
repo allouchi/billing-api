@@ -4,6 +4,7 @@ import com.aliateck.fact.domaine.business.object.Consultant;
 import com.aliateck.fact.domaine.ports.api.consultant.ConsultantApiService;
 import com.aliateck.util.CommonResource;
 import com.aliateck.util.CommonResource.Resource;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -11,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController

@@ -3,6 +3,7 @@ package com.aliateck.fact.application.rest.controllers.company;
 import com.aliateck.fact.domaine.business.object.Company;
 import com.aliateck.fact.domaine.ports.api.company.CompanyApiService;
 import com.aliateck.util.CommonResource.Resource;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -11,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController

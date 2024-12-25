@@ -3,6 +3,8 @@ package com.aliateck.fact.application.rest.controllers.edition;
 import com.aliateck.fact.application.rest.util.MediaTypeUtils;
 import com.aliateck.fact.domaine.business.object.DataPDF;
 import com.aliateck.fact.domaine.ports.api.edition.EditionApiService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -14,9 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api/editions")
