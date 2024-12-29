@@ -14,7 +14,6 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.support.ListItemReader;
 import org.springframework.batch.item.support.ListItemWriter;
-import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.PlatformTransactionManager;
 
 //@Service
@@ -26,7 +25,6 @@ public class BatchConfig {
 
     private static final String JOB_NAME = "listFacturesJob";
     private static final String STEP_NAME = "processingStep";
-
     private StepBuilder stepBuilder;
     private JobBuilder jobBuilder;
     private BatchApiService batchApiService;
@@ -36,7 +34,7 @@ public class BatchConfig {
     private PlatformTransactionManager transactionManager;
 
 
-    @Bean
+    //@Bean
     public Step factureStep() {
         /*
         return new StepBuilder(STEP_NAME, jobRepository).<String, String>chunk(2, transactionManager)
@@ -47,31 +45,31 @@ public class BatchConfig {
 
     }
 
-    @Bean
+    //@Bean
     public Job listFacturesJob(Step step1) {
 
         //return jobBuilder.get(JOB_NAME).start(step1).build();
         return null;
     }
 
-    @Bean
+    //@Bean
     public ItemProcessor<Facture, Facture> factureItemProcessor() {
         return new FactureProcessor(batchApiService);
     }
 
-    @Bean
+    //@Bean
     public ListItemReader<Facture> factureItemReader() {
         //return new FactureReader(factureJpaRepository, factureMapper);
         return null;
     }
 
-    @Bean
+    //@Bean
     public ListItemWriter<Facture> factureItemWriter() {
         //return new FactureWriter(batchApiService);
         return null;
     }
 
-    @Bean
+    //@Bean
     public JobExecutionListener listener() {
         return new JobExecutionListener() {
 

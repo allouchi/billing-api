@@ -15,12 +15,6 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "T_ROLE")
 public class RoleEntity extends CommonEntity {
 
-    /**
-     *
-     */
-
-    private static final long serialVersionUID = 1L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

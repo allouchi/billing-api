@@ -16,11 +16,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 // @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PrestationEntity extends CommonEntity {
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
-
+  
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

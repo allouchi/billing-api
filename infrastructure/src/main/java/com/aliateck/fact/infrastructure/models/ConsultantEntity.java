@@ -15,11 +15,7 @@ import lombok.experimental.SuperBuilder;
 @ToString
 // @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ConsultantEntity extends CommonEntity {
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
-
+   
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

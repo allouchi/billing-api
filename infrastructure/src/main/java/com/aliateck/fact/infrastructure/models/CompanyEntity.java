@@ -17,11 +17,6 @@ import java.util.List;
 @ToString
 //@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CompanyEntity extends CommonEntity {
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)

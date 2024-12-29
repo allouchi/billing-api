@@ -6,7 +6,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 
@@ -16,10 +15,10 @@ import java.util.Date;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class BatchLauncher {
 
-    @Autowired
+    //@Autowired
     JobLauncher jobLauncher;
 
-    @Autowired
+    //@Autowired
     Job job;
 
     public BatchStatus run() {

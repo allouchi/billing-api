@@ -7,7 +7,6 @@ import com.aliateck.fact.domaine.ports.spi.user.UserSpiDetailService;
 import com.aliateck.fact.infrastructure.mapper.UserMapper;
 import com.aliateck.fact.infrastructure.models.UserEntity;
 import com.aliateck.fact.infrastructure.repository.user.UserJpaRepository;
-import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -18,7 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-@Transactional
+//@Transactional
 @RequiredArgsConstructor
 @ToString
 @Slf4j

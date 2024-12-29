@@ -15,11 +15,7 @@ import lombok.experimental.SuperBuilder;
 @ToString
 public class ExerciseEntity extends CommonEntity {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
-
+   
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

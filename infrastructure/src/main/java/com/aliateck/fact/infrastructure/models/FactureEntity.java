@@ -15,12 +15,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = false)
-
 public class FactureEntity extends CommonEntity {
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,8 +30,8 @@ public class FactureEntity extends CommonEntity {
 
     @Column(name = "date_echeance", nullable = false)
     String dateEcheance;
-
     @Column(name = "date_encaissement")
+
     String dateEncaissement;
 
     @Column(name = "tarifht", nullable = false)

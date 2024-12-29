@@ -7,7 +7,6 @@ import com.aliateck.fact.domaine.ports.spi.user.RoleRefSpiService;
 import com.aliateck.fact.infrastructure.mapper.RoleRefMapper;
 import com.aliateck.fact.infrastructure.models.RoleRefEntity;
 import com.aliateck.fact.infrastructure.repository.user.RoleRefJpaRepository;
-import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -16,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@Transactional
+//@Transactional
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserRoleRefSpiAdapter implements RoleRefSpiService {

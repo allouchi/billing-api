@@ -1,13 +1,12 @@
 package com.aliateck.fact.batch.luncher;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
 //@Component
 public class Scheduler {
 
-    @Autowired
+    //@Autowired
     private BatchLauncher batchLauncher;
 
     // Déclenchement à 00H chaque jour

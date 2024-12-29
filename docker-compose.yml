@@ -1,32 +1,25 @@
-version: '3.7'
 services:
 
-  db:
-    image: mysql:8.0.31
-    container_name: database-container
-    env_file: ./.env
-    networks:
-      - spring-network
-    ports:
-      - ${MYSQLDB_LOCAL_PORT}:${MYSQLDB_DOCKER_PORT}
-    restart: always
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQLDB_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MYSQLDB_DATABASE}
-      - MYSQL_ALLOW_EMPTY_PASSWORD=YES
-
-  api:
-    depends_on:
-      - db
+  billing-api:
+    container_name: billing-api
+    image: billing-api
     build:
       context: .
       dockerfile: Dockerfile
-    image: back-api
-    container_name: back-api-container
     ports:
-      - ${BILL_LOCAL_PORT}:${BILL_DOCKER_PORT}
-    networks:
-      - spring-network
+      - "8181:8181"
+    environment:
+      SPRING_APPLICATION_JSON: '{
+      "spring.datasource.url":"jdbc:mysql://127.0.0.1:3306/billing-dev?allowPublicKeyRetrieval=true&autoReconnect=true&useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8",                               
+      "spring.datasource.username":"root",
+      "spring.datasource.password":"admin",
+      "spring.datasource.driver-class-name":"com.mysql.cj.jdbc.Driver",
+      "spring.jpa.database-platform":"org.hibernate.dialect.MySQLDialect", 
+      "spring.jpa.show-sql":"true"
+       
+            
+    }'
 
-networks:
-  spring-network:
+
+
+

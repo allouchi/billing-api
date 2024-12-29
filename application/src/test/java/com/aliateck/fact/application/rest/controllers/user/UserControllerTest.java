@@ -10,8 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.List;
 
@@ -24,14 +24,14 @@ public class UserControllerTest {
 
     @Autowired
     private UserApiService userApiService;
-    @MockBean
+    @MockitoBean
     private CompanyApiService companyApiService;
     //@Autowired
     //private MockMvc mockMvc;
     //@Autowired
     //private WebApplicationContext context;
 
-    @MockBean
+    @MockitoBean
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @BeforeEach

@@ -18,7 +18,7 @@
         <dependency>
             <artifactId>billing-api-commun</artifactId>
             <groupId>com.aliateck</groupId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.aliateck</groupId>
@@ -32,11 +32,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.aliateck</groupId>
-            <artifactId>billing-api-domain-business-object</artifactId>
         </dependency>
 
         <dependency>
