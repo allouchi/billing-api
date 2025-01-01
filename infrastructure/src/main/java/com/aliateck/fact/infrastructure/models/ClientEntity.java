@@ -27,7 +27,7 @@ public class ClientEntity extends CommonEntity {
     @Column(name = "email", unique = true, length = 50, nullable = false)
     String email;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "adresse_id")
     private AdresseEntity adresseClient;
 }

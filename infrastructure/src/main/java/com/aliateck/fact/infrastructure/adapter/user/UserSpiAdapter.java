@@ -109,7 +109,7 @@ public class UserSpiAdapter implements UserSpiService {
             entity.orElseThrow((() -> new UserNotFoundException(message)));
             return userMapper.fromEntityToDomain(entity.get());
         } catch (Exception e) {
-            log.error("error while find user", e);
+            log.error("error while find user : findByUserName", e);
             throw new ServiceException(ErrorCatalog.DB_ERROR, e.getMessage());
         }
     }
@@ -123,7 +123,7 @@ public class UserSpiAdapter implements UserSpiService {
             user.orElseThrow(() -> new UserNotFoundException("L'identifiant et/ou le mot de passe est incorrect"));
             return userMapper.fromEntityToDomain(user.get());
         } catch (Exception e) {
-            log.error("error while find user", e.getMessage());
+            log.error("error while find user : findByUserNameAndPassword", e.getMessage());
             throw new ServiceException(ErrorCatalog.ACCESS_DENIED, e.getMessage());
         }
     }

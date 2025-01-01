@@ -14,9 +14,9 @@ import java.util.List;
 @NoArgsConstructor
 @Entity(name = "T_Prestation")
 @EqualsAndHashCode(callSuper = false)
-// @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+//@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PrestationEntity extends CommonEntity {
-  
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -49,15 +49,15 @@ public class PrestationEntity extends CommonEntity {
     @Column(name = "siret", nullable = true)
     String siret;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "client_id")
     private ClientEntity client;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "consultant_id")
     private ConsultantEntity consultant;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "facture_id")
     private List<FactureEntity> facture;
 

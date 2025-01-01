@@ -5,19 +5,15 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-@Entity(name = "T_RoleRef")
-@Getter
-@Setter
-@SuperBuilder
+
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
+@Getter
+@Setter
+@SuperBuilder
+@Entity(name = "T_RoleRef")
 public class RoleRefEntity extends CommonEntity {
-
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -20,11 +20,6 @@ import java.util.List;
 @Table(name = "T_USER")
 public class UserEntity extends CommonEntity {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
@@ -39,12 +34,12 @@ public class UserEntity extends CommonEntity {
     @Column(name = "activated", length = 1)
     Boolean activated;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     List<RoleEntity> roles;
 
     @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "company_id")
     private CompanyEntity company;
 
