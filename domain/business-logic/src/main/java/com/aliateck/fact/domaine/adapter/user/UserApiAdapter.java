@@ -6,6 +6,8 @@ import com.aliateck.fact.domaine.ports.spi.user.UserSpiService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -59,5 +61,11 @@ public class UserApiAdapter implements UserApiService {
     @Override
     public User findByUserNameAndPassword(String userName, String password) {
         return userSpiService.findByUserNameAndPassword(userName, password);
+    }
+
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userSpiService.findByUserName(username);
+        UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), null);
+        return userDetails;
     }
 }

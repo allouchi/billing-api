@@ -5,8 +5,10 @@ import com.aliateck.fact.domaine.business.object.Company;
 import com.aliateck.fact.domaine.business.object.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 @SpringBootApplication
+@EnableWebSecurity
 //@EnableScheduling
 public class ApplicationStarter { //implements CommandLineRunner {
 

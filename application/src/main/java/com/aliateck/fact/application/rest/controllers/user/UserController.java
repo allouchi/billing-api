@@ -32,7 +32,7 @@ import java.util.Map;
 public class UserController {
 
     static final String SPRING_SECURITY_CONTEXT_KEY = "SPRING_SECURITY_CONTEXT";
-
+    @Autowired
     UserApiService userApiService;
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
@@ -68,7 +68,7 @@ public class UserController {
     @PostMapping("/")
     public User addUser(@RequestBody @NotNull User user) {
         log.info("Add user : " + user.getUserName());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        //user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userApiService.addUser(user);
     }
 

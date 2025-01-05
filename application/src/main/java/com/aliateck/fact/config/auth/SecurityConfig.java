@@ -1,6 +1,7 @@
 package com.aliateck.fact.config.auth;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,8 +11,14 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-//@Configuration
+@Configuration
 public class SecurityConfig {
+
+    private final CustomUserDetailsService userDetailsService;
+
+    public SecurityConfig(CustomUserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
 
     @Bean
@@ -32,7 +39,8 @@ public class SecurityConfig {
         http
                 .cors(cors -> cors.disable())
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/**").permitAll()
+                .anonymous(anonymous -> anonymous.disable())
+                .authorizeHttpRequests(authorize -> authorize.requestMatchers("/", "/**", "/api/**").permitAll()
                         .anyRequest().authenticated());
         return http.build();
     }
@@ -40,6 +48,11 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
+    }
+
+    @Bean
+    public CustomUserDetailsService userDetailsService() {
+        return userDetailsService;
     }
 
     @Bean

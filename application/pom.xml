@@ -8,7 +8,7 @@
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>billing-api-application</artifactId>
+    <artifactId>billing-api</artifactId>
     <packaging>jar</packaging>
 
     <name>Billing API :: Application Layer</name>
