@@ -12,7 +12,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@Table(name = "T_ROLE")
+@Table(name = "T_Role")
 public class RoleEntity extends CommonEntity {
 
     @Id

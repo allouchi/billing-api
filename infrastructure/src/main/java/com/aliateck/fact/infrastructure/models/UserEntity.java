@@ -17,7 +17,7 @@ import java.util.List;
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "T_USER")
+@Table(name = "T_User")
 public class UserEntity extends CommonEntity {
 
     @Id
