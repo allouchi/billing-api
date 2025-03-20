@@ -31,4 +31,7 @@ public class TvaEntity extends CommonEntity {
     @Column(name = "siret", nullable = false)
     String siret;
 
+    @Column(name = "month", nullable = true)
+    String month;
+
 }

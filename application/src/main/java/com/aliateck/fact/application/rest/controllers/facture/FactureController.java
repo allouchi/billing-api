@@ -5,7 +5,6 @@ import com.aliateck.fact.domaine.business.object.Facture;
 import com.aliateck.fact.domaine.ports.api.facture.FactureApiService;
 import com.aliateck.util.CommonResource.Resource;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +51,7 @@ public class FactureController {
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @PutMapping(consumes = "application/json", produces = "application/json")
-    public Facture updateFacture(@RequestBody @NotBlank Facture factureRequest) {
+    public Facture updateFacture(@RequestBody @NotNull Facture factureRequest) {
         log.info("Update facture : " + factureRequest.getDateEncaissement());
         return factureApiService.updateFacture(factureRequest, resources.getPathRoot(),
                 resources.getFichierSuiviFactures());

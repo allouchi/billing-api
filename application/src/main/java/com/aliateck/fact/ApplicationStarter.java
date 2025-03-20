@@ -15,7 +15,6 @@ public class ApplicationStarter { //implements CommandLineRunner {
 
     public static void main(String[] args) {
         SpringApplication.run(ApplicationStarter.class, args);
-
     }
 
     //@Override

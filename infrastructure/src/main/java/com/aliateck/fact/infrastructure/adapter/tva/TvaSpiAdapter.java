@@ -77,6 +77,9 @@ public class TvaSpiAdapter implements TvaSpiService {
 
     @Override
     public Tva addTva(Tva tva) {
+        if (tva.getId() == 0) {
+            tva.setId(null);
+        }
         TvaEntity entity = tvaJpaRepository.save(tvaMapper.fromDomainToEntity(tva));
         return tvaMapper.fromEntityToDomain(entity);
     }

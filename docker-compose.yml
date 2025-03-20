@@ -11,7 +11,7 @@ services:
     ports:
       - "${BILL_CLIENT_PORT}:${BILL_INTERNAL_PORT}"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://billing-db-service:3306/billing_db?allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_URL: jdbc:mysql://billing-db-service:3307/billing_db?allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: ${MYSQLDB_USER_NAME}
       SPRING_DATASOURCE_PASSWORD: ${MYSQLDB_USER_PASSWORD}
       #SPRING_JPA_HIBERNATE_DDL_AUTO: update
@@ -22,7 +22,8 @@ services:
 
   billing-db:
     container_name: billing-db-service
-    env_file: .env
+    env_file: ./.env
+
     image: mysql:latest
     command: mysqld --user=root
     environment:
@@ -30,11 +31,12 @@ services:
       MYSQL_USER: ${MYSQLDB_USER_NAME}
       MYSQL_PASSWORD: ${MYSQLDB_USER_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQLDB_ROOT_PASSWORD}
+      MYSQL_TCP_PORT: ${MYSQLDB_INTERNAL_PORT}
     restart: always
     ports:
       - "${MYSQLDB_CLIENT_PORT}:${MYSQLDB_INTERNAL_PORT}"
     volumes:
-      - mysql-data:/var/lib/mysql        # Persiste les données MySQL
+      - mysql-data:/var/lib/mysql
       - ./init:/docker-entrypoint-initdb.d
 
     networks:

@@ -260,7 +260,7 @@ public class Utils {
      * @return
      */
     public static String calculDateFacturation(String moisFacture) {
-
+        String dateFacture = null;
         if (moisFacture == null || moisFacture.equals("")) {
             return null;
         }
@@ -278,8 +278,13 @@ public class Utils {
 
         LocalDate initial = LocalDate.of(dateActuelle.getYear(), mois, 01);
         LocalDate endOfMonth = initial.withDayOfMonth(initial.lengthOfMonth());
-        String dateFacture =
-                endOfMonth.getMonth().maxLength() + SLATSH + moisId[0] + SLATSH + dateActuelle.getYear();
+        if (moisId[0].equals("02")) {
+            dateFacture = endOfMonth.getDayOfMonth() + SLATSH + moisId[0] + SLATSH + dateActuelle.getYear();
+        } else {
+            dateFacture =
+                    endOfMonth.getMonth().maxLength() + SLATSH + moisId[0] + SLATSH + dateActuelle.getYear();
+        }
+
         return dateFacture;
     }
 
