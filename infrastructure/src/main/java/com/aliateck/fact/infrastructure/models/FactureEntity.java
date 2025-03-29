@@ -40,6 +40,9 @@ public class FactureEntity extends CommonEntity {
     @Column(name = "montant_tva", nullable = false)
     Float montantTVA;
 
+    @Column(name = "montant_net_tva", nullable = false)
+    Float montantNetTVA;
+
     @Column(name = "prix_totalht", scale = 2, nullable = false)
     Float prixTotalHT;
 

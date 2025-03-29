@@ -19,6 +19,7 @@ public class Facture {
     String dateEcheance;
     String dateEncaissement;
     float montantTVA;
+    float montantNetTVA;
     float prixTotalHT;
     float prixTotalTTC;
     long nbJourRetard;
@@ -35,6 +36,4 @@ public class Facture {
     byte[] fileContent;
     String moisFacture;
     String exercice;
-
-
 }

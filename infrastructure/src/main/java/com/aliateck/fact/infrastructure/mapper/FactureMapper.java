@@ -30,7 +30,7 @@ public class FactureMapper {
                 .quantite(domain.getQuantite()).numeroCommande(domain.getNumeroCommande())
                 .moisFacture(domain.getMoisFacture()).fileContent(domain.getFileContent())
                 .fileName(domain.getFileName()).clientPrestation(domain.getClientPrestation())
-                .filePath(domain.getFilePath()).build();
+                .filePath(domain.getFilePath()).montantNetTVA(domain.getMontantNetTVA()).build();
     }
 
     public Facture fromEntityToDomain(FactureEntity entity) {
@@ -47,7 +47,7 @@ public class FactureMapper {
                 .tarifHT(entity.getTarifHT()).numeroFacture(entity.getNumeroFacture()).quantite(entity.getQuantite())
                 .numeroCommande(entity.getNumeroCommande()).moisFacture(entity.getMoisFacture())
                 .fileName(entity.getFileName()).fileContent(entity.getFileContent())
-                .clientPrestation(entity.getClientPrestation()).filePath(entity.getFilePath()).build();
+                .clientPrestation(entity.getClientPrestation()).filePath(entity.getFilePath()).montantNetTVA(entity.getMontantNetTVA()).build();
     }
 
     public List<Facture> fromEntityToDomain(List<FactureEntity> entities) {
