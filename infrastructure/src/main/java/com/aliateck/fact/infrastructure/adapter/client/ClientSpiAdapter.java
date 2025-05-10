@@ -40,14 +40,6 @@ public class ClientSpiAdapter implements ClientSpiService {
         if (client == null || siret == null || siret.equals("")) {
             throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
         }
-        if (client.getId() != null && client.getId() == 0) {
-            client.setId(null);
-        }
-
-        if (client.getAdresseClient() != null && client.getAdresseClient().getId() == 0) {
-            client.getAdresseClient().setId(null);
-        }
-
         CheckEmailAdresse checkEmail = CheckEmailAdresse.builder().build();
         if (checkEmail.checkEmailAdresse(client, clientJpaRepository)) {
             final String format = String.format("L'adresse mail %s est déjà utilisée", client.getEmail());
@@ -58,7 +50,6 @@ public class ClientSpiAdapter implements ClientSpiService {
             ClientEntity clientEntity = clientMapper.fromDomainToEntity(client);
             Optional<CompanyEntity> oCompany = companyJpaRepository.findBySiret(siret);
             if (oCompany.isPresent()) {
-
                 CompanyEntity companyEntity = oCompany.get();
                 companyEntity.getClients().add(clientEntity);
                 CompanyEntity cEntitySaved = companyJpaRepository.save(companyEntity);

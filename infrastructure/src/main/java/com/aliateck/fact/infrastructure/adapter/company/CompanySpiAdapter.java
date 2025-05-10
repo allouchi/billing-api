@@ -30,10 +30,6 @@ public class CompanySpiAdapter implements CompanySpiService {
     public Company addCompany(Company company) {
         Optional.ofNullable(company).orElseThrow(() -> new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT));
 
-        if (company != null && company.getId() == 0) {
-            company.setId(null);
-        }
-
         CheckEmailAdresse checkEmail = CheckEmailAdresse.builder().build();
         if (checkEmail.checkEmailAdresse(company, companyJpaRepository)) {
             final String format = String.format("Le siret %s est déjà utilisé", company.getSiret());
@@ -41,7 +37,8 @@ public class CompanySpiAdapter implements CompanySpiService {
         }
         try {
             company.setSiret(company.getSiret().replace(" ", ""));
-            CompanyEntity baseEntity = companyJpaRepository.save(companyMapper.fromDomainToEntity(company));
+            CompanyEntity newCompanyMapper = companyMapper.fromDomainToEntity(company);
+            CompanyEntity baseEntity = companyJpaRepository.save(newCompanyMapper);
             return companyMapper.fromEntityToDomain(baseEntity);
         } catch (Exception e) {
             log.error("error while creating or updating company", e);
@@ -59,7 +56,8 @@ public class CompanySpiAdapter implements CompanySpiService {
                 companyJpaRepository.save(companyMapper.fromDomainToEntity(c));
             }
         });
-        CompanyEntity baseEntity = companyJpaRepository.save(companyMapper.fromDomainToEntity(company));
+        CompanyEntity companyEntity = companyMapper.fromDomainToEntity(company);
+        CompanyEntity baseEntity = companyJpaRepository.save(companyEntity);
         return companyMapper.fromEntityToDomain(baseEntity);
     }
 

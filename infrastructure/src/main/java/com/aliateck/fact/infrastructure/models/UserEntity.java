@@ -21,7 +21,7 @@ import java.util.List;
 public class UserEntity extends CommonEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @Column(name = "user_name", unique = true, length = 50)
     String userName;

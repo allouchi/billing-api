@@ -159,7 +159,7 @@ public class Utils {
             oFacture.setFraisRetard(0);
             oFacture.setNbJourRetard(0);
             if (factureRequest.getExercice() != null) {
-                oFacture.setExercice(factureRequest.getExercice().substring(0, 10));
+                oFacture.setExercice(factureRequest.getExercice());
             }
             oFacture.setMontantTVA(factureRequest.getPrixTotalHT() * 0.2f);
         }

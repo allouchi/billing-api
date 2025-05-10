@@ -18,7 +18,7 @@ import java.util.List;
 //@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CompanyEntity extends CommonEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     Long id;
 
@@ -50,12 +50,18 @@ public class CompanyEntity extends CommonEntity {
     @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "adresse_id")
     private AdresseEntity companyAdresse;
+
+    //@JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "company_id")
     private List<ConsultantEntity> consultants;
+
+    //@JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "company_id")
     private List<ClientEntity> clients;
+
+    //@JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "company_id")
     private List<PrestationEntity> prestations;

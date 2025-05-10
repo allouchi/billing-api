@@ -31,7 +31,8 @@ public class FactureController {
     @GetMapping("/{siret}")
     public List<Facture> findAllBySiret(@PathVariable @NotNull String siret) {
         log.info("get all bills by siret");
-        return factureApiService.findFacturesBySiret(siret);
+        List<Facture> factures = factureApiService.findFacturesBySiret(siret);
+        return factures;
     }
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})

@@ -39,7 +39,6 @@ public class PrestationController {
                                     @PathVariable @NotNull String siret) {
         log.info("Create new Prestation");
         return prestationApiService.addPrestation(prestation, siret);
-
     }
 
     @PutMapping(value = "/{siret}")
