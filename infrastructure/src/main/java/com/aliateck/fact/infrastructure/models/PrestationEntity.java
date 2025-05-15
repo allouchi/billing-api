@@ -37,7 +37,7 @@ public class PrestationEntity extends CommonEntity {
     @Column(name = "designation", nullable = false)
     String designation;
 
-    @Column(name = "client_prestation", nullable = false)
+    @Column(name = "client_prestation")
     String clientPrestation;
 
     @Column(name = "date_debut", nullable = true)

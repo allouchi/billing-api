@@ -68,7 +68,7 @@ public class UserApiAdapter implements UserApiService {
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUserName())
                 .password(user.getPassword())
-                .roles(user.getRoles().replace("ROLE_", ""))
+                //.roles(user.getRoles().replace("ROLE_", ""))
                 .build();
     }
 }

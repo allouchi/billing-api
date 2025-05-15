@@ -19,6 +19,9 @@ public class TvaMapper {
         if (domain == null) {
             return null;
         }
+        if (domain.getId() != null && domain.getId().longValue() == 0) {
+            domain.setId(null);
+        }
 
         return TvaEntity.builder().id(domain.getId()).datePayment(domain.getDatePayment()).month(domain.getMonth())
                 .montantPayment(domain.getMontantPayment()).siret(domain.getSiret()).exercise(domain.getExercise()).build();

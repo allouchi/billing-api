@@ -53,8 +53,10 @@ public class CompanySpiAdapter implements CompanySpiService {
         companies.forEach(c -> {
             if (!c.getSiret().equals(company.getSiret())) {
                 c.setChecked(false);
-                companyJpaRepository.save(companyMapper.fromDomainToEntity(c));
+            } else {
+                c.setChecked(true);
             }
+            companyJpaRepository.save(companyMapper.fromDomainToEntity(c));
         });
         CompanyEntity companyEntity = companyMapper.fromDomainToEntity(company);
         CompanyEntity baseEntity = companyJpaRepository.save(companyEntity);

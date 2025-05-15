@@ -38,7 +38,9 @@ public class PrestationSpiAdapter implements PrestationSpiService {
         if (Objects.isNull(prestation) || Objects.isNull(siret)) {
             throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
         }
-
+        if (prestation.getId() != null && prestation.getId().longValue() == 0) {
+            prestation.setId(null);
+        }
         try {
             prestation.setSiret(siret);
             prestation.setDateDebut(Utils.convertFromDomainToEntityDate(prestation.getDateDebut()));
