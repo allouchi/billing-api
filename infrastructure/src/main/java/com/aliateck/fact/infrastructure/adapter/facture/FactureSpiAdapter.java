@@ -91,7 +91,7 @@ public class FactureSpiAdapter implements FactureSpiService {
             factEntity.setFileName(fileName);
             factEntity.setMontantTVA(factEntity.getPrixTotalHT() * 0.2f);
             factEntity.setMontantNetTVA(factEntity.getMontantTVA() - 30);
-            prestaEntity.getFacture().add(factEntity);
+            prestaEntity.getFactures().add(factEntity);
             prestaEntity.setNumeroCommande(prestation.getNumeroCommande());
             prestaEntity.setDesignation(prestation.getDesignation());
             prestaEntity.setClientPrestation(prestation.getClientPrestation());

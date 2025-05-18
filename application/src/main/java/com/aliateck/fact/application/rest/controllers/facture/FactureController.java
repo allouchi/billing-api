@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,7 +26,7 @@ public class FactureController {
     @Autowired
     StorageProperties resources;
 
-    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
+    //@Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @GetMapping("/{siret}")
     public List<Facture> findAllBySiret(@PathVariable @NotNull String siret) {
         log.info("get all bills by siret");
@@ -35,7 +34,7 @@ public class FactureController {
         return factures;
     }
 
-    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
+    //@Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @GetMapping("/{siret}/exercice")
     public List<Facture> findAllBySiretAndExercice(@PathVariable @NotNull String siret, @PathVariable @NotNull String exercice) {
         log.info("get all bills by siret {} and exercice {}", siret, exercice);
@@ -43,14 +42,14 @@ public class FactureController {
         return factures;
     }
 
-    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
+    //@Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @DeleteMapping("/{factureId}")
     public void deleteFacture(@PathVariable @Min(1) Long factureId) {
         log.info("delete bill");
         factureApiService.deleteFacture(factureId);
     }
 
-    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
+    //@Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @PutMapping(consumes = "application/json", produces = "application/json")
     public Facture updateFacture(@RequestBody @NotNull Facture factureRequest) {
         log.info("Update facture : " + factureRequest.getDateEncaissement());

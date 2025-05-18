@@ -58,7 +58,7 @@ public class PrestationEntity extends CommonEntity {
     private ConsultantEntity consultant;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "facture_id")
-    private List<FactureEntity> facture;
+    @JoinColumn(name = "prestation_id")
+    private List<FactureEntity> factures;
 
 }

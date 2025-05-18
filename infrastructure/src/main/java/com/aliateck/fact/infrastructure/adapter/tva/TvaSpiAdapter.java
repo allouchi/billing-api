@@ -124,7 +124,7 @@ public class TvaSpiAdapter implements TvaSpiService {
             List<PrestationEntity> prestations = entity.getPrestations();
 
             for (PrestationEntity prestation : prestations) {
-                for (FactureEntity factures : prestation.getFacture()) {
+                for (FactureEntity factures : prestation.getFactures()) {
                     entities.add(factures);
                 }
             }

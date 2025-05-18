@@ -1,5 +1,8 @@
 package com.aliateck.fact.application.rest.controllers.user;
 
+import com.aliateck.fact.config.auth.JwtService;
+import com.aliateck.fact.domaine.business.object.AuthRequest;
+import com.aliateck.fact.domaine.business.object.AuthResponse;
 import com.aliateck.fact.domaine.business.object.User;
 import com.aliateck.fact.domaine.ports.api.user.UserApiService;
 import com.aliateck.util.CommonResource.Resource;
@@ -14,9 +17,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -34,8 +41,32 @@ public class UserController {
     static final String SPRING_SECURITY_CONTEXT_KEY = "SPRING_SECURITY_CONTEXT";
     @Autowired
     UserApiService userApiService;
+
     @Autowired
-    BCryptPasswordEncoder passwordEncoder;
+    private AuthenticationManager authManager;
+    @Autowired
+    private JwtService jwtService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> authenticate(@RequestBody AuthRequest request) {
+
+        Authentication auth = authManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+        );
+        UserDetails user = (UserDetails) auth.getPrincipal();
+        String jwt = jwtService.generateToken(user);
+        return ResponseEntity.ok(new AuthResponse(jwt));
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<String> logout() {
+        return ResponseEntity.ok(null);
+    }
+
 
     @Secured(value = {"ADMIN"})
     @ResponseStatus(code = HttpStatus.OK)
