@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
@@ -24,7 +23,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
+//@Transactional
 @RequiredArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -39,7 +38,9 @@ public class PrestationSpiAdapter implements PrestationSpiService {
         if (Objects.isNull(prestation) || Objects.isNull(siret)) {
             throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
         }
-
+        if (prestation.getId() != null && prestation.getId().longValue() == 0) {
+            prestation.setId(null);
+        }
         try {
             prestation.setSiret(siret);
             prestation.setDateDebut(Utils.convertFromDomainToEntityDate(prestation.getDateDebut()));

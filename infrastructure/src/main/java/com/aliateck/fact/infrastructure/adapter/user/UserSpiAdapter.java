@@ -9,29 +9,23 @@ import com.aliateck.fact.infrastructure.adapter.commun.CheckEmailAdresse;
 import com.aliateck.fact.infrastructure.mapper.CompanyMapper;
 import com.aliateck.fact.infrastructure.mapper.UserMapper;
 import com.aliateck.fact.infrastructure.models.UserEntity;
-import com.aliateck.fact.infrastructure.repository.company.CompanyJpaRepository;
 import com.aliateck.fact.infrastructure.repository.user.UserJpaRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
-@ToString
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserSpiAdapter implements UserSpiService {
-    UserMapper userMapper;
     UserJpaRepository userJpaRepository;
-    CompanyJpaRepository companyJpaRepository;
+    UserMapper userMapper;
     CompanyMapper companyMapper;
 
 
@@ -115,7 +109,7 @@ public class UserSpiAdapter implements UserSpiService {
             entity.orElseThrow((() -> new UserNotFoundException(message)));
             return userMapper.fromEntityToDomain(entity.get());
         } catch (Exception e) {
-            log.error("error while find user", e);
+            log.error("error while find user : findByUserName", e);
             throw new ServiceException(ErrorCatalog.DB_ERROR, e.getMessage());
         }
     }
@@ -129,7 +123,7 @@ public class UserSpiAdapter implements UserSpiService {
             user.orElseThrow(() -> new UserNotFoundException("L'identifiant et/ou le mot de passe est incorrect"));
             return userMapper.fromEntityToDomain(user.get());
         } catch (Exception e) {
-            log.error("error while find user", e.getMessage());
+            log.error("error while find user : findByUserNameAndPassword", e.getMessage());
             throw new ServiceException(ErrorCatalog.ACCESS_DENIED, e.getMessage());
         }
     }

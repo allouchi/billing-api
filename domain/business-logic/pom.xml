@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.aliateck</groupId>
         <artifactId>billing-api-domain</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
 
     <artifactId>billing-api-domain-business-logic</artifactId>
@@ -18,7 +18,7 @@
         <dependency>
             <artifactId>billing-api-commun</artifactId>
             <groupId>com.aliateck</groupId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.aliateck</groupId>
@@ -28,6 +28,12 @@
             <groupId>net.sf.jasperreports</groupId>
             <artifactId>jasperreports</artifactId>
             <version>6.20.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.codehaus.groovy/groovy-all -->

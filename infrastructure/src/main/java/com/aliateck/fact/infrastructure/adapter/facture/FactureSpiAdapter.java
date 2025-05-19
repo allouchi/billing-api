@@ -26,14 +26,13 @@ import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
+//@Transactional
 @RequiredArgsConstructor
 @Getter
 @Setter
@@ -90,7 +89,8 @@ public class FactureSpiAdapter implements FactureSpiService {
             factEntity.setFileContent(binaryPdf);
             factEntity.setFileName(fileName);
             factEntity.setMontantTVA(factEntity.getPrixTotalHT() * 0.2f);
-            prestaEntity.getFacture().add(factEntity);
+            factEntity.setMontantNetTVA(factEntity.getMontantTVA() - 30);
+            prestaEntity.getFactures().add(factEntity);
             prestaEntity.setNumeroCommande(prestation.getNumeroCommande());
             prestaEntity.setDesignation(prestation.getDesignation());
             prestaEntity.setClientPrestation(prestation.getClientPrestation());

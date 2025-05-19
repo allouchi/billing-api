@@ -1,6 +1,8 @@
 package com.aliateck.fact.domaine.ports.api.user;
 
 import com.aliateck.fact.domaine.business.object.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
 
@@ -22,5 +24,7 @@ public interface UserApiService {
     User findByUserName(String userName);
 
     User findByUserNameAndPassword(String userName, String password);
+
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 
 }

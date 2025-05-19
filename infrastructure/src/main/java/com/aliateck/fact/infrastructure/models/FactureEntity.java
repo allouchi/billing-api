@@ -1,11 +1,10 @@
 package com.aliateck.fact.infrastructure.models;
 
 import com.aliateck.fact.infrastructure.models.common.CommonEntity;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
-
-import javax.persistence.*;
 
 
 @Entity(name = "T_Facture")
@@ -16,12 +15,7 @@ import javax.persistence.*;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = false)
-
 public class FactureEntity extends CommonEntity {
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,8 +30,8 @@ public class FactureEntity extends CommonEntity {
 
     @Column(name = "date_echeance", nullable = false)
     String dateEcheance;
-
     @Column(name = "date_encaissement")
+
     String dateEncaissement;
 
     @Column(name = "tarifht", nullable = false)
@@ -45,6 +39,9 @@ public class FactureEntity extends CommonEntity {
 
     @Column(name = "montant_tva", nullable = false)
     Float montantTVA;
+
+    @Column(name = "montant_net_tva", nullable = false)
+    Float montantNetTVA;
 
     @Column(name = "prix_totalht", scale = 2, nullable = false)
     Float prixTotalHT;

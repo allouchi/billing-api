@@ -2,10 +2,9 @@ package com.aliateck.fact.infrastructure.models;
 
 
 import com.aliateck.fact.infrastructure.models.common.CommonEntity;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-
-import javax.persistence.*;
 
 
 @Entity(name = "T_Adresse")
@@ -15,12 +14,8 @@ import javax.persistence.*;
 @Setter
 @SuperBuilder
 @ToString
-// @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+//@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AdresseEntity extends CommonEntity {
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

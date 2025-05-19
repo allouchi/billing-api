@@ -17,15 +17,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
-@Transactional
+//@Transactional
 @RequiredArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -38,7 +36,6 @@ public class ConsultantSpiAdapter implements ConsultantSpiService {
     @Override
     public Consultant addConsultant(Consultant consultant, String siret) {
 
-        Consultant reponse = null;
         if (consultant == null || siret == null || siret.equals("")) {
             throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
         }
@@ -69,7 +66,7 @@ public class ConsultantSpiAdapter implements ConsultantSpiService {
             List<Consultant> consultants = cEntitySaved.getConsultants().stream()
                     .filter(c -> c.getEmail().equals(consultant.getEmail()))
                     .map(p -> consultantMapper.fromEntityToDomain(p))
-                    .collect(Collectors.toList());
+                    .toList();
             return consultants.get(0);
 
         } catch (ServiceException e) {
@@ -114,7 +111,7 @@ public class ConsultantSpiAdapter implements ConsultantSpiService {
             return savedConsultants.stream()
                     .filter(s -> s.getEmail().equalsIgnoreCase(consultant.getEmail()))
                     .map(c -> consultantMapper.fromEntityToDomain(c))
-                    .collect(Collectors.toList()).get(0);
+                    .toList().get(0);
 
         } catch (ServiceException e) {
             throw e;
@@ -143,8 +140,6 @@ public class ConsultantSpiAdapter implements ConsultantSpiService {
 
     @Override
     public List<Consultant> findAllBySiret(String siret) {
-
-        List<Consultant> reponse;
 
         Optional.ofNullable(siret).orElseThrow(() -> new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT));
         try {

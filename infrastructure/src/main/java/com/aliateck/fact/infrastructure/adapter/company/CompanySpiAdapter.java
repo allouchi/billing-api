@@ -13,13 +13,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
+//@Transactional
 @RequiredArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -31,10 +30,6 @@ public class CompanySpiAdapter implements CompanySpiService {
     public Company addCompany(Company company) {
         Optional.ofNullable(company).orElseThrow(() -> new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT));
 
-        if (company != null && company.getId() == 0) {
-            company.setId(null);
-        }
-
         CheckEmailAdresse checkEmail = CheckEmailAdresse.builder().build();
         if (checkEmail.checkEmailAdresse(company, companyJpaRepository)) {
             final String format = String.format("Le siret %s est déjà utilisé", company.getSiret());
@@ -42,7 +37,8 @@ public class CompanySpiAdapter implements CompanySpiService {
         }
         try {
             company.setSiret(company.getSiret().replace(" ", ""));
-            CompanyEntity baseEntity = companyJpaRepository.save(companyMapper.fromDomainToEntity(company));
+            CompanyEntity newCompanyMapper = companyMapper.fromDomainToEntity(company);
+            CompanyEntity baseEntity = companyJpaRepository.save(newCompanyMapper);
             return companyMapper.fromEntityToDomain(baseEntity);
         } catch (Exception e) {
             log.error("error while creating or updating company", e);
@@ -57,10 +53,13 @@ public class CompanySpiAdapter implements CompanySpiService {
         companies.forEach(c -> {
             if (!c.getSiret().equals(company.getSiret())) {
                 c.setChecked(false);
-                companyJpaRepository.save(companyMapper.fromDomainToEntity(c));
+            } else {
+                c.setChecked(true);
             }
+            companyJpaRepository.save(companyMapper.fromDomainToEntity(c));
         });
-        CompanyEntity baseEntity = companyJpaRepository.save(companyMapper.fromDomainToEntity(company));
+        CompanyEntity companyEntity = companyMapper.fromDomainToEntity(company);
+        CompanyEntity baseEntity = companyJpaRepository.save(companyEntity);
         return companyMapper.fromEntityToDomain(baseEntity);
     }
 

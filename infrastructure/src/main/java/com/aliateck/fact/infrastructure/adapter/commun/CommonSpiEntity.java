@@ -9,7 +9,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
+//@Transactional
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CommonSpiEntity implements EntitySpiService {
@@ -42,7 +41,7 @@ public class CommonSpiEntity implements EntitySpiService {
             CompanyEntity cEntity = oCompany.get();
             for (PrestationEntity prestations : cEntity.getPrestations()) {
                 if (prestations.getId().longValue() == prestationId) {
-                    return prestations.getFacture();
+                    return prestations.getFactures();
                 }
             }
         }
@@ -79,7 +78,7 @@ public class CommonSpiEntity implements EntitySpiService {
         if (oCompany.isPresent()) {
             CompanyEntity cEntity = oCompany.get();
             for (PrestationEntity prestations : cEntity.getPrestations()) {
-                for (FactureEntity factures : prestations.getFacture()) {
+                for (FactureEntity factures : prestations.getFactures()) {
                     listeFacture.add(factures);
                 }
             }

@@ -18,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -27,7 +26,7 @@ import java.util.stream.Collectors;
  * @author maliane
  */
 @Service
-@Transactional
+//@Transactional
 @RequiredArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -125,7 +124,7 @@ public class TvaSpiAdapter implements TvaSpiService {
             List<PrestationEntity> prestations = entity.getPrestations();
 
             for (PrestationEntity prestation : prestations) {
-                for (FactureEntity factures : prestation.getFacture()) {
+                for (FactureEntity factures : prestation.getFactures()) {
                     entities.add(factures);
                 }
             }
@@ -141,7 +140,7 @@ public class TvaSpiAdapter implements TvaSpiService {
         }
 
         float totalTvaPaye = 0;
-        float totalTva = entities.stream().map(e -> e.getMontantTVA()).reduce(0f, Float::sum);
+        float totalTva = entities.stream().map(e -> (e.getMontantTVA() - 30)).reduce(0f, Float::sum);
         float totalTTC = entities.stream().map(e -> e.getPrixTotalTTC()).reduce(0f, Float::sum);
         List<TvaEntity> listeTvaPayee;
 

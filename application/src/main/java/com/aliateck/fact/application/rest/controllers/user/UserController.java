@@ -1,8 +1,14 @@
 package com.aliateck.fact.application.rest.controllers.user;
 
+import com.aliateck.fact.config.auth.JwtService;
+import com.aliateck.fact.domaine.business.object.AuthRequest;
+import com.aliateck.fact.domaine.business.object.AuthResponse;
 import com.aliateck.fact.domaine.business.object.User;
 import com.aliateck.fact.domaine.ports.api.user.UserApiService;
 import com.aliateck.util.CommonResource.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -11,14 +17,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,10 +39,34 @@ import java.util.Map;
 public class UserController {
 
     static final String SPRING_SECURITY_CONTEXT_KEY = "SPRING_SECURITY_CONTEXT";
-
-    UserApiService userApiService;
     @Autowired
-    BCryptPasswordEncoder passwordEncoder;
+    UserApiService userApiService;
+
+    @Autowired
+    private AuthenticationManager authManager;
+    @Autowired
+    private JwtService jwtService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> authenticate(@RequestBody AuthRequest request) {
+
+        Authentication auth = authManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+        );
+        UserDetails user = (UserDetails) auth.getPrincipal();
+        String jwt = jwtService.generateToken(user);
+        return ResponseEntity.ok(new AuthResponse(jwt));
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<String> logout() {
+        return ResponseEntity.ok(null);
+    }
+
 
     @Secured(value = {"ADMIN"})
     @ResponseStatus(code = HttpStatus.OK)
@@ -68,7 +99,7 @@ public class UserController {
     @PostMapping("/")
     public User addUser(@RequestBody @NotNull User user) {
         log.info("Add user : " + user.getUserName());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        //user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userApiService.addUser(user);
     }
 

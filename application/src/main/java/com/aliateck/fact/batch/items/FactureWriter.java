@@ -1,13 +1,7 @@
 package com.aliateck.fact.batch.items;
 
-import com.aliateck.fact.domaine.business.object.Facture;
-import com.aliateck.fact.domaine.ports.api.batch.BatchApiService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.item.ItemWriter;
-
-import java.util.List;
-
-@Slf4j
+//@Slf4j
+/*
 public class FactureWriter implements ItemWriter<Facture> {
 
     private final BatchApiService batchApiService;
@@ -27,4 +21,4 @@ public class FactureWriter implements ItemWriter<Facture> {
     }
 
 
-}
+} */

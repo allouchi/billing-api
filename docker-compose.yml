@@ -1,32 +1,57 @@
-version: '3.7'
 services:
 
-  db:
-    image: mysql:8.0.31
-    container_name: database-container
-    env_file: ./.env
-    networks:
-      - spring-network
-    ports:
-      - ${MYSQLDB_LOCAL_PORT}:${MYSQLDB_DOCKER_PORT}
-    restart: always
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQLDB_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MYSQLDB_DATABASE}
-      - MYSQL_ALLOW_EMPTY_PASSWORD=YES
-
-  api:
-    depends_on:
-      - db
+  billing-api:
+    container_name: billing-api-service
+    env_file:
+      - ./.env
+    image: billing-api
     build:
       context: .
       dockerfile: Dockerfile
-    image: back-api
-    container_name: back-api-container
     ports:
-      - ${BILL_LOCAL_PORT}:${BILL_DOCKER_PORT}
+      - "${BILL_CLIENT_PORT}:${BILL_INTERNAL_PORT}"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://billing-db-service:3307/billing_db?allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: ${MYSQLDB_USER_NAME}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQLDB_USER_PASSWORD}
+      #SPRING_JPA_HIBERNATE_DDL_AUTO: update
     networks:
       - spring-network
+    depends_on:
+      - billing-db
+
+  billing-db:
+    container_name: billing-db-service
+    env_file: ./.env
+
+    image: mysql:latest
+    command: mysqld --user=root
+    environment:
+      MYSQL_DATABASE: ${MYSQLDB_DATABASE_NAME}
+      MYSQL_USER: ${MYSQLDB_USER_NAME}
+      MYSQL_PASSWORD: ${MYSQLDB_USER_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQLDB_ROOT_PASSWORD}
+      MYSQL_TCP_PORT: ${MYSQLDB_INTERNAL_PORT}
+    restart: always
+    ports:
+      - "${MYSQLDB_CLIENT_PORT}:${MYSQLDB_INTERNAL_PORT}"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./init:/docker-entrypoint-initdb.d
+
+    networks:
+      - spring-network
+volumes:
+  mysql-data:
+    driver: local
 
 networks:
   spring-network:
+
+
+
+
+
+
+
+

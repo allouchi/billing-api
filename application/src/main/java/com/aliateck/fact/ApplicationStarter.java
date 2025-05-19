@@ -3,30 +3,19 @@ package com.aliateck.fact;
 import com.aliateck.fact.domaine.business.object.Adresse;
 import com.aliateck.fact.domaine.business.object.Company;
 import com.aliateck.fact.domaine.business.object.User;
-import com.aliateck.fact.domaine.ports.api.company.CompanyApiService;
-import com.aliateck.fact.domaine.ports.api.user.UserApiService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@EnableScheduling
-public class ApplicationStarter implements CommandLineRunner {
+//@EnableScheduling
+public class ApplicationStarter { //implements CommandLineRunner {
 
-    @Autowired
-    UserApiService userApiService;
-
-    @Autowired
-    CompanyApiService companyApiService;
 
     public static void main(String[] args) {
         SpringApplication.run(ApplicationStarter.class, args);
-
     }
 
-    @Override
+    //@Override
     public void run(String... args) throws Exception {
 
         User user = User.builder()

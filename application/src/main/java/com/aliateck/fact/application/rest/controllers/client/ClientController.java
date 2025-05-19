@@ -3,6 +3,7 @@ package com.aliateck.fact.application.rest.controllers.client;
 import com.aliateck.fact.domaine.business.object.Client;
 import com.aliateck.fact.domaine.ports.api.client.ClientApiService;
 import com.aliateck.util.CommonResource.Resource;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -10,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController

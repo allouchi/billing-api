@@ -4,7 +4,6 @@ import com.aliateck.fact.infrastructure.models.FactureEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -12,13 +11,13 @@ public interface FactureJpaRepository extends JpaRepository<FactureEntity, Long>
 
     FactureEntity getByNumeroFacture(String numeroFacture);
 
-    List<FactureEntity> findByFactureStatus(boolean status);
+    //List<FactureEntity> findByFactureStatus(boolean status);
 
-    List<FactureEntity> findByDateEcheance(Date dateEcheance);
+    //List<FactureEntity> findByDateEcheance(Date dateEcheance);
 
-    List<FactureEntity> findByDateEncaissement(Date dateEncaissement);
+    //List<FactureEntity> findByDateEncaissement(Date dateEncaissement);
 
-    List<FactureEntity> findByDateFacturation(Date dateFacturation);
+    //List<FactureEntity> findByDateFacturation(Date dateFacturation);
 
     //@Query("select f from FactureEntity f where f.dateFacturation= :excerice")
     List<FactureEntity> findByExercice(String excerice);

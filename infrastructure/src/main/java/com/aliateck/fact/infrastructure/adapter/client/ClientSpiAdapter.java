@@ -18,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
@@ -26,7 +25,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
+//@Transactional
 @RequiredArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -42,14 +41,6 @@ public class ClientSpiAdapter implements ClientSpiService {
         if (client == null || siret == null || siret.equals("")) {
             throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
         }
-        if (client.getId() != null && client.getId() == 0) {
-            client.setId(null);
-        }
-
-        if (client.getAdresseClient() != null && client.getAdresseClient().getId() == 0) {
-            client.getAdresseClient().setId(null);
-        }
-
         CheckEmailAdresse checkEmail = CheckEmailAdresse.builder().build();
         if (checkEmail.checkEmailAdresse(client, clientJpaRepository)) {
             final String format = String.format("L'adresse mail %s est déjà utilisée", client.getEmail());
@@ -60,7 +51,6 @@ public class ClientSpiAdapter implements ClientSpiService {
             ClientEntity clientEntity = clientMapper.fromDomainToEntity(client);
             Optional<CompanyEntity> oCompany = companyJpaRepository.findBySiret(siret);
             if (oCompany.isPresent()) {
-
                 CompanyEntity companyEntity = oCompany.get();
                 companyEntity.getClients().add(clientEntity);
                 CompanyEntity cEntitySaved = companyJpaRepository.save(companyEntity);

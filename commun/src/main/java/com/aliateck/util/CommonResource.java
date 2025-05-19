@@ -30,7 +30,7 @@ public interface CommonResource {
         String USERS = "/api/users";
         String BATCHS = "/api/batchs";
         String ROLES = "/api/roles";
-        String LOGIN = "/api/login";
+        String API = "/api";
 
     }
 

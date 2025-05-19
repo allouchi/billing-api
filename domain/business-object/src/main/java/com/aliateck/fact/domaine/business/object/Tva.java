@@ -17,4 +17,5 @@ public class Tva {
     Float montantPayment;
     String siret;
     String exercise;
+    String month;
 }

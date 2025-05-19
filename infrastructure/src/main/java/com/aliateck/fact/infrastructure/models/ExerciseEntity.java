@@ -1,10 +1,9 @@
 package com.aliateck.fact.infrastructure.models;
 
 import com.aliateck.fact.infrastructure.models.common.CommonEntity;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-
-import javax.persistence.*;
 
 
 @Entity(name = "T_Exercise")
@@ -16,11 +15,7 @@ import javax.persistence.*;
 @ToString
 public class ExerciseEntity extends CommonEntity {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
-
+   
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

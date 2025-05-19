@@ -1,11 +1,10 @@
 package com.aliateck.fact.infrastructure.models;
 
 import com.aliateck.fact.infrastructure.models.common.CommonEntity;
+import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.*;
 import java.util.List;
 
 @Getter
@@ -15,12 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 @Entity(name = "T_Prestation")
 @EqualsAndHashCode(callSuper = false)
-@FieldDefaults(level = AccessLevel.PRIVATE)
+//@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PrestationEntity extends CommonEntity {
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,7 +37,7 @@ public class PrestationEntity extends CommonEntity {
     @Column(name = "designation", nullable = false)
     String designation;
 
-    @Column(name = "client_prestation", nullable = false)
+    @Column(name = "client_prestation")
     String clientPrestation;
 
     @Column(name = "date_debut", nullable = true)
@@ -54,16 +49,16 @@ public class PrestationEntity extends CommonEntity {
     @Column(name = "siret", nullable = true)
     String siret;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "client_id")
     private ClientEntity client;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "consultant_id")
     private ConsultantEntity consultant;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "facture_id")
-    private List<FactureEntity> facture;
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "prestation_id")
+    private List<FactureEntity> factures;
 
 }

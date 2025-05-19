@@ -5,6 +5,7 @@ import com.aliateck.fact.domaine.business.object.Prestation;
 import com.aliateck.fact.domaine.ports.api.facture.FactureApiService;
 import com.aliateck.fact.domaine.ports.api.prestation.PrestationApiService;
 import com.aliateck.util.CommonResource.Resource;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -12,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
@@ -39,7 +39,6 @@ public class PrestationController {
                                     @PathVariable @NotNull String siret) {
         log.info("Create new Prestation");
         return prestationApiService.addPrestation(prestation, siret);
-
     }
 
     @PutMapping(value = "/{siret}")

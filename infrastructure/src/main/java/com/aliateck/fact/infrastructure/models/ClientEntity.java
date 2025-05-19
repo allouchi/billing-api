@@ -1,10 +1,9 @@
 package com.aliateck.fact.infrastructure.models;
 
 import com.aliateck.fact.infrastructure.models.common.CommonEntity;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-
-import javax.persistence.*;
 
 
 @Entity(name = "T_Client")
@@ -16,10 +15,6 @@ import javax.persistence.*;
 @SuperBuilder
 //@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ClientEntity extends CommonEntity {
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +27,7 @@ public class ClientEntity extends CommonEntity {
     @Column(name = "email", unique = true, length = 50, nullable = false)
     String email;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "adresse_id")
     private AdresseEntity adresseClient;
 }

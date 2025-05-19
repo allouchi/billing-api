@@ -4,14 +4,13 @@ import com.aliateck.fact.domaine.business.object.Consultant;
 import com.aliateck.fact.domaine.ports.api.consultant.ConsultantApiService;
 import com.aliateck.util.CommonResource;
 import com.aliateck.util.CommonResource.Resource;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
@@ -23,15 +22,15 @@ public class ConsultantController implements CommonResource {
 
     private ConsultantApiService consultantApiService;
 
-    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
+    //@Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @GetMapping(value = "/{siret}")
     public List<Consultant> getAllConsultantsBySiret(@PathVariable @NotNull String siret) {
-        log.info("get all consultants");
+        log.info("get all consultants by siret : {}", siret);
         return consultantApiService.findAllBySiret(siret);
     }
 
 
-    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
+    //@Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @GetMapping()
     public List<Consultant> getAllConsultants() {
         log.info("get all consultants");
@@ -39,7 +38,7 @@ public class ConsultantController implements CommonResource {
     }
 
 
-    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
+    //@Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @PostMapping(value = "/{siret}")
     public Consultant addConsultant(@RequestBody @NotNull Consultant consultantRequest,
                                     @PathVariable @NotNull String siret) {
@@ -54,7 +53,7 @@ public class ConsultantController implements CommonResource {
         return consultantApiService.updateConsultant(consultantRequest, siret);
     }
 
-    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
+    //@Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @DeleteMapping(value = "/{siret}/{consultantId}")
     public void deleteConsultant(@PathVariable @NotNull Long consultantId, @PathVariable @NotNull String siret) {
         log.info("delete consultant by id :" + consultantId);

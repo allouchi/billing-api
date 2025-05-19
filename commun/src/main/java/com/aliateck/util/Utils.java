@@ -159,7 +159,7 @@ public class Utils {
             oFacture.setFraisRetard(0);
             oFacture.setNbJourRetard(0);
             if (factureRequest.getExercice() != null) {
-                oFacture.setExercice(factureRequest.getExercice().substring(0, 10));
+                oFacture.setExercice(factureRequest.getExercice());
             }
             oFacture.setMontantTVA(factureRequest.getPrixTotalHT() * 0.2f);
         }
@@ -260,7 +260,7 @@ public class Utils {
      * @return
      */
     public static String calculDateFacturation(String moisFacture) {
-
+        String dateFacture = null;
         if (moisFacture == null || moisFacture.equals("")) {
             return null;
         }
@@ -278,14 +278,13 @@ public class Utils {
 
         LocalDate initial = LocalDate.of(dateActuelle.getYear(), mois, 01);
         LocalDate endOfMonth = initial.withDayOfMonth(initial.lengthOfMonth());
-
-        String dateFacture = null;
-        boolean isAnneeBissextile = isBissextile(dateActuelle.getYear());
-        if (isAnneeBissextile == true) {
-            dateFacture = endOfMonth.getMonth().maxLength() + SLATSH + moisId[0] + SLATSH + dateActuelle.getYear();
+        if (moisId[0].equals("02")) {
+            dateFacture = endOfMonth.getDayOfMonth() + SLATSH + moisId[0] + SLATSH + dateActuelle.getYear();
         } else {
-            dateFacture = endOfMonth.getMonth().maxLength() - 1 + SLATSH + moisId[0] + SLATSH + dateActuelle.getYear();
+            dateFacture =
+                    endOfMonth.getMonth().maxLength() + SLATSH + moisId[0] + SLATSH + dateActuelle.getYear();
         }
+
         return dateFacture;
     }
 
@@ -566,18 +565,11 @@ public class Utils {
     }
 
     /**
-     * @param
+     * @param collection
      * @return
      */
     public static boolean isEmpty(Collection<?> obj) {
         return obj == null || obj.isEmpty();
-    }
-
-    private static boolean isBissextile(int annee) {
-        if (annee % 4 == 0) {
-            return true;
-        }
-        return false;
     }
 
 }

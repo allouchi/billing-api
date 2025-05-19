@@ -1,10 +1,9 @@
 package com.aliateck.fact.infrastructure.models;
 
 import com.aliateck.fact.infrastructure.models.common.CommonEntity;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-
-import javax.persistence.*;
 
 @Entity(name = "T_Tva")
 @AllArgsConstructor
@@ -14,11 +13,6 @@ import javax.persistence.*;
 @SuperBuilder
 @ToString
 public class TvaEntity extends CommonEntity {
-
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,5 +30,8 @@ public class TvaEntity extends CommonEntity {
 
     @Column(name = "siret", nullable = false)
     String siret;
+
+    @Column(name = "month", nullable = true)
+    String month;
 
 }
