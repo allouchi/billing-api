@@ -4,7 +4,6 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Getter
 @Setter
@@ -24,7 +23,7 @@ public class User implements Serializable {
     String lastName;
     String password;
     Boolean activated;
-    List<Role> roles;
-    Company company;
+    String role;
+    String siret;
 
 }

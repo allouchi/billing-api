@@ -25,12 +25,9 @@ public class UserDetailMapper implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        List<Role> roles = user.getRoles();
+        String role = user.getRole();
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-
-        for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
-        }
+        authorities.add(new SimpleGrantedAuthority(role));
         return authorities;
     }
 

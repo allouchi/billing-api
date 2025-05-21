@@ -68,7 +68,7 @@ public class UserController {
     }
 
 
-    @Secured(value = {"ADMIN"})
+    //@Secured(value = {"ADMIN"})
     @ResponseStatus(code = HttpStatus.OK)
     @GetMapping(value = "/{userName:.+}")
     public User findByUserName(@PathVariable @NotNull String userName) {
@@ -84,7 +84,7 @@ public class UserController {
         return userApiService.findAllUsers();
     }
 
-    @Secured(value = {"ADMIN"})
+    //@Secured(value = {"ADMIN"})
     @ResponseStatus(code = HttpStatus.OK)
     @GetMapping(value = "/{userName:.+}/{password}")
     public User findByUserNameAndPassword(@PathVariable @NotNull String userName,
@@ -99,7 +99,7 @@ public class UserController {
     @PostMapping("/")
     public User addUser(@RequestBody @NotNull User user) {
         log.info("Add user : " + user.getUserName());
-        //user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userApiService.addUser(user);
     }
 

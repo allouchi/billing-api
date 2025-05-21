@@ -19,8 +19,6 @@ public class RoleRefEntity extends CommonEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     Long id;
-    @Column(name = "email", nullable = false)
-    String email;
     @Column(name = "role", nullable = false)
     private String role;
     @Column(name = "description", nullable = false)

@@ -7,14 +7,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
+//@EnableWebSecurity
 public class SecurityConfig {
 
     @Autowired
@@ -29,7 +28,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.disable())
                 .csrf(csrf -> csrf.disable())
                 .anonymous(anonymous -> anonymous.disable())
-                .authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/users/login", "/api/users/logout", "/**").permitAll()
+                .authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/users/**", "/api/users/logout", "/**").permitAll()
                         .anyRequest().authenticated());
 
         http.userDetailsService(customUserDetailsService);

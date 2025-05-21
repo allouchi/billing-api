@@ -48,8 +48,7 @@ public class ApplicationStarter { //implements CommandLineRunner {
                 .companyAdresse(adresse)
                 .id(1L)
                 .build();
-
-        user.setCompany(company);
+        user.setSiret("85292702900011");
         //userApiService.addUser(user);
 
 
