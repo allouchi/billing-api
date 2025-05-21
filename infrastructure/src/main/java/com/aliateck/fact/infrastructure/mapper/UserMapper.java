@@ -22,7 +22,7 @@ public class UserMapper {
         return UserEntity
                 .builder()
                 .id(domain.getId())
-                .userName(domain.getUserName())
+                .email(domain.getEmail())
                 .firstName(domain.getFirstName())
                 .lastName(domain.getLastName())
                 .password(domain.getPassword())
@@ -37,7 +37,7 @@ public class UserMapper {
         return User
                 .builder()
                 .id(entity.getId())
-                .userName(entity.getUserName())
+                .email(entity.getEmail())
                 .firstName(entity.getFirstName())
                 .lastName(entity.getLastName())
                 .password(entity.getPassword())

@@ -20,8 +20,8 @@ public class UserEntity extends CommonEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @Column(name = "user_name", unique = true, length = 50)
-    String userName;
+    @Column(name = "email", unique = true, length = 50)
+    String email;
     @Column(name = "first_name")
     String firstName;
     @Column(name = "last_name")

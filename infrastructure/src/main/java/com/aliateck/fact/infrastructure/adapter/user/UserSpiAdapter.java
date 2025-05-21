@@ -35,7 +35,7 @@ public class UserSpiAdapter implements UserSpiService {
         Optional.ofNullable(user).orElseThrow(() -> new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT));
         CheckEmailAdresse checkEmail = CheckEmailAdresse.builder().build();
         if (checkEmail.checkEmailAdresse(user, userJpaRepository)) {
-            final String format = String.format("L'adresse mail %s est déjà utilisée", user.getUserName());
+            final String format = String.format("L'adresse mail %s est déjà utilisée", user.getEmail());
             throw new ServiceException(ErrorCatalog.DUPLICATE_DATA, format);
         }
 
@@ -104,7 +104,7 @@ public class UserSpiAdapter implements UserSpiService {
 
         Optional.ofNullable(userName).orElseThrow(() -> new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT));
         try {
-            Optional<UserEntity> entity = userJpaRepository.findByUserName(userName);
+            Optional<UserEntity> entity = userJpaRepository.findByEmail(userName);
             final String message = String.format("L'utilisateur %s est introuvable", userName);
             entity.orElseThrow((() -> new UserNotFoundException(message)));
             return userMapper.fromEntityToDomain(entity.get());
@@ -119,7 +119,7 @@ public class UserSpiAdapter implements UserSpiService {
         Optional.ofNullable(userName).orElseThrow(() -> new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT));
         Optional.ofNullable(password).orElseThrow(() -> new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT));
         try {
-            Optional<UserEntity> user = userJpaRepository.findByUserNameAndPassword(userName, password);
+            Optional<UserEntity> user = userJpaRepository.findByEmailAndPassword(userName, password);
             user.orElseThrow(() -> new UserNotFoundException("L'identifiant et/ou le mot de passe est incorrect"));
             return userMapper.fromEntityToDomain(user.get());
         } catch (Exception e) {

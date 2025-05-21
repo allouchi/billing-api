@@ -37,7 +37,7 @@ public class CheckEmailAdresse implements ICheckEmailAdresse {
 
         } else if (object instanceof User user) {
             UserJpaRepository userJpaRepository = (UserJpaRepository) jpaRepository;
-            return userJpaRepository.findByUserName(user.getUserName()).isPresent();
+            return userJpaRepository.findByEmail(user.getEmail()).isPresent();
         }
         return false;
     }

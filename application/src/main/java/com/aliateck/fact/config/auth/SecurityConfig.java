@@ -28,8 +28,9 @@ public class SecurityConfig {
                 .cors(cors -> cors.disable())
                 .csrf(csrf -> csrf.disable())
                 .anonymous(anonymous -> anonymous.disable())
-                .authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/users/**", "/api/users/logout", "/**").permitAll()
-                        .anyRequest().authenticated());
+                .authorizeHttpRequests(authorize -> authorize.requestMatchers(
+                                "/api/users/login/**", "/api/users/logout", "/**").permitAll()
+                        .anyRequest().permitAll());
 
         http.userDetailsService(customUserDetailsService);
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

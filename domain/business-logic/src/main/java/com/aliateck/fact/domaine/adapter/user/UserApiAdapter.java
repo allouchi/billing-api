@@ -67,7 +67,7 @@ public class UserApiAdapter implements UserApiService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userSpiService.findByUserName(username);
         return new org.springframework.security.core.userdetails.User(
-                user.getUserName(),
+                user.getEmail(),
                 user.getPassword(),
                 List.of(new SimpleGrantedAuthority("")));
     }
