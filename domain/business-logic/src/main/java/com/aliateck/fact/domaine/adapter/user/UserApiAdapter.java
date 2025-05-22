@@ -69,6 +69,6 @@ public class UserApiAdapter implements UserApiService {
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),
-                List.of(new SimpleGrantedAuthority("")));
+                List.of(new SimpleGrantedAuthority(user.getRole())));
     }
 }
