@@ -68,7 +68,7 @@ public class UserController {
     }
 
 
-    @Secured(value = {"ADMIN"})
+    //@Secured(value = {"ADMIN"})
     @ResponseStatus(code = HttpStatus.OK)
     @GetMapping(value = "/{userName:.+}")
     public User findByUserName(@PathVariable @NotNull String userName) {
@@ -84,22 +84,22 @@ public class UserController {
         return userApiService.findAllUsers();
     }
 
-    @Secured(value = {"ADMIN"})
+    //@Secured(value = {"ADMIN"})
     @ResponseStatus(code = HttpStatus.OK)
-    @GetMapping(value = "/{userName:.+}/{password}")
-    public User findByUserNameAndPassword(@PathVariable @NotNull String userName,
+    @GetMapping(value = "/{email:.+}/{password}")
+    public User findByUserNameAndPassword(@PathVariable @NotNull String email,
                                           @PathVariable @NotNull String password) {
-        log.info("Get user by Email and password : " + userName);
-        return userApiService.findByUserNameAndPassword(userName, password);
+        log.info("Get user by Email and password : " + email);
+        return userApiService.findByUserNameAndPassword(email, password);
 
     }
 
     //@Secured(value = {"ADMIN"})
     @ResponseStatus(code = HttpStatus.CREATED)
-    @PostMapping("/")
+    @PostMapping(value = "/add")
     public User addUser(@RequestBody @NotNull User user) {
-        log.info("Add user : " + user.getUserName());
-        //user.setPassword(passwordEncoder.encode(user.getPassword()));
+        log.info("Add user : " + user.getEmail());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userApiService.addUser(user);
     }
 

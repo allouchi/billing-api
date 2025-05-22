@@ -4,7 +4,6 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Getter
 @Setter
@@ -19,12 +18,11 @@ public class User implements Serializable {
      */
     private static final long serialVersionUID = 1L;
     Long id;
-    String userName;
     String firstName;
     String lastName;
     String password;
+    String email;
     Boolean activated;
-    List<Role> roles;
-    Company company;
-
+    String role;
+    String siret;
 }

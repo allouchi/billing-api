@@ -19,7 +19,7 @@ public class ApplicationStarter { //implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         User user = User.builder()
-                .userName("allouchi@hotmail.fr")
+                .email("allouchi@hotmail.fr")
                 .password("123456")
                 .firstName("Mustapha")
                 .lastName("Aliane")
@@ -48,8 +48,7 @@ public class ApplicationStarter { //implements CommandLineRunner {
                 .companyAdresse(adresse)
                 .id(1L)
                 .build();
-
-        user.setCompany(company);
+        user.setSiret("85292702900011");
         //userApiService.addUser(user);
 
 

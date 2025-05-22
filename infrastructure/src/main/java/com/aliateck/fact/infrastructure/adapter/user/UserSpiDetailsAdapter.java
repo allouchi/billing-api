@@ -29,7 +29,7 @@ public class UserSpiDetailsAdapter implements UserSpiDetailService {
 
     @Override
     public User findByUserName(String userName) {
-        Optional<UserEntity> entity = userJpaRepository.findByUserName(userName);
+        Optional<UserEntity> entity = userJpaRepository.findByEmail(userName);
 
         if (entity.isPresent()) {
             return userMapper.fromEntityToDomain(entity.get());

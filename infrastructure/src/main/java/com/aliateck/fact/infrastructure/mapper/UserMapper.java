@@ -22,13 +22,13 @@ public class UserMapper {
         return UserEntity
                 .builder()
                 .id(domain.getId())
-                .userName(domain.getUserName())
+                .email(domain.getEmail())
                 .firstName(domain.getFirstName())
                 .lastName(domain.getLastName())
                 .password(domain.getPassword())
                 .activated(domain.getActivated())
-                .roles(roleUserMapper.fromDomainToEntityList(domain.getRoles()))
-                .company(companyMapper.fromDomainToEntity(domain.getCompany()))
+                .role(domain.getRole())
+                .siret(domain.getSiret())
                 .build();
     }
 
@@ -37,13 +37,13 @@ public class UserMapper {
         return User
                 .builder()
                 .id(entity.getId())
-                .userName(entity.getUserName())
+                .email(entity.getEmail())
                 .firstName(entity.getFirstName())
                 .lastName(entity.getLastName())
                 .password(entity.getPassword())
                 .activated(entity.getActivated())
-                .roles(roleUserMapper.fromEntityToDomainList(entity.getRoles()))
-                .company(companyMapper.fromEntityToDomain(entity.getCompany()))
+                .role(entity.getRole())
+                .siret(entity.getSiret())
                 .build();
     }
 
