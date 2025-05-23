@@ -23,7 +23,7 @@ public class TvaMapper {
             domain.setId(null);
         }
 
-        return TvaEntity.builder().id(domain.getId()).datePayment(domain.getDatePayment()).month(domain.getMonth())
+        return TvaEntity.builder().id(domain.getId()).datePayment(domain.getDatePayment()).monthPayment(domain.getMonthPayment())
                 .montantPayment(domain.getMontantPayment()).siret(domain.getSiret()).exercise(domain.getExercise()).build();
     }
 
@@ -32,7 +32,7 @@ public class TvaMapper {
         if (entity == null) {
             return null;
         }
-        return Tva.builder().id(entity.getId()).datePayment(entity.getDatePayment()).month(entity.getMonth())
+        return Tva.builder().id(entity.getId()).datePayment(entity.getDatePayment()).monthPayment(entity.getMonthPayment())
                 .montantPayment(entity.getMontantPayment()).siret(entity.getSiret()).exercise(entity.getExercise()).build();
     }
 

@@ -6,13 +6,14 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 
+
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @Getter
 @Setter
 @SuperBuilder
-@Entity(name = "T_RoleRef")
+@Entity(name = "T_ROLE_REF")
 public class RoleRefEntity extends CommonEntity {
 
     @Id

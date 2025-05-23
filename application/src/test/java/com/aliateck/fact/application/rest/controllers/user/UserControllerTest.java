@@ -79,7 +79,7 @@ public class UserControllerTest {
 
     private User userBuild() {
         return User.builder()
-                .userName("allouchi@hotmail.fr")
+                .email("allouchi@hotmail.fr")
                 .password("123456")
                 .firstName("Mustapha")
                 .lastName("Aliane")

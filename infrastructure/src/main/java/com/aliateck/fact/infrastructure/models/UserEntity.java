@@ -13,8 +13,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Entity
-@Table(name = "T_User")
+@Entity(name = "T_User")
 public class UserEntity extends CommonEntity {
 
     @Id

@@ -19,10 +19,10 @@ public class TvaEntity extends CommonEntity {
     @Column(name = "id", nullable = false)
     Long id;
 
-    @Column(name = "datePayment", nullable = false, unique = false)
+    @Column(name = "date_payment", nullable = false, unique = false)
     String datePayment;
 
-    @Column(name = "montantPayment", nullable = false)
+    @Column(name = "montant-payment", nullable = false)
     Float montantPayment;
 
     @Column(name = "exercise", nullable = false)
@@ -31,7 +31,7 @@ public class TvaEntity extends CommonEntity {
     @Column(name = "siret", nullable = false)
     String siret;
 
-    @Column(name = "month", nullable = true)
-    String month;
+    @Column(name = "month_payment", nullable = true)
+    String monthPayment;
 
 }
