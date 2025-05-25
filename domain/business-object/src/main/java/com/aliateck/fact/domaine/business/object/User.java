@@ -2,6 +2,7 @@ package com.aliateck.fact.domaine.business.object;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
 
@@ -9,8 +10,8 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @ToString
+@SuperBuilder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User implements Serializable {
     /**

@@ -85,13 +85,8 @@ public class TvaSpiAdapter implements TvaSpiService {
     public void updateTva(Tva tva) {
         String datePaiment = Utils.convertFromDomainToEntityDate(tva.getDatePayment());
         tva.setDatePayment(datePaiment);
-        Optional<TvaEntity> entity = tvaJpaRepository.findById(tva.getId());
-        entity.orElseThrow(() -> new TvaNotFoundException(
-                String.format("La Tva numéro %s n'existe pas", tva.getId())));
-        TvaEntity e = entity.get();
-        e.setDatePayment(tva.getDatePayment());
-        e.setMontantPayment(tva.getMontantPayment());
-        tvaJpaRepository.saveAndFlush(e);
+        TvaEntity toSave = tvaMapper.fromDomainToEntity(tva);
+        tvaJpaRepository.saveAndFlush(toSave);
     }
 
     @Override

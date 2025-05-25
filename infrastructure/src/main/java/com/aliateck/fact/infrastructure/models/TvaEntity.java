@@ -22,7 +22,7 @@ public class TvaEntity extends CommonEntity {
     @Column(name = "date_payment", nullable = false, unique = false)
     String datePayment;
 
-    @Column(name = "montant-payment", nullable = false)
+    @Column(name = "montant_payment", nullable = false)
     Float montantPayment;
 
     @Column(name = "exercise", nullable = false)

@@ -14,8 +14,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @ToString
 public class ExerciseEntity extends CommonEntity {
-
-   
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

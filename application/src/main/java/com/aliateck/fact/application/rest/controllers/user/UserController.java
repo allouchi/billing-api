@@ -3,7 +3,9 @@ package com.aliateck.fact.application.rest.controllers.user;
 import com.aliateck.fact.config.auth.JwtService;
 import com.aliateck.fact.domaine.business.object.AuthRequest;
 import com.aliateck.fact.domaine.business.object.AuthResponse;
+import com.aliateck.fact.domaine.business.object.Company;
 import com.aliateck.fact.domaine.business.object.User;
+import com.aliateck.fact.domaine.ports.api.company.CompanyApiService;
 import com.aliateck.fact.domaine.ports.api.user.UserApiService;
 import com.aliateck.util.CommonResource.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -49,21 +51,40 @@ public class UserController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private CompanyApiService companyApiService;
 
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> authenticate(@RequestBody AuthRequest request) {
-
         Authentication auth = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
         UserDetails user = (UserDetails) auth.getPrincipal();
         String jwt = jwtService.generateToken(user);
-        return ResponseEntity.ok(new AuthResponse(jwt));
+
+        String roles = auth.getAuthorities().stream()
+                .map(grantedAuthority -> grantedAuthority.getAuthority()) // ex: "ROLE_ADMIN"
+                .filter(role -> role.startsWith("ROLE_"))
+                .findFirst()
+                .orElse("ROLE_USER");
+        User usr = userApiService.findByUserName(user.getUsername());
+        usr.setRole(roles);
+        usr.setPassword("");
+
+        Company company = companyApiService.findBySiret(usr.getSiret());
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setToken(jwt);
+        authResponse.setUser(usr);
+        authResponse.setCompany(company);
+        authResponse.setSocialReason(company.getSocialReason());
+        return ResponseEntity.ok(authResponse);
     }
 
     @GetMapping("/logout")
     public ResponseEntity<String> logout() {
+        System.out.println("");
+
         return ResponseEntity.ok(null);
     }
 

@@ -33,16 +33,21 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .anonymous(anonymous -> anonymous.disable())
                 .authorizeHttpRequests(authorize -> authorize.requestMatchers(
-                                "/users/login/**", "/users/logout", "/**").permitAll()
+                                "/users/login", "/users/logout", "/**").permitAll()
                         .anyRequest().authenticated());
 
         http.authenticationProvider(authenticationProvider());
-        http.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http.sessionManagement(ses -> ses.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        // http.formLogin(form -> form
+        //.loginPage("/login")              // page de login personnalisée
+        //.failureUrl("/login?error=true")  // redirection en cas d’échec
+        //.permitAll()
+        // );
         http.logout(logout -> logout
-                .logoutUrl("/users/logout")
-                .logoutSuccessUrl("/login?logout")
-                .invalidateHttpSession(true)
+                .logoutUrl("/logout")          // URL pour déclencher la déconnexion
+                .logoutSuccessUrl("/login?logout")  // Redirection après logout
+                .invalidateHttpSession(true)   // Invalide la session
                 .deleteCookies("JSESSIONID"));
         return http.build();
     }

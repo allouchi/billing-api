@@ -148,7 +148,7 @@ public class CompanySpiAdapter implements CompanySpiService {
             throw new ServiceException(ErrorCatalog.DB_ERROR, e);
         }
         if (reponse == null) {
-            final String format = String.format("La société avec le numéro siret %s est absente", siret);
+            final String format = String.format("La société avec le numéro siret %s est introuvable", siret);
             throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, format);
         }
         return reponse;

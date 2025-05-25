@@ -1,6 +1,5 @@
 package com.aliateck.fact.infrastructure.adapter.client;
 
-import com.aliateck.fact.domaine.business.object.Adresse;
 import com.aliateck.fact.domaine.business.object.Client;
 import com.aliateck.fact.domaine.exception.ErrorCatalog;
 import com.aliateck.fact.domaine.exception.ServiceException;
@@ -8,7 +7,6 @@ import com.aliateck.fact.domaine.ports.spi.client.ClientSpiService;
 import com.aliateck.fact.infrastructure.adapter.commun.CheckEmailAdresse;
 import com.aliateck.fact.infrastructure.mapper.AdresseMapper;
 import com.aliateck.fact.infrastructure.mapper.ClientMapper;
-import com.aliateck.fact.infrastructure.models.AdresseEntity;
 import com.aliateck.fact.infrastructure.models.ClientEntity;
 import com.aliateck.fact.infrastructure.models.CompanyEntity;
 import com.aliateck.fact.infrastructure.repository.client.ClientJpaRepository;
@@ -76,40 +74,40 @@ public class ClientSpiAdapter implements ClientSpiService {
     }
 
     @Override
-    public Client updateClient(Client client, String siret) {
+    public Client updateClient(Client requestClient, String siret) {
 
         Client reponse = null;
-        if (client == null || siret == null || siret.equals("")) {
+        if (requestClient == null || siret == null || siret.equals("")) {
             throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
         }
 
-        Optional<ClientEntity> oldEntity = clientJpaRepository.findById(client.getId());
-        if (oldEntity.isPresent() && client.getEmail() != null
-                && !client.getEmail().equalsIgnoreCase(oldEntity.get().getEmail())) {
+        Optional<ClientEntity> oldEntity = clientJpaRepository.findById(requestClient.getId());
+        if (oldEntity.isPresent() && requestClient.getEmail() != null
+                && !requestClient.getEmail().equalsIgnoreCase(oldEntity.get().getEmail())) {
 
             CheckEmailAdresse checkEmail = CheckEmailAdresse.builder().build();
-            if (checkEmail.checkEmailAdresse(client, clientJpaRepository)) {
-                final String format = String.format("L'adresse mail %s est déjà utilisée", client.getEmail());
+            if (checkEmail.checkEmailAdresse(requestClient, clientJpaRepository)) {
+                final String format = String.format("L'adresse mail %s est déjà utilisée", requestClient.getEmail());
                 throw new ServiceException(ErrorCatalog.DUPLICATE_DATA, format);
             }
         }
 
         try {
-
+            ClientEntity nEntity = null;
             Optional<CompanyEntity> oCompnay = companyJpaRepository.findBySiret(siret);
-            Adresse newAdresse = client.getAdresseClient();
-            AdresseEntity newEntityAdresse = addresseMapper.fromDomainToEntity(newAdresse);
             if (oCompnay.isPresent()) {
-                CompanyEntity entity = oCompnay.get();
-                List<ClientEntity> oClient = entity.getClients();
-                for (ClientEntity cEntity : oClient) {
-                    if (cEntity.getId().longValue() == client.getId().longValue()) {
-                        ClientEntity nEntity = clientMapper.fromDomainToEntity(client);
-                        cEntity.setAdresseClient(newEntityAdresse);
-                        ClientEntity domain = clientJpaRepository.save(nEntity);
-                        reponse = clientMapper.fromEntityToDomain(domain);
+                CompanyEntity entityCompany = oCompnay.get();
+                List<ClientEntity> oClients = entityCompany.getClients();
+                for (ClientEntity cEntity : oClients) {
+                    if (cEntity.getId().longValue() == requestClient.getId().longValue()) {
+                        nEntity = clientMapper.fromDomainToEntity(requestClient);
+                        oClients.add(nEntity);
+                        entityCompany.setClients(oClients);
+                        break;
                     }
                 }
+                companyJpaRepository.save(entityCompany);
+                reponse = clientMapper.fromEntityToDomain(nEntity);
             }
 
         } catch (Exception e) {
@@ -117,7 +115,6 @@ public class ClientSpiAdapter implements ClientSpiService {
             throw new ServiceException(ErrorCatalog.DB_ERROR,
                     "Un problème est survenu lors de la mise à jour du client", e);
         }
-
         return reponse;
     }
 
