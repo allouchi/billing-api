@@ -1,22 +1,23 @@
 
+SET MODE MySQL;
 --
 -- Table structure for table `t_adresse`
 --
-DROP TABLE IF EXISTS `t_adresse`;
+DROP TABLE IF EXISTS t_adresse;
 CREATE TABLE `t_adresse` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `code_postal` varchar(5) NOT NULL DEFAULT '0',
-  `localite` varchar(255) NOT NULL DEFAULT '0',
-  `numero` varchar(100) NOT NULL DEFAULT '0',
-  `pays` varchar(30) NOT NULL DEFAULT '0',
-  `rue` varchar(255) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=735 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+   `code_postal` varchar(5) NOT NULL DEFAULT '0',
+    `localite` varchar(255) NOT NULL DEFAULT '0',
+    `numero` varchar(100) NOT NULL DEFAULT '0',
+    `pays` varchar(30) NOT NULL DEFAULT '0',
+    `rue` varchar(255) NOT NULL DEFAULT '0',
+    PRIMARY KEY (`id`)
+);
 
 --
 -- Dumping data for table `t_adresse`
 --
-INSERT INTO `t_adresse` VALUES
+INSERT INTO t_adresse VALUES
 (720,'92500','Rueil-Malmaison','13','FRANCE','Domaine de la côte noire'),
 (725,'92500','Rueil-Malmaison','111','FRANCE','Boulevard National'),
 (726,'75005','Paris','5','FRANCE','Rue Thénard'),
@@ -32,8 +33,8 @@ INSERT INTO `t_adresse` VALUES
 --
 -- Table structure for table `t_company`
 --
-DROP TABLE IF EXISTS `t_company`;
-CREATE TABLE `t_company` (
+DROP TABLE IF EXISTS t_company;
+CREATE TABLE t_company (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `code_ape` varchar(255) DEFAULT NULL,
   `numero_bic` varchar(255) DEFAULT NULL,
@@ -45,38 +46,44 @@ CREATE TABLE `t_company` (
   `status` varchar(255) NOT NULL,
   `adresse_id` bigint DEFAULT NULL,
   `checked` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FKbjx03vmm17db3lx4ocrscixs9` (`adresse_id`),
-  CONSTRAINT `FKbjx03vmm17db3lx4ocrscixs9` FOREIGN KEY (`adresse_id`) REFERENCES `t_adresse` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3;
-
-
-DROP TABLE IF EXISTS `t_client`;
-CREATE TABLE `t_client` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) NOT NULL,
-  `social_reason` varchar(255) NOT NULL DEFAULT '0',
-  `adresse_id` bigint DEFAULT NULL,
-  `company_id` bigint DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FKgqaooiuekeicdqpuvfs2lgc22` (`adresse_id`),
-  KEY `FKrmxmvd7yuj589w2k2te7qrb6m` (`company_id`),
-  CONSTRAINT `FKgqaooiuekeicdqpuvfs2lgc22` FOREIGN KEY (`adresse_id`) REFERENCES `t_adresse` (`id`),
-  CONSTRAINT `FKrmxmvd7yuj589w2k2te7qrb6m` FOREIGN KEY (`company_id`) REFERENCES `t_company` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5;
+  PRIMARY KEY (`id`)
+);
 
 --
 -- Dumping data for table `t_company`
 --
-INSERT INTO `t_company` VALUES
-(1,'6201Z','PSSTFRPPSCE','FR1720041010125407961J03367','FR18831502141','R.C.S. Nanterre 831 502 141','85292702900011','SBATEC Consulting','SASU au capital de 500 Euros',725,1),
-(2,'6201Z','CRLYFRPP','FR3330002008970000005896J14','FR18831502141','R.C.S. Nanterre 831 502 141','83150214100011','ALIATECK','SASU au capital de 500 Euros',720,0);
+INSERT INTO t_company ( id,
+                         code_ape,
+                         numero_bic,
+                         numero_iban,
+                         numero_tva,
+                         rcsname,
+                         siret,
+                         social_reason,
+                         status,
+                         adresse_id,
+                         checked) VALUES
+(1,'6201Z','PSSTFRPPSCE','FR1720041010125407961J03367','FR18831502141','R.C.S. Nanterre 831 502 141','85292702900011','SBATEC Consulting','SASU au capital de 500 Euros',725,TRUE),
+(2,'6201Z','CRLYFRPP','FR3330002008970000005896J14','FR18831502141','R.C.S. Nanterre 831 502 141','83150214100011','ALIATECK','SASU au capital de 500 Euros',720,FALSE);
+
+
+
+DROP TABLE IF EXISTS t_client;
+CREATE TABLE t_client (
+   `id` bigint NOT NULL AUTO_INCREMENT,
+    `email` varchar(255) NOT NULL,
+    `social_reason` varchar(255) NOT NULL DEFAULT '0',
+    `adresse_id` bigint DEFAULT NULL,
+    `company_id` bigint DEFAULT NULL,
+    PRIMARY KEY (`id`)
+);
+
 
 --
 -- Dumping data for table `t_client`
 --
-INSERT INTO `t_client` VALUES
-(1,'odyssey.consulting@odyssey.com','Odyssey Consulting',726,1),
+INSERT INTO t_client (id, email,social_reason, adresse_id, company_id)
+VALUES (1,'odyssey.consulting@odyssey.com','Odyssey Consulting',726,1),
 (2,'emagine.consulting@emagine.com','Emagine Consulting',728,1),
 (3,'easy.partner@easy-partner.fr','Easy Partner',729,1),
 (4,'hmejri@osircom.com','Osircom',734,1);
@@ -84,24 +91,23 @@ INSERT INTO `t_client` VALUES
 --
 -- Table structure for table `t_consultant`
 --
-DROP TABLE IF EXISTS `t_consultant`;
-CREATE TABLE `t_consultant` (
+DROP TABLE IF EXISTS t_consultant;
+CREATE TABLE t_consultant (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `last_name` varchar(255) NOT NULL DEFAULT '0',
   `first_name` varchar(255) NOT NULL DEFAULT '0',
   `email` varchar(255) NOT NULL,
   `fonction` varchar(255) NOT NULL DEFAULT '0',
   `company_id` bigint DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK2vo95j5qxtnn4nbn1sieob907` (`company_id`),
-  CONSTRAINT `FK2vo95j5qxtnn4nbn1sieob907` FOREIGN KEY (`company_id`) REFERENCES `t_company` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`id`)
+);
 
 
 --
 -- Dumping data for table `t_consultant`
 --
-INSERT INTO `t_consultant` VALUES
+INSERT INTO t_consultant (id, last_name, first_name,  email ,  fonction , company_id )
+VALUES
 (1,'ALIANE','Mustapha','mustapha.aliane@free.fr','Développeur FullStack JEE/Angular',1),
 (2,'ALIANE','Khalid','khalid@hotmail.fr','Développeur Fullstack JAVA/JEE/React',2);
 
@@ -109,30 +115,30 @@ INSERT INTO `t_consultant` VALUES
 --
 -- Table structure for table `t_exercise`
 --
-DROP TABLE IF EXISTS `t_exercise`;
-CREATE TABLE `t_exercise` (
+DROP TABLE IF EXISTS t_exercise;
+CREATE TABLE t_exercise (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `exercise` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 --
 -- Dumping data for table `t_exercise`
 --
-INSERT INTO `t_exercise` VALUES
+INSERT INTO t_exercise (id,exercise )
+VALUES
 (6,'2025'),
 (5,'2024'),
 (4,'2023'),
 (3,'2022'),
 (2,'2021'),
 (1,'Tous');
-
 --
 -- Table structure for table `t_prestation`
 --
-DROP TABLE IF EXISTS `t_prestation`;
-CREATE TABLE `t_prestation` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
+DROP TABLE IF EXISTS t_prestation;
+CREATE TABLE t_prestation (
+ `id` bigint NOT NULL AUTO_INCREMENT,
   `client_prestation` varchar(255) NOT NULL DEFAULT '0',
   `delai_paiement` bigint NOT NULL DEFAULT '0',
   `designation` varchar(255) NOT NULL DEFAULT '0',
@@ -146,19 +152,27 @@ CREATE TABLE `t_prestation` (
   `facture_id` bigint DEFAULT NULL,
   `company_id` bigint DEFAULT NULL,
   `siret` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FKen05trsnmiy6d1cxkc0tujode` (`client_id`),
-  KEY `FKgawvw45n0svkjtceple40opnr` (`consultant_id`),
-  KEY `FKo3uk4j1m8vyr4udcugf3rhu0n` (`company_id`),
-  CONSTRAINT `FKen05trsnmiy6d1cxkc0tujode` FOREIGN KEY (`client_id`) REFERENCES `t_client` (`id`),
-  CONSTRAINT `FKgawvw45n0svkjtceple40opnr` FOREIGN KEY (`consultant_id`) REFERENCES `t_consultant` (`id`),
-  CONSTRAINT `FKo3uk4j1m8vyr4udcugf3rhu0n` FOREIGN KEY (`company_id`) REFERENCES `t_company` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`id`)
+);
 
 --
 -- Dumping data for table `t_prestation`
 --
-INSERT INTO `t_prestation` VALUES
+INSERT INTO t_prestation (id,
+                            client_prestation,
+                            delai_paiement,
+                            designation,
+                            numero_commande,
+                            quantite,
+                            tarifht,
+                            date_debut,
+                            date_fin,
+                            client_id,
+                            consultant_id,
+                            facture_id,
+                            company_id,
+                            siret)
+VALUES
 (1,'Odyssey Consulting',30,'La Prestation est réalisée pour le compte de','xxxxxxxxxxxxxxxxxx',0,470,'01/03/2021','30/06/2021',1,1,NULL,1,'85292702900011'),
 (2,'Accor Hotels',30,'La Prestation est réalisée pour le compte de','N°13.21.19.05.14.01',0,490,'08/07/2021','31/12/2021',2,1,NULL,1,'85292702900011'),
 (3,'Accor Hotels',30,'La Prestation est réalisée pour le compte de','N° 13.21.19.05.14.01',0,510,'01/01/2022','30/09/2022',2,1,NULL,1,'85292702900011'),
@@ -168,42 +182,64 @@ INSERT INTO `t_prestation` VALUES
 --
 -- Table structure for table `t_facture`
 --
-DROP TABLE IF EXISTS `t_facture`;
-CREATE TABLE `t_facture` (
+DROP TABLE IF EXISTS t_facture;
+CREATE TABLE t_facture (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `client_prestation` varchar(255) NOT NULL,
-  `date_echeance` varchar(255) DEFAULT NULL,
-  `date_encaissement` varchar(255) DEFAULT NULL,
-  `date_facturation` varchar(255) DEFAULT NULL,
-  `delai_paiement` bigint NOT NULL,
-  `facture_status` varchar(255) DEFAULT NULL,
-  `file_path` varchar(255) DEFAULT NULL,
-  `file_name` varchar(255) DEFAULT NULL,
-  `file_content` longblob,
-  `frais_retard` float DEFAULT NULL,
-  `mois_facture` varchar(255) DEFAULT NULL,
-  `montant_net_tva` float NOT NULL DEFAULT '0',
-  `nb_jour_retard` bigint DEFAULT NULL,
-  `numero_commande` varchar(255) NOT NULL,
-  `numero_facture` varchar(255) DEFAULT NULL,
-  `prix_totalht` float NOT NULL DEFAULT '0',
-  `prix_totalttc` float NOT NULL DEFAULT '0',
-  `quantite` float NOT NULL DEFAULT '0',
-  `montant_tva` float NOT NULL,
-  `status_desc` varchar(255) DEFAULT NULL,
-  `tarifht` float NOT NULL,
-  `prestation_id` bigint DEFAULT NULL,
-  `exercice` varchar(4) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK4epk9gihnga26xmkj3ud9l5dw` (`prestation_id`),
-  CONSTRAINT `FK4epk9gihnga26xmkj3ud9l5dw` FOREIGN KEY (`prestation_id`) REFERENCES `t_prestation` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+    `client_prestation` varchar(255) NOT NULL,
+    `date_echeance` varchar(255) DEFAULT NULL,
+    `date_encaissement` varchar(255) DEFAULT NULL,
+    `date_facturation` varchar(255) DEFAULT NULL,
+    `delai_paiement` bigint NOT NULL,
+    `facture_status` varchar(255) DEFAULT NULL,
+    `file_path` varchar(255) DEFAULT NULL,
+    `file_name` varchar(255) DEFAULT NULL,
+    `file_content` longblob,
+    `frais_retard` float DEFAULT NULL,
+    `mois_facture` varchar(255) DEFAULT NULL,
+    `montant_net_tva` float NOT NULL DEFAULT '0',
+    `nb_jour_retard` bigint DEFAULT NULL,
+    `numero_commande` varchar(255) NOT NULL,
+    `numero_facture` varchar(255) DEFAULT NULL,
+    `prix_totalht` float NOT NULL DEFAULT '0',
+    `prix_totalttc` float NOT NULL DEFAULT '0',
+    `quantite` float NOT NULL DEFAULT '0',
+    `montant_tva` float NOT NULL,
+    `status_desc` varchar(255) DEFAULT NULL,
+    `tarifht` float NOT NULL,
+    `prestation_id` bigint DEFAULT NULL,
+    `exercice` varchar(4) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
 
 
 --
 -- Dumping data for table `t_facture`
 --
-INSERT INTO `t_facture` VALUES
+INSERT INTO t_facture ( id,
+                           client_prestation,
+                           date_echeance ,
+                           date_encaissement ,
+                           date_facturation ,
+                           delai_paiement,
+                           facture_status ,
+                           file_path ,
+                           file_name ,
+                           file_content,
+                           frais_retard ,
+                           mois_facture ,
+                          montant_net_tva,
+                           nb_jour_retard,
+                           numero_commande,
+                           numero_facture,
+                           prix_totalht,
+                           prix_totalttc,
+                           quantite,
+                           montant_tva,
+                           status_desc,
+                           tarifht,
+                           prestation_id,
+                           exercice)
+             VALUES
 (1,'Odyssey Consulting','30/04/2021','30/04/2021','31/03/2021',30,'OK','\\2021\\03-Mars\\Facture Client\\Facture_Sbatec_Odyssey_202103_1000.pdf','Facture_Sbatec_Odyssey_202103_1000.pdf',null,0,'Mars',0,0,'N°12.12.19.05.00.01','20210331-1000',10810,12972,23,2162,'Acquitté',470,1,'2021'),
 (2,'Odyssey Consulting','30/05/2021','30/05/2021','30/04/2021',30,'OK','\\2021\\04-Avril\\Facture Client\\Facture_Sbatec_Odyssey_202104_1001.pdf','Facture_Sbatec_Odyssey_202104_1001.pdf',null,0,'Avril',0,0,'N°12.12.19.05.00.01','20210430-1001',9635,11562,20.5,1927,'Acquitté',470,1,'2021'),
 (3,'Odyssey Consulting','30/06/2021','30/06/2021','31/05/2021',30,'OK','\\2021\\05-Mai\\Facture Client\\Facture_Sbatec_Odyssey_202105_1002.pdf','Facture_Sbatec_Odyssey_202105_1002.pdf',null,0,'Juin',0,0,'N°12.12.19.05.00.01','20210630-1003',9870,11844,21,1974,'Acquitté',470,1,'2021'),
@@ -253,64 +289,67 @@ INSERT INTO `t_facture` VALUES
 --
 -- Table structure for table `t_user`
 --
-DROP TABLE IF EXISTS `t_user`;
-CREATE TABLE `t_user` (
+DROP TABLE IF EXISTS t_user;
+CREATE TABLE t_user (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `user_name` varchar(45) NOT NULL DEFAULT '0',
   `first_name` varchar(45) NOT NULL DEFAULT '0',
   `last_name` varchar(45) NOT NULL DEFAULT '0',
   `password` varchar(45) NOT NULL DEFAULT '0',
-  `activated` tinyint NOT NULL DEFAULT '1',
+  `activated` tinyint DEFAULT NULL ,
   `company_id` bigint DEFAULT NULL,
-  `actived` bit(1) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FKjoyvjcw2ynic8bvdjm1elpf16` (`company_id`),
-  CONSTRAINT `FKjoyvjcw2ynic8bvdjm1elpf16` FOREIGN KEY (`company_id`) REFERENCES `t_company` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`id`)
+  );
 
 --
 -- Dumping data for table `t_user`
 --
-INSERT INTO `t_user` VALUES
-(1,'allouchi@hotmail.fr','Mustapha','Aliane','123456',1,1,NULL),
-(2,'khalid@hotmail.fr','Khalid','Aliane','123456',1,2,NULL),
-(3,'salma@hotmail.fr','Salma','Aliane','123456',1,1,NULL),
-(4,'btissame@hotmail.fr','Btissame','Aliane','123456',1,1,NULL);
+INSERT INTO t_user (id,
+                      user_name,
+                      first_name,
+                      last_name,
+                      password,
+                      activated,
+                      company_id)
+VALUES
+(1,'allouchi@hotmail.fr','Mustapha','Aliane','123',TRUE,1),
+(2,'khalid@hotmail.fr','Khalid','Aliane','123',TRUE,1),
+(3,'salma@hotmail.fr','Salma','Aliane','123',TRUE,1),
+(4,'btissame@hotmail.fr','Btissame','Aliane','123',TRUE,1);
 --
 -- Table structure for table `t_role`
 --
-DROP TABLE IF EXISTS `t_role`;
-CREATE TABLE `t_role` (
+DROP TABLE IF EXISTS t_role;
+CREATE TABLE t_role (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `role_name` varchar(45) NOT NULL,
   `description` varchar(45) NOT NULL,
   `user_id` bigint DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK9sof6539ywhxemf6ojn0fqera` (`user_id`),
-  CONSTRAINT `FK9sof6539ywhxemf6ojn0fqera` FOREIGN KEY (`user_id`) REFERENCES `t_user` (`id`)
+  PRIMARY KEY (`id`)
 );
 
 --
 -- Table structure for table `t_role_ref`
 --
-DROP TABLE IF EXISTS `t_role_ref`;
-CREATE TABLE `t_role_ref` (
+DROP TABLE IF EXISTS t_role_ref;
+CREATE TABLE t_role_ref (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `role_name` varchar(255) NOT NULL,
-  `description` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
   `role` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 --
 -- Dumping data for table `t_role_ref`
 --
-INSERT INTO `t_role_ref` VALUES
-(1,'ADMIN','ROLE_ADMIN','',''),
-(2,'CONSULT','ROLE_ADMIN','',''),
-(3,'READ','ROLE_ADMIN','',''),
-(4,'WRITE','ROLE_ADMIN','','');
+INSERT INTO `t_role_ref` (id,
+                            role,
+                            description)
+VALUES
+(1,'ROLE_ADMIN','Administrateur'),
+(2,'ROLE_READ','Lecture'),
+(3,'ROLE_CONSULT','Consultation'),
+(4,'ROLE_WHRITE','Ecriture');
 
 --
 -- Table structure for table `t_tva`
@@ -324,12 +363,18 @@ CREATE TABLE `t_tva` (
   `siret` varchar(20) NOT NULL,
   `month_payment` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ;
 
 --
 -- Dumping data for table `t_tva`
 --
-INSERT INTO `t_tva` VALUES
+INSERT INTO `t_tva` (id,
+                       date_payment,
+                       exercise ,
+                       montant_payment ,
+                       siret ,
+                       month_payment)
+VALUES
 (1,'28/12/2021','2021',2588,'85292702900011',NULL),
 (2,'29/07/2021','2021',3533,'85292702900011',NULL),
 (5,'05/05/2022','2021',9558,'85292702900011',NULL),
@@ -352,7 +397,3 @@ INSERT INTO `t_tva` VALUES
 (26,'24/03/2025','2024',1908,'85292702900011','Novembre'),
 (27,'24/04/2025','2024',1500,'85292702900011','Décembre'),
 (28,'24/05/2025','2025',2214,'85292702900011','Janvier');
-
-
-
-
