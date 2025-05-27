@@ -25,7 +25,6 @@ public class ApplicationStarter { //implements CommandLineRunner {
                 .lastName("Aliane")
                 .activated(true)
                 .id(1L)
-
                 .build();
 
         Adresse adresse = Adresse.builder()

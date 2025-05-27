@@ -295,7 +295,7 @@ CREATE TABLE t_user (
   `user_name` varchar(45) NOT NULL DEFAULT '0',
   `first_name` varchar(45) NOT NULL DEFAULT '0',
   `last_name` varchar(45) NOT NULL DEFAULT '0',
-  `password` varchar(45) NOT NULL DEFAULT '0',
+  `password` varchar(100) NOT NULL DEFAULT '0',
   `activated` tinyint DEFAULT NULL ,
   `company_id` bigint DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -312,10 +312,10 @@ INSERT INTO t_user (id,
                       activated,
                       company_id)
 VALUES
-(1,'allouchi@hotmail.fr','Mustapha','Aliane','123',TRUE,1),
-(2,'khalid@hotmail.fr','Khalid','Aliane','123',TRUE,1),
-(3,'salma@hotmail.fr','Salma','Aliane','123',TRUE,1),
-(4,'btissame@hotmail.fr','Btissame','Aliane','123',TRUE,1);
+(1,'allouchi@hotmail.fr','Mustapha','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q',TRUE,1),
+(2,'khalid@hotmail.fr','Khalid','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q',TRUE,1),
+(3,'salma@hotmail.fr','Salma','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q',TRUE,1),
+(4,'btissame@hotmail.fr','Btissame','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q',TRUE,1);
 --
 -- Table structure for table `t_role`
 --
