@@ -139,19 +139,19 @@ VALUES
 DROP TABLE IF EXISTS t_prestation;
 CREATE TABLE t_prestation (
  `id` bigint NOT NULL AUTO_INCREMENT,
-  `client_prestation` varchar(255) NOT NULL DEFAULT '0',
+  `client_prestation` varchar(45) NOT NULL DEFAULT '0',
   `delai_paiement` bigint NOT NULL DEFAULT '0',
-  `designation` varchar(255) NOT NULL DEFAULT '0',
-  `numero_commande` varchar(255) NOT NULL DEFAULT '0',
+  `designation` varchar(100) NOT NULL DEFAULT '0',
+  `numero_commande` varchar(100) NOT NULL DEFAULT '0',
   `quantite` float NOT NULL DEFAULT '0',
   `tarifht` float NOT NULL DEFAULT '0',
-  `date_debut` varchar(255) DEFAULT NULL,
-  `date_fin` varchar(255) DEFAULT NULL,
+  `date_debut` varchar(20) DEFAULT NULL,
+  `date_fin` varchar(20) DEFAULT NULL,
   `client_id` bigint DEFAULT NULL,
   `consultant_id` bigint DEFAULT NULL,
   `facture_id` bigint DEFAULT NULL,
   `company_id` bigint DEFAULT NULL,
-  `siret` varchar(255) DEFAULT NULL,
+  `siret` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
 
@@ -177,7 +177,7 @@ VALUES
 (2,'Accor Hotels',30,'La Prestation est réalisée pour le compte de','N°13.21.19.05.14.01',0,490,'08/07/2021','31/12/2021',2,1,NULL,1,'85292702900011'),
 (3,'Accor Hotels',30,'La Prestation est réalisée pour le compte de','N° 13.21.19.05.14.01',0,510,'01/01/2022','30/09/2022',2,1,NULL,1,'85292702900011'),
 (4,'Ekino',30,'La Prestation est réalisée pour le compte de','N° 2022.11.07.00186',0,500,'09/11/2022','31/12/2022',3,1,NULL,1,'85292702900011'),
-(5,'CS Group',60,'La Prestation est réalisée pour le compte de ','N° CS202305',0,510,'undefined-undefined-2023-02-20','undefined-undefined-2025-12-31',4,1,NULL,1,NULL);
+(5,'CS Group',60,'La Prestation est réalisée pour le compte de ','N° CS202305',0,510,'20/02/2023','31/12/2025',4,1,NULL,1,NULL);
 
 --
 -- Table structure for table `t_facture`
@@ -292,30 +292,35 @@ INSERT INTO t_facture ( id,
 DROP TABLE IF EXISTS t_user;
 CREATE TABLE t_user (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `user_name` varchar(45) NOT NULL DEFAULT '0',
-  `first_name` varchar(45) NOT NULL DEFAULT '0',
-  `last_name` varchar(45) NOT NULL DEFAULT '0',
-  `password` varchar(100) NOT NULL DEFAULT '0',
-  `activated` tinyint DEFAULT NULL ,
-  `company_id` bigint DEFAULT NULL,
+  `email` varchar(45) NOT NULL,
+  `first_name` varchar(45) NOT NULL,
+  `last_name` varchar(45) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `role` varchar(30) NOT NULL,
+  `siret` varchar(20) NOT NULL,
+  `activated`   tinyint(1) DEFAULT NULL,
+  `company_id` bigint DEFAULT NOT NULL,
   PRIMARY KEY (`id`)
   );
 
 --
 -- Dumping data for table `t_user`
 --
+
 INSERT INTO t_user (id,
-                      user_name,
+                      email,
                       first_name,
                       last_name,
                       password,
+                      role,
+                      siret,
                       activated,
                       company_id)
 VALUES
-(1,'allouchi@hotmail.fr','Mustapha','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q',TRUE,1),
-(2,'khalid@hotmail.fr','Khalid','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q',TRUE,1),
-(3,'salma@hotmail.fr','Salma','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q',TRUE,1),
-(4,'btissame@hotmail.fr','Btissame','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q',TRUE,1);
+(1,'allouchi@hotmail.fr','Mustapha','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q','ROLE_ADMIN','85292702900011',TRUE,1),
+(2,'khalid@hotmail.fr','Khalid','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q','ROLE_WRITE','85292702900011',TRUE,1),
+(3,'salma@hotmail.fr','Salma','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q','ROLE_READ','85292702900011', TRUE,1),
+(4,'btissame@hotmail.fr','Btissame','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q','ROLE_CONSULT','85292702900011',TRUE,2);
 --
 -- Table structure for table `t_role`
 --

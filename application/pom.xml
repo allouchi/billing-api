@@ -15,7 +15,7 @@
     <description>Application Layer for Billing API based on Rest</description>
 
     <properties>
-        <start-class>com.aliateck.fact.ApplicationStarter</start-class>
+        <start-class>com.sbatec.fact.ApplicationStarter</start-class>
         <docker.image.prefix>spring-boot-billing</docker.image.prefix>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
