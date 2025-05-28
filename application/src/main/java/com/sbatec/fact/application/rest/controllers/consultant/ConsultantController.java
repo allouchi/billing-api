@@ -9,6 +9,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -53,9 +54,9 @@ public class ConsultantController implements CommonResource {
         return consultantApiService.updateConsultant(consultantRequest, siret);
     }
 
-    //@Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
-    @DeleteMapping(value = "/{siret}/{consultantId}")
-    public void deleteConsultant(@PathVariable @NotNull Long consultantId, @PathVariable @NotNull String siret) {
+    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
+    @DeleteMapping(value = "/{consultantId}")
+    public void deleteConsultant(@PathVariable @NotNull Long consultantId) {
         log.info("delete consultant by id :" + consultantId);
         consultantApiService.deleteConsultant(consultantId);
     }
