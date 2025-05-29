@@ -7,7 +7,7 @@ import java.util.List;
 public interface PrestationApiService {
     Prestation addPrestation(Prestation prestation, String siret);
 
-    Prestation updatePrestation(Prestation prestation, String siret);
+    Prestation updatePrestation(Prestation prestation);
 
     List<Prestation> findAll(String siret);
 

@@ -9,7 +9,7 @@ public interface PrestationSpiService {
 
     void deletePrestation(Prestation prestation);
 
-    Prestation updatePrestation(Prestation prestation, String siret);
+    Prestation updatePrestation(Prestation prestation);
 
     Prestation findById(Long id);
 

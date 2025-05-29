@@ -66,9 +66,9 @@ public class PrestationSpiAdapter implements PrestationSpiService {
     }
 
     @Override
-    public Prestation updatePrestation(Prestation prestation, String siret) {
+    public Prestation updatePrestation(Prestation prestation) {
 
-        if (Objects.isNull(prestation) || Objects.isNull(siret)) {
+        if (Objects.isNull(prestation)) {
             throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
         }
 

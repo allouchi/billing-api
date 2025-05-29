@@ -41,11 +41,10 @@ public class PrestationController {
         return prestationApiService.addPrestation(prestation, siret);
     }
 
-    @PutMapping(value = "/{siret}")
-    public Prestation updatePrestation(@RequestBody Prestation prestation,
-                                       @PathVariable @NotNull String siret) {
+    @PutMapping()
+    public Prestation updatePrestation(@RequestBody Prestation prestation) {
         log.info("Create or update Prestation");
-        return prestationApiService.updatePrestation(prestation, siret);
+        return prestationApiService.updatePrestation(prestation);
     }
 
     @PutMapping(value = "/{siret}/{templateChoice}/{moisPrestaId}")
