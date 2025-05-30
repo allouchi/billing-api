@@ -55,6 +55,7 @@ public class ControllerAdvisor {
     @ResponseBody
     @ExceptionHandler(PrestationNotFoundException.class)
     public String prestationNotFound(PrestationNotFoundException ex) {
+
         return ex.getMessage();
     }
 
@@ -62,6 +63,7 @@ public class ControllerAdvisor {
     @ResponseBody
     @ExceptionHandler(FactureNotFoundException.class)
     public String factureNotFound(FactureNotFoundException ex) {
+
         return ex.getMessage();
     }
 
@@ -69,6 +71,7 @@ public class ControllerAdvisor {
     @ResponseBody
     @ExceptionHandler(CompanyNotFoundException.class)
     public String companyNotFound(CompanyNotFoundException ex) {
+
         return ex.getMessage();
     }
 

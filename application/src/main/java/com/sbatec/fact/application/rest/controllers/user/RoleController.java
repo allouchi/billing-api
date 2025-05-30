@@ -1,7 +1,9 @@
 package com.sbatec.fact.application.rest.controllers.user;
 
-import com.sbatec.fact.domaine.business.object.RoleRef;
-import com.sbatec.fact.domaine.ports.api.user.RoleRefApiService;
+import com.sbatec.fact.domaine.business.object.Role;
+
+import com.sbatec.fact.domaine.ports.api.user.RoleApiService;
+
 import com.sbatec.util.CommonResource.Resource;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -19,14 +21,14 @@ import java.util.List;
 @RequestMapping(Resource.ROLES)
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class RoleRefController {
+public class RoleController {
 
-    RoleRefApiService roleRefApiService;
+    RoleApiService roleApiService;
 
     @GetMapping
-    public ResponseEntity<List<RoleRef>> getAllRoles() {
+    public ResponseEntity<List<Role>> getAllRoles() {
         log.info("Get all role ref");
-        List<RoleRef> refs = roleRefApiService.getAll();
+        List<Role> refs = roleApiService.getAll();
         return ResponseEntity.ok(refs);
     }
 

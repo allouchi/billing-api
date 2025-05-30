@@ -1,6 +1,8 @@
 package com.sbatec.fact.infrastructure.mapper;
 
+import com.sbatec.fact.domaine.business.object.Role;
 import com.sbatec.fact.domaine.business.object.RoleRef;
+import com.sbatec.fact.infrastructure.models.RoleEntity;
 import com.sbatec.fact.infrastructure.models.RoleRefEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -16,32 +18,32 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RoleRefMapper {
 
-    public RoleRefEntity fromDomainToEntity(RoleRef domain) {
-        return RoleRefEntity.builder()
+    public RoleEntity fromDomainToEntity(Role domain) {
+        return RoleEntity.builder()
                 .id(domain.getId())
                 .description(domain.getDescription())
                 .build();
     }
 
-    public RoleRef fromEntityToDomain(RoleRefEntity entity) {
-        return RoleRef.builder()
+    public Role fromEntityToDomain(RoleEntity entity) {
+        return Role.builder()
                 .id(entity.getId())
                 .role(entity.getRole())
                 .description(entity.getDescription())
                 .build();
     }
 
-    public List<RoleRef> fromEntityToDomainList(List<RoleRefEntity> entities) {
-        Function<RoleRefEntity, RoleRef> fnToDomain = this::fromEntityToDomain;
-        Function<List<RoleRefEntity>, List<RoleRef>> fnToDomains = list ->
+    public List<Role> fromEntityToDomainList(List<RoleEntity> entities) {
+        Function<RoleEntity, Role> fnToDomain = this::fromEntityToDomain;
+        Function<List<RoleEntity>, List<Role>> fnToDomains = list ->
                 list.stream().map(fnToDomain).collect(Collectors.toList());
         return Optional.ofNullable(entities).map(fnToDomains).orElse(Collections.emptyList());
     }
 
-    public List<RoleRefEntity> fromDomainToEntityList(List<RoleRef> domain) {
-        List<RoleRefEntity> clientList = new ArrayList<>();
+    public List<RoleEntity> fromDomainToEntityList(List<Role> domain) {
+        List<RoleEntity> clientList = new ArrayList<>();
         if (domain != null && !domain.isEmpty()) {
-            for (RoleRef entity : domain) {
+            for (Role entity : domain) {
                 clientList.add(fromDomainToEntity(entity));
             }
         }

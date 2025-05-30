@@ -22,7 +22,7 @@ public class RoleMapper {
 		return RoleEntity.
 				builder()
 				.id(domain.getId())
-				.roleName(domain.getRoleName())				
+				.role(domain.getRole())
 				.description(domain.getDescription())
 				.build();
 	}
@@ -30,7 +30,7 @@ public class RoleMapper {
 	public Role fromEntityToDomain(RoleEntity entity) {
 		return Role.builder()
 				.id(entity.getId())
-				.roleName(entity.getRoleName())				
+				.role(entity.getRole())
 				.description(entity.getDescription())
 				.build();
 	}

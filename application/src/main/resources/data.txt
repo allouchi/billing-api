@@ -347,7 +347,7 @@ CREATE TABLE t_role_ref (
 --
 -- Dumping data for table `t_role_ref`
 --
-INSERT INTO `t_role_ref` (id,
+INSERT INTO `t_role` (id,
                             role,
                             description)
 VALUES

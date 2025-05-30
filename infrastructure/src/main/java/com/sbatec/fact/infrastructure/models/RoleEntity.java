@@ -20,8 +20,8 @@ public class RoleEntity extends CommonEntity {
     @Column(name = "id", nullable = false)
     Long id;
 
-    @Column(name = "role_name", nullable = false)
-    private String roleName;
+    @Column(name = "role", nullable = false)
+    private String role;
 
     @Column(name = "description", nullable = false)
     private String description;
