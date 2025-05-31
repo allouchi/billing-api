@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserMapper {
     private final CompanyMapper companyMapper;
-    private final RoleMapper roleUserMapper;
+    private final RoleMapper roleMapper;
 
     public UserEntity fromDomainToEntity(User domain) {
         return UserEntity
@@ -27,7 +27,7 @@ public class UserMapper {
                 .lastName(domain.getLastName())
                 .password(domain.getPassword())
                 .activated(domain.getActivated())
-                .role(domain.getRole())
+                .roles(roleMapper.fromDomainToEntityList(domain.getRoles()))
                 .siret(domain.getSiret())
                 .build();
     }
@@ -42,7 +42,7 @@ public class UserMapper {
                 .lastName(entity.getLastName())
                 .password(entity.getPassword())
                 .activated(entity.getActivated())
-                .role(entity.getRole())
+                .roles(roleMapper.fromEntityToDomainList(entity.getRoles()))
                 .siret(entity.getSiret())
                 .build();
     }

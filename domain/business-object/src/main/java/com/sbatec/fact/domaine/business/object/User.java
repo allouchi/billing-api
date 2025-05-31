@@ -5,6 +5,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,6 +25,6 @@ public class User implements Serializable {
     String password;
     String email;
     Boolean activated;
-    String role;
     String siret;
+    List<Role> roles;
 }

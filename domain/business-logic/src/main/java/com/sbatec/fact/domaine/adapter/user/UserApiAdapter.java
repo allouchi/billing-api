@@ -1,5 +1,6 @@
 package com.sbatec.fact.domaine.adapter.user;
 
+import com.sbatec.fact.domaine.business.object.Role;
 import com.sbatec.fact.domaine.business.object.User;
 import com.sbatec.fact.domaine.ports.api.user.UserApiService;
 import com.sbatec.fact.domaine.ports.spi.user.UserSpiService;
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -66,9 +68,15 @@ public class UserApiAdapter implements UserApiService {
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userSpiService.findByUserName(username);
+
+        List<Role> roles = user.getRoles();
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getRole()));
+        }
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),
-                List.of(new SimpleGrantedAuthority(user.getRole())));
+                authorities);
     }
 }

@@ -1,10 +1,7 @@
 package com.sbatec.fact.application.rest.controllers.user;
 
 import com.sbatec.fact.config.auth.JwtService;
-import com.sbatec.fact.domaine.business.object.AuthRequest;
-import com.sbatec.fact.domaine.business.object.AuthResponse;
-import com.sbatec.fact.domaine.business.object.Company;
-import com.sbatec.fact.domaine.business.object.User;
+import com.sbatec.fact.domaine.business.object.*;
 import com.sbatec.fact.domaine.ports.api.company.CompanyApiService;
 import com.sbatec.fact.domaine.ports.api.user.UserApiService;
 import com.sbatec.util.CommonResource.Resource;
@@ -32,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
@@ -63,13 +61,16 @@ public class UserController {
         UserDetails user = (UserDetails) auth.getPrincipal();
         String jwt = jwtService.generateToken(user);
 
-        String roles = auth.getAuthorities().stream()
-                .map(grantedAuthority -> grantedAuthority.getAuthority()) // ex: "ROLE_ADMIN"
+        List<Role> roles = auth.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
                 .filter(role -> role.startsWith("ROLE_"))
-                .findFirst()
-                .orElse("ROLE_USER");
+                .map(role -> Role.builder()
+                        .role(role)
+                        .build())
+                .collect(Collectors.toList());
+
         User usr = userApiService.findByUserName(user.getUsername());
-        usr.setRole(roles);
+        usr.setRoles(roles);
         usr.setPassword("");
 
         Company company = companyApiService.findBySiret(usr.getSiret());
@@ -102,7 +103,8 @@ public class UserController {
     @GetMapping()
     public List<User> findAllUsers() {
         log.info("Get all users by Email");
-        return userApiService.findAllUsers();
+        List<User> users = userApiService.findAllUsers();
+        return users;
     }
 
     //@Secured(value = {"ADMIN"})

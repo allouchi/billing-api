@@ -287,60 +287,13 @@ INSERT INTO t_facture ( id,
 (61,'CS Group','30/05/2025',NULL,'31/03/2025',60,'KO','\\2025\\03-Mars\\Facture Client\\Facture_Sbatec_Osircom_202503_1025.pdf','Facture_Sbatec_Osircom_202503_1025.pdf',null,0,'Mars',2112,0,'N° CS202305','20250331-1025',10710,12852,21,2142,'N. Acquitté',510,5,'2025'),(63,'CS Group','29/06/2025',NULL,'30/04/2025',60,'KO','\\2025\\04-Avril\\Facture Client\\Facture_Sbatec_Osircom_202504_1026.pdf','Facture_Sbatec_Osircom_202504_1026.pdf',null,0,'Avril',2112,0,'N° CS202305','20250430-1026',10710,12852,21,2142,'N. Acquitté',510,5,'2025'),(65,'CS Group','30/07/2025',NULL,'31/05/2025',60,'KO','\\2025\\05-Mai\\Facture Client\\Facture_Sbatec_Osircom_202505_1027.pdf','Facture_Sbatec_Osircom_202505_1027.pdf',null,0,'Mai',1806,0,'N° CS202305','20250531-1027',9180,11016,18,1836,'N. Acquitté',510,5,'2025');
 
 --
--- Table structure for table `t_user`
---
-DROP TABLE IF EXISTS t_user;
-CREATE TABLE t_user (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `email` varchar(45) NOT NULL,
-  `first_name` varchar(45) NOT NULL,
-  `last_name` varchar(45) NOT NULL,
-  `password` varchar(100) NOT NULL,
-  `role` varchar(30) NOT NULL,
-  `siret` varchar(20) NOT NULL,
-  `activated`   tinyint(1) DEFAULT NULL,
-  `company_id` bigint DEFAULT NOT NULL,
-  PRIMARY KEY (`id`)
-  );
-
---
--- Dumping data for table `t_user`
---
-
-INSERT INTO t_user (id,
-                      email,
-                      first_name,
-                      last_name,
-                      password,
-                      role,
-                      siret,
-                      activated,
-                      company_id)
-VALUES
-(1,'allouchi@hotmail.fr','Mustapha','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q','ROLE_ADMIN','85292702900011',TRUE,1),
-(2,'khalid@hotmail.fr','Khalid','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q','ROLE_WRITE','85292702900011',TRUE,1),
-(3,'salma@hotmail.fr','Salma','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q','ROLE_READ','85292702900011', TRUE,1),
-(4,'btissame@hotmail.fr','Btissame','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q','ROLE_CONSULT','85292702900011',TRUE,2);
---
 -- Table structure for table `t_role`
 --
 DROP TABLE IF EXISTS t_role;
 CREATE TABLE t_role (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `role_name` varchar(45) NOT NULL,
+  `role` varchar(45) NOT NULL,
   `description` varchar(45) NOT NULL,
-  `user_id` bigint DEFAULT NULL,
-  PRIMARY KEY (`id`)
-);
-
---
--- Table structure for table `t_role_ref`
---
-DROP TABLE IF EXISTS t_role_ref;
-CREATE TABLE t_role_ref (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `role` varchar(255) NOT NULL,
-  `description` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 );
 
@@ -355,6 +308,52 @@ VALUES
 (2,'ROLE_READ','Lecture'),
 (3,'ROLE_CONSULT','Consultation'),
 (4,'ROLE_WHRITE','Ecriture');
+
+--
+-- Table structure for table `t_user`
+--
+DROP TABLE IF EXISTS t_user;
+CREATE TABLE t_user (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `email` varchar(45) NOT NULL,
+  `first_name` varchar(45) NOT NULL,
+  `last_name` varchar(45) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `siret` varchar(20) NOT NULL,
+  `activated`   tinyint(1) DEFAULT NULL,
+  `role_id` bigint NOT NULL,
+  PRIMARY KEY (`id`)
+  );
+
+--
+-- Dumping data for table `t_user`
+--
+
+INSERT INTO t_user (id,
+                      email,
+                      first_name,
+                      last_name,
+                      password,
+                      siret,
+                      activated,
+                      role_id)
+VALUES
+(1,'allouchi@hotmail.fr','Mustapha','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q','85292702900011',TRUE,1),
+(2,'khalid@hotmail.fr','Khalid','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q','85292702900011',TRUE,1),
+(3,'salma@hotmail.fr','Salma','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q','85292702900011', TRUE,1),
+(4,'btissame@hotmail.fr','Btissame','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q','85292702900011',TRUE,2);
+
+--
+-- Table structure for table `t_role_ref`
+--
+DROP TABLE IF EXISTS t_role_ref;
+CREATE TABLE t_role_ref (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `role` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
 
 --
 -- Table structure for table `t_tva`

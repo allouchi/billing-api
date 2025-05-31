@@ -24,16 +24,16 @@ public class UserDetailMapper implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-
-        String role = user.getRole();
+        List<Role> roles = user.getRoles();
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(role));
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getRole()));
+        }
         return authorities;
     }
 
     @Override
     public String getPassword() {
-
         return new BCryptPasswordEncoder().encode(user.getPassword());
     }
 

@@ -3,6 +3,7 @@ package com.sbatec.fact.infrastructure.models;
 import com.sbatec.fact.infrastructure.models.common.CommonEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 @Getter
@@ -11,8 +12,8 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@Entity
-@Table(name = "T_Role")
+@Entity(name = "T_Role")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class RoleEntity extends CommonEntity {
 
     @Id
