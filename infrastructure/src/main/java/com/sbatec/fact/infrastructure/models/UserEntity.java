@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,6 +22,7 @@ public class UserEntity extends CommonEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     Long id;
     @Column(name = "email", unique = true, length = 50)
     String email;
@@ -33,8 +35,13 @@ public class UserEntity extends CommonEntity {
     @Column(name = "activated", length = 1)
     Boolean activated;
     @Column(name = "siret")
-    private String siret;
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "id")
-    private List<RoleEntity> roles;
+    String siret;
+
+    @ManyToMany( fetch = FetchType.EAGER,  cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    List<RoleEntity> roles;
 }

@@ -305,9 +305,8 @@ INSERT INTO `t_role` (id,
                             description)
 VALUES
 (1,'ROLE_ADMIN','Administrateur'),
-(2,'ROLE_READ','Lecture'),
-(3,'ROLE_CONSULT','Consultation'),
-(4,'ROLE_WHRITE','Ecriture');
+(2,'ROLE_CONSULT','Consultation'),
+(3,'ROLE_EDIT','Edition');
 
 --
 -- Table structure for table `t_user`
@@ -342,6 +341,22 @@ VALUES
 (2,'khalid@hotmail.fr','Khalid','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q','85292702900011',TRUE,1),
 (3,'salma@hotmail.fr','Salma','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q','85292702900011', TRUE,1),
 (4,'btissame@hotmail.fr','Btissame','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q','85292702900011',TRUE,2);
+
+
+CREATE TABLE user_roles (
+    user_id BIGINT NOT NULL,
+    role_id BIGINT NOT NULL,
+    PRIMARY KEY (user_id, role_id),
+    FOREIGN KEY (user_id) REFERENCES t_user(id) ON DELETE CASCADE,
+    FOREIGN KEY (role_id) REFERENCES t_role(id) ON DELETE NO ACTION
+);
+
+INSERT INTO user_roles (user_id,role_id)
+VALUES
+(1,1),
+(1,2),
+(2,1),
+(3,2);
 
 --
 -- Table structure for table `t_role_ref`

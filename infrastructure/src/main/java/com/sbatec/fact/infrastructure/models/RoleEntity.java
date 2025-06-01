@@ -6,6 +6,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
 @Getter
 @Setter
 @SuperBuilder
@@ -22,9 +24,12 @@ public class RoleEntity extends CommonEntity {
     Long id;
 
     @Column(name = "role", nullable = false)
-    private String role;
+    String role;
 
     @Column(name = "description", nullable = false)
-    private String description;
+    String description;
+
+    @ManyToMany( fetch = FetchType.EAGER, mappedBy = "roles")
+    List<UserEntity> users;
 
 }

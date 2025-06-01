@@ -1,5 +1,6 @@
 package com.sbatec.fact.infrastructure.adapter.user;
 
+import com.sbatec.fact.domaine.business.object.Role;
 import com.sbatec.fact.domaine.business.object.User;
 import com.sbatec.fact.domaine.exception.ErrorCatalog;
 import com.sbatec.fact.domaine.exception.ServiceException;
@@ -7,8 +8,11 @@ import com.sbatec.fact.domaine.exception.UserNotFoundException;
 import com.sbatec.fact.domaine.ports.spi.user.UserSpiService;
 import com.sbatec.fact.infrastructure.adapter.commun.CheckEmailAdresse;
 import com.sbatec.fact.infrastructure.mapper.CompanyMapper;
+import com.sbatec.fact.infrastructure.mapper.RoleMapper;
 import com.sbatec.fact.infrastructure.mapper.UserMapper;
+import com.sbatec.fact.infrastructure.models.RoleEntity;
 import com.sbatec.fact.infrastructure.models.UserEntity;
+import com.sbatec.fact.infrastructure.repository.user.RoleJpaRepository;
 import com.sbatec.fact.infrastructure.repository.user.UserJpaRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +29,10 @@ import java.util.Optional;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserSpiAdapter implements UserSpiService {
     UserJpaRepository userJpaRepository;
+    RoleJpaRepository roleJpaRepository;
     UserMapper userMapper;
     CompanyMapper companyMapper;
+    RoleMapper roleMapper;
 
 
     @Override
@@ -40,12 +46,23 @@ public class UserSpiAdapter implements UserSpiService {
         }
 
         try {
-            UserEntity entity = userJpaRepository.save(userMapper.fromDomainToEntity(user));
-            return userMapper.fromEntityToDomain(entity);
+            UserEntity userEntity = userMapper.fromDomainToEntity(user);
+            if (user.getRoles() != null && !user.getRoles().isEmpty()) {
+                Long roleId = user.getRoles().get(0).getId();
+                if(roleId != null){
+                    Optional<RoleEntity> entityRole = roleJpaRepository.findById(user.getRoles().get(0).getId());
+                    if(entityRole.isPresent()){
+                        userEntity.getRoles().add(entityRole.get());
+                        UserEntity entity = userJpaRepository.saveAndFlush(userEntity);
+                        return userMapper.fromEntityToDomain(entity);
+                    }
+                }
+            }
         } catch (Exception e) {
             log.error("error while creating new user", e);
             throw new ServiceException(ErrorCatalog.DB_ERROR, e.getMessage());
         }
+        return  null;
     }
 
     @Override

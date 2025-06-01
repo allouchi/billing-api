@@ -55,9 +55,8 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> authenticate(@RequestBody AuthRequest request) {
-        Authentication auth = authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
-        );
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
+        Authentication auth = authManager.authenticate(authToken);
         UserDetails user = (UserDetails) auth.getPrincipal();
         String jwt = jwtService.generateToken(user);
 
@@ -104,6 +103,12 @@ public class UserController {
     public List<User> findAllUsers() {
         log.info("Get all users by Email");
         List<User> users = userApiService.findAllUsers();
+
+        if(users != null && !users.isEmpty()){
+            users.forEach(u->{
+                u.setPassword("");
+            });
+        }
         return users;
     }
 
@@ -129,7 +134,7 @@ public class UserController {
     @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.ACCEPTED)
     public void deleteUser(@PathVariable @NotNull long id) {
-        log.info("delete client by id :" + id);
+        log.info("delete user by id : " + id);
         userApiService.deleteUserById(id);
     }
 
