@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -29,7 +30,7 @@ public class RoleEntity extends CommonEntity {
     @Column(name = "description", nullable = false)
     String description;
 
-    @ManyToMany( fetch = FetchType.EAGER, mappedBy = "roles")
-    List<UserEntity> users;
+    //@ManyToMany( fetch = FetchType.EAGER, mappedBy = "roles")
+    //List<UserEntity> users = new ArrayList<>();
 
 }

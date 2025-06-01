@@ -19,7 +19,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,33 +38,36 @@ public class UserSpiAdapter implements UserSpiService {
 
 
     @Override
+    @Transactional
     public User addUser(User user) {
 
         Optional.ofNullable(user).orElseThrow(() -> new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT));
         CheckEmailAdresse checkEmail = CheckEmailAdresse.builder().build();
-        if (checkEmail.checkEmailAdresse(user, userJpaRepository)) {
+        if (user.getId() == null && checkEmail.checkEmailAdresse(user, userJpaRepository)) {
             final String format = String.format("L'adresse mail %s est déjà utilisée", user.getEmail());
             throw new ServiceException(ErrorCatalog.DUPLICATE_DATA, format);
         }
 
         try {
             UserEntity userEntity = userMapper.fromDomainToEntity(user);
-            if (user.getRoles() != null && !user.getRoles().isEmpty()) {
-                Long roleId = user.getRoles().get(0).getId();
-                if(roleId != null){
-                    Optional<RoleEntity> entityRole = roleJpaRepository.findById(user.getRoles().get(0).getId());
-                    if(entityRole.isPresent()){
-                        userEntity.getRoles().add(entityRole.get());
-                        UserEntity entity = userJpaRepository.saveAndFlush(userEntity);
-                        return userMapper.fromEntityToDomain(entity);
-                    }
+            List<RoleEntity> rolesToAdd = new ArrayList<>();
+
+            for (RoleEntity role : userEntity.getRoles()) {
+                Optional<RoleEntity> roleInDb = roleJpaRepository.findById(role.getId());
+                if (roleInDb.isPresent()) {
+                    rolesToAdd.add(roleInDb.get());
+                } else {
+                    throw new IllegalArgumentException("Role non trouvé avec id = " + role.getId());
                 }
             }
+
+            userEntity.setRoles(rolesToAdd);
+            UserEntity entity = userJpaRepository.save(userEntity);
+            return userMapper.fromEntityToDomain(entity);
         } catch (Exception e) {
             log.error("error while creating new user", e);
             throw new ServiceException(ErrorCatalog.DB_ERROR, e.getMessage());
         }
-        return  null;
     }
 
     @Override

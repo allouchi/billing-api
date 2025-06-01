@@ -131,6 +131,15 @@ public class UserController {
         return userApiService.addUser(user);
     }
 
+    @ResponseStatus(code = HttpStatus.CREATED)
+    @PutMapping(value = "/edit")
+    public User editUser(@RequestBody @NotNull User user) {
+        log.info("Add user : " + user.getEmail());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userApiService.addUser(user);
+    }
+
+
     @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.ACCEPTED)
     public void deleteUser(@PathVariable @NotNull long id) {

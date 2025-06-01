@@ -351,12 +351,10 @@ CREATE TABLE user_roles (
     FOREIGN KEY (role_id) REFERENCES t_role(id) ON DELETE NO ACTION
 );
 
-INSERT INTO user_roles (user_id,role_id)
-VALUES
-(1,1),
-(1,2),
-(2,1),
-(3,2);
+--INSERT INTO user_roles (user_id,role_id)
+--VALUES
+--(1,1),
+--(1,2)
 
 --
 -- Table structure for table `t_role_ref`

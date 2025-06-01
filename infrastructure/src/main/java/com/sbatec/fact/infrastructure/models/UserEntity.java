@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -37,11 +38,11 @@ public class UserEntity extends CommonEntity {
     @Column(name = "siret")
     String siret;
 
-    @ManyToMany( fetch = FetchType.EAGER,  cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    List<RoleEntity> roles;
+    List<RoleEntity> roles = new ArrayList<>();
 }
