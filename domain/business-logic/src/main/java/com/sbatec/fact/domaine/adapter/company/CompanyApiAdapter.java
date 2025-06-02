@@ -36,10 +36,6 @@ public class CompanyApiAdapter implements CompanyApiService {
         return companySpiService.findById(id);
     }
 
-    @Override
-    public Company findByReasonSocialIgnoreCase(String reasonSocial) {
-        return companySpiService.findByReasonSocialIgnoreCase(reasonSocial);
-    }
 
     @Override
     public Company findBySiret(String siret) {
@@ -51,8 +47,5 @@ public class CompanyApiAdapter implements CompanyApiService {
         companySpiService.deleteCompany(id);
     }
 
-    @Override
-    public List<Company> findByUserName(String userName) {
-        return companySpiService.findByUserName(userName);
-    }
+
 }

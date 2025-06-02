@@ -28,7 +28,7 @@ public class RoleRefMapper {
     public Role fromEntityToDomain(RoleEntity entity) {
         return Role.builder()
                 .id(entity.getId())
-                .role(entity.getRole())
+                .roleName(entity.getRoleName())
                 .description(entity.getDescription())
                 .build();
     }

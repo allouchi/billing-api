@@ -18,7 +18,8 @@ import java.util.Set;
 @SuperBuilder
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Entity(name = "T_User")
+@Entity
+@Table(name = "T_User")
 public class UserEntity extends CommonEntity {
 
     @Id
@@ -44,5 +45,5 @@ public class UserEntity extends CommonEntity {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    List<RoleEntity> roles = new ArrayList<>();
+    List<RoleEntity> roleNames = new ArrayList<>();
 }

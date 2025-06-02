@@ -27,7 +27,7 @@ public class UserMapper {
                 .lastName(domain.getLastName())
                 .password(domain.getPassword())
                 .activated(domain.getActivated())
-                .roles(roleMapper.fromDomainToEntityList(domain.getRoles()))
+                .roleNames(roleMapper.fromDomainToEntityList(domain.getRoles()))
                 .siret(domain.getSiret())
                 .build();
     }
@@ -42,7 +42,7 @@ public class UserMapper {
                 .lastName(entity.getLastName())
                 .password(entity.getPassword())
                 .activated(entity.getActivated())
-                .roles(roleMapper.fromEntityToDomainList(entity.getRoles()))
+                .roles(roleMapper.fromEntityToDomainList(entity.getRoleNames()))
                 .siret(entity.getSiret())
                 .build();
     }

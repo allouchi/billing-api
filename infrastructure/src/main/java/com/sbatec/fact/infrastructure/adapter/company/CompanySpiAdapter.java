@@ -104,32 +104,6 @@ public class CompanySpiAdapter implements CompanySpiService {
     }
 
     @Override
-    public Company findByReasonSocialIgnoreCase(String reasonSocial) {
-
-        Company reponse = null;
-
-        if (reasonSocial == null || reasonSocial.equals("")) {
-            throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
-        }
-
-        try {
-            Optional<CompanyEntity> entity = companyJpaRepository.findBySocialReasonIgnoreCase(reasonSocial);
-            if (entity.isPresent()) {
-                reponse = companyMapper.fromEntityToDomain(entity.get());
-            }
-        } catch (Exception e) {
-            log.error("error while get company with : " + reasonSocial, e);
-            throw new ServiceException(ErrorCatalog.DB_ERROR, e);
-        }
-
-        if (reponse == null) {
-            final String format = String.format("La société avec raison soçiale %s est absente", reasonSocial);
-            throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, format);
-        }
-        return reponse;
-    }
-
-    @Override
     public Company findBySiret(String siret) {
 
         Company reponse = null;
@@ -167,19 +141,6 @@ public class CompanySpiAdapter implements CompanySpiService {
         } catch (Exception e) {
             log.error("error while deleting data company with requested ID:" + "" + id, e);
             throw new ServiceException(ErrorCatalog.DB_ERROR, e);
-        }
-    }
-
-    @Override
-    public List<Company> findByUserName(String userName) {
-
-        Optional<List<CompanyEntity>> companies = companyJpaRepository.findByUserName(userName);
-
-        if (companies.isPresent()) {
-            return companyMapper.fromEntityToDomain(companies.get());
-        } else {
-            final String format = "Aucune société trouvée";
-            throw new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, format);
         }
     }
 }

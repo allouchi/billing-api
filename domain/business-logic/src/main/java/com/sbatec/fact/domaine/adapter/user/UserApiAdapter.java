@@ -72,7 +72,7 @@ public class UserApiAdapter implements UserApiService {
         List<Role> roles = user.getRoles();
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getRole()));
+            authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
         }
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),

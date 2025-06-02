@@ -177,7 +177,7 @@ VALUES
 (2,'Accor Hotels',30,'La Prestation est réalisée pour le compte de','N°13.21.19.05.14.01',0,490,'08/07/2021','31/12/2021',2,1,NULL,1,'85292702900011'),
 (3,'Accor Hotels',30,'La Prestation est réalisée pour le compte de','N° 13.21.19.05.14.01',0,510,'01/01/2022','30/09/2022',2,1,NULL,1,'85292702900011'),
 (4,'Ekino',30,'La Prestation est réalisée pour le compte de','N° 2022.11.07.00186',0,500,'09/11/2022','31/12/2022',3,1,NULL,1,'85292702900011'),
-(5,'CS Group',60,'La Prestation est réalisée pour le compte de ','N° CS202305',0,510,'20/02/2023','31/12/2025',4,1,NULL,1,NULL);
+(5,'CS Group',60,'La Prestation est réalisée pour le compte de ','N° CS202305',0,510,'20/02/2023','31/12/2025',4,1,NULL,1,'85292702900011');
 
 --
 -- Table structure for table `t_facture`
@@ -292,7 +292,7 @@ INSERT INTO t_facture ( id,
 DROP TABLE IF EXISTS t_role;
 CREATE TABLE t_role (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `role` varchar(45) NOT NULL,
+  `role_name` varchar(45) NOT NULL,
   `description` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
 );
@@ -301,7 +301,7 @@ CREATE TABLE t_role (
 -- Dumping data for table `t_role_ref`
 --
 INSERT INTO `t_role` (id,
-                            role,
+                            role_name,
                             description)
 VALUES
 (1,'ROLE_ADMIN','Administrateur'),
@@ -320,7 +320,6 @@ CREATE TABLE t_user (
   `password` varchar(100) NOT NULL,
   `siret` varchar(20) NOT NULL,
   `activated`   tinyint(1) DEFAULT NULL,
-  `role_id` bigint NOT NULL,
   PRIMARY KEY (`id`)
   );
 
@@ -334,13 +333,13 @@ INSERT INTO t_user (id,
                       last_name,
                       password,
                       siret,
-                      activated,
-                      role_id)
+                      activated
+                    )
 VALUES
-(1,'allouchi@hotmail.fr','Mustapha','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q','85292702900011',TRUE,1),
-(2,'khalid@hotmail.fr','Khalid','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q','85292702900011',TRUE,1),
-(3,'salma@hotmail.fr','Salma','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q','85292702900011', TRUE,1),
-(4,'btissame@hotmail.fr','Btissame','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q','85292702900011',TRUE,2);
+(1,'allouchi@hotmail.fr','Mustapha','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q','85292702900011',TRUE),
+(2,'khalid@hotmail.fr','Khalid','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q','85292702900011',TRUE),
+(3,'salma@hotmail.fr','Salma','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q','85292702900011', TRUE),
+(4,'btissame@hotmail.fr','Btissame','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q','85292702900011',TRUE);
 
 
 CREATE TABLE user_roles (
@@ -351,21 +350,10 @@ CREATE TABLE user_roles (
     FOREIGN KEY (role_id) REFERENCES t_role(id) ON DELETE NO ACTION
 );
 
---INSERT INTO user_roles (user_id,role_id)
---VALUES
---(1,1),
---(1,2)
-
---
--- Table structure for table `t_role_ref`
---
-DROP TABLE IF EXISTS t_role_ref;
-CREATE TABLE t_role_ref (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `role` varchar(255) NOT NULL,
-  `description` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-);
+INSERT INTO user_roles (user_id,role_id)
+VALUES
+(1,1),
+(1,2);
 
 
 --

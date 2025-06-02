@@ -6,12 +6,29 @@
   <component name="ChangeListManager">
     <list default="true" id="ff07ecbc-d1f3-4543-879d-e13ac5f9aa2a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/application/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/rest/controllers/client/ClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/rest/controllers/client/ClientController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/rest/controllers/company/CompanyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/rest/controllers/company/CompanyController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/rest/controllers/prestation/PrestationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/rest/controllers/prestation/PrestationController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/rest/controllers/user/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/rest/controllers/user/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/resources/application-h2.properties" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/resources/application-h2.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/src/main/resources/data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/resources/data.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/business-logic/src/main/java/com/sbatec/fact/domaine/adapter/company/CompanyApiAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/business-logic/src/main/java/com/sbatec/fact/domaine/adapter/company/CompanyApiAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/business-logic/src/main/java/com/sbatec/fact/domaine/adapter/user/UserApiAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/business-logic/src/main/java/com/sbatec/fact/domaine/adapter/user/UserApiAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/business-logic/src/main/java/com/sbatec/fact/domaine/ports/api/company/CompanyApiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/business-logic/src/main/java/com/sbatec/fact/domaine/ports/api/company/CompanyApiService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/business-logic/src/main/java/com/sbatec/fact/domaine/ports/spi/company/CompanySpiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/business-logic/src/main/java/com/sbatec/fact/domaine/ports/spi/company/CompanySpiService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/business-object/src/main/java/com/sbatec/fact/domaine/business/object/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/business-object/src/main/java/com/sbatec/fact/domaine/business/object/Role.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/business-object/src/main/java/com/sbatec/fact/domaine/business/object/UserDetailMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/business-object/src/main/java/com/sbatec/fact/domaine/business/object/UserDetailMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/adapter/company/CompanySpiAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/adapter/company/CompanySpiAdapter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/adapter/user/UserSpiAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/adapter/user/UserSpiAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/mapper/RoleMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/mapper/RoleMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/mapper/RoleRefMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/mapper/RoleRefMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/mapper/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/mapper/UserMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/models/RoleEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/models/RoleEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/models/UserEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/models/UserEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/repository/company/CompanyJpaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/repository/company/CompanyJpaRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,33 +38,45 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;allouchi&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/allouchi/billing-api.git&quot;,
+    &quot;accountId&quot;: &quot;1c95b88a-28d4-4c38-bf13-5e942c19c31d&quot;
+  }
+}</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="useMavenConfig" value="true" />
-      </MavenGeneralSettings>
-    </option>
-  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
   <component name="ProjectId" id="2xjuBaIXYS3AS398YIdJksMXH5E" />
   <component name="ProjectViewState">
     <option name="autoscrollToSource" value="true" />
     <option name="showExcludedFiles" value="false" />
     <option name="showLibraryContents" value="true" />
     <option name="sortByType" value="true" />
+    <option name="sortKey" value="BY_TYPE" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.17773438&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.Java&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.ApplicationStarter.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "develop",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.17773438",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.sourceCode.Java"
   }
-}</component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -75,7 +104,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/rest/controllers/prestation/PrestationController.java</url>
-          <line>46</line>
+          <line>45</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -112,6 +141,21 @@
           <url>file://$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/rest/controllers/user/UserController.java</url>
           <line>136</line>
           <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/rest/controllers/company/CompanyController.java</url>
+          <line>29</line>
+          <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/rest/controllers/prestation/PrestationController.java</url>
+          <line>31</line>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/rest/controllers/prestation/PrestationController.java</url>
+          <line>30</line>
+          <option name="timeStamp" value="28" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

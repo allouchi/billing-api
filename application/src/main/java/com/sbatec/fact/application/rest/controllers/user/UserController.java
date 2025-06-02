@@ -64,7 +64,7 @@ public class UserController {
                 .map(GrantedAuthority::getAuthority)
                 .filter(role -> role.startsWith("ROLE_"))
                 .map(role -> Role.builder()
-                        .role(role)
+                        .roleName(role)
                         .build())
                 .collect(Collectors.toList());
 
@@ -134,8 +134,7 @@ public class UserController {
     @ResponseStatus(code = HttpStatus.CREATED)
     @PutMapping(value = "/edit")
     public User editUser(@RequestBody @NotNull User user) {
-        log.info("Add user : " + user.getEmail());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        log.info("Add user : {}", user.getEmail());
         return userApiService.addUser(user);
     }
 

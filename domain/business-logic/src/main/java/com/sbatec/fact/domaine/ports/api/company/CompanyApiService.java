@@ -13,11 +13,7 @@ public interface CompanyApiService {
 
     public Company findById(long id);
 
-    public Company findByReasonSocialIgnoreCase(String reasonSocial);
-
     public Company findBySiret(String siret);
-
-    public List<Company> findByUserName(String userName);
 
     public void deleteById(long id);
 }

@@ -22,7 +22,7 @@ public class ClientController {
     private ClientApiService clientApiService;
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
-    @GetMapping("/{siret}")
+    @GetMapping(value="/{siret}")
     public List<Client> getAllClientsBySiret(@PathVariable @NotNull String siret) {
         log.info("get all clients by siret : {} ", siret);
         return clientApiService.findAllClientsBySiret(siret);

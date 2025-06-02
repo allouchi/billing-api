@@ -52,7 +52,7 @@ public class UserSpiAdapter implements UserSpiService {
             UserEntity userEntity = userMapper.fromDomainToEntity(user);
             List<RoleEntity> rolesToAdd = new ArrayList<>();
 
-            for (RoleEntity role : userEntity.getRoles()) {
+            for (RoleEntity role : userEntity.getRoleNames()) {
                 Optional<RoleEntity> roleInDb = roleJpaRepository.findById(role.getId());
                 if (roleInDb.isPresent()) {
                     rolesToAdd.add(roleInDb.get());
@@ -61,7 +61,7 @@ public class UserSpiAdapter implements UserSpiService {
                 }
             }
 
-            userEntity.setRoles(rolesToAdd);
+            userEntity.setRoleNames(rolesToAdd);
             UserEntity entity = userJpaRepository.save(userEntity);
             return userMapper.fromEntityToDomain(entity);
         } catch (Exception e) {

@@ -15,7 +15,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@Entity(name = "T_Role")
+@Entity
+@Table(name = "T_Role")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RoleEntity extends CommonEntity {
 
@@ -24,13 +25,13 @@ public class RoleEntity extends CommonEntity {
     @Column(name = "id", nullable = false)
     Long id;
 
-    @Column(name = "role", nullable = false)
-    String role;
+    @Column(name = "roleName", nullable = false)
+    String roleName;
 
     @Column(name = "description", nullable = false)
     String description;
 
-    //@ManyToMany( fetch = FetchType.EAGER, mappedBy = "roles")
-    //List<UserEntity> users = new ArrayList<>();
+    @ManyToMany( fetch = FetchType.EAGER, mappedBy = "roleNames")
+    List<UserEntity> userNames = new ArrayList<>();
 
 }

@@ -24,11 +24,10 @@ public class PrestationController {
 
     PrestationApiService prestationApiService;
     FactureApiService factureApiService;
-    @Autowired
     StorageProperties resources;
 
-    @GetMapping("/{siret}")
-    public List<Prestation> getAllPrestations(@PathVariable String siret) {
+    @GetMapping(value="/{siret}")
+    public List<Prestation> getAllPrestations(@PathVariable @NotNull String siret) {
         log.info("get all prestations");
         List<Prestation> prestations = prestationApiService.findAll(siret);
         return prestations;
