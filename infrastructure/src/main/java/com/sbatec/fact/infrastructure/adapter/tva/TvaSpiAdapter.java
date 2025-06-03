@@ -19,6 +19,8 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -54,9 +56,13 @@ public class TvaSpiAdapter implements TvaSpiService {
         if (Objects.isNull(e)) {
             throw new TvaNotFoundException(String.format("La Tva exercice %s n'existe pas", exercise));
         }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         List<Tva> tvas = tvaMapper.fromEntityToDomain(e);
-        return tvas.stream().sorted(Comparator.comparingLong(Tva::getId).reversed())
-                .collect(Collectors.toList());
+        tvas.sort(Comparator.<Tva, LocalDate>comparing(
+                tva -> LocalDate.parse(tva.getDatePayment(), formatter)
+        ).reversed());
+        return  tvas;
 
     }
 
