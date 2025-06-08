@@ -1,5 +1,18 @@
 package com.sbatec.fact.infrastructure.repository.edition;
 
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.*;
+import com.itextpdf.kernel.colors.DeviceGray;
+import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.io.font.constants.StandardFonts;
+
+import java.io.File;
+import java.io.IOException;
+
+import com.itextpdf.layout.properties.TextAlignment;
+import com.itextpdf.layout.properties.UnitValue;
 import com.sbatec.fact.domaine.business.object.Adresse;
 import com.sbatec.fact.domaine.business.object.Company;
 import com.sbatec.fact.domaine.business.object.Facture;
@@ -170,6 +183,8 @@ public class EditionReportImpl implements EditionReportService {
             } else {
                 templateFile = mapFiles.get("Default");
             }
+
+            log.info("********************* Début du génération du fichier pdf *********************");
             JasperReport jasperDesign = JasperCompileManager.compileReport(templateFile.getPath());
             JRDataSource dataSource = new JREmptyDataSource();
             // - Execution du rapport
@@ -217,6 +232,80 @@ public class EditionReportImpl implements EditionReportService {
         }
 
     }
+
+    @Override
+    public byte[] buildFacturePdfItext(Map<String, Object> data, boolean templateChoice,
+                                       String path, boolean storeFile) throws IOException {
+
+        String pathName = path + "\\facture.pdf";
+
+        PdfWriter writer = new PdfWriter(pathName);
+        PdfDocument pdf = new PdfDocument(writer);
+        Document document = new Document(pdf);
+
+        // Entête entreprise
+        document.add(new Paragraph("SBATEC Consulting")
+                //.setBold()
+                .setFontSize(16));
+        document.add(new Paragraph("111 Boulevard National\n92500 Rueil-Malmaison"));
+        document.add(new Paragraph("SASU au capital de 500 Euros\nR.C.S. Nanterre 831 502 141\nFR 188 315 021 41\nAPE : 6201Z\nSiret : 852 927 029 0001"));
+
+        document.add(new Paragraph("\nFacture N°: 20240131-1011")
+                //.setBold()
+                .setFontSize(14));
+
+        // Client
+        document.add(new Paragraph("Client : OSIRCOM\n21 Rue d'Algérie\n69001 LYON 1ER\nFRANCE"));
+
+        document.add(new Paragraph("Date : Rueil-Malmaison, le 31/01/2024"));
+
+        // Prestation
+        document.add(new Paragraph("\nPrestation pour CS NOVIDYS\nMois de Janvier par Mustapha ALIANE\nDéveloppeur Fullstack JAVA/JEE/Angular")
+                //.setItalic()
+        );
+
+        // Tableau des prestations
+        float[] colWidths = {250F, 100F, 100F, 100F};
+        Table table = new Table(UnitValue.createPointArray(colWidths));
+        table.addHeaderCell("Désignation");
+        table.addHeaderCell("Quantité");
+        table.addHeaderCell("Prix unitaire HT");
+        table.addHeaderCell("Prix total HT");
+
+        table.addCell("Jours de prestation");
+        table.addCell("22");
+        table.addCell("510,00€");
+        table.addCell("11 220,00€");
+
+        document.add(table);
+
+        // Totaux
+        document.add(new Paragraph("\nTotal HT : 11 220,00€"));
+        document.add(new Paragraph("TVA (20%) : 2 244,00€"));
+        document.add(new Paragraph("Total TTC : 13 464,00€")
+                //.setBold()
+        );
+
+        // Coordonnées bancaires
+        document.add(new Paragraph("\nCoordonnées bancaires pour règlement :")
+                //.setBold()
+        );
+        document.add(new Paragraph("IBAN: FR17 2004 1010 1254 0796 1J03 367\nBIC: PSSTFRPPSCE"));
+
+        // Conditions de paiement
+        document.add(new Paragraph("\nConditions de paiement :"));
+        document.add(new Paragraph("Le règlement sera réalisé à l'une de ces dates : 10, 20 et dernier jour de chaque mois."));
+        document.add(new Paragraph("Pénalités en cas de retard : 3 fois le taux d'intérêt légal à compter de la date d’échéance."));
+        document.add(new Paragraph("Le règlement sera réalisé en Euros par virement bancaire ou par chèque."));
+
+        document.close();
+        System.out.println("Facture générée : " + pathName);
+
+return  null;
+
+}
+
+
 
     private String formatString(String s) {
         String format = s.split(" ")[0];

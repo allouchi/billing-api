@@ -17,4 +17,7 @@ public interface EditionReportService {
                                          Prestation prestation, Facture facture);
 
     void buildSuiviFactures(List<Facture> factures, String path);
+
+    byte[] buildFacturePdfItext(Map<String, Object> data, boolean templateChoice,
+                                String path, boolean storeFile) throws IOException;
 }

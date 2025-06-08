@@ -48,7 +48,7 @@ public class BuildFactureImpl implements BuildFactureService {
             facture.setQuantite(prestation.getQuantite());
             facture.setClientPrestation(prestation.getClientPrestation());
             facture.setMoisFacture(moisFacture);
-            facture.setExercice(facture.getDateFacturation().substring(6, 10));
+            facture.setExercice(null);
             return facture;
         }
         return null;

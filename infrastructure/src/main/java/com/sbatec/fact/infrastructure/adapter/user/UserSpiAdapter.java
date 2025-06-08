@@ -62,12 +62,18 @@ public class UserSpiAdapter implements UserSpiService {
             }
 
             userEntity.setRoleNames(rolesToAdd);
-            UserEntity entity = userJpaRepository.save(userEntity);
-            return userMapper.fromEntityToDomain(entity);
+            Optional<UserEntity> userSaved = userJpaRepository.findById(user.getId());
+            if(userSaved.isPresent()){
+                userEntity.setPassword(userSaved.get().getPassword());
+                UserEntity entity = userJpaRepository.save(userEntity);
+                return userMapper.fromEntityToDomain(entity);
+            }
+
         } catch (Exception e) {
             log.error("error while creating new user", e);
             throw new ServiceException(ErrorCatalog.DB_ERROR, e.getMessage());
         }
+        return  null;
     }
 
     @Override

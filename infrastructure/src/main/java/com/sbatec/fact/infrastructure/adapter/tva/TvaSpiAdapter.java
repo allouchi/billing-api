@@ -116,33 +116,34 @@ public class TvaSpiAdapter implements TvaSpiService {
     @Override
     public TvaInfo findTvaInfo(String exercise, String siret) {
 
-        List<FactureEntity> entities = new ArrayList<>();
+        List<FactureEntity> factureEntity = new ArrayList<>();
         TvaInfo info = new TvaInfo();
 
         Optional<CompanyEntity> company = companyJpaRepository.findBySiret(siret);
         if (company.isPresent()) {
             CompanyEntity entity = company.get();
             List<PrestationEntity> prestations = entity.getPrestations();
-
             for (PrestationEntity prestation : prestations) {
                 for (FactureEntity factures : prestation.getFactures()) {
-                    entities.add(factures);
+                    if(factures.getExercice() != null){
+                        factureEntity.add(factures);
+                    }
                 }
             }
         }
         if (!exercise.equalsIgnoreCase(TOUS)) {
-            Iterator<FactureEntity> it = entities.iterator();
+            Iterator<FactureEntity> it = factureEntity.iterator();
             while (it.hasNext()) {
                 FactureEntity facture = it.next();
-                if (!facture.getExercice().equals(exercise)) {
+                if (facture.getExercice() == null || !facture.getExercice().equals(exercise)) {
                     it.remove();
                 }
             }
         }
 
         float totalTvaPaye = 0;
-        float totalTva = entities.stream().map(e -> (e.getMontantTVA() - 30)).reduce(0f, Float::sum);
-        float totalTTC = entities.stream().map(e -> e.getPrixTotalTTC()).reduce(0f, Float::sum);
+        float totalTva = factureEntity.stream().map(e -> (e.getMontantTVA() - 30)).reduce(0f, Float::sum);
+        float totalTTC = factureEntity.stream().map(e -> e.getPrixTotalTTC()).reduce(0f, Float::sum);
         List<TvaEntity> listeTvaPayee;
 
         if (exercise.equalsIgnoreCase(TOUS)) {
@@ -154,9 +155,9 @@ public class TvaSpiAdapter implements TvaSpiService {
             totalTvaPaye = listeTvaPayee.stream().map(e -> e.getMontantPayment()).reduce(0f, Float::sum);
         }
         info.setTotalTvaPaye(totalTvaPaye);
+        info.setTotalTva(totalTva);
         info.setTotalTvaRestant(totalTva - totalTvaPaye);
         info.setTotalTTC(totalTTC);
-
         return info;
     }
 }

@@ -11,8 +11,8 @@ import lombok.experimental.FieldDefaults;
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TvaInfo {
-
     Float totalTvaPaye;
     Float totalTvaRestant;
+    Float totalTva;
     Float totalTTC;
 }

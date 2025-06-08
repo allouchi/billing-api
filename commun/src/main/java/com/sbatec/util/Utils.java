@@ -158,9 +158,8 @@ public class Utils {
             oFacture.setStatusDesc(FactureStatus.OUI.getDescription());
             oFacture.setFraisRetard(0);
             oFacture.setNbJourRetard(0);
-            if (factureRequest.getExercice() != null) {
-                oFacture.setExercice(factureRequest.getExercice());
-            }
+            String exercice = dateEncaissement.split("/")[2];
+            oFacture.setExercice(exercice);
             oFacture.setMontantTVA(factureRequest.getPrixTotalHT() * 0.2f);
         }
         return oFacture;
