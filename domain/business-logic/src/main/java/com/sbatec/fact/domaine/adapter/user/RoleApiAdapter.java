@@ -23,5 +23,10 @@ public class RoleApiAdapter implements RoleApiService {
 	public List<Role> getAll() {
 		return roleSpiService.findAll();
 	}
-	
+
+	@Override
+	public Role findByRoleName(String roleName) {
+		return roleSpiService.findByRoleName(roleName);
+	}
+
 }

@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class PrestationController {
     FactureApiService factureApiService;
     StorageProperties resources;
 
+    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @GetMapping(value="/{siret}")
     public List<Prestation> getAllPrestations(@PathVariable @NotNull String siret) {
         log.info("get all prestations");
@@ -33,6 +35,7 @@ public class PrestationController {
         return prestations;
     }
 
+    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @PostMapping(value = "/{siret}")
     public Prestation addPrestation(@RequestBody Prestation prestation,
                                     @PathVariable @NotNull String siret) {
@@ -40,12 +43,14 @@ public class PrestationController {
         return prestationApiService.addPrestation(prestation, siret);
     }
 
+    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @PutMapping()
     public Prestation updatePrestation(@RequestBody Prestation prestation) {
         log.info("Create or update Prestation");
         return prestationApiService.updatePrestation(prestation);
     }
 
+    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @PutMapping(value = "/{siret}/{templateChoice}/{moisPrestaId}")
     public Prestation createFacture(@RequestBody Prestation prestation,
                                     @PathVariable @NotNull String siret,
@@ -57,6 +62,7 @@ public class PrestationController {
                 resources.getFichierSuiviFactures());
     }
 
+    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @DeleteMapping(value = "/{id}")
     public void deletePrestation(@PathVariable @NotNull long id) {
         log.info("delete prestation by id :" + id);

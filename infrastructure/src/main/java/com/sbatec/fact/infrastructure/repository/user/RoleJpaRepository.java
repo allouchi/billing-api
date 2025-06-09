@@ -8,5 +8,5 @@ import com.sbatec.fact.infrastructure.models.RoleRefEntity;
 
 @Repository
 public interface RoleJpaRepository extends JpaRepository<RoleEntity, Long> {
-  
+    RoleEntity findByRoleName(String roleName);
 }

@@ -23,7 +23,7 @@ public class ConsultantController implements CommonResource {
 
     private ConsultantApiService consultantApiService;
 
-    //@Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @GetMapping(value = "/{siret}")
     public List<Consultant> getAllConsultantsBySiret(@PathVariable @NotNull String siret) {
         log.info("get all consultants by siret : {}", siret);
@@ -31,7 +31,7 @@ public class ConsultantController implements CommonResource {
     }
 
 
-    //@Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @GetMapping()
     public List<Consultant> getAllConsultants() {
         log.info("get all consultants");
@@ -39,7 +39,7 @@ public class ConsultantController implements CommonResource {
     }
 
 
-    //@Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @PostMapping(value = "/{siret}")
     public Consultant addConsultant(@RequestBody @NotNull Consultant consultantRequest,
                                     @PathVariable @NotNull String siret) {
@@ -47,6 +47,7 @@ public class ConsultantController implements CommonResource {
         return consultantApiService.addConsultant(consultantRequest, siret);
     }
 
+    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @PutMapping(value = "/{siret}")
     public Consultant updateConsultant(@RequestBody @NotNull Consultant consultantRequest,
                                        @PathVariable @NotNull String siret) {

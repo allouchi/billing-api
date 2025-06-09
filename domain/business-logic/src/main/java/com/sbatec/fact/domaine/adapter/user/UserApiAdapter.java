@@ -74,6 +74,8 @@ public class UserApiAdapter implements UserApiService {
         for (Role role : roles) {
             authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
         }
+
+        System.out.println("Authorities: " + authorities);
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),

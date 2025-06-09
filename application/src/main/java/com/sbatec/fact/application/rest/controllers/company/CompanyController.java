@@ -10,6 +10,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,14 +24,15 @@ public class CompanyController {
 
     CompanyApiService companyApiService;
 
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured("ROLE_ADMIN")
     @GetMapping("/{siret}")
     public Company findBySiret(@PathVariable String siret) {
         log.info("Find company by siret : {}", siret);
         return companyApiService.findBySiret(siret);
     }
 
-    @Secured(value = {"ROLE_ADMIN"})
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EDITOR')")
     @GetMapping
     public ResponseEntity<List<Company>> findAll() {
         log.info("Find all companies");

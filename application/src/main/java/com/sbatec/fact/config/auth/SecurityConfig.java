@@ -12,9 +12,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -33,7 +35,7 @@ import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
+@EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
     private final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
@@ -52,20 +54,16 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .anonymous(anonymous -> anonymous.disable())
                 .authorizeHttpRequests(authorize -> authorize.requestMatchers(
-                                "/users/login/**", "/users/logout", "/**").permitAll()
+                                "/api/users/login/**", "/api/users/logout").permitAll()
                         .anyRequest().authenticated());
 
         http.authenticationProvider(authenticationProvider());
         http.sessionManagement(ses -> ses.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-        http.formLogin(form -> form
-                .loginPage("/login")
-                .failureHandler(authenticationFailureHandler())
-                .permitAll()
-        );
+        http.formLogin(AbstractHttpConfigurer::disable);
         http.logout(logout -> logout
-                .logoutUrl("/users/logout")
-                .logoutSuccessUrl("/login?logout")
+                .logoutUrl("/api/users/logout")
+                .logoutSuccessUrl("/api/login?logout")
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID"));
         return http.build();

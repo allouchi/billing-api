@@ -35,7 +35,7 @@ public class FactureController {
         return factures;
     }
 
-    //@Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @GetMapping("/{siret}/exercice")
     public List<Facture> findAllBySiretAndExercice(@PathVariable @NotNull String siret, @PathVariable @NotNull String exercice) {
         log.info("get all bills by siret {} and exercice {}", siret, exercice);

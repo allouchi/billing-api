@@ -3,6 +3,7 @@ package com.sbatec.fact.application.rest.controllers.user;
 import com.sbatec.fact.config.auth.JwtService;
 import com.sbatec.fact.domaine.business.object.*;
 import com.sbatec.fact.domaine.ports.api.company.CompanyApiService;
+import com.sbatec.fact.domaine.ports.api.user.RoleApiService;
 import com.sbatec.fact.domaine.ports.api.user.UserApiService;
 import com.sbatec.util.CommonResource.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,19 +40,14 @@ import java.util.stream.Collectors;
 public class UserController {
 
     static final String SPRING_SECURITY_CONTEXT_KEY = "SPRING_SECURITY_CONTEXT";
-    @Autowired
+
     UserApiService userApiService;
-
-    @Autowired
     private AuthenticationManager authManager;
-    @Autowired
     private JwtService jwtService;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
     private CompanyApiService companyApiService;
 
+    private RoleApiService roleApiService;
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> authenticate(@RequestBody AuthRequest request) {
@@ -63,9 +59,15 @@ public class UserController {
         List<Role> roles = auth.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .filter(role -> role.startsWith("ROLE_"))
-                .map(role -> Role.builder()
-                        .roleName(role)
-                        .build())
+                .map(roleName -> {
+                    // Supposons que vous avez un service RoleService avec une méthode findByRoleName
+                    Role existingRole = roleApiService.findByRoleName(roleName);
+                    return Role.builder()
+                            .id(existingRole.getId())
+                            .description(existingRole.getDescription())
+                            .roleName(roleName)
+                            .build();
+                })
                 .collect(Collectors.toList());
 
         User usr = userApiService.findByUserName(user.getUsername());
@@ -81,15 +83,15 @@ public class UserController {
         return ResponseEntity.ok(authResponse);
     }
 
+
     @GetMapping("/logout")
     public ResponseEntity<String> logout() {
         System.out.println("");
-
         return ResponseEntity.ok(null);
     }
 
 
-    //@Secured(value = {"ADMIN"})
+
     @ResponseStatus(code = HttpStatus.OK)
     @GetMapping(value = "/{userName:.+}")
     public User findByUserName(@PathVariable @NotNull String userName) {
@@ -112,7 +114,7 @@ public class UserController {
         return users;
     }
 
-    //@Secured(value = {"ADMIN"})
+
     @ResponseStatus(code = HttpStatus.OK)
     @GetMapping(value = "/{email:.+}/{password}")
     public User findByUserNameAndPassword(@PathVariable @NotNull String email,
@@ -122,7 +124,7 @@ public class UserController {
 
     }
 
-    //@Secured(value = {"ADMIN"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping(value = "/add")
     public User addUser(@RequestBody @NotNull User user) {
@@ -131,6 +133,8 @@ public class UserController {
         return userApiService.addUser(user);
     }
 
+
+    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @ResponseStatus(code = HttpStatus.CREATED)
     @PutMapping(value = "/edit")
     public User editUser(@RequestBody @NotNull User user) {
@@ -138,7 +142,7 @@ public class UserController {
         return userApiService.addUser(user);
     }
 
-
+    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.ACCEPTED)
     public void deleteUser(@PathVariable @NotNull long id) {

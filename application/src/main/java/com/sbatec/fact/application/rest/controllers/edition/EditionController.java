@@ -27,7 +27,7 @@ public class EditionController {
 
     EditionApiService editionApiService;
 
-    @Secured(value = {"ADMIN", "WRITE", "READ"})
+    @Secured({"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @GetMapping(value = "/editions/{factureId}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<byte[]> downloadPdf(@PathVariable Long factureId, HttpServletRequest request,
                                               HttpServletResponse response) {

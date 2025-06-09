@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,11 +26,11 @@ public class RoleController {
 
     RoleApiService roleApiService;
 
+    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @GetMapping
     public ResponseEntity<List<Role>> getAllRoles() {
         log.info("Get all role ref");
         List<Role> refs = roleApiService.getAll();
         return ResponseEntity.ok(refs);
     }
-
 }

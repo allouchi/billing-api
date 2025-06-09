@@ -20,16 +20,16 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserRoleSpiAdapter implements RoleSpiService {
 
-    RoleJpaRepository userRoleJpaRepository;
-    RoleRefMapper roleUserRefMapper;
+    RoleJpaRepository roleJpaRepository;
+    RoleRefMapper roleRefMapper;
 
     @Override
     public List<Role> findAll() {
         List<Role> reponse = null;
         try {
 
-            List<RoleEntity> entity = userRoleJpaRepository.findAll();
-            reponse = roleUserRefMapper.fromEntityToDomainList(entity);
+            List<RoleEntity> entity = roleJpaRepository.findAll();
+            reponse = roleRefMapper.fromEntityToDomainList(entity);
         } catch (Exception e) {
             throw new ServiceException(ErrorCatalog.DB_ERROR, "Problème lors de la recherche des rôles utilisateurs");
         }
@@ -40,5 +40,9 @@ public class UserRoleSpiAdapter implements RoleSpiService {
         return reponse;
     }
 
-
+    @Override
+    public Role findByRoleName(String roleName) {
+        RoleEntity roleEntity = roleJpaRepository.findByRoleName(roleName);
+        return  roleRefMapper.fromEntityToDomain(roleEntity);
+    }
 }

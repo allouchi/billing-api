@@ -9,4 +9,5 @@ public interface RoleSpiService {
   
 
   public List<Role> findAll();
+  public Role findByRoleName(String roleName);
 }
