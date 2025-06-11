@@ -32,7 +32,7 @@ public class CompanyController {
     }
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EDITOR')")
+    @Secured(value = {"ROLE_ADMIN"})
     @GetMapping
     public ResponseEntity<List<Company>> findAll() {
         log.info("Find all companies");

@@ -12,12 +12,13 @@
         <module name="billing-api-infrastructure" />
         <module name="billing-api-domain-business-logic" />
         <module name="billing-api-commun" />
+        <module name="billing-api" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="billing-api" options="" />
+      <module name="billing-api" options="-parameters -parameters" />
       <module name="billing-api (1)" options="-parameters -parameters" />
       <module name="billing-api-commun" options="-parameters" />
       <module name="billing-api-domain-business-logic" options="-parameters" />
