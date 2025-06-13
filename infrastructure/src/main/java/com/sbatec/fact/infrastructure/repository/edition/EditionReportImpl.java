@@ -420,7 +420,7 @@ public class EditionReportImpl implements EditionReportService {
             fos.flush();
             log.info("✅ Fichier PDF écrit sur le disque : {}", outputPath);
         } catch (IOException e) {
-            log.error("❌ Erreur lors de l'écriture du fichier PDF : {}", e.getMessage(), e);
+            log.error("❌ Erreur lors de l'écriture du fichier PDF : {}", e.getMessage());
         }
 
         log.info("********************* Fin génération du fichier pdf *********************");

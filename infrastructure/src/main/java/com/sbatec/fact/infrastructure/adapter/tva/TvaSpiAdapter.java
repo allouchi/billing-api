@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author maliane
@@ -62,7 +61,7 @@ public class TvaSpiAdapter implements TvaSpiService {
         tvas.sort(Comparator.<Tva, LocalDate>comparing(
                 tva -> LocalDate.parse(tva.getDatePayment(), formatter)
         ).reversed());
-        return  tvas;
+        return tvas;
 
     }
 
@@ -125,7 +124,7 @@ public class TvaSpiAdapter implements TvaSpiService {
             List<PrestationEntity> prestations = entity.getPrestations();
             for (PrestationEntity prestation : prestations) {
                 for (FactureEntity factures : prestation.getFactures()) {
-                    if(factures.getExercice() != null){
+                    if (factures.getDateEncaissement() != null) {
                         factureEntity.add(factures);
                     }
                 }
@@ -135,7 +134,7 @@ public class TvaSpiAdapter implements TvaSpiService {
             Iterator<FactureEntity> it = factureEntity.iterator();
             while (it.hasNext()) {
                 FactureEntity facture = it.next();
-                if (facture.getExercice() == null || !facture.getExercice().equals(exercise)) {
+                if (facture.getDateEncaissement() == null || !facture.getExercice().equals(exercise)) {
                     it.remove();
                 }
             }
