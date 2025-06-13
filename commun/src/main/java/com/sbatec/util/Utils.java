@@ -121,20 +121,21 @@ public class Utils {
      * @throws IOException
      * @throws URISyntaxException
      */
-    public static Map<String, File> loadFilesResources() throws IOException, URISyntaxException {
+    public static Map<String, File> loadFilesResources() throws IOException {
         Map<String, File> map = new HashMap<>();
         String custTemplate = "data/customTemplate.jrxml";
         String custDefaultTemplate = "data/defaultTemplate.jrxml";
         String suiviFacturation = "data/suivi-facturation.xls";
+        String templateHtml = "data/factureTemplate.html";
 
         File customFile = new ClassPathResource(custTemplate).getFile();
         File defaultFile = new ClassPathResource(custDefaultTemplate).getFile();
         File excelFile = new ClassPathResource(suiviFacturation).getFile();
+        File htmlFile = new ClassPathResource(templateHtml).getFile();
         map.put("Default", defaultFile);
         map.put("Custom", customFile);
         map.put("Suivi", excelFile);
-        // LoadRessources load = new LoadRessources();
-        // map = load.load();
+        map.put("Html", htmlFile);
         return map;
     }
 

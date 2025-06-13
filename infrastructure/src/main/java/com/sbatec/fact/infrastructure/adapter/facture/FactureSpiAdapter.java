@@ -32,7 +32,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-//@Transactional
 @RequiredArgsConstructor
 @Getter
 @Setter
@@ -52,10 +51,12 @@ public class FactureSpiAdapter implements FactureSpiService {
     CompanyMapper companyMapper;
 
     @Override
-    public Prestation addFacture(String siret, Boolean templateChoice, Prestation prestation, String pathRoot,
+    public Prestation addFacture(String siret, boolean newTemplate, Prestation prestation, String pathRoot,
                                  Long moisFactureId, Boolean storeFile, String fileSuivi) {
+
+        byte[] binaryPdf = null;
         if (Objects.isNull(prestation) || Objects.isNull(siret) || Objects.isNull(pathRoot) || Objects.isNull(moisFactureId)
-                || Objects.isNull(templateChoice) || Objects.isNull(storeFile)) {
+                || Objects.isNull(newTemplate) || Objects.isNull(storeFile)) {
             throw new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT);
         }
         if (!Objects.isNull(prestation.getId()) && prestation.getId() == 0) {
@@ -76,17 +77,21 @@ public class FactureSpiAdapter implements FactureSpiService {
             String numeroFacture = Utils.updateNumeroFacture(factureEditee.getClientPrestation().toLowerCase(),
                     factureMapper.fromEntityToDomain(listeFacture), moisFactureId);
             factureEditee.setNumeroFacture(numeroFacture);
-            Map<String, Object> dataPdf = editionReportService.buildParamJasper(company, templateChoice,
-                    prestation, factureEditee);
+
             FactureEntity factEntity = factureMapper.fromDomainToEntity(factureEditee);
-            String fileName = (String) dataPdf.get("fileName");
+
             String pathFile = buildFactureService.buildPathFile(siret, pathRoot,
                     oPrestation.getClient().getSocialReason().toLowerCase(), moisFacture, moisFactureId);
-            byte[] binaryPdf = editionReportService.buildPdfFacture(dataPdf, templateChoice, pathFile,
-                    storeFile);
-
-           // byte[] binaryItextPdf = editionReportService.buildFacturePdfItext(dataPdf, templateChoice, pathFile,
-            //        storeFile);
+            Map<String, Object> dataPdf = null;
+            if (newTemplate) {
+                dataPdf = editionReportService.buildParamsNewTemplate(company, prestation, factureEditee);
+                binaryPdf = editionReportService.buildFacturePdFSaucer(dataPdf, pathFile, storeFile);
+            } else {
+                dataPdf = editionReportService.buildParamJasper(company, prestation, factureEditee);
+                binaryPdf = editionReportService.buildPdfFacture(dataPdf, pathFile,
+                        storeFile);
+            }
+            String fileName = (String) dataPdf.get("fileName");
             String pathToSave = Utils.buildPath(pathFile, pathRoot);
             factEntity.setFilePath(pathToSave + File.separator + fileName);
             factEntity.setTarifHT(prestation.getTarifHT());
@@ -134,7 +139,7 @@ public class FactureSpiAdapter implements FactureSpiService {
         } catch (ServiceException e) {
             throw e;
         } catch (Exception e) {
-            log.error("error while updating facture with requested ID:" + "" + factureRequest.getId(), e);
+            log.error("error while updating facture with requested ID:" + factureRequest.getId(), e);
             throw new ServiceException(ErrorCatalog.DB_ERROR,
                     "Un problème est survenu lors de la mise à jour de la facture", e);
         }
@@ -147,7 +152,7 @@ public class FactureSpiAdapter implements FactureSpiService {
         try {
             factureJpaRepository.deleteById(factureId);
         } catch (Exception e) {
-            log.error("error while deleting facture with requested ID:" + "" + factureId, e);
+            log.error("error while deleting facture with requested ID:" + factureId, e);
             throw new ServiceException(ErrorCatalog.DB_ERROR, e);
         }
     }
@@ -163,7 +168,7 @@ public class FactureSpiAdapter implements FactureSpiService {
                     .orElseThrow(() -> new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND, "Aucune facture enregistrée !"));
             return entity.map(factureMapper::fromEntityToDomain).orElse(null);
         } catch (Exception e) {
-            log.error("error while updating facture with requested ID:" + "" + id, e);
+            log.error("error while updating facture with requested ID:" + id, e);
             throw new ServiceException(ErrorCatalog.DB_ERROR,
                     "Un problème est survenu lors de la recherche de la facture", e);
         }
@@ -189,7 +194,7 @@ public class FactureSpiAdapter implements FactureSpiService {
                     .sorted(Comparator.comparingLong(Facture::getId).reversed())
                     .collect(Collectors.toList());
         } catch (Exception e) {
-            log.error("error while retrieving facture with requested siret :" + "" + siret, e);
+            log.error("error while retrieving facture with requested siret :" + siret, e);
             throw new ServiceException(ErrorCatalog.DB_ERROR,
                     "Un problème est survenu lors de la recherche de la facture", e);
         }

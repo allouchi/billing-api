@@ -54,7 +54,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .anonymous(anonymous -> anonymous.disable())
                 .authorizeHttpRequests(authorize -> authorize.requestMatchers(
-                                "/api/users/login/**", "/api/users/logout", "https://api.unsplash.com/photos/random?query=nature").permitAll()
+                                "/api/users/login/**", "/api/users/logout").permitAll()
                         .anyRequest().authenticated());
 
         http.authenticationProvider(authenticationProvider());

@@ -1,18 +1,6 @@
 package com.sbatec.fact.infrastructure.repository.edition;
 
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.*;
-import com.itextpdf.kernel.colors.DeviceGray;
-import com.itextpdf.kernel.font.PdfFontFactory;
-import com.itextpdf.io.font.constants.StandardFonts;
-
-import java.io.File;
-import java.io.IOException;
-
-import com.itextpdf.layout.properties.TextAlignment;
-import com.itextpdf.layout.properties.UnitValue;
+import com.lowagie.text.DocumentException;
 import com.sbatec.fact.domaine.business.object.Adresse;
 import com.sbatec.fact.domaine.business.object.Company;
 import com.sbatec.fact.domaine.business.object.Facture;
@@ -21,11 +9,12 @@ import com.sbatec.util.Utils;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.*;
 import org.springframework.stereotype.Service;
+import org.xhtmlrenderer.pdf.ITextRenderer;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +32,7 @@ public class EditionReportImpl implements EditionReportService {
     private static final String RETURN = "\n";
 
     @Override
-    public Map<String, Object> buildParamJasper(Company company, boolean templateChoice,
+    public Map<String, Object> buildParamJasper(Company company,
                                                 Prestation prestation, Facture facture) {
 
         // infos company
@@ -92,13 +81,8 @@ public class EditionReportImpl implements EditionReportService {
         float montantTva = facture.getMontantTVA();
         float quantite = facture.getQuantite();
         String moisPrestation = facture.getMoisFacture();
-        //dateFacturation = "20/01/2024";
-        //numeroFacture = "20240120-1010";
-        //moisPrestation = "Janvier";
         String communeDateEdition = adresseCompany.getLocalite() + ", le " + dateFacturation;
 
-        String designationLigne1 = "";
-        String designationLigne2 = "";
         // infos prestation
         float tarifHT = prestation.getTarifHT();
         String numeroCommande = prestation.getNumeroCommande();
@@ -114,11 +98,10 @@ public class EditionReportImpl implements EditionReportService {
         } else {
             article = "Mois de ";
         }
-        if (!templateChoice) {
-            designationLigne1 =
-                    "Prestation pour" + ESPACE_BLANC + clientPrestation.toUpperCase();
-            designationLigne2 = article + moisPrestation + ESPACE_BLANC + "par " + consultantIdentite;
-        }
+
+        String designationLigne1 =
+                "Prestation pour" + ESPACE_BLANC + clientPrestation.toUpperCase();
+        String designationLigne2 = article + moisPrestation + ESPACE_BLANC + "par " + consultantIdentite;
 
         // infos client
         Adresse adresseClient = prestation.getClient().getAdresseClient();
@@ -158,31 +141,23 @@ public class EditionReportImpl implements EditionReportService {
         parameters.put("designation", designation);
         parameters.put("delai_paiement", delaiPaiement);
         parameters.put("client_prestation", clientPrestation);
-        if (!templateChoice) {
-            parameters.put("designation_ligne1", designationLigne1);
-            parameters.put("designation_ligne2", designationLigne2);
-        } else {
-            parameters.put("designation", designation);
-        }
-
+        parameters.put("designation_ligne1", designationLigne1);
+        parameters.put("designation_ligne2", designationLigne2);
         parameters.put("fonction_consultant", consultantFonction);
         parameters.put("fileName", fileName);
         return parameters;
     }
 
     @Override
-    public byte[] buildPdfFacture(Map<String, Object> paramJasper, boolean templateChoice,
-                                  String path, boolean storeFile) throws JRException {
+    public byte[] buildPdfFacture(Map<String, Object> paramJasper,
+                                  String path, boolean storeFile) {
         byte[] file = null;
         try {
             File templateFile = null;
             Map<String, File> mapFiles = Utils.loadFilesResources();
             String outputFileName = (String) paramJasper.get("fileName");
-            if (templateChoice) {
-                templateFile = mapFiles.get("Custom");
-            } else {
-                templateFile = mapFiles.get("Default");
-            }
+            //templateFile = mapFiles.get("Custom");
+            templateFile = mapFiles.get("Default");
 
             log.info("********************* Début du génération du fichier pdf *********************");
             JasperReport jasperDesign = JasperCompileManager.compileReport(templateFile.getPath());
@@ -207,10 +182,12 @@ public class EditionReportImpl implements EditionReportService {
 
     }
 
+    /**
+     * @param factures
+     * @param path
+     */
     @Override
     public void buildSuiviFactures(List<Facture> factures, String path) {
-
-
         InputStream targetStream = null;
         EditionSuiviFactures editionFacture = new EditionSuiviFactures();
         try {
@@ -233,78 +210,222 @@ public class EditionReportImpl implements EditionReportService {
 
     }
 
+    /**
+     * @param company
+     * @param prestation
+     * @param facture
+     * @return
+     */
     @Override
-    public byte[] buildFacturePdfItext(Map<String, Object> data, boolean templateChoice,
-                                       String path, boolean storeFile) throws IOException {
+    public Map<String, Object> buildParamsNewTemplate(Company company, Prestation prestation, Facture facture) {
+        // infos company
+        String rsCompany = company.getSocialReason();
+        String companyStatus = company.getStatus();
+        Adresse adresseCompany = company.getCompanyAdresse();
+        String adresse1Company = adresseCompany.getNumero() + ESPACE_BLANC + adresseCompany.getRue();
+        String adresse2Company = adresseCompany.getCodePostal() + ESPACE_BLANC + adresseCompany.getLocalite() + ESPACE_BLANC
+                + adresseCompany.getPays();
+        String numeroRcs = company.getRcsName();
+        String numeroSiret = company.getSiret().trim();
+        String numeroApe = company.getCodeApe();
+        String numeroTva = company.getNumeroTva().trim();
+        String numeroBic = BIC + company.getNumeroBic();
+        String numeroIban = company.getNumeroIban();
 
-        String pathName = path + "\\facture.pdf";
+        String ibanAffichage = IBAN + numeroIban.substring(0, 4) + ESPACE_BLANC
+                + numeroIban.substring(4, 8) + ESPACE_BLANC + numeroIban.substring(8, 12) + ESPACE_BLANC
+                + numeroIban.substring(12, 16) + ESPACE_BLANC + numeroIban.substring(16, 20) + ESPACE_BLANC
+                + numeroIban.substring(20, 24) + ESPACE_BLANC + numeroIban.substring(24, 27);
 
-        PdfWriter writer = new PdfWriter(pathName);
-        PdfDocument pdf = new PdfDocument(writer);
-        Document document = new Document(pdf);
+        String siretAffichage = null;
+        String tvaAffichage = null;
+        if (numeroSiret != null) {
+            siretAffichage =
+                    numeroSiret.substring(0, 3) + ESPACE_BLANC + numeroSiret.substring(3, 6) + ESPACE_BLANC
+                            + numeroSiret.substring(6, 9) + ESPACE_BLANC + numeroSiret.substring(9, 14);
 
-        // Entête entreprise
-        document.add(new Paragraph("SBATEC Consulting")
-                //.setBold()
-                .setFontSize(16));
-        document.add(new Paragraph("111 Boulevard National\n92500 Rueil-Malmaison"));
-        document.add(new Paragraph("SASU au capital de 500 Euros\nR.C.S. Nanterre 831 502 141\nFR 188 315 021 41\nAPE : 6201Z\nSiret : 852 927 029 0001"));
+        }
 
-        document.add(new Paragraph("\nFacture N°: 20240131-1011")
-                //.setBold()
-                .setFontSize(14));
+        if (numeroTva != null) {
+            tvaAffichage = numeroTva.trim().substring(0, 2) + ESPACE_BLANC
+                    + numeroTva.trim().substring(2, 5) + ESPACE_BLANC + numeroTva.trim().substring(5, 8)
+                    + ESPACE_BLANC + numeroTva.trim().substring(8, 11) + ESPACE_BLANC
+                    + numeroTva.trim().substring(11, 13);
+        }
 
-        // Client
-        document.add(new Paragraph("Client : OSIRCOM\n21 Rue d'Algérie\n69001 LYON 1ER\nFRANCE"));
+        // infos factures
+        String dateFacturation = facture.getDateFacturation();
+        String numeroFacture = facture.getNumeroFacture();
+        float montantHT = facture.getPrixTotalHT();
+        float montantTTC = facture.getPrixTotalTTC();
+        float montantTva = facture.getMontantTVA();
+        float quantite = facture.getQuantite();
+        String moisPrestation = facture.getMoisFacture();
+        String communeDateEdition = adresseCompany.getLocalite() + ", le " + dateFacturation;
 
-        document.add(new Paragraph("Date : Rueil-Malmaison, le 31/01/2024"));
+        // infos prestation
+        float tarifHT = prestation.getTarifHT();
+        String numeroCommande = prestation.getNumeroCommande();
+        long delaiPaiement = prestation.getDelaiPaiement();
+        String clientPrestation = prestation.getClientPrestation();
+        String designation = prestation.getDesignation();
+        String consultantFonction = prestation.getConsultant().getFonction();
+        String consultantIdentite = prestation.getConsultant().getFirstName() + ESPACE_BLANC
+                + prestation.getConsultant().getLastName().toUpperCase();
+        String article;
+        if (moisPrestation != null && (moisPrestation.startsWith("O") || moisPrestation.startsWith("A"))) {
+            article = "Mois d'";
+        } else {
+            article = "Mois de ";
+        }
 
-        // Prestation
-        document.add(new Paragraph("\nPrestation pour CS NOVIDYS\nMois de Janvier par Mustapha ALIANE\nDéveloppeur Fullstack JAVA/JEE/Angular")
-                //.setItalic()
-        );
+        String designationLigne1 =
+                "Prestation pour" + ESPACE_BLANC + clientPrestation.toUpperCase();
+        String designationLigne2 = article + moisPrestation + ESPACE_BLANC + "par" + ESPACE_BLANC + consultantIdentite;
 
-        // Tableau des prestations
-        float[] colWidths = {250F, 100F, 100F, 100F};
-        Table table = new Table(UnitValue.createPointArray(colWidths));
-        table.addHeaderCell("Désignation");
-        table.addHeaderCell("Quantité");
-        table.addHeaderCell("Prix unitaire HT");
-        table.addHeaderCell("Prix total HT");
+        // infos client
+        Adresse adresseClient = prestation.getClient().getAdresseClient();
+        String adresse1Client = adresseClient.getNumero() + ESPACE_BLANC + adresseClient.getRue();
+        String adresse2Client = adresseClient.getCodePostal() + ESPACE_BLANC + adresseClient.getLocalite()
+                + ESPACE_BLANC + adresseClient.getPays();
 
-        table.addCell("Jours de prestation");
-        table.addCell("22");
-        table.addCell("510,00€");
-        table.addCell("11 220,00€");
+        String rsClient = prestation.getClient().getSocialReason();
 
-        document.add(table);
+        String moisFacture = Utils.buildMoisFacture(facture.getMoisFacture());
+        String fileName =
+                FACTURE_LIBELLE + UNDERSCORE + formatString(rsCompany) + UNDERSCORE + formatString(rsClient)
+                        + UNDERSCORE + moisFacture + UNDERSCORE + numeroFacture.split("-")[1] + TYPE_FILE;
 
-        // Totaux
-        document.add(new Paragraph("\nTotal HT : 11 220,00€"));
-        document.add(new Paragraph("TVA (20%) : 2 244,00€"));
-        document.add(new Paragraph("Total TTC : 13 464,00€")
-                //.setBold()
-        );
+        // - Parametres envoyes au rapport
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("rs_company", rsCompany);
+        parameters.put("statut_company", companyStatus);
+        parameters.put("adresse1_company", adresse1Company);
+        parameters.put("adresse2_company", adresse2Company);
+        parameters.put("numero_rcs", numeroRcs);
+        parameters.put("numero_siret", siretAffichage);
+        parameters.put("numero_tva", tvaAffichage);
+        parameters.put("numero_ape", numeroApe);
+        parameters.put("code_iban", ibanAffichage);
+        parameters.put("code_bic", numeroBic);
+        parameters.put("date_facturation", dateFacturation);
+        parameters.put("rs_client", rsClient);
+        parameters.put("adresse1_client", adresse1Client);
+        parameters.put("adresse2_client", adresse2Client);
+        parameters.put("mois_facture", moisPrestation);
+        parameters.put("numero_commande", numeroCommande);
+        parameters.put("quantite", String.format("%.2f", quantite));
+        parameters.put("montantHT", String.format("%.2f", montantHT));
+        parameters.put("montantTTC", String.format("%.2f", montantTTC));
+        parameters.put("montantTva", String.format("%.2f", montantTva));
+        parameters.put("tarifHT", String.format("%.2f", tarifHT));
+        parameters.put("numero_facture", numeroFacture);
+        parameters.put("commune_company", communeDateEdition);
+        parameters.put("designation", designation);
+        parameters.put("delai_paiement", delaiPaiement);
+        parameters.put("client_prestation", clientPrestation);
+        parameters.put("designation_ligne1", designationLigne1);
+        parameters.put("designation_ligne2", designationLigne2);
+        parameters.put("fonction_consultant", consultantFonction);
+        parameters.put("fileName", fileName);
+        return parameters;
+    }
 
-        // Coordonnées bancaires
-        document.add(new Paragraph("\nCoordonnées bancaires pour règlement :")
-                //.setBold()
-        );
-        document.add(new Paragraph("IBAN: FR17 2004 1010 1254 0796 1J03 367\nBIC: PSSTFRPPSCE"));
+    @Override
+    public byte[] buildFacturePdFSaucer(Map<String, Object> parameters,
+                                        String pathParam, boolean storeFile) throws IOException, DocumentException {
+        Map<String, File> mapFiles = Utils.loadFilesResources();
+        File htmlTemplate = mapFiles.get("Html");
 
-        // Conditions de paiement
-        document.add(new Paragraph("\nConditions de paiement :"));
-        document.add(new Paragraph("Le règlement sera réalisé à l'une de ces dates : 10, 20 et dernier jour de chaque mois."));
-        document.add(new Paragraph("Pénalités en cas de retard : 3 fois le taux d'intérêt légal à compter de la date d’échéance."));
-        document.add(new Paragraph("Le règlement sera réalisé en Euros par virement bancaire ou par chèque."));
+        String rsCompany = (String) parameters.get("rs_company");
+        String adresse1Company = (String) parameters.get("adresse1_company");
+        String adresse2Company = (String) parameters.get("adresse2_company");
+        String status = (String) parameters.get("statut_company");
+        String numeroRcs = (String) parameters.get("numero_rcs");
+        String siretAffichage = (String) parameters.get("numero_siret");
+        String tvaAffichage = (String) parameters.get("numero_tva");
+        String numeroApe = (String) parameters.get("numero_ape");
+        String ibanAffichage = (String) parameters.get("code_iban");
+        String numeroBic = (String) parameters.get("code_bic");
+        String dateFacturation = (String) parameters.get("date_facturation");
+        String rsClient = (String) parameters.get("rs_client");
+        String adresse1Client = (String) parameters.get("adresse1_client");
+        String adresse2Client = (String) parameters.get("adresse2_client");
+        String moisFacture = (String) parameters.get("mois_facture");
+        String numeroCommande = (String) parameters.get("numero_commande");
+        String quantite = (String) parameters.get("quantite");
+        String montantHT = (String) parameters.get("montantHT");
+        String montantTTC = (String) parameters.get("montantTTC");
+        String montantTva = (String) parameters.get("montantTva");
+        String tarifHT = (String) parameters.get("tarifHT");
+        String numeroFacture = (String) parameters.get("numero_facture");
+        String communeCompany = (String) parameters.get("commune_company");
+        String designation = (String) parameters.get("designation");
+        long delaiPaiement = (Long) parameters.get("delai_paiement");
+        String clientPrestation = (String) parameters.get("client_prestation");
+        String designationLigne1 = (String) parameters.get("designation_ligne1");
+        String designationLigne2 = (String) parameters.get("designation_ligne2");
+        String consultantFonction = (String) parameters.get("fonction_consultant");
 
-        document.close();
-        System.out.println("Facture générée : " + pathName);
+        log.info("********************* Début du génération du fichier pdf *********************");
 
-return  null;
+        String template = new String(Files.readAllBytes(Paths.get(htmlTemplate.getPath())));
+        LocalDate dateActuelle = LocalDate.now();
+        int strDateJour = dateActuelle.getYear();
 
-}
+        String html = template
+                .replace("${rsCompany}", rsCompany)
+                .replace("${statutCompany}", status)
+                .replace("${adresse1Company}", adresse1Company)
+                .replace("${adresse2Company}", adresse2Company)
+                .replace("${numeroRcs}", numeroRcs)
+                .replace("${numeroSiret}", siretAffichage)
+                .replace("${numeroTva}", tvaAffichage)
+                .replace("${numeroApe}", numeroApe)
+                .replace("${codeIban}", ibanAffichage)
+                .replace("${codeBic}", numeroBic)
+                .replace("${dateFacturation}", dateFacturation)
+                .replace("${rsClient}", rsClient.toUpperCase())
+                .replace("${moisFacture}", moisFacture)
+                .replace("${numeroCommande}", numeroCommande)
+                .replace("${quantite}", String.valueOf(quantite))
+                .replace("${montantHT}", String.valueOf(montantHT))
+                .replace("${montantTTC}", String.valueOf(montantTTC))
+                .replace("${montantTva}", String.valueOf(montantTva))
+                .replace("${tarifHT}", String.valueOf(tarifHT))
+                .replace("${numeroFacture}", numeroFacture)
+                .replace("${communeCompany}", communeCompany)
+                .replace("${designation}", designation)
+                .replace("${delaiPaiement}", String.valueOf(delaiPaiement))
+                .replace("${clientPrestation}", clientPrestation)
+                .replace("${designationLigne1}", designationLigne1)
+                .replace("${designationLigne2}", designationLigne2)
+                .replace("${fonctionConsultant}", consultantFonction)
+                .replace("${exercice}", String.valueOf(strDateJour))
+                .replace("${adresse1Client}", adresse1Client)
+                .replace("${adresse2Client}", adresse2Client);
 
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ITextRenderer renderer = new ITextRenderer();
+        renderer.setDocumentFromString(html);
+        renderer.layout();
+        renderer.createPDF(out);
+
+        String outputFileName = (String) parameters.get("fileName");
+
+        String outputPath = pathParam + File.separator + outputFileName;
+
+        try (FileOutputStream fos = new FileOutputStream(outputPath)) {
+            out.writeTo(fos);
+            fos.flush();
+            log.info("✅ Fichier PDF écrit sur le disque : {}", outputPath);
+        } catch (IOException e) {
+            log.error("❌ Erreur lors de l'écriture du fichier PDF : {}", e.getMessage(), e);
+        }
+
+        log.info("********************* Fin génération du fichier pdf *********************");
+        return out.toByteArray();
+    }
 
 
     private String formatString(String s) {

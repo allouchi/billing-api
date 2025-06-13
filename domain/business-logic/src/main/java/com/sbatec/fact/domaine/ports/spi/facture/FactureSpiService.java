@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface FactureSpiService {
 
-    Prestation addFacture(String siret, Boolean templateChoice, Prestation prestation,
+    Prestation addFacture(String siret, boolean isTextGeneration, Prestation prestation,
                           String pathRoot, Long moisFactureId, Boolean storeFile, String fileSuivi);
 
     void deleteFacture(Long factureId);

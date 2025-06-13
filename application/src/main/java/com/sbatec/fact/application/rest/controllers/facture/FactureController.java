@@ -2,6 +2,7 @@ package com.sbatec.fact.application.rest.controllers.facture;
 
 import com.sbatec.fact.application.rest.util.StorageProperties;
 import com.sbatec.fact.domaine.business.object.Facture;
+import com.sbatec.fact.domaine.business.object.Prestation;
 import com.sbatec.fact.domaine.ports.api.facture.FactureApiService;
 import com.sbatec.util.CommonResource.Resource;
 import jakarta.validation.constraints.Min;
@@ -48,6 +49,18 @@ public class FactureController {
     public void deleteFacture(@PathVariable @Min(1) Long factureId) {
         log.info("delete bill");
         factureApiService.deleteFacture(factureId);
+    }
+
+    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
+    @PutMapping(value = "/{siret}/{moisFacture}/{newTemplate}")
+    public Prestation createFacture(@RequestBody Prestation prestation,
+                                    @PathVariable @NotNull String siret,
+                                    @PathVariable @NotNull Long moisFacture,
+                                    @PathVariable Boolean newTemplate) {
+        log.info("Create facture");
+        return factureApiService.addFacture(siret, newTemplate, prestation,
+                resources.getPathRoot(), moisFacture, resources.saveFileLocalDisque(),
+                resources.getFichierSuiviFactures());
     }
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})

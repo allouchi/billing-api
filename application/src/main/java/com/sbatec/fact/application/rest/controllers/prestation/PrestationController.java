@@ -51,18 +51,6 @@ public class PrestationController {
     }
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
-    @PutMapping(value = "/{siret}/{templateChoice}/{moisPrestaId}")
-    public Prestation createFacture(@RequestBody Prestation prestation,
-                                    @PathVariable @NotNull String siret,
-                                    @PathVariable Boolean templateChoice,
-                                    @PathVariable @NotNull Long moisPrestaId) {
-        log.info("Create prestation");
-        return factureApiService.addFacture(siret, templateChoice, prestation,
-                resources.getPathRoot(), moisPrestaId, resources.saveFileLocalDisque(),
-                resources.getFichierSuiviFactures());
-    }
-
-    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @DeleteMapping(value = "/{id}")
     public void deletePrestation(@PathVariable @NotNull long id) {
         log.info("delete prestation by id :" + id);
