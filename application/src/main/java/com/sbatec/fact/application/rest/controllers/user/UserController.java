@@ -13,7 +13,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -86,12 +85,12 @@ public class UserController {
 
     @GetMapping("/logout")
     public ResponseEntity<String> logout() {
-        System.out.println("");
+        System.out.println();
         return ResponseEntity.ok(null);
     }
 
 
-
+    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @ResponseStatus(code = HttpStatus.OK)
     @GetMapping(value = "/{userName:.+}")
     public User findByUserName(@PathVariable @NotNull String userName) {
@@ -99,22 +98,22 @@ public class UserController {
         return userApiService.findByUserName(userName);
     }
 
-
+    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @ResponseStatus(code = HttpStatus.OK)
     @GetMapping()
     public List<User> findAllUsers() {
         log.info("Get all users by Email");
         List<User> users = userApiService.findAllUsers();
 
-        if(users != null && !users.isEmpty()){
-            users.forEach(u->{
+        if (users != null && !users.isEmpty()) {
+            users.forEach(u -> {
                 u.setPassword("");
             });
         }
         return users;
     }
 
-
+    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @ResponseStatus(code = HttpStatus.OK)
     @GetMapping(value = "/{email:.+}/{password}")
     public User findByUserNameAndPassword(@PathVariable @NotNull String email,
@@ -139,6 +138,12 @@ public class UserController {
     @PutMapping(value = "/edit")
     public User editUser(@RequestBody @NotNull User user) {
         log.info("Add user : {}", user.getEmail());
+        if (user.getPassword() == null || user.getPassword().trim().length() == 0) {
+            User savedUser = userApiService.findUserById(user.getId());
+            user.setPassword(savedUser.getPassword());
+        } else {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         return userApiService.addUser(user);
     }
 

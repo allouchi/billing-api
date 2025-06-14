@@ -6,10 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="ff07ecbc-d1f3-4543-879d-e13ac5f9aa2a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/config/auth/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/config/auth/WebConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/resources/application-prod.properties" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/resources/application-prod.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/rest/controllers/user/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/rest/controllers/user/UserController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/adapter/tva/TvaSpiAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/adapter/tva/TvaSpiAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commun/src/main/resources/data/factureTemplate.html" beforeDir="false" afterPath="$PROJECT_DIR$/commun/src/main/resources/data/factureTemplate.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/adapter/user/UserSpiAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/adapter/user/UserSpiAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/repository/edition/EditionReportImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/repository/edition/EditionReportImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,8 +96,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PrestationControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="billing-api" />
+    <configuration name="PrestationControllerTest (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="billing-api (1)" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.sbatec.fact.application.rest.controllers.prestation.*" />
@@ -106,6 +107,22 @@
       <option name="PACKAGE_NAME" value="com.sbatec.fact.application.rest.controllers.prestation" />
       <option name="MAIN_CLASS_NAME" value="com.sbatec.fact.application.rest.controllers.prestation.PrestationControllerTest" />
       <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PrestationControllerTest.createFacture (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="billing-api (1)" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.sbatec.fact.application.rest.controllers.prestation.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.sbatec.fact.application.rest.controllers.prestation" />
+      <option name="MAIN_CLASS_NAME" value="com.sbatec.fact.application.rest.controllers.prestation.PrestationControllerTest" />
+      <option name="METHOD_NAME" value="createFacture" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -129,9 +146,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.ApplicationStarter (1)" />
+        <item itemvalue="JUnit.PrestationControllerTest.createFacture (1)" />
+        <item itemvalue="JUnit.PrestationControllerTest (1)" />
         <item itemvalue="Application.ApplicationStarter" />
         <item itemvalue="JUnit.PrestationControllerTest.createFacture" />
-        <item itemvalue="JUnit.PrestationControllerTest" />
       </list>
     </recent_temporary>
   </component>
@@ -188,9 +206,9 @@
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/repository/edition/EditionReportImpl.java</url>
-          <line>257</line>
-          <option name="timeStamp" value="71" />
+          <url>file://$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/rest/controllers/user/UserController.java</url>
+          <line>129</line>
+          <option name="timeStamp" value="73" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
