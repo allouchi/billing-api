@@ -1,6 +1,5 @@
 package com.sbatec.fact.infrastructure.adapter.user;
 
-import com.sbatec.fact.domaine.business.object.Role;
 import com.sbatec.fact.domaine.business.object.User;
 import com.sbatec.fact.domaine.exception.ErrorCatalog;
 import com.sbatec.fact.domaine.exception.ServiceException;
@@ -62,18 +61,13 @@ public class UserSpiAdapter implements UserSpiService {
             }
 
             userEntity.setRoleNames(rolesToAdd);
-            Optional<UserEntity> userSaved = userJpaRepository.findById(user.getId());
-            if(userSaved.isPresent()){
-                userEntity.setPassword(userSaved.get().getPassword());
-                UserEntity entity = userJpaRepository.save(userEntity);
-                return userMapper.fromEntityToDomain(entity);
-            }
+            UserEntity entity = userJpaRepository.save(userEntity);
+            return userMapper.fromEntityToDomain(entity);
 
         } catch (Exception e) {
             log.error("error while creating new user", e);
             throw new ServiceException(ErrorCatalog.DB_ERROR, e.getMessage());
         }
-        return  null;
     }
 
     @Override

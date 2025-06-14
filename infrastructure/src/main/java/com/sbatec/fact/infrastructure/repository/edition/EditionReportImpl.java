@@ -24,8 +24,8 @@ import java.util.Map;
 public class EditionReportImpl implements EditionReportService {
 
     private static final String TYPE_FILE = ".pdf";
-    private static final String IBAN = "IBAN: ";
-    private static final String BIC = "BIC: ";
+    private static final String IBAN = "IBAN : ";
+    private static final String BIC = "BIC    : ";
     private static final String FACTURE_LIBELLE = "Facture";
     private static final String ESPACE_BLANC = " ";
     private static final String UNDERSCORE = "_";
@@ -418,7 +418,7 @@ public class EditionReportImpl implements EditionReportService {
         try (FileOutputStream fos = new FileOutputStream(outputPath)) {
             out.writeTo(fos);
             fos.flush();
-            log.info("✅ Fichier PDF écrit sur le disque : {}", outputPath);
+            log.info("✅ Fichier PDF écrit sur le disque");
         } catch (IOException e) {
             log.error("❌ Erreur lors de l'écriture du fichier PDF : {}", e.getMessage());
         }
