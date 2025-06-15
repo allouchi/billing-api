@@ -279,9 +279,12 @@ public class EditionReportImpl implements EditionReportService {
             article = "Mois de ";
         }
 
+        LocalDate dateActuelle = LocalDate.now();
+        int strDateJour = dateActuelle.getYear();
+
         String designationLigne1 =
                 "Prestation pour" + ESPACE_BLANC + clientPrestation.toUpperCase();
-        String designationLigne2 = article + moisPrestation + ESPACE_BLANC + "par" + ESPACE_BLANC + consultantIdentite;
+        String designationLigne2 = moisPrestation + ESPACE_BLANC + strDateJour + ESPACE_BLANC + "par" + ESPACE_BLANC + consultantIdentite;
 
         // infos client
         Adresse adresseClient = prestation.getClient().getAdresseClient();

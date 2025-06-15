@@ -1,30 +1,22 @@
 package com.sbatec.fact.domaine.business.object;
 
-import java.nio.file.Path;
-
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.nio.file.Path;
 
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @ToString
-@Getter 
+@Getter
 @Setter
 @EqualsAndHashCode
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class DataPDF {
-	
-	String fileName;
-	Path filePath;
-	byte[] fileContent;
-
+    String fileName;
+    Path filePath;
+    String contentBase64;
+    byte[] fileContent;
 }
