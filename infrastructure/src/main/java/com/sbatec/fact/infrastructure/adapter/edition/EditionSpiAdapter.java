@@ -35,8 +35,11 @@ public class EditionSpiAdapter implements EditionSpiService {
             Optional<FactureEntity> entity = factureJpaRepository.findById(factureId);
             entity.orElseThrow(() -> new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND));
             FactureEntity facture = entity.get();
-            byte[] encodedBytes = Base64.getEncoder().encode(facture.getFileContent());
-            return DataPDF.builder().fileContent(encodedBytes).fileName(facture.getFileName()).build();
+            byte[] encodedBytes = facture.getFileContent();
+            return DataPDF.builder().
+                    fileContent(encodedBytes)
+                    .contentBase64(Base64.getEncoder().encodeToString(encodedBytes))
+                    .fileName(facture.getFileName()).build();
 
         } catch (Exception e) {
             log.error("error while getting pdf file : file not found");
