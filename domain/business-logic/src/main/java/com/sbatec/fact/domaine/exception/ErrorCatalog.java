@@ -6,8 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ErrorCatalog {
-
-    APPLICATION_ERROR("APPLICATION_ERROR", "An error has occured..", ErrorLevel.TECHNICAL),
+    
     DB_ERROR("DB_ERROR", "Database error", ErrorLevel.TECHNICAL),
     RESOURCE_NOT_FOUND("RESOURCE_NOT_FOUND", "Resource not found ", ErrorLevel.FUNCIONAL),
     ACCESS_DENIED("ACCESS_DENIED", "Access is denied", ErrorLevel.FUNCIONAL),

@@ -10,7 +10,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -57,7 +56,7 @@ public class CompanyController {
     @Secured(value = {"ROLE_ADMIN"})
     @DeleteMapping(value = "/{id}")
     public void deleteCompany(@PathVariable @NotNull long id) {
-        log.info("delete company by id :" + id);
+        log.info("delete company by id : {}", id);
         companyApiService.deleteById(id);
     }
 }

@@ -98,11 +98,11 @@
     <!-- Informations Client -->
     <table>
         <tr>
-            <td><h3><strong>FACTURE : </strong></h3></td>
+            <td><h3><strong>FACTURE N°: ${numeroFacture}</strong></h3></td>
             <td class="align-right"><h3><strong>${rsClient}</strong></h3></td>
         </tr>
         <tr>
-            <td><strong>N° ${numeroFacture}</strong></td>
+            <td><strong></strong></td>
             <td class="align-right"><strong>${adresse1Client} <br/> ${adresse2Client}</strong></td>
         </tr>
     </table>
@@ -131,15 +131,15 @@
     <div class="section-title">Récapitulatif :</div>
     <table>
         <tr>
-            <th>Total Hors Taxe :</th>
+            <th>Total Hors Taxe (en euros) :</th>
             <th class="align-right"><strong>${montantHT} €</strong></th>
         </tr>
         <tr>
-            <th>TVA à Taux applicable à 20.0 % :</th>
+            <th>Taux de TVA : 20,0 %</th>
             <th class="align-right"><strong>${montantTva} €</strong></th>
         </tr>
         <tr class="total">
-            <th>Total TTC en euro :</th>
+            <th>Total TTC (en euros) :</th>
             <th class="align-right"><strong>${montantTTC} €</strong></th>
         </tr>
     </table>
