@@ -3,12 +3,16 @@
 <head>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <title>Facture</title>
-    <style type="text/css">
+    <style>
         body {
             font-family: Arial, sans-serif;
             font-size: 12px;
             color: #333;
             margin: 10px;
+            background-image: url('data:image/png;base64,${logoBase64}');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
         }
         .container {
             border: 2px solid #333;      /* cadre gris foncé */
@@ -79,7 +83,6 @@
 
     </style>
 </head>
-
 <body>
 <div class="container">
     <!-- En-tête -->

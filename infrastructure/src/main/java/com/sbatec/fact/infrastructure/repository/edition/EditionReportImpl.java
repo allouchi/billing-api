@@ -15,6 +15,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -272,12 +273,6 @@ public class EditionReportImpl implements EditionReportService {
         String consultantFonction = prestation.getConsultant().getFonction();
         String consultantIdentite = prestation.getConsultant().getFirstName() + ESPACE_BLANC
                 + prestation.getConsultant().getLastName().toUpperCase();
-        String article;
-        if (moisPrestation != null && (moisPrestation.startsWith("O") || moisPrestation.startsWith("A"))) {
-            article = "Mois d'";
-        } else {
-            article = "Mois de ";
-        }
 
         LocalDate dateActuelle = LocalDate.now();
         int strDateJour = dateActuelle.getYear();
@@ -339,6 +334,11 @@ public class EditionReportImpl implements EditionReportService {
                                         String pathParam, boolean storeFile) throws IOException, DocumentException {
         Map<String, File> mapFiles = Utils.loadFilesResources();
         File htmlTemplate = mapFiles.get("Html");
+        File logoFile = mapFiles.get("Logo");
+        //String logoPath = logoFile.getAbsolutePath();
+
+        byte[] imageBytes = Files.readAllBytes(logoFile.toPath());
+        String logoPath = Base64.getEncoder().encodeToString(imageBytes);
 
         String rsCompany = (String) parameters.get("rs_company");
         String adresse1Company = (String) parameters.get("adresse1_company");
@@ -406,7 +406,8 @@ public class EditionReportImpl implements EditionReportService {
                 .replace("${fonctionConsultant}", consultantFonction)
                 .replace("${exercice}", String.valueOf(strDateJour))
                 .replace("${adresse1Client}", adresse1Client)
-                .replace("${adresse2Client}", adresse2Client);
+                .replace("${adresse2Client}", adresse2Client)
+                .replace("${logoPath}", logoPath);
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         ITextRenderer renderer = new ITextRenderer();

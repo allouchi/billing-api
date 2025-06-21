@@ -1,6 +1,5 @@
 package com.sbatec.fact.application.rest.controllers.prestation;
 
-import com.sbatec.fact.domaine.business.object.Facture;
 import com.sbatec.fact.domaine.business.object.Prestation;
 import com.sbatec.fact.domaine.ports.api.facture.FactureApiService;
 import com.sbatec.fact.domaine.ports.api.prestation.PrestationApiService;
@@ -18,13 +17,12 @@ class PrestationControllerTest {
     @Autowired
     PrestationApiService prestationApiService;
 
-    private Facture facture;
     private Prestation prestation;
 
     @BeforeEach
     void setUp() {
         prestation = prestationApiService.findById(5L);
-        facture = factureApiService.findById(60L);
+
     }
 
     @Test

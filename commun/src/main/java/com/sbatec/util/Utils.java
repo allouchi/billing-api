@@ -127,15 +127,18 @@ public class Utils {
         String custDefaultTemplate = "data/defaultTemplate.jrxml";
         String suiviFacturation = "data/suivi-facturation.xls";
         String templateHtml = "data/factureTemplate.html";
+        String logo = "assets/images/sbatec.jpg";
 
         File customFile = new ClassPathResource(custTemplate).getFile();
         File defaultFile = new ClassPathResource(custDefaultTemplate).getFile();
         File excelFile = new ClassPathResource(suiviFacturation).getFile();
         File htmlFile = new ClassPathResource(templateHtml).getFile();
+        File logoFile = new ClassPathResource(logo).getFile();
         map.put("Default", defaultFile);
         map.put("Custom", customFile);
         map.put("Suivi", excelFile);
         map.put("Html", htmlFile);
+        map.put("Logo", logoFile);
         return map;
     }
 
