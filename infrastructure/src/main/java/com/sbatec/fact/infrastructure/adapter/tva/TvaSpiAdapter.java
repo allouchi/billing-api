@@ -10,7 +10,6 @@ import com.sbatec.fact.infrastructure.models.FactureEntity;
 import com.sbatec.fact.infrastructure.models.PrestationEntity;
 import com.sbatec.fact.infrastructure.models.TvaEntity;
 import com.sbatec.fact.infrastructure.repository.company.CompanyJpaRepository;
-import com.sbatec.fact.infrastructure.repository.facture.FactureJpaRepository;
 import com.sbatec.fact.infrastructure.repository.tva.TvaJpaRepository;
 import com.sbatec.util.Utils;
 import lombok.AccessLevel;
@@ -27,37 +26,32 @@ import java.util.*;
  * @author maliane
  */
 @Service
-//@Transactional
 @RequiredArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TvaSpiAdapter implements TvaSpiService {
 
-    private static final String TOUS = "Tous";
+    static final String TOUS = "Tous";
 
-    private TvaMapper tvaMapper;
-    // private ExerciseMapper exerciseMapper;
-    private TvaJpaRepository tvaJpaRepository;
-    // private ExerciseJpaRepository exerciseJpaRepository;
-    private FactureJpaRepository factureJpaRepository;
-
-    private CompanyJpaRepository companyJpaRepository;
+    TvaMapper tvaMapper;
+    TvaJpaRepository tvaJpaRepository;
+    CompanyJpaRepository companyJpaRepository;
 
     @Override
     public List<Tva> findByExerciseAndSiret(String exercise, String siret) {
-        List<TvaEntity> e;
+        List<TvaEntity> tvaEntities;
         if (exercise.equalsIgnoreCase("Tous")) {
-            e = tvaJpaRepository.findBySiret(siret);
+            tvaEntities = tvaJpaRepository.findBySiret(siret);
         } else {
-            e = tvaJpaRepository.findByExerciseAndSiret(exercise, siret);
+            tvaEntities = tvaJpaRepository.findByExerciseAndSiret(exercise, siret);
         }
 
-        if (Objects.isNull(e)) {
+        if (Objects.isNull(tvaEntities)) {
             throw new TvaNotFoundException(String.format("La Tva exercice %s n'existe pas", exercise));
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        List<Tva> tvas = tvaMapper.fromEntityToDomain(e);
+        List<Tva> tvas = tvaMapper.fromEntityToDomain(tvaEntities);
         tvas.sort(Comparator.<Tva, LocalDate>comparing(
                 tva -> LocalDate.parse(tva.getDatePayment(), formatter)
         ).reversed());

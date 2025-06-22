@@ -22,7 +22,6 @@ class PrestationControllerTest {
     @BeforeEach
     void setUp() {
         prestation = prestationApiService.findById(5L);
-
     }
 
     @Test

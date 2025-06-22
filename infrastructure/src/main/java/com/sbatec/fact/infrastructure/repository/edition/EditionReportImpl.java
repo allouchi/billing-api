@@ -335,10 +335,6 @@ public class EditionReportImpl implements EditionReportService {
         Map<String, File> mapFiles = Utils.loadFilesResources();
         File htmlTemplate = mapFiles.get("Html");
         File logoFile = mapFiles.get("Logo");
-        //String logoPath = logoFile.getAbsolutePath();
-
-        byte[] imageBytes = Files.readAllBytes(logoFile.toPath());
-        String logoPath = Base64.getEncoder().encodeToString(imageBytes);
 
         String rsCompany = (String) parameters.get("rs_company");
         String adresse1Company = (String) parameters.get("adresse1_company");
@@ -376,6 +372,9 @@ public class EditionReportImpl implements EditionReportService {
         LocalDate dateActuelle = LocalDate.now();
         int strDateJour = dateActuelle.getYear();
 
+        byte[] imageBytes = Files.readAllBytes(logoFile.toPath());
+        String logoPath = Base64.getEncoder().encodeToString(imageBytes);
+
         String html = template
                 .replace("${rsCompany}", rsCompany)
                 .replace("${statutCompany}", status)
@@ -409,11 +408,11 @@ public class EditionReportImpl implements EditionReportService {
                 .replace("${adresse2Client}", adresse2Client)
                 .replace("${logoPath}", logoPath);
 
-        String baseUrl = logoFile.toPath().toUri().toURL().toString();
+        //String baseUrl = logoFile.toPath().toUri().toURL().toString();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         ITextRenderer renderer = new ITextRenderer();
+        renderer.setDocumentFromString(html);
         renderer.layout();
-        renderer.setDocumentFromString(html, baseUrl);
         renderer.createPDF(out);
 
         String outputFileName = (String) parameters.get("fileName");
