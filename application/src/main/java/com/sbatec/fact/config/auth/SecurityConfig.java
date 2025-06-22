@@ -1,6 +1,7 @@
 package com.sbatec.fact.config.auth;
 
-import jakarta.servlet.ServletException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sbatec.fact.domaine.exception.ErrorBack;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -12,11 +13,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -25,11 +24,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AbstractAuthenticationTargetUrlRequestHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
-import org.springframework.web.cors.CorsConfiguration;
 
 import java.io.IOException;
 
@@ -60,7 +58,15 @@ public class SecurityConfig {
         http.authenticationProvider(authenticationProvider());
         http.sessionManagement(ses -> ses.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-        http.formLogin(AbstractHttpConfigurer::disable);
+        //http.formLogin(AbstractHttpConfigurer::disable);
+
+        http.formLogin(form -> form
+                //.loginProcessingUrl("/api/users/login")
+                .failureHandler(authenticationFailureHandler())
+                .successHandler(authenticationSuccessHandler())
+                .permitAll()
+        );
+
         http.logout(logout -> logout
                 .logoutUrl("/api/users/logout")
                 .logoutSuccessUrl("/api/login?logout")
@@ -76,42 +82,6 @@ public class SecurityConfig {
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
-
-    public class Http401UnauthorizedEntryPoint implements AuthenticationEntryPoint {
-        @Override
-        public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException arg2)
-                throws IOException, ServletException {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "An authentication is required");
-        }
-    }
-
-    public class RestAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-        @Override
-        public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                            Authentication authentication) throws IOException, ServletException {
-            clearAuthenticationAttributes(request);
-            log.debug("On Authentication Success");
-        }
-    }
-
-    public class RestAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
-        @Override
-        public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-                                            AuthenticationException exception) throws IOException, ServletException {
-            super.onAuthenticationFailure(request, response, exception);
-            log.debug("On Authentication Failure");
-        }
-    }
-
-    public class RestLogoutSuccessHandler extends AbstractAuthenticationTargetUrlRequestHandler
-            implements LogoutSuccessHandler {
-        @Override
-        public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
-                                    Authentication authentication) throws IOException, ServletException {
-            response.setStatus(HttpServletResponse.SC_OK);
-        }
-    }
-
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
@@ -141,6 +111,73 @@ public class SecurityConfig {
     @Bean
     public RestLogoutSuccessHandler logoutSuccessHandler() {
         return new RestLogoutSuccessHandler();
+    }
+
+    public class Http401UnauthorizedEntryPoint implements AuthenticationEntryPoint {
+        @Override
+        public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException arg2)
+                throws IOException {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "An authentication is required");
+        }
+    }
+
+    public class RestAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+        @Override
+        public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+                                            Authentication authentication) {
+            log.debug("On Authentication Success");
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.setContentType("application/json");
+        }
+    }
+
+    public class RestAuthenticationFailureHandler implements AuthenticationFailureHandler {
+        @Override
+        public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+                                            AuthenticationException exception) throws IOException {
+
+            String code = null;
+            String description = null;
+
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            String error = exception.getClass().getSimpleName();
+
+            switch (error) {
+                case "BadCredentialsException":
+                    code = "BadCredentialsException";
+                    description = "Identifiants incorrects.";
+                    break;
+                case "DisabledException":
+                    code = "DisabledException";
+                    description = "Le compte est désactivé.";
+                    break;
+
+                case "LockedException":
+                    code = "LockedException";
+                    description = "Le compte est verrouillé.";
+                    break;
+
+                default:
+                    code = "BadCredentialsException";
+                    description = "Identifiants incorrects.";
+                    break;
+            }
+
+            ErrorBack errorDetails = new ErrorBack(code, description);
+            ObjectMapper mapper = new ObjectMapper();
+            String json = mapper.writeValueAsString(errorDetails);
+            response.getWriter().write(json);
+        }
+    }
+
+    public class RestLogoutSuccessHandler extends AbstractAuthenticationTargetUrlRequestHandler
+            implements LogoutSuccessHandler {
+        @Override
+        public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
+                                    Authentication authentication) {
+            response.setStatus(HttpServletResponse.SC_OK);
+        }
     }
 
 }

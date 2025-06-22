@@ -3,16 +3,21 @@
 <head>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <title>Facture</title>
-    <style type="text/css">
+    <style>
         body {
-            font-family: Arial, sans-serif;
+           font-family:  Comic Sans MS;
             font-size: 12px;
             color: #333;
-            margin: 10px;
+            margin: 5px;
+            padding: 0px
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            /*background-image: url('data:image/jpeg;base64,${logoPath}'); */
         }
         .container {
             border: 2px solid #333;      /* cadre gris foncé */
-            padding: 40px;               /* espace intérieur */
+            padding: 15px;               /* espace intérieur */
             max-width: 900px;            /* largeur maximale */
             margin: auto;                /* centré horizontalement */
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* ombre légère */
@@ -24,17 +29,15 @@
         .header h3 {
         margin: 2px 0;
         }
-
         .company-info {
             font-size: 13px;
         }
-
         .footer {
             margin-bottom: 0px;
             font-size: 10px;
             text-align: center;
             border-top: 1px solid #aaa;
-            padding-top: 20px;
+            padding-top: 15px;
         }
 
         hr {
@@ -79,7 +82,6 @@
 
     </style>
 </head>
-
 <body>
 <div class="container">
     <!-- En-tête -->
@@ -98,11 +100,11 @@
     <!-- Informations Client -->
     <table>
         <tr>
-            <td><h3><strong>FACTURE : </strong></h3></td>
+            <td><h3><strong>FACTURE N°: ${numeroFacture}</strong></h3></td>
             <td class="align-right"><h3><strong>${rsClient}</strong></h3></td>
         </tr>
         <tr>
-            <td><strong>N° ${numeroFacture}</strong></td>
+            <td><strong></strong></td>
             <td class="align-right"><strong>${adresse1Client} <br/> ${adresse2Client}</strong></td>
         </tr>
     </table>
@@ -131,15 +133,15 @@
     <div class="section-title">Récapitulatif :</div>
     <table>
         <tr>
-            <th>Total Hors Taxe :</th>
+            <th>Total Hors Taxe (en euros) :</th>
             <th class="align-right"><strong>${montantHT} €</strong></th>
         </tr>
         <tr>
-            <th>TVA à Taux applicable à 20.0 % :</th>
+            <th>Taux de TVA : 20,0 %</th>
             <th class="align-right"><strong>${montantTva} €</strong></th>
         </tr>
         <tr class="total">
-            <th>Total TTC en euro :</th>
+            <th>Total TTC (en euros) :</th>
             <th class="align-right"><strong>${montantTTC} €</strong></th>
         </tr>
     </table>
@@ -149,7 +151,8 @@
     <p>
         Les règlements doivent être effectués par virement bancaire (coordonnées ci-dessous).<br/>
         Tout retard de paiement entraînera, de plein droit, des pénalités calculées au taux de trois (3) fois le taux
-        d'intérêt légal, à compter de la date d’échéance, soit ${delaiPaiement} jours après la réception de la facture.
+        d'intérêt légal, à compter de la date d’échéance, soit ${delaiPaiement} jours après la réception de cette
+        facture.
     </p>
 
     <!-- Coordonnées bancaires -->

@@ -6,8 +6,6 @@ import com.sbatec.fact.domaine.exception.ServiceException;
 import com.sbatec.fact.domaine.exception.UserNotFoundException;
 import com.sbatec.fact.domaine.ports.spi.user.UserSpiService;
 import com.sbatec.fact.infrastructure.adapter.commun.CheckEmailAdresse;
-import com.sbatec.fact.infrastructure.mapper.CompanyMapper;
-import com.sbatec.fact.infrastructure.mapper.RoleMapper;
 import com.sbatec.fact.infrastructure.mapper.UserMapper;
 import com.sbatec.fact.infrastructure.models.RoleEntity;
 import com.sbatec.fact.infrastructure.models.UserEntity;
@@ -32,8 +30,6 @@ public class UserSpiAdapter implements UserSpiService {
     UserJpaRepository userJpaRepository;
     RoleJpaRepository roleJpaRepository;
     UserMapper userMapper;
-    CompanyMapper companyMapper;
-    RoleMapper roleMapper;
 
 
     @Override
@@ -43,7 +39,7 @@ public class UserSpiAdapter implements UserSpiService {
         Optional.ofNullable(user).orElseThrow(() -> new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT));
         CheckEmailAdresse checkEmail = CheckEmailAdresse.builder().build();
         if (user.getId() == null && checkEmail.checkEmailAdresse(user, userJpaRepository)) {
-            final String format = String.format("L'adresse mail %s est déjà utilisée", user.getEmail());
+            final String format = String.format("Un compte avec ( %s ) comme identiant est trouvé", user.getEmail());
             throw new ServiceException(ErrorCatalog.DUPLICATE_DATA, format);
         }
 

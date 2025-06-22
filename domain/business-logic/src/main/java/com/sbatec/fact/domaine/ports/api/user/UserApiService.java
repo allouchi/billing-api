@@ -25,6 +25,6 @@ public interface UserApiService {
 
     User findByUserNameAndPassword(String userName, String password);
 
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
+    UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 
 }

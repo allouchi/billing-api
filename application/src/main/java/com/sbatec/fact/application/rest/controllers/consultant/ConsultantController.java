@@ -51,14 +51,14 @@ public class ConsultantController implements CommonResource {
     @PutMapping(value = "/{siret}")
     public Consultant updateConsultant(@RequestBody @NotNull Consultant consultantRequest,
                                        @PathVariable @NotNull String siret) {
-        log.info("Update consultant by id : " + consultantRequest.getId());
+        log.info("Update consultant by id {}:", consultantRequest.getId());
         return consultantApiService.updateConsultant(consultantRequest, siret);
     }
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @DeleteMapping(value = "/{consultantId}")
     public void deleteConsultant(@PathVariable @NotNull Long consultantId) {
-        log.info("delete consultant by id :" + consultantId);
+        log.info("delete consultant by id {}:", consultantId);
         consultantApiService.deleteConsultant(consultantId);
     }
 }

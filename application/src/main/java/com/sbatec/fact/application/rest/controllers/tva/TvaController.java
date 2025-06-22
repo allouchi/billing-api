@@ -25,35 +25,35 @@ public class TvaController {
     @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @GetMapping("/{siret}/{exercise}")
     public List<Tva> getByExercise(@PathVariable String siret, @PathVariable String exercise) {
-        log.info("---- Get All tvas by exercise : " + exercise);
+        log.info("---- Get All tvas by exercise : {} ", exercise);
         return tvaApiService.findByExerciseAndSiret(exercise, siret);
     }
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @GetMapping(Resource.TVASINFO + "/{siret}/{exercise}")
     public TvaInfo getTvaInfoByExercise(@PathVariable String exercise, @PathVariable String siret) {
-        log.info("---- Get All tvas info by exercise : " + exercise);
+        log.info("---- Get All tvas info by exercise : {} ", exercise);
         return tvaApiService.findTvaInfo(exercise, siret);
     }
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @PutMapping(consumes = "application/json", produces = "application/json")
     public void updateTva(@RequestBody Tva tvaRequest) {
-        log.info("---- add or update tva : " + tvaRequest);
+        log.info("---- add or update tva : {} ", tvaRequest);
         tvaApiService.updateTva(tvaRequest);
     }
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @DeleteMapping(value = "/{id}")
     public void deleteTva(@PathVariable Long id) {
-        log.info("---- delete by id : " + id);
+        log.info("---- delete by id : {} ", id);
         tvaApiService.deleteTva(id);
     }
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @PostMapping(consumes = "application/json", produces = "application/json")
     public void addTva(@RequestBody Tva tvaRequest) {
-        log.info("---- add or update tva : " + tvaRequest);
+        log.info("---- add or update tva : {} ", tvaRequest);
         tvaApiService.addTva(tvaRequest);
     }
 

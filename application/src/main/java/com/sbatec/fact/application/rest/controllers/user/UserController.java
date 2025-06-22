@@ -59,7 +59,6 @@ public class UserController {
                 .map(GrantedAuthority::getAuthority)
                 .filter(role -> role.startsWith("ROLE_"))
                 .map(roleName -> {
-                    // Supposons que vous avez un service RoleService avec une méthode findByRoleName
                     Role existingRole = roleApiService.findByRoleName(roleName);
                     return Role.builder()
                             .id(existingRole.getId())

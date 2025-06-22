@@ -20,7 +20,7 @@ public class ControllerAdvisor {
         String code = errorCatalog.getCode();
         String message = exception.getMessage();
         ErrorBack errorDetails = new ErrorBack(code, message);
-        log.error("Service Exception !", exception.getMessage());
+        log.error("Service Exception {}", exception.getMessage());
         return new ResponseEntity<>(errorDetails, getHttpStatus(errorCatalog));
     }
 
@@ -42,12 +42,11 @@ public class ControllerAdvisor {
     @ResponseBody
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<Object> userNotFound(UserNotFoundException exception) {
-
         ErrorCatalog errorCatalog = exception.getErrorCatalog();
         String code = errorCatalog.getCode();
         String message = exception.getMessage();
         ErrorBack errorDetails = new ErrorBack(code, message);
-        log.error("Service Exception !", exception.getMessage());
+        log.error("Service Exception {} ", exception.getMessage());
         return new ResponseEntity<>(errorDetails, getHttpStatus(errorCatalog));
     }
 
@@ -55,7 +54,6 @@ public class ControllerAdvisor {
     @ResponseBody
     @ExceptionHandler(PrestationNotFoundException.class)
     public String prestationNotFound(PrestationNotFoundException ex) {
-
         return ex.getMessage();
     }
 
@@ -63,7 +61,6 @@ public class ControllerAdvisor {
     @ResponseBody
     @ExceptionHandler(FactureNotFoundException.class)
     public String factureNotFound(FactureNotFoundException ex) {
-
         return ex.getMessage();
     }
 
@@ -71,7 +68,6 @@ public class ControllerAdvisor {
     @ResponseBody
     @ExceptionHandler(CompanyNotFoundException.class)
     public String companyNotFound(CompanyNotFoundException ex) {
-
         return ex.getMessage();
     }
 
@@ -88,6 +84,5 @@ public class ControllerAdvisor {
     public String TvaNotFound(TvaNotFoundException ex) {
         return ex.getMessage();
     }
-
 
 }

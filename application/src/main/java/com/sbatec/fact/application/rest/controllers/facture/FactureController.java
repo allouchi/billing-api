@@ -37,9 +37,9 @@ public class FactureController {
     }
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
-    @GetMapping("/{siret}/exercice")
-    public List<Facture> findAllBySiretAndExercice(@PathVariable @NotNull String siret, @PathVariable @NotNull String exercice) {
-        log.info("get all bills by siret {} and exercice {}", siret, exercice);
+    @GetMapping("/{siret}/exercise")
+    public List<Facture> findAllBySiretAndExercice(@PathVariable @NotNull String siret, @PathVariable @NotNull String exercise) {
+        log.info("get all bills by siret {} and exercise {}", siret, exercise);
         List<Facture> factures = factureApiService.findFacturesBySiret(siret);
         return factures;
     }
@@ -66,7 +66,7 @@ public class FactureController {
     @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @PutMapping(consumes = "application/json", produces = "application/json")
     public Facture updateFacture(@RequestBody @NotNull Facture factureRequest) {
-        log.info("Update facture : " + factureRequest.getDateEncaissement());
+        log.info("Update facture : {}", factureRequest.getDateEncaissement());
         return factureApiService.updateFacture(factureRequest, resources.getPathRoot(),
                 resources.getFichierSuiviFactures());
     }

@@ -24,7 +24,6 @@ public class Utils {
     static Map<String, File> map = null;
 
     static {
-
         mapMois.put("01", "Janvier");
         mapMois.put("02", "Février");
         mapMois.put("03", "Mars");
@@ -37,7 +36,6 @@ public class Utils {
         mapMois.put("10", "Octobre");
         mapMois.put("11", "Novembre");
         mapMois.put("12", "Décembre");
-
     }
 
     private final String custTemplate = "data/customTemplate.jrxml";
@@ -91,7 +89,6 @@ public class Utils {
             int anneeSuivante = annee + 1;
             excercises.add(annee + "-" + anneeSuivante);
         }
-
         return excercises;
     }
 
@@ -102,7 +99,6 @@ public class Utils {
     public static String buildMoisFacture(String mois) {
 
         String[] moisId = new String[1];
-
         mapMois.forEach((key, value) ->
         {
             if (value.equalsIgnoreCase(mois)) {
@@ -127,15 +123,18 @@ public class Utils {
         String custDefaultTemplate = "data/defaultTemplate.jrxml";
         String suiviFacturation = "data/suivi-facturation.xls";
         String templateHtml = "data/factureTemplate.html";
+        String logo = "assets/images/background.jpeg";
 
         File customFile = new ClassPathResource(custTemplate).getFile();
         File defaultFile = new ClassPathResource(custDefaultTemplate).getFile();
         File excelFile = new ClassPathResource(suiviFacturation).getFile();
         File htmlFile = new ClassPathResource(templateHtml).getFile();
+        File logoFile = new ClassPathResource(logo).getFile();
         map.put("Default", defaultFile);
         map.put("Custom", customFile);
         map.put("Suivi", excelFile);
         map.put("Html", htmlFile);
+        map.put("Logo", logoFile);
         return map;
     }
 
