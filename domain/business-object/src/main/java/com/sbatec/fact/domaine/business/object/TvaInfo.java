@@ -14,5 +14,6 @@ public class TvaInfo {
     Float totalTvaPaye;
     Float totalTvaRestant;
     Float totalTva;
+    Float totalTvaNet;
     Float totalTTC;
 }

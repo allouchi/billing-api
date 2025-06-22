@@ -50,14 +50,14 @@ public class CompanySpiAdapter implements CompanySpiService {
     @Override
     public Company updateCompany(Company company) {
         List<Company> companies = this.findAll();
-        companies.forEach(c -> {
-            if (!c.getSiret().equals(company.getSiret())) {
-                c.setChecked(false);
-            } else {
-                c.setChecked(true);
-            }
-            companyJpaRepository.save(companyMapper.fromDomainToEntity(c));
-        });
+        if (company.getChecked()) {
+            companies.forEach(c -> {
+                if (!c.getSiret().equals(company.getSiret())) {
+                    c.setChecked(false);
+                }
+                companyJpaRepository.save(companyMapper.fromDomainToEntity(c));
+            });
+        }
         CompanyEntity companyEntity = companyMapper.fromDomainToEntity(company);
         CompanyEntity baseEntity = companyJpaRepository.save(companyEntity);
         return companyMapper.fromEntityToDomain(baseEntity);

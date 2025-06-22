@@ -115,7 +115,7 @@ public class TvaSpiAdapter implements TvaSpiService {
     @Override
     public TvaInfo findTvaInfo(String exercise, String siret) {
 
-        List<FactureEntity> factureEntity = new ArrayList<>();
+        List<FactureEntity> facturesEntity = new ArrayList<>();
         TvaInfo info = new TvaInfo();
 
         Optional<CompanyEntity> company = companyJpaRepository.findBySiret(siret);
@@ -125,13 +125,13 @@ public class TvaSpiAdapter implements TvaSpiService {
             for (PrestationEntity prestation : prestations) {
                 for (FactureEntity factures : prestation.getFactures()) {
                     if (factures.getDateEncaissement() != null) {
-                        factureEntity.add(factures);
+                        facturesEntity.add(factures);
                     }
                 }
             }
         }
         if (!exercise.equalsIgnoreCase(TOUS)) {
-            Iterator<FactureEntity> it = factureEntity.iterator();
+            Iterator<FactureEntity> it = facturesEntity.iterator();
             while (it.hasNext()) {
                 FactureEntity facture = it.next();
                 if (facture.getDateEncaissement() == null || !facture.getExercice().equals(exercise)) {
@@ -141,8 +141,9 @@ public class TvaSpiAdapter implements TvaSpiService {
         }
 
         float totalTvaPaye = 0;
-        float totalTva = factureEntity.stream().map(e -> (e.getMontantTVA() - 30)).reduce(0f, Float::sum);
-        float totalTTC = factureEntity.stream().map(e -> e.getPrixTotalTTC()).reduce(0f, Float::sum);
+        float totalTvaNet = facturesEntity.stream().map(e -> (e.getMontantTVA() - 30)).reduce(0f, Float::sum);
+        float totalTva = facturesEntity.stream().map(e -> (e.getMontantTVA())).reduce(0f, Float::sum);
+        float totalTTC = facturesEntity.stream().map(e -> e.getPrixTotalTTC()).reduce(0f, Float::sum);
         List<TvaEntity> listeTvaPayee;
 
         if (exercise.equalsIgnoreCase(TOUS)) {
@@ -155,6 +156,7 @@ public class TvaSpiAdapter implements TvaSpiService {
         }
         info.setTotalTvaPaye(totalTvaPaye);
         info.setTotalTva(totalTva);
+        info.setTotalTvaNet(totalTvaNet);
         info.setTotalTvaRestant(totalTva - totalTvaPaye);
         info.setTotalTTC(totalTTC);
         return info;

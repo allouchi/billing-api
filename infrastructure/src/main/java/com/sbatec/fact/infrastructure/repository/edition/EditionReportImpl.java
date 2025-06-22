@@ -409,10 +409,11 @@ public class EditionReportImpl implements EditionReportService {
                 .replace("${adresse2Client}", adresse2Client)
                 .replace("${logoPath}", logoPath);
 
+        String baseUrl = logoFile.toPath().toUri().toURL().toString();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         ITextRenderer renderer = new ITextRenderer();
-        renderer.setDocumentFromString(html);
         renderer.layout();
+        renderer.setDocumentFromString(html, baseUrl);
         renderer.createPDF(out);
 
         String outputFileName = (String) parameters.get("fileName");

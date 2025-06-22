@@ -7,9 +7,12 @@
         body {
             font-family: Arial, sans-serif;
             font-size: 12px;
+            margin: 0;
+            padding: 0;
             color: #333;
             margin: 10px;
-            background-image: url('data:image/png;base64,${logoBase64}');
+            /*background-image: url('data:image/jpeg;base64,${logoBase64}'); */
+            background-image: url('background.jpeg');
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
@@ -80,6 +83,11 @@
         .center-text {
             text-align: center;
         }
+
+
+
+
+
 
     </style>
 </head>
@@ -152,7 +160,8 @@
     <p>
         Les règlements doivent être effectués par virement bancaire (coordonnées ci-dessous).<br/>
         Tout retard de paiement entraînera, de plein droit, des pénalités calculées au taux de trois (3) fois le taux
-        d'intérêt légal, à compter de la date d’échéance, soit ${delaiPaiement} jours après la réception de la facture.
+        d'intérêt légal, à compter de la date d’échéance, soit ${delaiPaiement} jours après la réception de cette
+        facture.
     </p>
 
     <!-- Coordonnées bancaires -->
