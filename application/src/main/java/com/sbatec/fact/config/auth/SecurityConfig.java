@@ -52,7 +52,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .anonymous(anonymous -> anonymous.disable())
                 .authorizeHttpRequests(authorize -> authorize.requestMatchers(
-                                "/api/users/login/**", "/api/users/logout").permitAll()
+                                "/api/users/login", "/api/users/refresh-token", "/api/users/logout").permitAll()
                         .anyRequest().authenticated());
 
         http.authenticationProvider(authenticationProvider());

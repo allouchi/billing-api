@@ -5,15 +5,43 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff07ecbc-d1f3-4543-879d-e13ac5f9aa2a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/exception/TokenExpiredException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/domain/business-logic/src/main/java/com/sbatec/fact/domaine/adapter/operation/OperationApiAdapter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/domain/business-logic/src/main/java/com/sbatec/fact/domaine/ports/spi/operation/OperationSpiService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/domain/business-object/src/main/java/com/sbatec/fact/domaine/business/object/Operation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/domain/business-object/src/main/java/com/sbatec/fact/domaine/business/object/RefreshRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/adapter/operation/OperationSpiAdapter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/mapper/OperationMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/models/OperationEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/repository/operation/OperationJpaRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/exception/ControllerAdvisor.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/exception/ControllerAdvisor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/rest/controllers/consultant/ConsultantController.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/rest/controllers/consultant/ConsultantController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/rest/controllers/user/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/rest/controllers/user/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/config/auth/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/config/auth/JwtAuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/config/auth/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/config/auth/JwtService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/config/auth/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/config/auth/SecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/config/auth/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/config/auth/WebConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/test/java/com/sbatec/fact/application/rest/controllers/prestation/PrestationControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/test/java/com/sbatec/fact/application/rest/controllers/prestation/PrestationControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/commun/src/main/resources/data/factureTemplate.html" beforeDir="false" afterPath="$PROJECT_DIR$/commun/src/main/resources/data/factureTemplate.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/resources/data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/resources/data.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commun/src/main/java/com/sbatec/util/CommonResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/commun/src/main/java/com/sbatec/util/CommonResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commun/src/main/java/com/sbatec/util/FactureStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/commun/src/main/java/com/sbatec/util/FactureStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/business-logic/src/main/java/com/sbatec/fact/domaine/exception/ErrorCatalog.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/business-logic/src/main/java/com/sbatec/fact/domaine/exception/ErrorCatalog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/business-object/src/main/java/com/sbatec/fact/domaine/business/object/AuthResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/business-object/src/main/java/com/sbatec/fact/domaine/business/object/AuthResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/adapter/edition/EditionSpiAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/adapter/edition/EditionSpiAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/repository/facture/FactureJpaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/repository/facture/FactureJpaRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="FormatOnSaveOptions">
     <option name="myRunOnSave" value="true" />
@@ -55,32 +83,38 @@
     <option name="sortByType" value="true" />
     <option name="sortKey" value="BY_TYPE" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.ApplicationStarter (1).executor&quot;: &quot;Run&quot;,
-    &quot;Application.ApplicationStarter.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PrestationControllerTest.createFacture.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PrestationControllerTest.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;code.cleanup.on.save&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;develop&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Sbatec/appli_facturation/billing-api/commun/src/main/resources/assets/images&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.17773438&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;rearrange.code.on.save&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;actions.on.save&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.ApplicationStarter (1).executor": "Run",
+    "Application.ApplicationStarter.executor": "Debug",
+    "JUnit.PrestationControllerTest.createFacture.executor": "Run",
+    "JUnit.PrestationControllerTest.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "code.cleanup.on.save": "true",
+    "git-widget-placeholder": "develop",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Ruche/docs/perso/dev/billing-api/application/src/main/java/com/sbatec/fact/application/rest/controllers/dashboard",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.17773438",
+    "project.structure.side.proportion": "0.2",
+    "rearrange.code.on.save": "true",
+    "settings.editor.selected.configurable": "actions.on.save"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Ruche\docs\perso\dev\billing-api\application\src\main\java\com\sbatec\fact\application\rest\controllers\dashboard" />
       <recent name="C:\Sbatec\appli_facturation\billing-api\commun\src\main\resources\assets\images" />
     </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.sbatec.fact.domaine.ports.api.operation" />
+      <recent name="com.sbatec.fact.infrastructure.models" />
+      <recent name="com.sbatec.fact.domaine.business.object.common" />
+    </key>
   </component>
-  <component name="RunManager" selected="JUnit.PrestationControllerTest.createFacture">
+  <component name="RunManager" selected="Application.ApplicationStarter">
     <configuration name="ApplicationStarter (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.sbatec.fact.ApplicationStarter" />
       <module name="billing-api (1)" />
@@ -171,8 +205,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.PrestationControllerTest.createFacture" />
         <item itemvalue="Application.ApplicationStarter" />
+        <item itemvalue="JUnit.PrestationControllerTest.createFacture" />
         <item itemvalue="JUnit.PrestationControllerTest.createFacture (1)" />
         <item itemvalue="Application.ApplicationStarter (1)" />
         <item itemvalue="JUnit.PrestationControllerTest" />
@@ -218,38 +252,23 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/exception/ControllerAdvisor.java</url>
-          <line>55</line>
+          <line>66</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/exception/ControllerAdvisor.java</url>
-          <line>61</line>
+          <line>72</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/exception/ControllerAdvisor.java</url>
-          <line>67</line>
+          <line>78</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/rest/controllers/user/UserController.java</url>
-          <line>127</line>
+          <line>150</line>
           <option name="timeStamp" value="73" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/exception/ControllerAdvisor.java</url>
-          <line>20</line>
-          <option name="timeStamp" value="74" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/exception/ControllerAdvisor.java</url>
-          <line>44</line>
-          <option name="timeStamp" value="75" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/exception/ControllerAdvisor.java</url>
-          <line>27</line>
-          <option name="timeStamp" value="76" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/config/auth/SecurityConfig.java</url>
@@ -265,6 +284,21 @@
           <url>file://$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/repository/edition/EditionReportImpl.java</url>
           <line>412</line>
           <option name="timeStamp" value="87" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/config/auth/SecurityConfig.java</url>
+          <line>141</line>
+          <option name="timeStamp" value="102" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/exception/ControllerAdvisor.java</url>
+          <line>58</line>
+          <option name="timeStamp" value="112" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/exception/ControllerAdvisor.java</url>
+          <line>27</line>
+          <option name="timeStamp" value="113" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
