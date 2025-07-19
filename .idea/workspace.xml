@@ -5,8 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff07ecbc-d1f3-4543-879d-e13ac5f9aa2a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/domain/business-logic/src/main/java/com/sbatec/fact/domaine/ports/api/operation/OperationApiService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/rest/controllers/dashboard/OperationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/rest/controllers/dashboard/OperationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/resources/application-dev.properties" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/resources/application-dev.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/models/OperationEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/models/OperationEntity.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,7 +74,6 @@
     <option name="showExcludedFiles" value="false" />
     <option name="showLibraryContents" value="true" />
     <option name="sortByType" value="true" />
-    <option name="sortKey" value="BY_TYPE" />
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
@@ -104,7 +106,7 @@
       <recent name="com.sbatec.fact.domaine.business.object.common" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.ApplicationStarter">
+  <component name="RunManager" selected="Application.ApplicationStarter (1)">
     <configuration name="ApplicationStarter (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.sbatec.fact.ApplicationStarter" />
       <module name="billing-api (1)" />
@@ -195,10 +197,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.ApplicationStarter (1)" />
         <item itemvalue="Application.ApplicationStarter" />
         <item itemvalue="JUnit.PrestationControllerTest.createFacture" />
         <item itemvalue="JUnit.PrestationControllerTest.createFacture (1)" />
-        <item itemvalue="Application.ApplicationStarter (1)" />
         <item itemvalue="JUnit.PrestationControllerTest" />
       </list>
     </recent_temporary>
@@ -292,7 +294,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/rest/controllers/dashboard/OperationController.java</url>
-          <line>55</line>
+          <line>66</line>
           <option name="timeStamp" value="115" />
         </line-breakpoint>
       </breakpoints>

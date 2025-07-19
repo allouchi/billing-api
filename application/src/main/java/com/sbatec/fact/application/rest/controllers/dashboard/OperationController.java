@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -28,7 +30,16 @@ public class OperationController {
     @GetMapping()
     public List<Operation> getOperations() {
         log.info("get all opérations");
-        return operationApiService.findOperations();
+        List<Operation> opertations = operationApiService.findOperations();
+        if (opertations != null) {
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            opertations.sort((p1, p2) -> {
+                LocalDate date1 = LocalDate.parse(p1.getDateOperation(), dateFormatter);
+                LocalDate date2 = LocalDate.parse(p2.getDateOperation(), dateFormatter);
+                return date2.compareTo(date1);
+            });
+        }
+        return opertations;
     }
 
 

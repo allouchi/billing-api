@@ -3,6 +3,7 @@ package com.sbatec.fact.infrastructure.models;
 import com.sbatec.fact.infrastructure.models.common.CommonEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 @Entity(name = "T_Operation")
@@ -11,7 +12,8 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @SuperBuilder
-@ToString
+@EqualsAndHashCode(callSuper = false)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = false)
 public class OperationEntity extends CommonEntity {
 
     @Id
