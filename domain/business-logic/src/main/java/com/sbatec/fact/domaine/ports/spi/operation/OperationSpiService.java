@@ -11,4 +11,5 @@ public interface OperationSpiService {
     Operation addOperation(Operation operation);
 
     void deleteOperationById(Long id);
+    
 }

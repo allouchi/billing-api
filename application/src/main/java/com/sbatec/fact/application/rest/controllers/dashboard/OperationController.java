@@ -31,6 +31,7 @@ public class OperationController {
         return operationApiService.findOperations();
     }
 
+
     @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping(value = "/add")

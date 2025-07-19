@@ -27,6 +27,7 @@ public class OperationApiAdapter implements OperationApiService {
         return operationSpiService.addOperation(operation);
     }
 
+    
     @Override
     public void deleteOperationById(Long id) {
         operationSpiService.deleteOperationById(id);

@@ -31,6 +31,7 @@ public class OperationSpiAdapter implements OperationSpiService {
         List<OperationEntity> operationEntities = operationJpaRepository.findAll();
         return operationMapper.fromEntityToDomain(operationEntities);
     }
+    
 
     @Override
     public Operation addOperation(Operation operation) {
