@@ -5,11 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff07ecbc-d1f3-4543-879d-e13ac5f9aa2a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/domain/business-logic/src/main/java/com/sbatec/fact/domaine/ports/api/operation/OperationApiService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/rest/controllers/dashboard/OperationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/rest/controllers/dashboard/OperationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/domain/business-logic/src/main/java/com/sbatec/fact/domaine/adapter/operation/OperationApiAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/business-logic/src/main/java/com/sbatec/fact/domaine/adapter/operation/OperationApiAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/domain/business-logic/src/main/java/com/sbatec/fact/domaine/ports/spi/operation/OperationSpiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/business-logic/src/main/java/com/sbatec/fact/domaine/ports/spi/operation/OperationSpiService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/adapter/operation/OperationSpiAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/adapter/operation/OperationSpiAdapter.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
