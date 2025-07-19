@@ -13,6 +13,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OperationMapper {
 
+    /**
+     * @param domain
+     * @return
+     */
     public OperationEntity fromDomainToEntity(Operation domain) {
         if (domain == null) {
             return null;
@@ -21,18 +25,26 @@ public class OperationMapper {
             domain.setId(null);
         }
         return OperationEntity.builder().id(domain.getId()).montantoperation(domain.getMontantOperation())
-                .dateOperation(domain.getDateOperation()).typeOperation(domain.getTypeOperation()).exercice(domain.getExercice()).build();
+                .dateOperation(domain.getDateOperation()).typeOperation(domain.getTypeOperation()).exercise(domain.getExercise()).build();
     }
 
+    /**
+     * @param entity
+     * @return
+     */
     public Operation fromEntityToDomain(OperationEntity entity) {
 
         if (entity == null) {
             return null;
         }
         return Operation.builder().id(entity.getId()).montantOperation(entity.getMontantoperation())
-                .dateOperation(entity.getDateOperation()).typeOperation(entity.getTypeOperation()).exercice(entity.getExercice()).build();
+                .dateOperation(entity.getDateOperation()).typeOperation(entity.getTypeOperation()).exercise(entity.getExercise()).build();
     }
 
+    /**
+     * @param entities
+     * @return
+     */
     public List<Operation> fromEntityToDomain(List<OperationEntity> entities) {
 
         if (entities != null) {
@@ -41,6 +53,10 @@ public class OperationMapper {
         return Collections.emptyList();
     }
 
+    /**
+     * @param domains
+     * @return
+     */
     public List<OperationEntity> fromDomainToEntity(List<Operation> domains) {
         if (domains != null) {
             return domains.stream().map(this::fromDomainToEntity).collect(Collectors.toList());

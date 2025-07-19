@@ -7,4 +7,8 @@ import java.util.List;
 public interface OperationSpiService {
 
     List<Operation> findOperations();
+
+    Operation addOperation(Operation operation);
+
+    void deleteOperationById(Long id);
 }

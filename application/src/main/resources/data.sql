@@ -411,7 +411,7 @@ CREATE TABLE t_operation (
   `date_operation` varchar(10) NOT NULL,
   `type_operation` varchar(10) NOT NULL,
   `montant_operation` varchar(45) NOT NULL,
-  `exercice` varchar(100) NOT NULL,
+  `exercise` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
   );
 
@@ -419,8 +419,8 @@ CREATE TABLE t_operation (
                          date_operation,
                          type_operation ,
                          montant_operation ,
-                         exercice )
+                         exercise )
   VALUES
-  (1,'28/12/2025','DIVIDENDE',2588,'2025'),
+  (1,'28/12/2025','DIV',2588,'2025'),
   (2,'28/12/2025','NDF',1400,'2025');
 

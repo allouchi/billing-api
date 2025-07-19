@@ -16,5 +16,5 @@ public class Operation {
     Float montantOperation;
     String typeOperation;
     String dateOperation;
-    String exercice;
+    String exercise;
 }

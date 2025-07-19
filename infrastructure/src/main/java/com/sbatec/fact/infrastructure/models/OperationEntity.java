@@ -25,8 +25,8 @@ public class OperationEntity extends CommonEntity {
     @Column(name = "montant_operation", nullable = false)
     Float montantoperation;
 
-    @Column(name = "exercice", nullable = false)
-    String exercice;
+    @Column(name = "exercise", nullable = false)
+    String exercise;
 
     @Column(name = "date_operation", nullable = false)
     String dateOperation;
