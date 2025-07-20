@@ -3,6 +3,7 @@ package com.sbatec.fact.infrastructure.models;
 import com.sbatec.fact.infrastructure.models.common.CommonEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
@@ -13,7 +14,8 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @SuperBuilder
-@ToString
+@EqualsAndHashCode(callSuper = false)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = false)
 public class OperationEntity extends CommonEntity {
 
     @Id
