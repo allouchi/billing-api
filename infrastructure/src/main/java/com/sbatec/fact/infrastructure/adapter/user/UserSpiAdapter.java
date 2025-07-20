@@ -39,7 +39,7 @@ public class UserSpiAdapter implements UserSpiService {
         Optional.ofNullable(user).orElseThrow(() -> new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT));
         CheckEmailAdresse checkEmail = CheckEmailAdresse.builder().build();
         if (user.getId() == null && checkEmail.checkEmailAdresse(user, userJpaRepository)) {
-            final String format = String.format("Un compte avec ( %s ) comme identiant est trouvé", user.getEmail());
+            final String format = String.format("Un compte ( %s ) est enregistré, veuillez vous identifier", user.getEmail());
             throw new ServiceException(ErrorCatalog.DUPLICATE_DATA, format);
         }
 

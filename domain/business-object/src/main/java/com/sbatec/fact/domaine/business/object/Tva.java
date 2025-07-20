@@ -3,6 +3,8 @@ package com.sbatec.fact.domaine.business.object;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -14,7 +16,7 @@ public class Tva {
 
     Long id;
     String datePayment;
-    Float montantPayment;
+    BigDecimal montantPayment;
     String siret;
     String exercise;
     String monthPayment;

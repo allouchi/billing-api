@@ -3,6 +3,8 @@ package com.sbatec.fact.domaine.business.object;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -11,9 +13,9 @@ import lombok.experimental.FieldDefaults;
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TvaInfo {
-    Float totalTvaPaye;
-    Float totalTvaRestant;
-    Float totalTva;
-    Float totalTvaNet;
-    Float totalTTC;
+    BigDecimal totalTvaPaye;
+    BigDecimal totalTvaRestant;
+    BigDecimal totalTva;
+    BigDecimal totalTvaNet;
+    BigDecimal totalTTC;
 }

@@ -3,6 +3,8 @@ package com.sbatec.fact.domaine.business.object;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -13,7 +15,7 @@ import lombok.experimental.FieldDefaults;
 public class Operation {
 
     Long id;
-    Float montantOperation;
+    BigDecimal montantOperation;
     String typeOperation;
     String dateOperation;
     String exercise;

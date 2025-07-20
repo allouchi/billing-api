@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.math.BigDecimal;
+
 @Entity(name = "T_Tva")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,8 +24,8 @@ public class TvaEntity extends CommonEntity {
     @Column(name = "date_payment", nullable = false, unique = false)
     String datePayment;
 
-    @Column(name = "montant_payment", nullable = false)
-    Float montantPayment;
+    @Column(name = "montant_payment", precision = 10, scale = 2, nullable = false)
+    BigDecimal montantPayment;
 
     @Column(name = "exercise", nullable = false)
     String exercise;
@@ -31,7 +33,7 @@ public class TvaEntity extends CommonEntity {
     @Column(name = "siret", nullable = false)
     String siret;
 
-    @Column(name = "month_payment", nullable = true)
+    @Column(name = "month_payment", nullable = false)
     String monthPayment;
 
 }
