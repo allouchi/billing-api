@@ -361,8 +361,8 @@ VALUES
 --
 -- Table structure for table `t_tva`
 --
-DROP TABLE IF EXISTS `t_tva`;
-CREATE TABLE `t_tva` (
+DROP TABLE IF EXISTS t_tva;
+CREATE TABLE t_tva (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `date_payment` varchar(255) NOT NULL,
   `exercise` varchar(255) NOT NULL,
@@ -375,7 +375,7 @@ CREATE TABLE `t_tva` (
 --
 -- Dumping data for table `t_tva`
 --
-INSERT INTO `t_tva` (id,
+INSERT INTO t_tva (id,
                        date_payment,
                        exercise ,
                        montant_payment ,
@@ -415,7 +415,7 @@ CREATE TABLE t_operation (
   PRIMARY KEY (`id`)
   );
 
-  INSERT INTO `t_operation` (id,
+  INSERT INTO t_operation (id,
                          date_operation,
                          type_operation ,
                          montant_operation ,
@@ -423,4 +423,16 @@ CREATE TABLE t_operation (
   VALUES
   (1,'28/12/2025','DIV',2588,'2025'),
   (2,'28/12/2025','NDF',1400,'2025');
+
+DROP TABLE IF EXISTS persistent_logins;
+
+ CREATE TABLE persistent_logins(
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `username` varchar(64) not null,
+  `series` varchar(64),
+  `token` varchar(64) not null,
+  `last_used` timestamp not null,
+  PRIMARY KEY (`series`));
+
+
 
