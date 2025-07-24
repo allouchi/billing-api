@@ -18,4 +18,5 @@ public class TvaInfo {
     BigDecimal totalTva;
     BigDecimal totalTvaNet;
     BigDecimal totalTTC;
+    BigDecimal totalCAHorsTaxe;
 }

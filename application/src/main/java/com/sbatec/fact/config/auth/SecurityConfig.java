@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.RememberMeAuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -20,14 +18,17 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.*;
+import org.springframework.security.web.authentication.AbstractAuthenticationTargetUrlRequestHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
-import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -45,6 +46,9 @@ public class SecurityConfig {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
+    @Autowired
+    private DataSource dataSource;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.securityMatcher("/api/**");
@@ -56,7 +60,6 @@ public class SecurityConfig {
                                 "/api/users/login", "/api/users/refresh-token", "/api/users/logout").permitAll()
                         .anyRequest().authenticated());
 
-        http.authenticationProvider(authenticationProvider());
         http.sessionManagement(ses -> ses.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         //http.formLogin(AbstractHttpConfigurer::disable);
@@ -67,9 +70,9 @@ public class SecurityConfig {
                 .successHandler(authenticationSuccessHandler())
                 .permitAll()
         );
-        http.rememberMe((remember) -> remember
-                .rememberMeServices(rememberMeServices)
-        );
+        http.rememberMe(rememberMe -> rememberMe.key("AbcdefghiJklmNoPqRstUvXyz").tokenValiditySeconds(86400)
+                .rememberMeCookieName("MY_REMEMBER_ME_COOKIE").tokenRepository(persistentTokenRepository()));
+
         http.logout(logout -> logout
                 .logoutUrl("/api/users/logout")
                 .logoutSuccessUrl("/api/login?logout")
@@ -79,44 +82,12 @@ public class SecurityConfig {
     }
 
     @Bean
-    RememberMeServices rememberMeServices(UserDetailsService userDetailsService) {
-        TokenBasedRememberMeServices.RememberMeTokenAlgorithm encodingAlgorithm = TokenBasedRememberMeServices.RememberMeTokenAlgorithm.SHA256;
-        TokenBasedRememberMeServices rememberMe = new TokenBasedRememberMeServices("myKey", userDetailsService, encodingAlgorithm);
-        rememberMe.setMatchingAlgorithm(TokenBasedRememberMeServices.RememberMeTokenAlgorithm.MD5);
-        return rememberMe;
+    public PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl tokenRepo = new JdbcTokenRepositoryImpl();
+        tokenRepo.setDataSource(dataSource);
+        return tokenRepo;
     }
 
-    @Bean
-    RememberMeAuthenticationFilter rememberMeFilter() {
-        RememberMeAuthenticationFilter rememberMeFilter = new RememberMeAuthenticationFilter();
-        rememberMeFilter.setRememberMeServices(rememberMeServices());
-        rememberMeFilter.setAuthenticationManager(theAuthenticationManager);
-        return rememberMeFilter;
-    }
-
-    @Bean
-    TokenBasedRememberMeServices rememberMeServices() {
-        TokenBasedRememberMeServices rememberMeServices = new TokenBasedRememberMeServices();
-        rememberMeServices.setUserDetailsService(myUserDetailsService);
-        rememberMeServices.setKey("springRocks");
-        return rememberMeServices;
-    }
-
-    @Bean
-    RememberMeAuthenticationProvider rememberMeAuthenticationProvider() {
-        RememberMeAuthenticationProvider rememberMeAuthenticationProvider = new RememberMeAuthenticationProvider();
-        rememberMeAuthenticationProvider.setKey("springRocks");
-        return rememberMeAuthenticationProvider;
-    }
-
-
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(customUserDetailsService);
-        provider.setPasswordEncoder(passwordEncoder());
-        return provider;
-    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {

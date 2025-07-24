@@ -138,7 +138,10 @@ public class TvaSpiAdapter implements TvaSpiService {
         BigDecimal totalTvaPaye = BigDecimal.ZERO;
         BigDecimal totalTvaNet = facturesEntity.stream().map(e -> (BigDecimal.valueOf(e.getMontantTVA() - 30))).reduce(BigDecimal.ZERO, BigDecimal::add);
         BigDecimal totalTva = facturesEntity.stream().map(e -> BigDecimal.valueOf(e.getMontantTVA())).reduce(BigDecimal.ZERO, BigDecimal::add);
-        BigDecimal totalTTC = facturesEntity.stream().map(e -> BigDecimal.valueOf(e.getMontantTVA())).reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal totalTTC = facturesEntity.stream().map(e -> BigDecimal.valueOf(e.getPrixTotalTTC())).reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal totalCAHorsTaxe = facturesEntity.stream().map(e -> BigDecimal.valueOf(e.getPrixTotalHT())).reduce(BigDecimal.ZERO, BigDecimal::add);
+
+
         List<TvaEntity> listeTvaPayee;
 
         if (exercise.equalsIgnoreCase(TOUS)) {
@@ -154,6 +157,7 @@ public class TvaSpiAdapter implements TvaSpiService {
         info.setTotalTvaNet(totalTvaNet);
         info.setTotalTvaRestant(totalTva.subtract(totalTvaPaye));
         info.setTotalTTC(totalTTC);
+        info.setTotalCAHorsTaxe(totalCAHorsTaxe);
         return info;
     }
 }
