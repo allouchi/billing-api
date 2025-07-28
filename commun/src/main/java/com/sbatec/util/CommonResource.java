@@ -31,6 +31,7 @@ public interface CommonResource {
         String BATCHS = "/api/batchs";
         String ROLES = "/api/roles";
         String API = "/api";
+        String OPERATIONS = "/api/operations";
 
     }
 

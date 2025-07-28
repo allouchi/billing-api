@@ -15,9 +15,12 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
+    private static final long ACCESS_TOKEN_EXPIRATION = 1000 * 60 * 60; // 60 minutes
+    private static final long REFRESH_TOKEN_EXPIRATION = 1000L * 60 * 60 * 24 * 7; // 7 jours
     private final String SECRET_KEY = "macletressecreteetsuffisammentlongueencoreunefois";
 
     public String extractUsername(String token) {
+
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -26,20 +29,37 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(String username, long expiration) {
         return Jwts.builder()
-                .setSubject(userDetails.getUsername())
+                .setSubject(username)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10h
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
+
+    public String generateAccessToken(String username) {
+        return generateToken(username, ACCESS_TOKEN_EXPIRATION);
+    }
+
+    public String generateRefreshToken(String username) {
+        return generateToken(username, REFRESH_TOKEN_EXPIRATION);
+    }
+
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         return extractUsername(token).equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
 
-    private boolean isTokenExpired(String token) {
+    public boolean isTokenValid(String token) {
+        try {
+            return !isTokenExpired(token);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean isTokenExpired(String token) {
         return extractAllClaims(token).getExpiration().before(new Date());
     }
 

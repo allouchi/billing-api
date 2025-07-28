@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -28,7 +27,10 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
+import javax.sql.DataSource;
 import java.io.IOException;
 
 @Configuration
@@ -37,12 +39,15 @@ import java.io.IOException;
 public class SecurityConfig {
 
     private final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
-
+    @Autowired
+    DataSource dataSourceMe;
     @Autowired
     private JwtAuthenticationFilter jwtFilter;
-
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
+
+    @Autowired
+    private DataSource dataSource;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -52,10 +57,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .anonymous(anonymous -> anonymous.disable())
                 .authorizeHttpRequests(authorize -> authorize.requestMatchers(
-                                "/api/users/login/**", "/api/users/logout").permitAll()
+                                "/api/users/login", "/api/users/refresh-token", "/api/users/logout").permitAll()
                         .anyRequest().authenticated());
 
-        http.authenticationProvider(authenticationProvider());
         http.sessionManagement(ses -> ses.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         //http.formLogin(AbstractHttpConfigurer::disable);
@@ -66,6 +70,8 @@ public class SecurityConfig {
                 .successHandler(authenticationSuccessHandler())
                 .permitAll()
         );
+        http.rememberMe(rememberMe -> rememberMe.key("AbcdefghiJklmNoPqRstUvXyz").tokenValiditySeconds(86400)
+                .rememberMeCookieName("MY_REMEMBER_ME_COOKIE").tokenRepository(persistentTokenRepository()));
 
         http.logout(logout -> logout
                 .logoutUrl("/api/users/logout")
@@ -76,12 +82,12 @@ public class SecurityConfig {
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(customUserDetailsService);
-        provider.setPasswordEncoder(passwordEncoder());
-        return provider;
+    public PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl tokenRepo = new JdbcTokenRepositoryImpl();
+        tokenRepo.setDataSource(dataSource);
+        return tokenRepo;
     }
+
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {

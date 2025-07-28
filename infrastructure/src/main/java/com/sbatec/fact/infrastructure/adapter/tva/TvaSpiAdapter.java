@@ -18,6 +18,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -134,10 +135,13 @@ public class TvaSpiAdapter implements TvaSpiService {
             }
         }
 
-        float totalTvaPaye = 0;
-        float totalTvaNet = facturesEntity.stream().map(e -> (e.getMontantTVA() - 30)).reduce(0f, Float::sum);
-        float totalTva = facturesEntity.stream().map(e -> (e.getMontantTVA())).reduce(0f, Float::sum);
-        float totalTTC = facturesEntity.stream().map(e -> e.getPrixTotalTTC()).reduce(0f, Float::sum);
+        BigDecimal totalTvaPaye = BigDecimal.ZERO;
+        BigDecimal totalTvaNet = facturesEntity.stream().map(e -> (BigDecimal.valueOf(e.getMontantTVA() - 30))).reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal totalTva = facturesEntity.stream().map(e -> BigDecimal.valueOf(e.getMontantTVA())).reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal totalTTC = facturesEntity.stream().map(e -> BigDecimal.valueOf(e.getPrixTotalTTC())).reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal totalCAHorsTaxe = facturesEntity.stream().map(e -> BigDecimal.valueOf(e.getPrixTotalHT())).reduce(BigDecimal.ZERO, BigDecimal::add);
+
+
         List<TvaEntity> listeTvaPayee;
 
         if (exercise.equalsIgnoreCase(TOUS)) {
@@ -146,13 +150,14 @@ public class TvaSpiAdapter implements TvaSpiService {
             listeTvaPayee = tvaJpaRepository.findByExerciseAndSiret(exercise, siret);
         }
         if (listeTvaPayee != null) {
-            totalTvaPaye = listeTvaPayee.stream().map(e -> e.getMontantPayment()).reduce(0f, Float::sum);
+            totalTvaPaye = listeTvaPayee.stream().map(e -> e.getMontantPayment()).reduce(BigDecimal.ZERO, BigDecimal::add);
         }
         info.setTotalTvaPaye(totalTvaPaye);
         info.setTotalTva(totalTva);
         info.setTotalTvaNet(totalTvaNet);
-        info.setTotalTvaRestant(totalTva - totalTvaPaye);
+        info.setTotalTvaRestant(totalTva.subtract(totalTvaPaye));
         info.setTotalTTC(totalTTC);
+        info.setTotalCAHorsTaxe(totalCAHorsTaxe);
         return info;
     }
 }

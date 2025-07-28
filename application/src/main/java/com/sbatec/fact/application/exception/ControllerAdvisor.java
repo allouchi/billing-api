@@ -28,11 +28,14 @@ public class ControllerAdvisor {
         switch (errorCatalog) {
             case BAD_DATA_ARGUMENT:
             case RESOURCE_NOT_FOUND:
-                return HttpStatus.BAD_REQUEST;
+            case PDF_ERROR:
+                return HttpStatus.NOT_FOUND;
             case ACCESS_DENIED:
                 return HttpStatus.FORBIDDEN;
             case DUPLICATE_DATA:
                 return HttpStatus.CONFLICT;
+            case BAD_CREDENTIAL:
+                return HttpStatus.BAD_REQUEST;
             default:
                 return HttpStatus.INTERNAL_SERVER_ERROR;
         }
@@ -48,6 +51,15 @@ public class ControllerAdvisor {
         ErrorBack errorDetails = new ErrorBack(code, message);
         log.error("Service Exception {} ", exception.getMessage());
         return new ResponseEntity<>(errorDetails, getHttpStatus(errorCatalog));
+    }
+
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(TokenExpiredException.class)
+    public ResponseEntity<String> handleTokenExpired(TokenExpiredException ex) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body("Votre token a expiré!!.");
     }
 
     @ResponseStatus(code = HttpStatus.NOT_FOUND)

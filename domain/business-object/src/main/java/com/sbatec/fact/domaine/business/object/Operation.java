@@ -12,11 +12,12 @@ import java.math.BigDecimal;
 @Builder
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TvaInfo {
-    BigDecimal totalTvaPaye;
-    BigDecimal totalTvaRestant;
-    BigDecimal totalTva;
-    BigDecimal totalTvaNet;
-    BigDecimal totalTTC;
-    BigDecimal totalCAHorsTaxe;
+public class Operation {
+
+    Long id;
+    BigDecimal montantOperation;
+    String typeOperation;
+    String dateOperation;
+    String exercise;
+    String siret;
 }

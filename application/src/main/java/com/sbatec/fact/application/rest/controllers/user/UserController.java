@@ -2,6 +2,8 @@ package com.sbatec.fact.application.rest.controllers.user;
 
 import com.sbatec.fact.config.auth.JwtService;
 import com.sbatec.fact.domaine.business.object.*;
+import com.sbatec.fact.domaine.exception.ErrorCatalog;
+import com.sbatec.fact.domaine.exception.ServiceException;
 import com.sbatec.fact.domaine.ports.api.company.CompanyApiService;
 import com.sbatec.fact.domaine.ports.api.user.RoleApiService;
 import com.sbatec.fact.domaine.ports.api.user.UserApiService;
@@ -41,19 +43,26 @@ public class UserController {
     static final String SPRING_SECURITY_CONTEXT_KEY = "SPRING_SECURITY_CONTEXT";
 
     UserApiService userApiService;
-    private AuthenticationManager authManager;
-    private JwtService jwtService;
-    private PasswordEncoder passwordEncoder;
-    private CompanyApiService companyApiService;
-
-    private RoleApiService roleApiService;
+    AuthenticationManager authManager;
+    JwtService jwtService;
+    PasswordEncoder passwordEncoder;
+    CompanyApiService companyApiService;
+    RoleApiService roleApiService;
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> authenticate(@RequestBody AuthRequest request) {
+
+        User usr = userApiService.findByUserName(request.getUsername());
+        boolean isPasswordMatch = passwordEncoder.matches(request.getPassword(), usr.getPassword());
+        if (usr != null && !isPasswordMatch) {
+            throw new ServiceException(ErrorCatalog.BAD_CREDENTIAL);
+        }
+
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
         Authentication auth = authManager.authenticate(authToken);
         UserDetails user = (UserDetails) auth.getPrincipal();
-        String jwt = jwtService.generateToken(user);
+        String accessToken = jwtService.generateAccessToken(user.getUsername());
+        String refreshToken = jwtService.generateRefreshToken(user.getUsername());
 
         List<Role> roles = auth.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -68,19 +77,33 @@ public class UserController {
                 })
                 .collect(Collectors.toList());
 
-        User usr = userApiService.findByUserName(user.getUsername());
         usr.setRoles(roles);
         usr.setPassword("");
 
         Company company = companyApiService.findBySiret(usr.getSiret());
         AuthResponse authResponse = new AuthResponse();
-        authResponse.setToken(jwt);
+        authResponse.setAccessToken(accessToken);
+        authResponse.setRefreshToken(refreshToken);
         authResponse.setUser(usr);
         authResponse.setCompany(company);
         authResponse.setSocialReason(company.getSocialReason());
         return ResponseEntity.ok(authResponse);
     }
 
+    @PostMapping("/refresh-token")
+    public ResponseEntity<AuthResponse> refresh(@RequestBody RefreshRequest request) {
+        String refreshToken = request.getRefreshToken();
+        if (jwtService.isTokenValid(refreshToken)) {
+            String username = jwtService.extractUsername(refreshToken);
+            String newAccessToken = jwtService.generateAccessToken(username);
+            AuthResponse authResponse = new AuthResponse();
+            authResponse.setAccessToken(newAccessToken);
+            authResponse.setRefreshToken(refreshToken);
+            return ResponseEntity.ok(authResponse);
+        } else {
+            return ResponseEntity.status(401).build();
+        }
+    }
 
     @GetMapping("/logout")
     public ResponseEntity<String> logout() {

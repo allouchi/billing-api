@@ -75,8 +75,8 @@ public class FactureSpiAdapter implements FactureSpiService {
             Facture factureEditee = calculerFactureService.buildFacture(siret, prestation, moisFacture);
             String numeroFacture = Utils.updateNumeroFacture(factureEditee.getClientPrestation().toLowerCase(),
                     factureMapper.fromEntityToDomain(listeFacture), moisFactureId);
-            factureEditee.setNumeroFacture(numeroFacture);
 
+            factureEditee.setNumeroFacture(numeroFacture);
             FactureEntity factEntity = factureMapper.fromDomainToEntity(factureEditee);
 
             String pathFile = buildFactureService.buildPathFile(siret, pathRoot,

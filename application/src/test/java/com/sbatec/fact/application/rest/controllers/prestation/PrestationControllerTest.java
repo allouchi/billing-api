@@ -28,8 +28,8 @@ class PrestationControllerTest {
     void createFacture() {
         String siret = "85292702900011";
         String path = "c:/temp/pdf";
-        prestation.setQuantite(20f);
-        Prestation edited = factureApiService.addFacture(siret, true, prestation, path, 1L, false, null);
+        prestation.setQuantite(19f);
+        Prestation edited = factureApiService.addFacture(siret, true, prestation, path, 6L, false, null);
         System.out.println(edited);
     }
 }

@@ -17,7 +17,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
-//@Transactional
+
 @RequiredArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)

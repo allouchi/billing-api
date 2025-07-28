@@ -327,19 +327,21 @@ CREATE TABLE t_user (
 -- Dumping data for table `t_user`
 --
 
+
+
 INSERT INTO t_user (id,
-                      email,
-                      first_name,
-                      last_name,
-                      password,
-                      siret,
-                      activated
-                    )
+                    email,
+                    first_name,
+                    last_name,
+                    password,
+                    siret,
+                    activated
+                   )
 VALUES
-(1,'allouchi@hotmail.fr','Mustapha','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q','85292702900011',TRUE),
-(2,'khalid@hotmail.fr','Khalid','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q','85292702900011',TRUE),
-(3,'salma@hotmail.fr','Salma','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q','85292702900011', TRUE),
-(4,'btissame@hotmail.fr','Btissame','Aliane','$2a$10$m7nd8RyL9cbT/iMujXqvz.wIT/iGVH6KTuhkZ.9hFwXz4Mpw4aR2q','85292702900011',TRUE);
+(1,'allouchi@hotmail.fr','Mustapha','Aliane','$2a$10$7XzFwbCwSWcAhVZQSF742eW2f0MZ6LOEcwRSAbOZa8bgrU9XVYK0u','85292702900011',TRUE),
+(2,'khalid@hotmail.fr','Khalid','Aliane','$2a$10$7XzFwbCwSWcAhVZQSF742eW2f0MZ6LOEcwRSAbOZa8bgrU9XVYK0u','85292702900011',TRUE),
+(3,'salma@hotmail.fr','Salma','Aliane','$2a$10$7XzFwbCwSWcAhVZQSF742eW2f0MZ6LOEcwRSAbOZa8bgrU9XVYK0u','85292702900011', TRUE),
+(4,'btissame@hotmail.fr','Btissame','Aliane','$2a$10$7XzFwbCwSWcAhVZQSF742eW2f0MZ6LOEcwRSAbOZa8bgrU9XVYK0u','85292702900011',TRUE);
 
 
 CREATE TABLE user_roles (
@@ -359,8 +361,8 @@ VALUES
 --
 -- Table structure for table `t_tva`
 --
-DROP TABLE IF EXISTS `t_tva`;
-CREATE TABLE `t_tva` (
+DROP TABLE IF EXISTS t_tva;
+CREATE TABLE t_tva (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `date_payment` varchar(255) NOT NULL,
   `exercise` varchar(255) NOT NULL,
@@ -373,7 +375,7 @@ CREATE TABLE `t_tva` (
 --
 -- Dumping data for table `t_tva`
 --
-INSERT INTO `t_tva` (id,
+INSERT INTO t_tva (id,
                        date_payment,
                        exercise ,
                        montant_payment ,
@@ -402,3 +404,37 @@ VALUES
 (26,'24/03/2025','2024',1908,'85292702900011','Novembre'),
 (27,'24/04/2025','2024',1500,'85292702900011','Décembre'),
 (28,'24/05/2025','2025',2214,'85292702900011','Janvier');
+
+DROP TABLE IF EXISTS t_operation;
+CREATE TABLE t_operation (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `date_operation` varchar(10) NOT NULL,
+  `type_operation` varchar(10) NOT NULL,
+  `montant_operation` varchar(45) NOT NULL,
+  `exercise` varchar(4) NOT NULL,
+  `siret` varchar(40) NOT NULL,
+  PRIMARY KEY (`id`)
+  );
+
+  INSERT INTO t_operation (id,
+                         date_operation,
+                         type_operation ,
+                         montant_operation ,
+                         exercise,
+                          siret)
+  VALUES
+  (1,'28/12/2025','DIV',2588,'2025', '85292702900011'),
+  (2,'28/12/2025','NDF',1400,'2025', '85292702900011');
+
+DROP TABLE IF EXISTS persistent_logins;
+
+ CREATE TABLE persistent_logins(
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `username` varchar(64) not null,
+  `series` varchar(64),
+  `token` varchar(64) not null,
+  `last_used` timestamp not null,
+  PRIMARY KEY (`series`));
+
+
+

@@ -21,7 +21,7 @@ import java.util.List;
 @RequestMapping(Resource.CONSULTANTS)
 public class ConsultantController implements CommonResource {
 
-    private ConsultantApiService consultantApiService;
+    ConsultantApiService consultantApiService;
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @GetMapping(value = "/{siret}")
