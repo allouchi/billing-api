@@ -27,11 +27,11 @@ public class OperationSpiAdapter implements OperationSpiService {
     OperationMapper operationMapper;
 
     @Override
-    public List<Operation> findOperations() {
-        List<OperationEntity> operationEntities = operationJpaRepository.findAll();
+    public List<Operation> findOperations(String siret) {
+        List<OperationEntity> operationEntities = operationJpaRepository.findBySiret(siret);
         return operationMapper.fromEntityToDomain(operationEntities);
     }
-    
+
 
     @Override
     public Operation addOperation(Operation operation) {

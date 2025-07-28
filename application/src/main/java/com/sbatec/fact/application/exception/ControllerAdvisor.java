@@ -28,6 +28,7 @@ public class ControllerAdvisor {
         switch (errorCatalog) {
             case BAD_DATA_ARGUMENT:
             case RESOURCE_NOT_FOUND:
+            case PDF_ERROR:
                 return HttpStatus.NOT_FOUND;
             case ACCESS_DENIED:
                 return HttpStatus.FORBIDDEN;

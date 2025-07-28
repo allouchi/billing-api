@@ -161,6 +161,10 @@ public class Utils {
             String exercice = dateEncaissement.split("/")[2];
             oFacture.setExercice(exercice);
             oFacture.setMontantTVA(factureRequest.getPrixTotalHT() * 0.2f);
+        } else {
+            oFacture.setDateEncaissement(null);
+            oFacture.setFactureStatus(FactureStatus.NON.getCode());
+            oFacture.setStatusDesc(FactureStatus.NON.getDescription());
         }
         return oFacture;
 

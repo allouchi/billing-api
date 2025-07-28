@@ -18,8 +18,8 @@ public class OperationApiAdapter implements OperationApiService {
     OperationSpiService operationSpiService;
 
     @Override
-    public List<Operation> findOperations() {
-        return operationSpiService.findOperations();
+    public List<Operation> findOperations(String siret) {
+        return operationSpiService.findOperations(siret);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class OperationApiAdapter implements OperationApiService {
         return operationSpiService.addOperation(operation);
     }
 
-    
+
     @Override
     public void deleteOperationById(Long id) {
         operationSpiService.deleteOperationById(id);

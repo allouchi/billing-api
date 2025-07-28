@@ -24,7 +24,7 @@ public class OperationMapper {
         if (domain.getId() != null && domain.getId().longValue() == 0) {
             domain.setId(null);
         }
-        return OperationEntity.builder().id(domain.getId()).montantoperation(domain.getMontantOperation())
+        return OperationEntity.builder().id(domain.getId()).montantoperation(domain.getMontantOperation()).siret(domain.getSiret())
                 .dateOperation(domain.getDateOperation()).typeOperation(domain.getTypeOperation()).exercise(domain.getExercise()).build();
     }
 
@@ -37,7 +37,7 @@ public class OperationMapper {
         if (entity == null) {
             return null;
         }
-        return Operation.builder().id(entity.getId()).montantOperation(entity.getMontantoperation())
+        return Operation.builder().id(entity.getId()).montantOperation(entity.getMontantoperation()).siret(entity.getSiret())
                 .dateOperation(entity.getDateOperation()).typeOperation(entity.getTypeOperation()).exercise(entity.getExercise()).build();
     }
 

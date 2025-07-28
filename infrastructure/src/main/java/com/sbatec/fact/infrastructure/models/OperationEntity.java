@@ -35,5 +35,6 @@ public class OperationEntity extends CommonEntity {
     @Column(name = "date_operation", nullable = false)
     String dateOperation;
 
-
+    @Column(name = "siret", nullable = false, unique = false)
+    String siret;
 }

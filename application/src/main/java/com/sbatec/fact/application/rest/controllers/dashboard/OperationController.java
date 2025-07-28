@@ -27,10 +27,10 @@ public class OperationController {
     OperationApiService operationApiService;
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
-    @GetMapping()
-    public List<Operation> getOperations() {
-        log.info("get all opérations");
-        List<Operation> opertations = operationApiService.findOperations();
+    @GetMapping(value = "/{siret}")
+    public List<Operation> getOperations(@PathVariable @NotNull String siret) {
+        log.info("get all opérations by siret {}", siret);
+        List<Operation> opertations = operationApiService.findOperations(siret);
         if (opertations != null) {
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             opertations.sort((p1, p2) -> {

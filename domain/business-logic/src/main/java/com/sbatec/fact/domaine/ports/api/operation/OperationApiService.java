@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface OperationApiService {
 
-    List<Operation> findOperations();
+    List<Operation> findOperations(String siret);
 
     Operation addOperation(Operation operation);
 

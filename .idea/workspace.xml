@@ -6,12 +6,19 @@
   <component name="ChangeListManager">
     <list default="true" id="ff07ecbc-d1f3-4543-879d-e13ac5f9aa2a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/config/auth/DatabaseConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/config/auth/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/config/auth/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/resources/application-dev.properties" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/resources/application-dev.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/exception/ControllerAdvisor.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/exception/ControllerAdvisor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/rest/controllers/dashboard/OperationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/rest/controllers/dashboard/OperationController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/domain/business-object/src/main/java/com/sbatec/fact/domaine/business/object/TvaInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/business-object/src/main/java/com/sbatec/fact/domaine/business/object/TvaInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/adapter/tva/TvaSpiAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/adapter/tva/TvaSpiAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/resources/data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/resources/data.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commun/src/main/java/com/sbatec/util/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/commun/src/main/java/com/sbatec/util/Utils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/business-logic/src/main/java/com/sbatec/fact/domaine/adapter/operation/OperationApiAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/business-logic/src/main/java/com/sbatec/fact/domaine/adapter/operation/OperationApiAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/business-logic/src/main/java/com/sbatec/fact/domaine/ports/api/operation/OperationApiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/business-logic/src/main/java/com/sbatec/fact/domaine/ports/api/operation/OperationApiService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/business-logic/src/main/java/com/sbatec/fact/domaine/ports/spi/operation/OperationSpiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/business-logic/src/main/java/com/sbatec/fact/domaine/ports/spi/operation/OperationSpiService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/business-object/src/main/java/com/sbatec/fact/domaine/business/object/Operation.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/business-object/src/main/java/com/sbatec/fact/domaine/business/object/Operation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/adapter/operation/OperationSpiAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/adapter/operation/OperationSpiAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/mapper/OperationMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/mapper/OperationMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/models/OperationEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/models/OperationEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/repository/operation/OperationJpaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/src/main/java/com/sbatec/fact/infrastructure/repository/operation/OperationJpaRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -249,17 +256,17 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/exception/ControllerAdvisor.java</url>
-          <line>66</line>
+          <line>67</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/exception/ControllerAdvisor.java</url>
-          <line>72</line>
+          <line>73</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/exception/ControllerAdvisor.java</url>
-          <line>78</line>
+          <line>79</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -289,20 +296,15 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/exception/ControllerAdvisor.java</url>
-          <line>58</line>
+          <line>59</line>
           <option name="timeStamp" value="112" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/application/exception/ControllerAdvisor.java</url>
-          <line>27</line>
-          <option name="timeStamp" value="113" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/application/src/main/java/com/sbatec/fact/config/auth/SecurityConfig.java</url>
-          <line>87</line>
-          <option name="timeStamp" value="114" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/billing_api$ApplicationStarter__1_.ic" NAME="ApplicationStarter (1) Coverage Results" MODIFIED="1753699635030" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.sbatec.fact.*</FILTER>
+    </SUITE>
   </component>
 </project>

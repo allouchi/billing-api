@@ -411,7 +411,8 @@ CREATE TABLE t_operation (
   `date_operation` varchar(10) NOT NULL,
   `type_operation` varchar(10) NOT NULL,
   `montant_operation` varchar(45) NOT NULL,
-  `exercise` varchar(100) NOT NULL,
+  `exercise` varchar(4) NOT NULL,
+  `siret` varchar(40) NOT NULL,
   PRIMARY KEY (`id`)
   );
 
@@ -419,10 +420,11 @@ CREATE TABLE t_operation (
                          date_operation,
                          type_operation ,
                          montant_operation ,
-                         exercise )
+                         exercise,
+                          siret)
   VALUES
-  (1,'28/12/2025','DIV',2588,'2025'),
-  (2,'28/12/2025','NDF',1400,'2025');
+  (1,'28/12/2025','DIV',2588,'2025', '85292702900011'),
+  (2,'28/12/2025','NDF',1400,'2025', '85292702900011');
 
 DROP TABLE IF EXISTS persistent_logins;
 

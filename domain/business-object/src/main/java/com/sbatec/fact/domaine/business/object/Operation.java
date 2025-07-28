@@ -19,4 +19,5 @@ public class Operation {
     String typeOperation;
     String dateOperation;
     String exercise;
+    String siret;
 }
