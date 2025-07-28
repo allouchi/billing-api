@@ -20,8 +20,8 @@ import java.time.format.DateTimeFormatter;
 @Slf4j
 public class BuildFactureImpl implements BuildFactureService {
 
-    private static final String TIRET = "-";
 
+    private static final String TIRET = "-";
 
     /*
      *

@@ -10,6 +10,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserApiAdapter implements UserApiService {
     UserSpiService userSpiService;
+
+    PasswordEncoder passwordEncoder;
 
     @Override
     public User addUser(User user) {
