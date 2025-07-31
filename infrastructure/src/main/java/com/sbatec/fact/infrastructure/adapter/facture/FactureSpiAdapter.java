@@ -72,7 +72,6 @@ public class FactureSpiAdapter implements FactureSpiService {
             Optional.of(cEntity).orElseThrow(() -> new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND));
 
             Company company = companyMapper.fromEntityToDomain(cEntity.get());
-            Prestation oPrestation = prestationMapper.fromEntityToDomain(prestaEntity);
             Facture factureEditee = calculerFactureService.buildFacture(siret, prestation, moisFacture);
             String numeroFacture = Utils.updateNumeroFacture(factureEditee.getClientPrestation().toLowerCase(),
                     factureMapper.fromEntityToDomain(listeFacture), moisFactureId);
@@ -81,6 +80,11 @@ public class FactureSpiAdapter implements FactureSpiService {
             FactureEntity factEntity = factureMapper.fromDomainToEntity(factureEditee);
 
             String pathFile = buildFactureService.buildPathFile(siret, pathRoot,
+<<<<<<< HEAD:infrastructure/src/main/java/com/aliateck/fact/infrastructure/adapter/facture/FactureSpiAdapter.java
+                    prestation.getClient().getSocialReason().toLowerCase(), moisFacture, moisFactureId);
+            byte[] binaryPdf = editionReportService.buildPdfFacture(paramJasper, templateChoice, pathFile,
+                    storeFile);
+=======
                     oPrestation.getClient().getSocialReason().toLowerCase(), moisFacture, moisFactureId);
             Map<String, Object> dataPdf = null;
             if (newTemplate) {
@@ -92,6 +96,7 @@ public class FactureSpiAdapter implements FactureSpiService {
                         storeFile);
             }
             String fileName = (String) dataPdf.get("fileName");
+>>>>>>> develop:infrastructure/src/main/java/com/sbatec/fact/infrastructure/adapter/facture/FactureSpiAdapter.java
             String pathToSave = Utils.buildPath(pathFile, pathRoot);
             factEntity.setFilePath(pathToSave + File.separator + fileName);
             factEntity.setTarifHT(prestation.getTarifHT());
@@ -188,6 +193,7 @@ public class FactureSpiAdapter implements FactureSpiService {
 
         try {
             List<FactureEntity> entities = entitySpiService.findAllFacturesBySiret(siret);
+            System.out.println(entities);
             Optional.ofNullable(entities).orElseThrow(() -> new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND));
             return entities.stream().map((entity) ->
                             factureMapper.fromEntityToDomain(entity))
