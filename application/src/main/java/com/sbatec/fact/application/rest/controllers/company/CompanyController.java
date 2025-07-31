@@ -23,7 +23,7 @@ public class CompanyController {
 
     CompanyApiService companyApiService;
 
-    @Secured("ROLE_ADMIN")
+    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @GetMapping("/{siret}")
     public Company findBySiret(@PathVariable String siret) {
         log.info("Find company by siret : {}", siret);
@@ -31,7 +31,7 @@ public class CompanyController {
     }
 
 
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @GetMapping
     public ResponseEntity<List<Company>> findAll() {
         log.info("Find all companies");
@@ -39,21 +39,21 @@ public class CompanyController {
         return ResponseEntity.ok(companies);
     }
 
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @PostMapping
     public Company addCompany(@RequestBody Company companyRequest) {
         log.info("Create new company");
         return companyApiService.addCompany(companyRequest);
     }
 
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @PutMapping
     public Company updateCompany(@RequestBody Company companyRequest) {
         log.info("Update company");
         return companyApiService.updateCompany(companyRequest);
     }
 
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
     @DeleteMapping(value = "/{id}")
     public void deleteCompany(@PathVariable @NotNull long id) {
         log.info("delete company by id : {}", id);
