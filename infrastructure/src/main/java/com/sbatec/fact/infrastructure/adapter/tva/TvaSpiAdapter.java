@@ -153,7 +153,7 @@ public class TvaSpiAdapter implements TvaSpiService {
         info.setTotalTvaPaye(totalTvaPaye);
         info.setTotalTva(totalTva);
         info.setTotalTvaNet(totalTvaNet);
-        info.setTotalTvaRestant(totalTva.subtract(totalTvaPaye));
+        info.setTotalTvaRestant(totalTvaNet.subtract(totalTvaPaye));
         info.setTotalTTC(totalTTC);
         info.setTotalCAHorsTaxe(totalCAHorsTaxe);
         return info;
