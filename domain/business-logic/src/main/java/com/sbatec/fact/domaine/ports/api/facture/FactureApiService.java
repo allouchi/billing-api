@@ -8,7 +8,7 @@ import java.util.List;
 public interface FactureApiService {
 
     Prestation addFacture(String siret, boolean templateChoice, Prestation prestation,
-                                 String pathRoot, Long moisFactureId, boolean storeFile, String fileSuivi);
+                          String pathRoot, Long moisFactureId, boolean storeFile, String fileSuivi);
 
     void deleteFacture(Long factureId);
 
@@ -19,4 +19,6 @@ public interface FactureApiService {
     Facture findByNumero(String numero);
 
     List<Facture> findFacturesBySiret(String siret);
+
+    List<Facture> findFacturesByExercice(String siret, String exercice);
 }

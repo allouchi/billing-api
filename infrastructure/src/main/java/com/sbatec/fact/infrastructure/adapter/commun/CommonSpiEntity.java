@@ -72,6 +72,23 @@ public class CommonSpiEntity implements EntitySpiService {
     }
 
     @Override
+    public List<FactureEntity> findAllFacturesByExercice(String siret, String exercice) {
+        List<FactureEntity> listeFacture = new ArrayList<>();
+        Optional<CompanyEntity> oCompany = companyJpaRepository.findBySiret(siret);
+        if (oCompany.isPresent()) {
+            CompanyEntity cEntity = oCompany.get();
+            for (PrestationEntity prestations : cEntity.getPrestations()) {
+                for (FactureEntity facture : prestations.getFactures()) {
+                    if (facture.getExercice().equals(exercice)) {
+                        listeFacture.add(facture);
+                    }
+                }
+            }
+        }
+        return listeFacture;
+    }
+
+    @Override
     public List<FactureEntity> findAllFacturesBySiret(String siret) {
         List<FactureEntity> listeFacture = new ArrayList<>();
         Optional<CompanyEntity> oCompany = companyJpaRepository.findBySiret(siret);

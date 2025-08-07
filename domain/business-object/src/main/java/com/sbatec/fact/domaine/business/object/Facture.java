@@ -36,5 +36,6 @@ public class Facture {
     byte[] fileContent;
     String moisFacture;
     String exercice;
+    String siret;
     Long prestationId;
 }

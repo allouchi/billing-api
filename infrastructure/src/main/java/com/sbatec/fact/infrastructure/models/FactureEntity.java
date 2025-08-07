@@ -79,6 +79,9 @@ public class FactureEntity extends CommonEntity {
     @Column(name = "exercice", nullable = false)
     String exercice;
 
+    @Column(name = "siret", nullable = false)
+    String siret;
+
     @Lob
     @Column(name = "file_content", length = 10000000, columnDefinition = "longblob")
     byte[] fileContent;

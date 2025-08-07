@@ -19,4 +19,6 @@ public interface FactureSpiService {
     Facture findById(Long id);
 
     List<Facture> findAllBySiret(String siret);
+
+    List<Facture> findAllByExercice(String siret, String exercice);
 }
