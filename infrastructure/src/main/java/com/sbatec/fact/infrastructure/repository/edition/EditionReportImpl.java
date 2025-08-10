@@ -371,7 +371,6 @@ public class EditionReportImpl implements EditionReportService {
         String template = new String(Files.readAllBytes(Paths.get(htmlTemplate.getPath())));
         LocalDate dateActuelle = LocalDate.now();
         int strDateJour = dateActuelle.getYear();
-
         byte[] imageBytes = Files.readAllBytes(logoFile.toPath());
         String logoPath = Base64.getEncoder().encodeToString(imageBytes);
 
@@ -408,7 +407,6 @@ public class EditionReportImpl implements EditionReportService {
                 .replace("${adresse2Client}", adresse2Client)
                 .replace("${logoPath}", logoPath);
 
-        //String baseUrl = logoFile.toPath().toUri().toURL().toString();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         ITextRenderer renderer = new ITextRenderer();
         renderer.setDocumentFromString(html);
