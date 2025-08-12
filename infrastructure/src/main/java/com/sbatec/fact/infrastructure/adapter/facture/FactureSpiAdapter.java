@@ -102,6 +102,8 @@ public class FactureSpiAdapter implements FactureSpiService {
             factEntity.setTarifHT(prestation.getTarifHT());
             factEntity.setFileContent(binaryPdf);
             factEntity.setFileName(fileName);
+            factEntity.setSiret(siret);
+
             factEntity.setMontantTVA(factEntity.getPrixTotalHT() * 0.2f);
             factEntity.setMontantNetTVA(factEntity.getMontantTVA() - 30);
             prestaEntity.getFactures().add(factEntity);
@@ -110,7 +112,6 @@ public class FactureSpiAdapter implements FactureSpiService {
             prestaEntity.setClientPrestation(prestation.getClientPrestation());
             prestaEntity.setDateDebut(prestation.getDateDebut());
             prestaEntity.setDateFin(prestation.getDateFin());
-
             PrestationEntity pEntity = prestationJpaRepository.save(prestaEntity);
             List<FactureEntity> listeFactures = entitySpiService.findAllFacturesBySiret(siret);
             List<Facture> suiviFactures = factureMapper.fromEntityToDomain(listeFactures);
@@ -194,6 +195,24 @@ public class FactureSpiAdapter implements FactureSpiService {
         try {
             List<FactureEntity> entities = entitySpiService.findAllFacturesBySiret(siret);
             System.out.println(entities);
+            Optional.ofNullable(entities).orElseThrow(() -> new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND));
+            return entities.stream().map((entity) ->
+                            factureMapper.fromEntityToDomain(entity))
+                    .sorted(Comparator.comparingLong(Facture::getId).reversed())
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            log.error("error while retrieving facture with requested siret :" + siret, e);
+            throw new ServiceException(ErrorCatalog.DB_ERROR,
+                    "Un problème est survenu lors de la recherche de la facture", e);
+        }
+    }
+
+    @Override
+    public List<Facture> findAllByExercice(String siret, String exercice) {
+        Optional.ofNullable(siret).orElseThrow(() -> new ServiceException(ErrorCatalog.BAD_DATA_ARGUMENT));
+
+        try {
+            List<FactureEntity> entities = entitySpiService.findAllFacturesByExercice(siret, exercice);
             Optional.ofNullable(entities).orElseThrow(() -> new ServiceException(ErrorCatalog.RESOURCE_NOT_FOUND));
             return entities.stream().map((entity) ->
                             factureMapper.fromEntityToDomain(entity))

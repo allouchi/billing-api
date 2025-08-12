@@ -11,8 +11,6 @@ public interface FactureJpaRepository extends JpaRepository<FactureEntity, Long>
 
     FactureEntity getByNumeroFacture(String numeroFacture);
 
-    List<FactureEntity> findByExercice(String excerice);
-
     List<FactureEntity> findByDateEncaissementIsNull();
 
 }

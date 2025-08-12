@@ -11,7 +11,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +24,6 @@ import java.util.List;
 public class FactureController {
 
     FactureApiService factureApiService;
-    @Autowired
     StorageProperties resources;
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
@@ -37,10 +35,10 @@ public class FactureController {
     }
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_WRITE", "ROLE_READ"})
-    @GetMapping("/{siret}/exercise")
-    public List<Facture> findAllBySiretAndExercice(@PathVariable @NotNull String siret, @PathVariable @NotNull String exercise) {
-        log.info("get all bills by siret {} and exercise {}", siret, exercise);
-        List<Facture> factures = factureApiService.findFacturesBySiret(siret);
+    @GetMapping("/{siret}/{exercice}")
+    public List<Facture> findAllBySiretAndExercice(@PathVariable @NotNull String siret, @PathVariable @NotNull String exercice) {
+        log.info("get all bills by siret");
+        List<Facture> factures = factureApiService.findFacturesByExercice(siret, exercice);
         return factures;
     }
 

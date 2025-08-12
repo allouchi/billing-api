@@ -49,4 +49,9 @@ public class FactureApiAdapter implements FactureApiService {
         return factureSpiService.findAllBySiret(siret);
     }
 
+    @Override
+    public List<Facture> findFacturesByExercice(String siret, String exercice) {
+        return factureSpiService.findAllByExercice(siret, exercice);
+    }
+
 }

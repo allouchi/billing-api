@@ -110,7 +110,8 @@ public class TvaSpiAdapter implements TvaSpiService {
     @Override
     public TvaInfo findTvaInfo(String exercise, String siret) {
 
-        List<FactureEntity> facturesEntity = new ArrayList<>();
+        List<FactureEntity> facturesEntities = new ArrayList<>();
+        List<TvaEntity> listeTvaPayee;
         TvaInfo info = new TvaInfo();
 
         Optional<CompanyEntity> company = companyJpaRepository.findBySiret(siret);
@@ -118,15 +119,15 @@ public class TvaSpiAdapter implements TvaSpiService {
             CompanyEntity entity = company.get();
             List<PrestationEntity> prestations = entity.getPrestations();
             for (PrestationEntity prestation : prestations) {
-                for (FactureEntity factures : prestation.getFactures()) {
-                    if (factures.getDateEncaissement() != null) {
-                        facturesEntity.add(factures);
+                for (FactureEntity facture : prestation.getFactures()) {
+                    if (facture.getDateEncaissement() != null) {
+                        facturesEntities.add(facture);
                     }
                 }
             }
         }
         if (!exercise.equalsIgnoreCase(TOUS)) {
-            Iterator<FactureEntity> it = facturesEntity.iterator();
+            Iterator<FactureEntity> it = facturesEntities.iterator();
             while (it.hasNext()) {
                 FactureEntity facture = it.next();
                 if (facture.getDateEncaissement() == null || !facture.getExercice().equals(exercise)) {
@@ -136,13 +137,10 @@ public class TvaSpiAdapter implements TvaSpiService {
         }
 
         BigDecimal totalTvaPaye = BigDecimal.ZERO;
-        BigDecimal totalTvaNet = facturesEntity.stream().map(e -> (BigDecimal.valueOf(e.getMontantTVA() - 30))).reduce(BigDecimal.ZERO, BigDecimal::add);
-        BigDecimal totalTva = facturesEntity.stream().map(e -> BigDecimal.valueOf(e.getMontantTVA())).reduce(BigDecimal.ZERO, BigDecimal::add);
-        BigDecimal totalTTC = facturesEntity.stream().map(e -> BigDecimal.valueOf(e.getPrixTotalTTC())).reduce(BigDecimal.ZERO, BigDecimal::add);
-        BigDecimal totalCAHorsTaxe = facturesEntity.stream().map(e -> BigDecimal.valueOf(e.getPrixTotalHT())).reduce(BigDecimal.ZERO, BigDecimal::add);
-
-
-        List<TvaEntity> listeTvaPayee;
+        BigDecimal totalTvaNet = facturesEntities.stream().map(e -> (BigDecimal.valueOf(e.getMontantTVA() - 30))).reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal totalTva = facturesEntities.stream().map(e -> BigDecimal.valueOf(e.getMontantTVA())).reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal totalTTC = facturesEntities.stream().map(e -> BigDecimal.valueOf(e.getPrixTotalTTC())).reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal totalCAHorsTaxe = facturesEntities.stream().map(e -> BigDecimal.valueOf(e.getPrixTotalHT())).reduce(BigDecimal.ZERO, BigDecimal::add);
 
         if (exercise.equalsIgnoreCase(TOUS)) {
             listeTvaPayee = tvaJpaRepository.findBySiret(siret);
