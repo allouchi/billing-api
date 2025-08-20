@@ -13,4 +13,6 @@ public interface FactureJpaRepository extends JpaRepository<FactureEntity, Long>
 
     List<FactureEntity> findByDateEncaissementIsNull();
 
+    List<FactureEntity> findBySiret(String siret);
+
 }
